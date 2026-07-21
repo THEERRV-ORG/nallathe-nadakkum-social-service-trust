@@ -130,6 +130,95 @@ export default function AboutView({ lang }: AboutViewProps) {
 
         </div>
       </section>
+upd
+      {/* Journey Milestones Timeline */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="space-y-6">
+          <div className="text-center space-y-1">
+            <h2 className="font-display text-2xl font-bold text-gray-900">
+              {lang === 'en' ? 'Our Journey' : 'எங்கள் பயணம்'}
+            </h2>
+            <p className="text-xs text-gray-500">
+              {lang === 'en' ? 'From one person\'s Saturday habit to a registered trust serving thousands.' : 'ஒரு நபரின் சனிக்கிழமை பழக்கம் இன்று ஆயிரங்களுக்கு சேவை செய்யும் அறக்கட்டளையாக மாறியது.'}
+            </p>
+          </div>
+
+          <div className="relative">
+            {/* Connecting line */}
+            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-emerald-100 hidden sm:block sm:left-1/2 sm:-translate-x-px"></div>
+
+            <div className="space-y-6">
+              {[
+                {
+                  year: '2023',
+                  dot: 'bg-gray-300',
+                  title: { en: 'It Begins on Saturdays', ta: 'சனிக்கிழமை தொடக்கம்' },
+                  desc: {
+                    en: 'Advocate N. Kavinraj begins cooking and distributing meals to roadside families every Saturday, entirely from personal funds — two years before any formal structure.',
+                    ta: 'வழக்கறிஞர் நா. கவின்ராஜ் தனது சொந்தச் செலவில் ஒவ்வொரு சனிக்கிழமையும் சாலையோர மக்களுக்கு சமைத்து வழங்கத் தொடங்கினார் — அறக்கட்டளை பதிவிற்கு இரண்டு ஆண்டுகள் முன்பே.'
+                  }
+                },
+                {
+                  year: '08 Apr 2025',
+                  dot: 'bg-emerald-500',
+                  title: { en: 'Official Trust Registration', ta: 'அதிகாரப்பூர்வ அறக்கட்டளை பதிவு' },
+                  desc: {
+                    en: 'Nallathe Nadakkum Samuga Sevai Arakkattalai formally registered as a public charitable trust (Doc No. 16/2025) at the Sub-Registrar Office, Tiruchengode. Daily Annadhanam launched immediately.',
+                    ta: 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை சார்பதிவாளர் அலுவலகம், திருச்செங்கோட்டில் பொது தொண்டு அறக்கட்டளையாக முறையாகப் பதிவு செய்யப்பட்டது (ஆவணம் 16/2025). தினசரி அன்னதானம் உடனடியாகத் தொடங்கியது.'
+                  }
+                },
+                {
+                  year: 'Oct 2025',
+                  dot: 'bg-amber-400',
+                  title: { en: 'Diwali Clothes Distribution', ta: 'தீபாவளி ஆடை விநியோகம்' },
+                  desc: {
+                    en: 'The trust distributed new dhotis, sarees, and shirts to approximately 100 destitute individuals and roadside families — ensuring all could celebrate the festival of lights with dignity.',
+                    ta: 'சுமார் 100 ஆதரவற்றோர் மற்றும் சாலையோரக் குடும்பங்களுக்கு வேட்டி, சேலை மற்றும் சட்டைகளை வழங்கியது. அனைவரும் கண்ணியத்துடன் தீபாவளியைக் கொண்டாட வாய்ப்பு கிட்டியது.'
+                  }
+                },
+                {
+                  year: '21 Mar 2026',
+                  dot: 'bg-blue-500',
+                  title: { en: 'Free Ambulance Launched', ta: 'இலவச ஆம்புலன்ஸ் சேவை தொடக்கம்' },
+                  desc: {
+                    en: 'Trust ambulance (TN.09.AE.9447) formally flagged off — providing zero-cost emergency transport to vulnerable patients transferring to government hospitals.',
+                    ta: 'அறக்கட்டளை ஆம்புலன்ஸ் (TN.09.AE.9447) அர்ப்பணிக்கப்பட்டது — ஏழை நோயாளிகளை அரசு மருத்துவமனைக்கு கட்டணமின்றி கொண்டு செல்லும் சேவை தொடங்கியது.'
+                  }
+                },
+                {
+                  year: 'Jul 2026',
+                  dot: 'bg-emerald-600',
+                  title: { en: '400+ Days & Growing', ta: '400+ நாட்கள் & தொடர்கிறோம்' },
+                  desc: {
+                    en: '400+ consecutive days of Annadhanam serving 3,000–5,000 people monthly. 30+ unclaimed burials, 10 family funerals conducted, 5 elders rescued, 7 students actively sponsored, accident victims supported through fundraising.',
+                    ta: '400-க்கும் மேற்பட்ட தொடர் நாட்களாக மாதந்தோறும் 3,000–5,000 பேருக்கு அன்னதானம். 30-க்கும் மேற்பட்ட நல்லடக்கங்கள், 10 உறவாய் நடத்திய இறுதிச் சடங்குகள், 5 முதியோர் மீட்பு, 7 மாணவர் கல்வி ஆதரவு, விபத்து பாதிக்கப்பட்டோருக்கு நிதி திரட்டல்.'
+                  }
+                }
+              ].map((milestone, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.07 }}
+                  className="relative flex gap-4 sm:gap-6"
+                >
+                  {/* Dot + year */}
+                  <div className="flex flex-col items-center gap-1 shrink-0 w-24 sm:w-28">
+                    <div className={`h-3 w-3 rounded-full ring-2 ring-white shadow ${milestone.dot} mt-1`} />
+                    <span className="text-[10px] font-bold text-gray-500 text-center leading-tight">{milestone.year}</span>
+                  </div>
+                  {/* Content */}
+                  <div className="pb-6 flex-1">
+                    <h4 className="font-display text-sm font-bold text-gray-900 mb-1">{milestone.title[lang]}</h4>
+                    <p className="text-xs text-gray-600 leading-relaxed text-justify">{milestone.desc[lang]}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Trust Registration Legalities Info */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

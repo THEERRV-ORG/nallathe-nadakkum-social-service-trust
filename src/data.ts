@@ -56,8 +56,8 @@ export const commonTranslations: TranslationSet = {
     ta: 'திருச்செங்கோட்டை மையமாகக் கொண்ட பதிவு செய்யப்பட்ட சமூக சேவை அறக்கட்டளை. ஆதரவற்ற மக்களுக்காக தங்களை அர்ப்பணித்துக் கொள்கிறது.'
   },
   introText: {
-    en: 'Nallathe Nadakkum Samuga Sevai Arakkattalai is a registered public charitable trust founded by Advocate N. Kavinraj in Tiruchengode, Tamil Nadu. What began as an informal, personal weekend habit of feeding roadside families has grown into a registered trust (08.04.2025) running daily food distribution, destitute elder rescue, education fee support, police-coordinated last rites, and free emergency ambulance transport.',
-    ta: 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை, திருச்செங்கோடு வழக்கறிஞர் நா. கவின்ராஜ் அவர்களால் தொடங்கப்பட்ட பதிவு செய்யப்பட்ட சமூக சேவை அறக்கட்டளை ஆகும். சாலையோரம் வசிப்பவர்களுக்கு வார இறுதியில் உணவு வழங்கிய ஒரு தனிநபர் முயற்சியாக தொடங்கி, இரண்டு ஆண்டுகளுக்குப் பிறகு, 08.04.2025 அன்று முறையாக அறக்கட்டளையாக பதிவு செய்யப்பட்டது. இன்று தினசரி அன்னதானம், முதியோர் மீட்பு, ஆதரவற்று இறப்பவர்களுக்கு இறுதி மரியாதை, கல்வி உதவி, மற்றும் இலவச ஆம்புலன்ஸ் சேவை ஆகியவற்றை நடத்தி வருகிறோம்.'
+    en: 'Nallathe Nadakkum Samuga Sevai Arakkattalai is a registered public charitable trust founded by Advocate N. Kavinraj in Tiruchengode, Tamil Nadu. Two years before registration, he personally funded Saturday-only Annadhanam on the streets — cooking and distributing meals from his own resources. On 08.04.2025 it became an officially registered trust. Today, after 400+ consecutive days of daily service, the trust feeds 50–100 people daily and 3,000–5,000 people monthly, has conducted 30+ police-coordinated burials for unclaimed deceased, led 10 funeral ceremonies as a stand-in family, rescued 5 destitute elders into care homes, sponsored 7 students (3 in college, 4 in school), distributed festival clothes to 100+ during Diwali, fundraised for accident victims\' surgeries, and runs a free emergency ambulance service.',
+    ta: 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை, திருச்செங்கோடு வழக்கறிஞர் நா. கவின்ராஜ் அவர்களால் தொடங்கப்பட்டது. அறக்கட்டளை பதிவிற்கு இரண்டு ஆண்டுகள் முன்பிருந்தே, ஒவ்வொரு சனிக்கிழமையும் தனது சொந்தச் செலவில் சாலையோரத்தில் அன்னதானம் செய்து வந்தார். 08.04.2025 அன்று முறையாக அறக்கட்டளையாக பதிவு செய்யப்பட்டது. இன்று 400-க்கும் மேற்பட்ட தொடர் நாட்களாக தினமும் 50 முதல் 100 பேருக்கும், மாதந்தோறும் 3,000 முதல் 5,000 பேருக்கும் உணவு வழங்கி வருகிறோம். 30-க்கும் மேற்பட்ட ஆதரவற்று இறந்தோருக்கு போலீஸ் ஒத்துழைப்புடன் நல்லடக்கம் செய்துள்ளோம், 10 பேரின் இறுதிச் சடங்கை உறவினராய் முன் நின்று நடத்தியுள்ளோம். 5 ஆதரவற்ற முதியவர்களை மீட்டு முதியோர் இல்லத்தில் சேர்த்துள்ளோம், 7 மாணவர்களின் (3 கல்லூரி, 4 பள்ளி) கல்விக் கட்டணம் ஏற்றுள்ளோம், தீபாவளியில் 100-க்கும் மேற்பட்டோருக்கு புத்தாடை வழங்கியுள்ளோம், மேலும் விபத்தில் காயமடைந்தோரின் அறுவை சிகிச்சைக்கு நிதி திரட்டி உதவியுள்ளோம்.'
   },
   missionTitle: {
     en: 'Our Mission',
@@ -131,12 +131,12 @@ export const commonTranslations: TranslationSet = {
 };
 
 export const statsData = [
-  { label: { en: 'Days of Annadhanam', ta: 'தொடர் அன்னதான நாட்கள்' }, value: '400+' },
-  { label: { en: 'People Fed Monthly', ta: 'மாதந்தோறும் உணவு பெறுவோர்' }, value: '3,000+' },
-  { label: { en: 'Unclaimed Burials', ta: 'போலீஸ் ஒருங்கிணைப்பு இறுதிச் சடங்கு' }, value: '30+' },
-  { label: { en: 'Elders Rescued', ta: 'மீட்கப்பட்ட முதியவர்கள்' }, value: '5+' },
-  { label: { en: 'Ambulance Trips Helped', ta: 'ஆம்புலன்ஸ் உதவிய பயனாளிகள்' }, value: '50+' },
-  { label: { en: 'Students Sponsored', ta: 'கல்வி கட்டண உதவி' }, value: '15+' }
+  { label: { en: 'Consecutive Annadhanam Days', ta: 'தொடர் அன்னதான நாட்கள்' }, value: '400+' },
+  { label: { en: 'People Fed Monthly', ta: 'மாதந்தோறும் உணவு பெறுவோர்' }, value: '5,000+' },
+  { label: { en: 'Unclaimed Burials', ta: 'ஆதரவற்றோர் நல்லடக்கம்' }, value: '30+' },
+  { label: { en: 'Conducted as Family', ta: 'உறவாய் நடத்திய இறுதிச் சடங்கு' }, value: '10' },
+  { label: { en: 'Elders Rescued', ta: 'மீட்கப்பட்ட முதியவர்கள்' }, value: '5' },
+  { label: { en: 'Students Sponsored', ta: 'கல்வி கட்டண உதவி மாணவர்கள்' }, value: '7' }
 ];
 
 export const servicesData: ServiceItem[] = [
@@ -149,8 +149,8 @@ export const servicesData: ServiceItem[] = [
       ta: 'திருச்செங்கோடு மற்றும் சுற்றுவட்டாரப் பகுதிகளில் வசிக்கும் சாலையோர ஏழைக் குடும்பங்களுக்கும் ஆதரவற்றோருக்கும் தினமும் சமைத்த உணவு வழங்கப்படுகிறது.'
     },
     detailedDescription: {
-      en: 'What started as weekend family distribution has expanded into a daily service. We deliver fresh, hot meals directly to where people sleep on pavements, bus stands, and hospital premises. We also provide groceries and meals to local elder-care homes.',
-      ta: 'வார இறுதியில் தொடங்கிய இந்த அன்னதானப் பணி தற்போது தினசரி சேவையாக விரிவடைந்துள்ளது. சாலையோரங்களில், பேருந்து நிலையங்களில், மற்றும் அரசு மருத்துவமனை வளாகங்களில் தங்கியிருக்கும் மக்களுக்கு நேரில் சென்று உணவு வழங்குகிறோம். அத்துடன் முதியோர் இல்லங்களுக்கும் உணவு தானியங்களை வழங்குகிறோம்.'
+      en: 'What started as a personal Saturday habit two years before registration has expanded into an unbroken daily service — 400+ consecutive days and counting. We deliver fresh, hot meals directly to where people sleep on pavements, bus stands, and hospital premises, reaching 50–100 individuals each day and 3,000–5,000 monthly. We also supply groceries and cooked meals to the local old-age home. Beyond food, we extend our care to seasonal events: during Diwali 2025 the trust distributed new dhotis, sarees, and shirts to approximately 100 destitute individuals so everyone could celebrate with dignity.',
+      ta: 'அறக்கட்டளை பதிவிற்கு இரண்டு ஆண்டுகள் முன்பிருந்தே ஒவ்வொரு சனிக்கிழமையும் நிறுவனர் தனிப்பட்ட முயற்சியாக செய்து வந்த அன்னதானம், இன்று 400-க்கும் மேற்பட்ட தொடர் நாட்களாக தடையின்றி நடைபெறுகிறது. தினமும் 50 முதல் 100 பேருக்கும், மாதந்தோறும் 3,000 முதல் 5,000 பேருக்கும் உணவு வழங்கப்படுகிறது. சாலையோரங்கள், பேருந்து நிலையங்கள், அரசு மருத்துவமனை வளாகங்கள் மற்றும் முதியோர் இல்லங்களுக்கு நேரில் சென்று உணவு வழங்குகிறோம். தீபாவளி 2025 அன்று 100-க்கும் மேற்பட்ட ஆதரவற்றோருக்கு வேட்டி, சேலை, சட்டைகளை வழங்கி அனைவரும் கண்ணியத்துடன் பண்டிகை கொண்டாட உதவினோம்.'
     },
     benefits: {
       en: 'Ensures homeless, sick, and vulnerable individuals do not go hungry. Reaches 50 to 100 roadside individuals daily.',
@@ -207,8 +207,8 @@ export const servicesData: ServiceItem[] = [
       ta: 'உரிமை கோர யாரும் இல்லாத ஆதரவற்ற உடல்களுக்கு காவல்துறையின் அனுமதியுடன் கண்ணியமான முறையில் இறுதிச் சடங்குகள் செய்தல்.'
     },
     detailedDescription: {
-      en: 'Every human being deserves a dignified departure. In coordination with local police departments across Namakkal and Salem districts, our trust takes custody of unclaimed bodies of homeless or destitute individuals, arranging full traditional last rites and cremation services with complete dignity.',
-      ta: 'ஒவ்வொரு மனிதனும் கண்ணியமான முறையில் விடைபெற தகுதியானவர். நாமக்கல் மற்றும் சேலம் மாவட்ட காவல்துறையினருடன் இணைந்து, சாலைகளில் உயிரிழக்கும் அடையாளம் தெரியாத அல்லது உறவினர்கள் இல்லாத உடல்களைப் பெற்று, முழுமையான இறுதி மரியாதையுடன் அடக்கம் அல்லது தகனம் செய்கிறோம்.'
+      en: 'Every human being deserves a dignified departure. In coordination with Namakkal and Salem district police, our trust takes custody of unclaimed bodies and arranges full traditional last rites. Beyond unclaimed burials, we also stand alongside families of the poor who have no one to lead the ceremonies — in the past year we have conducted 10 such funerals as a stand-in family, ensuring every person departs with prayers, flowers, and dignity regardless of who they were in life.',
+      ta: 'ஒவ்வொரு மனிதனும் கண்ணியமான முறையில் விடைபெற தகுதியானவர். நாமக்கல் மற்றும் சேலம் மாவட்ட காவல்துறையினருடன் இணைந்து, ஆதரவற்று இறந்தோர் உடல்களை ஏற்று முழு இறுதிச் சடங்குகளை செய்கிறோம். அதோடு, சடங்கு நடத்த உறவினர்கள் இல்லாத ஏழைக் குடும்பங்களுக்கும் நாங்களே முன் நின்று உறவாய் நடத்துகிறோம் — கடந்த ஒரு வருடத்தில் 10 பேரின் இறுதிச் சடங்கை இவ்வாறு உறவாய் முன் நின்று நடத்தியுள்ளோம்.'
     },
     benefits: {
       en: 'Dignified departure with respect. Over 30+ police-coordinated burials/cremations have been conducted in Namakkal/Salem district areas.',
@@ -269,8 +269,8 @@ export const servicesData: ServiceItem[] = [
       ta: 'வறுமையின் காரணமாக எந்தக் குழந்தையும் படிப்பை நிறுத்தக் கூடாது. ஒற்றைப் பெற்றோர் அல்லது கூலித் தொழிலாளர்களின் பிள்ளைகளைக் கண்டறிந்து, அவர்கள் பள்ளி/கல்லூரிப் படிப்பை தொடர கல்வி நிறுவனங்களுக்கு நேரடியாக கட்டணத்தை செலுத்துகிறோம்.'
     },
     benefits: {
-      en: 'Has actively supported school and college students, assisting them in continuing their professional and academic degrees.',
-      ta: 'ஏழை எளிய மாணவர்கள் தங்களது பள்ளி மற்றும் உயர்கல்விப் பட்டப் படிப்புகளை வெற்றிகரமாகத் தொடர வழி செய்கிறது.'
+      en: 'Currently sponsoring 3 college students and 4 school students (7 total), paying tuition fees directly to institutions. No deserving student has dropped out due to financial hardship under our watch.',
+      ta: 'தற்போது 3 கல்லூரி மாணவர்களும் 4 பள்ளி மாணவர்களும் (மொத்தம் 7 பேர்) அறக்கட்டளையின் உதவியால் படித்து வருகின்றனர். கட்டணங்களை நேரடியாக கல்வி நிறுவனங்களுக்கே செலுத்துகிறோம். நமது ஆதரவால் எந்த மாணவரும் படிப்பை பாதியிலேயே நிறுத்தவில்லை.'
     },
     howToRequest: {
       en: 'Submit student details along with academic records and fee demand sheets through our Request Help page or contact us directly.',
