@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { OFFICIAL_CONTACT, buildMailtoUrl, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
 import { motion } from 'motion/react';
-import { FaShieldHalved, FaCalendarDays, FaPhoneFlip, FaCircleCheck, FaClock, FaTriangleExclamation, FaUserCheck, FaHeart, FaTrash } from 'react-icons/fa6';
+import { FaShieldHalved, FaCalendarDays, FaPhoneFlip, FaTriangleExclamation, FaUserCheck, FaHeart } from 'react-icons/fa6';
 
 interface FormsViewProps {
   lang: 'en' | 'ta';
   formType: 'help' | 'volunteer' | 'contact';
 }
 
+/**
+ * Public intake forms for help requests, volunteer registrations, and general
+ * enquiries. Sensitive content is validated and handed off to trusted external
+ * channels instead of being stored in the browser.
+ */
 export default function FormsView({ lang, formType }: FormsViewProps) {
   // Help Form State
   const [helpName, setHelpName] = useState('');
@@ -36,23 +42,6 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
   const [contactLoading, setContactLoading] = useState(false);
   const [contactSuccess, setContactSuccess] = useState(false);
 
-  // Lists of submissions from localStorage
-  const [localHelpRequests, setLocalHelpRequests] = useState<any[]>([]);
-  const [localVolApps, setLocalVolApps] = useState<any[]>([]);
-
-  // Load submissions from localStorage on mount
-  useEffect(() => {
-    try {
-      const savedRequests = localStorage.getItem('nn_help_requests');
-      if (savedRequests) setLocalHelpRequests(JSON.parse(savedRequests));
-      
-      const savedVolApps = localStorage.getItem('nn_volunteer_applications');
-      if (savedVolApps) setLocalVolApps(JSON.parse(savedVolApps));
-    } catch (e) {
-      console.error(e);
-    }
-  }, []);
-
   const handleInterestToggle = (interest: string) => {
     if (volInterests.includes(interest)) {
       setVolInterests(volInterests.filter(i => i !== interest));
@@ -61,120 +50,112 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     }
   };
 
-  // Submit Help Request
+  // Help requests are prepared for WhatsApp handoff so distress data is not
+  // left behind in browser storage on a shared device.
   const handleHelpSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!helpName || !helpPhone || !helpAddress || !helpDesc || !helpConsent) {
-      alert(lang === 'en' ? 'Please fill in all required fields and accept consent.' : 'தேவையான அனைத்து விவரங்களையும் பூர்த்தி செய்து, ஒப்புதலை ஏற்கவும்.');
+    const normalizedName = sanitizeSingleLine(helpName, 80);
+    const normalizedPhone = normalizeIndianPhone(helpPhone);
+    const normalizedAddress = sanitizeMultiLine(helpAddress, 220);
+    const normalizedDesc = sanitizeMultiLine(helpDesc, 500);
+
+    if (!helpConsent || !isValidPersonName(normalizedName) || !isValidIndianPhone(normalizedPhone) || !hasMeaningfulText(normalizedAddress, 10, 220) || !hasMeaningfulText(normalizedDesc, 10, 500)) {
+      alert(lang === 'en' ? 'Enter a valid name, Indian phone number, address, case details, and consent before sending.' : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண், முகவரி, விவரம் மற்றும் ஒப்புதலை வழங்கவும்.');
       return;
     }
+
     setHelpLoading(true);
 
     setTimeout(() => {
-      const trackingId = `NN-REQ-${Math.floor(1000 + Math.random() * 9000)}`;
-      const newRequest = {
-        id: trackingId,
-        name: helpName,
-        phone: helpPhone,
-        address: helpAddress,
-        type: helpType,
-        desc: helpDesc,
-        urgency: helpUrgency,
-        date: new Date().toLocaleDateString(),
-        status: 'Pending Verification'
-      };
+      const trackingId = createReference('NN-REQ');
+      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.whatsappPhone, [
+        `Help request reference: ${trackingId}`,
+        `Name: ${normalizedName}`,
+        `Phone: ${normalizedPhone}`,
+        `Address: ${normalizedAddress}`,
+        `Need: ${helpType}`,
+        `Urgency: ${helpUrgency}`,
+        `Situation: ${normalizedDesc}`,
+      ]);
 
-      try {
-        const currentRequests = JSON.parse(localStorage.getItem('nn_help_requests') || '[]');
-        const updatedRequests = [newRequest, ...currentRequests];
-        localStorage.setItem('nn_help_requests', JSON.stringify(updatedRequests));
-        setLocalHelpRequests(updatedRequests);
-      } catch (e) {
-        console.error(e);
-      }
-
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
       setHelpLoading(false);
       setHelpSuccess(trackingId);
-      // Reset form
       setHelpName('');
       setHelpPhone('');
       setHelpAddress('');
       setHelpDesc('');
       setHelpConsent(false);
-    }, 1500);
+    }, 500);
   };
 
-  // Submit Volunteer Application
+  // Volunteer details are routed to a mail draft for staff follow-up.
   const handleVolSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!volName || !volPhone || !volLocation || volInterests.length === 0) {
-      alert(lang === 'en' ? 'Please fill in Name, Phone, Location and choose at least one interest.' : 'பெயர், தொலைபேசி, இருப்பிடம் ஆகியவற்றை நிரப்பி, குறைந்தபட்சம் ஒரு பணியையாவது தேர்ந்தெடுக்கவும்.');
+    const normalizedName = sanitizeSingleLine(volName, 80);
+    const normalizedPhone = normalizeIndianPhone(volPhone);
+    const normalizedLocation = sanitizeSingleLine(volLocation, 120);
+    const normalizedSkills = sanitizeMultiLine(volSkills, 300);
+
+    if (!isValidPersonName(normalizedName) || !isValidIndianPhone(normalizedPhone) || normalizedLocation.length < 3 || volInterests.length === 0 || volInterests.length > 6) {
+      alert(lang === 'en' ? 'Enter a valid name, Indian phone number, location, and at least one volunteer area.' : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண், இருப்பிடம் மற்றும் குறைந்தபட்சம் ஒரு தன்னார்வ பகுதியைத் தேர்ந்தெடுக்கவும்.');
       return;
     }
+
     setVolLoading(true);
 
     setTimeout(() => {
-      const trackingId = `NN-VOL-${Math.floor(1000 + Math.random() * 9000)}`;
-      const newApp = {
-        id: trackingId,
-        name: volName,
-        phone: volPhone,
-        location: volLocation,
-        interests: volInterests,
-        availability: volAvailability,
-        skills: volSkills,
-        date: new Date().toLocaleDateString(),
-        status: 'Registered'
-      };
+      const trackingId = createReference('NN-VOL');
+      const mailtoUrl = buildMailtoUrl(OFFICIAL_CONTACT.email, `Volunteer registration ${trackingId}`, [
+        `Reference: ${trackingId}`,
+        `Name: ${normalizedName}`,
+        `Phone: ${normalizedPhone}`,
+        `Location: ${normalizedLocation}`,
+        `Availability: ${volAvailability}`,
+        `Interests: ${volInterests.join(', ')}`,
+        `Skills: ${normalizedSkills || 'Not provided'}`,
+      ]);
 
-      try {
-        const currentApps = JSON.parse(localStorage.getItem('nn_volunteer_applications') || '[]');
-        const updatedApps = [newApp, ...currentApps];
-        localStorage.setItem('nn_volunteer_applications', JSON.stringify(updatedApps));
-        setLocalVolApps(updatedApps);
-      } catch (e) {
-        console.error(e);
-      }
-
+      window.location.href = mailtoUrl;
       setVolLoading(false);
       setVolSuccess(trackingId);
-      // Reset form
       setVolName('');
       setVolPhone('');
       setVolLocation('');
       setVolInterests([]);
       setVolSkills('');
-    }, 1500);
+    }, 500);
   };
 
-  // Submit Contact Form
+  // General enquiries follow the same pattern: validate first, then hand off
+  // to a mail draft rather than creating local-only pseudo-submissions.
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!contactName || !contactPhone || !contactMsg) {
-      alert(lang === 'en' ? 'Please fill in all fields.' : 'அனைத்து விவரங்களையும் நிரப்பவும்.');
+    const normalizedName = sanitizeSingleLine(contactName, 80);
+    const normalizedPhone = normalizeIndianPhone(contactPhone);
+    const normalizedMessage = sanitizeMultiLine(contactMsg, 500);
+
+    if (!isValidPersonName(normalizedName) || !isValidIndianPhone(normalizedPhone) || !hasMeaningfulText(normalizedMessage, 10, 500)) {
+      alert(lang === 'en' ? 'Enter a valid name, Indian phone number, and message before sending.' : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண் மற்றும் செய்தியை வழங்கவும்.');
       return;
     }
+
     setContactLoading(true);
 
     setTimeout(() => {
+      const mailtoUrl = buildMailtoUrl(OFFICIAL_CONTACT.email, 'Website contact request', [
+        `Name: ${normalizedName}`,
+        `Phone: ${normalizedPhone}`,
+        `Message: ${normalizedMessage}`,
+      ]);
+
+      window.location.href = mailtoUrl;
       setContactLoading(false);
       setContactSuccess(true);
       setContactName('');
       setContactPhone('');
       setContactMsg('');
-    }, 1200);
-  };
-
-  const deleteHelpRequest = (id: string) => {
-    const filtered = localHelpRequests.filter(r => r.id !== id);
-    localStorage.setItem('nn_help_requests', JSON.stringify(filtered));
-    setLocalHelpRequests(filtered);
-  };
-
-  const deleteVolApp = (id: string) => {
-    const filtered = localVolApps.filter(a => a.id !== id);
-    localStorage.setItem('nn_volunteer_applications', JSON.stringify(filtered));
-    setLocalVolApps(filtered);
+    }, 500);
   };
 
   return (
@@ -212,44 +193,6 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               </ul>
             </div>
 
-            {/* Device submissions tracking */}
-            {localHelpRequests.length > 0 && (
-              <div className="space-y-3">
-                <h3 className="font-display text-sm font-bold text-gray-900">
-                  📋 {lang === 'en' ? 'Requests Submitted from this Device' : 'இந்தக் கருவியிலிருந்து அனுப்பப்பட்ட கோரிக்கைகள்'}
-                </h3>
-                <div className="space-y-3 max-h-60 overflow-y-auto">
-                  {localHelpRequests.map((req) => (
-                    <div key={req.id} className="p-4 border border-gray-100 rounded-xl bg-white shadow-xs flex items-start justify-between">
-                      <div className="space-y-1">
-                        <div className="flex items-center space-x-2">
-                          <span className="font-mono text-xs font-bold text-emerald-800">{req.id}</span>
-                          <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded">
-                            {req.type}
-                          </span>
-                        </div>
-                        <p className="text-xs font-medium text-gray-700">{req.name} ({req.date})</p>
-                        <div className="flex items-center space-x-1.5 pt-1">
-                          {req.status === 'Pending Verification' ? <FaClock className="h-3 w-3 text-amber-500" /> : <FaCircleCheck className="h-3 w-3 text-emerald-600" />}
-                          <span className="text-[10px] font-semibold text-gray-500">
-                            {req.status === 'Pending Verification' 
-                              ? (lang === 'en' ? 'Pending Verification' : 'விசாரணையில் உள்ளது')
-                              : (lang === 'en' ? 'Approved / Dispatched' : 'நிறைவேற்றப்பட்டது')}
-                          </span>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => deleteHelpRequest(req.id)}
-                        className="text-gray-400 hover:text-red-600 p-1 cursor-pointer"
-                        title={lang === 'en' ? 'Remove local record' : 'பதிவை நீக்கு'}
-                      >
-                        <FaTrash className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Right Side: Form */}
@@ -261,20 +204,20 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 </div>
                 <div className="space-y-2">
                   <h3 className="font-display text-xl font-bold text-gray-900">
-                    {lang === 'en' ? 'Help Request Logged Successfully' : 'கோரிக்கை பதிவேற்றப்பட்டது'}
+                    {lang === 'en' ? 'Secure Contact Draft Prepared' : 'பாதுகாப்பான தொடர்பு வரைவு தயாராகிவிட்டது'}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-600">
                     {lang === 'en' 
-                      ? 'Your dispatch file is stored and under initial review.' 
+                      ? 'A WhatsApp handoff was prepared instead of storing this request in your browser.' 
                       : 'உங்கள் விண்ணப்பம் வெற்றிகரமாகப் பதிவேற்றப்பட்டு, ஆய்வில் உள்ளது.'}
                   </p>
                   <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono text-sm font-bold px-4 py-2 rounded-lg mt-2">
-                    {lang === 'en' ? 'Tracking ID:' : 'விண்ணப்ப எண்:'} {helpSuccess}
+                    {lang === 'en' ? 'Reference:' : 'குறிப்பு எண்:'} {helpSuccess}
                   </div>
                 </div>
                 <p className="text-xs text-gray-400">
                   {lang === 'en'
-                    ? 'Please keep your phone line active. A volunteer will call you shortly.'
+                    ? 'For emergencies, call the trust directly as well. This site no longer stores distress requests on shared devices.'
                     : 'தயவுசெய்து உங்களது தொலைபேசியை தொடர்பில் வைத்திருக்கவும். தன்னார்வலர் விரைவில் அழைப்பார்.'}
                 </p>
                 <button
@@ -480,44 +423,6 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               </ul>
             </div>
 
-            {/* Local Apps Tracker */}
-            {localVolApps.length > 0 && (
-              <div className="space-y-3">
-                <h3 className="font-display text-sm font-bold text-gray-900">
-                  📋 {lang === 'en' ? 'Your Registered Applications' : 'பதிவு செய்யப்பட்ட விண்ணப்பங்கள்'}
-                </h3>
-                <div className="space-y-3 max-h-48 overflow-y-auto">
-                  {localVolApps.map((app) => (
-                    <div key={app.id} className="p-4 border border-gray-100 rounded-xl bg-white shadow-xs flex items-start justify-between">
-                      <div className="space-y-1">
-                        <div className="flex items-center space-x-2">
-                          <span className="font-mono text-xs font-bold text-emerald-800">{app.id}</span>
-                          <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded">
-                            {app.availability}
-                          </span>
-                        </div>
-                        <p className="text-xs font-medium text-gray-700">{app.name} ({app.date})</p>
-                        <div className="flex items-center space-x-1.5 pt-1">
-                          <FaUserCheck className="h-3 w-3 text-emerald-600" />
-                          <span className="text-[10px] font-semibold text-emerald-700">
-                            {app.status === 'Registered' 
-                              ? (lang === 'en' ? 'Registered - Pending WhatsApp Link' : 'விண்ணப்பம் ஏற்கப்பட்டது') 
-                              : app.status}
-                          </span>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => deleteVolApp(app.id)}
-                        className="text-gray-400 hover:text-red-600 p-1 cursor-pointer"
-                        title={lang === 'en' ? 'Remove local record' : 'பதிவை நீக்கு'}
-                      >
-                        <FaTrash className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Right Column: Volunteer Form */}
@@ -529,20 +434,20 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 </div>
                 <div className="space-y-2">
                   <h3 className="font-display text-xl font-bold text-gray-900">
-                    {lang === 'en' ? 'Volunteer Registration Complete' : 'பதிவு நிறைவடைந்தது'}
+                    {lang === 'en' ? 'Volunteer Draft Prepared' : 'தன்னார்வ பதிவு வரைவு தயாரானது'}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-600">
                     {lang === 'en'
-                      ? 'Thank you for stepping forward to serve your community.'
+                      ? 'Your email app should now contain a pre-filled volunteer registration draft.'
                       : 'சமூக சேவையில் உங்களை ஈடுபடுத்திக் கொண்டமைக்கு மனமார்ந்த நன்றிகள்.'}
                   </p>
                   <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono text-sm font-bold px-4 py-2 rounded-lg mt-2">
-                    {lang === 'en' ? 'Registration ID:' : 'பதிவு எண்:'} {volSuccess}
+                    {lang === 'en' ? 'Reference:' : 'குறிப்பு எண்:'} {volSuccess}
                   </div>
                 </div>
                 <p className="text-xs text-gray-400 max-w-sm mx-auto leading-relaxed">
                   {lang === 'en'
-                    ? 'Our coordinator will contact you via WhatsApp shortly to guide you onto our next active field drive.'
+                    ? 'This website no longer stores volunteer applications locally. Please send the prepared draft from your trusted device.'
                     : 'நமது ஒருங்கிணைப்பாளர் விரைவில் வாட்ஸ்அப் மூலம் தொடர்புகொண்டு அடுத்தகட்டப் பணிகள் குறித்து விவரிப்பார்.'}
                 </p>
                 <button
@@ -754,11 +659,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   ✓
                 </div>
                 <h3 className="font-display text-lg font-bold text-gray-900">
-                  {lang === 'en' ? 'Message Sent Successfully' : 'செய்தி அனுப்பப்பட்டது'}
+                  {lang === 'en' ? 'Email Draft Prepared' : 'மின்னஞ்சல் வரைவு தயாராகிவிட்டது'}
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-600 max-w-sm mx-auto">
                   {lang === 'en'
-                    ? 'Thank you for reaching out. We will read your message and reply as soon as possible.'
+                    ? 'Your email client should now open with a pre-filled message so your enquiry is not stored in this browser.'
                     : 'உங்கள் செய்தி எங்களை வந்தடைந்தது. விரைவில் பதில் அனுப்புகிறோம். நன்றி!'}
                 </p>
                 <button
@@ -837,3 +742,8 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     </div>
   );
 }
+
+
+
+
+

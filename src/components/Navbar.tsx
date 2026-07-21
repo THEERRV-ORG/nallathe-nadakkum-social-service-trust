@@ -7,18 +7,19 @@ interface NavbarProps {
   setLang: (lang: 'en' | 'ta') => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  onOpenAdmin: () => void;
 }
 
-export default function Navbar({ lang, setLang, activeTab, setActiveTab, onOpenAdmin }: NavbarProps) {
+/**
+ * Primary site navigation for the public-facing brochure experience.
+ * The component intentionally stays stateless apart from the mobile-menu toggle
+ * so section navigation remains controlled by the app shell.
+ */
+export default function Navbar({ lang, setLang, activeTab, setActiveTab }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-gray-100 bg-white/95 backdrop-blur-md">
-      {/* Full-width flex row — no max-w constraint so brand sits at the true left edge */}
       <div className="flex h-16 items-center gap-4 pl-3 pr-4 sm:pl-4 sm:pr-6 lg:pl-6 lg:pr-8">
-
-        {/* ── Brand: logo + name ─────────────────────────────────── */}
         <button
           className="flex shrink-0 cursor-pointer items-center gap-2.5 focus:outline-none"
           onClick={() => { setActiveTab('home'); setIsMenuOpen(false); }}
@@ -40,7 +41,6 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab, onOpenA
           </div>
         </button>
 
-        {/* ── Desktop nav — fills remaining space ────────────────── */}
         <nav className="hidden lg:flex flex-1 items-center justify-center gap-0.5 xl:gap-1 overflow-x-auto scrollbar-none">
           {navigationLabels.map((item) => (
             <button
@@ -58,10 +58,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab, onOpenA
           ))}
         </nav>
 
-        {/* ── Actions: lang toggle · admin · hamburger ───────────── */}
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
-
-          {/* Language toggle */}
           <button
             id="lang-toggle"
             onClick={() => setLang(lang === 'en' ? 'ta' : 'en')}
@@ -72,17 +69,6 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab, onOpenA
             <span>{lang === 'en' ? 'தமிழ்' : 'English'}</span>
           </button>
 
-          {/* Admin shortcut */}
-          <button
-            onClick={onOpenAdmin}
-            className="hidden sm:inline-flex items-center justify-center rounded-md p-1 text-xs text-gray-400 hover:text-emerald-600 transition-colors cursor-pointer"
-            title="Trustee Dashboard"
-            id="admin-btn-nav"
-          >
-            💼
-          </button>
-
-          {/* Mobile menu toggle */}
           <button
             id="mobile-menu-toggle"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -92,10 +78,8 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab, onOpenA
             {isMenuOpen ? <FaXmark className="h-5 w-5" /> : <FaBars className="h-5 w-5" />}
           </button>
         </div>
-
       </div>
 
-      {/* ── Mobile dropdown menu ──────────────────────────────────── */}
       {isMenuOpen && (
         <div className="lg:hidden border-t border-gray-100 bg-white">
           <div className="space-y-0.5 px-3 pb-3 pt-2">
@@ -113,15 +97,10 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab, onOpenA
                 {item.label[lang]}
               </button>
             ))}
-            <button
-              onClick={() => { onOpenAdmin(); setIsMenuOpen(false); }}
-              className="flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-50"
-            >
-              💼 {lang === 'en' ? 'Trustee Dashboard' : 'நிர்வாகப் பலகை'}
-            </button>
           </div>
         </div>
       )}
     </header>
   );
 }
+

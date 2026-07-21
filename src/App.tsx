@@ -8,41 +8,35 @@ import GalleryView from './components/GalleryView';
 import FormsView from './components/FormsView';
 import DonateView from './components/DonateView';
 import TransparencyView from './components/TransparencyView';
-import AdminPanel from './components/AdminPanel';
 
 export default function App() {
+  // Language preference is the only state intentionally persisted in-browser.
   const [lang, setLang] = useState<'en' | 'ta'>(() => {
     const saved = localStorage.getItem('nn_site_lang');
     return (saved === 'en' || saved === 'ta') ? saved : 'ta';
   });
-  
-  const [activeTab, setActiveTab] = useState<string>('home');
-  const [isAdminOpen, setIsAdminOpen] = useState<boolean>(false);
 
-  // Sync language selection to localStorage and html[lang] attribute
+  // Top-level tab state keeps routing simple for this single-page brochure site.
+  const [activeTab, setActiveTab] = useState<string>('home');
+
   useEffect(() => {
     localStorage.setItem('nn_site_lang', lang);
     document.documentElement.lang = lang;
   }, [lang]);
 
-  // Smooth scroll to top when changing tabs
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activeTab]);
 
   return (
     <div className="min-h-screen bg-slate-50/30 flex flex-col font-sans text-gray-800 antialiased selection:bg-emerald-100 selection:text-emerald-900">
-      
-      {/* Global Navigation Header */}
-      <Navbar 
-        lang={lang} 
-        setLang={setLang} 
-        activeTab={activeTab} 
+      <Navbar
+        lang={lang}
+        setLang={setLang}
+        activeTab={activeTab}
         setActiveTab={setActiveTab}
-        onOpenAdmin={() => setIsAdminOpen(true)}
       />
 
-      {/* Main Viewport Content */}
       <main className="flex-grow">
         {activeTab === 'home' && <HomeView lang={lang} setActiveTab={setActiveTab} />}
         {activeTab === 'about' && <AboutView lang={lang} />}
@@ -55,7 +49,6 @@ export default function App() {
         {activeTab === 'transparency' && <TransparencyView lang={lang} />}
       </main>
 
-      {/* Visual Safety Notice Bar Above Footer */}
       <section className="bg-emerald-900 text-white py-4 px-4 text-center text-xs font-semibold">
         <span className="inline-block mr-1">🛡️</span>
         {lang === 'en'
@@ -63,14 +56,9 @@ export default function App() {
           : 'நல்லதே நடக்கும் ஒரு பதிவு செய்யப்பட்ட அறக்கட்டளை ஆகும். நாங்கள் உள்நாட்டு நன்கொடைகளை மட்டுமே ஏற்கிறோம்; வெளிநாட்டு நிதி ஏற்பதில்லை.'}
       </section>
 
-      {/* Global Brand Footer */}
       <footer className="border-t border-gray-200 bg-white pt-12 pb-8">
         <div className="px-6 sm:px-10 lg:px-16 space-y-12">
-
-          {/* Top Footer: Grid Layout */}
           <div className="grid grid-cols-1 gap-10 md:grid-cols-4 lg:gap-16">
-            
-            {/* Column 1: Brand details */}
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <img
@@ -94,7 +82,6 @@ export default function App() {
               </p>
             </div>
 
-            {/* Column 2: Program Links */}
             <div className="space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Our Program Tracks' : 'எங்கள் திட்டங்கள்'}
@@ -107,7 +94,6 @@ export default function App() {
               </ul>
             </div>
 
-            {/* Column 3: Contact details */}
             <div className="space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Office Coordinates' : 'அலுவலகத் தொடர்பு'}
@@ -128,7 +114,6 @@ export default function App() {
               </ul>
             </div>
 
-            {/* Column 4: Trust Quick Disclosures */}
             <div className="space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Trust Disclosures' : 'சட்ட அறிவிப்புகள்'}
@@ -140,15 +125,13 @@ export default function App() {
                 <p><strong>FCRA Status:</strong> <span className="text-red-600 font-semibold">{lang === 'en' ? 'No / Blocked' : 'இல்லை'}</span></p>
               </div>
             </div>
-
           </div>
 
-          {/* Bottom Footer: Copyrights and Subtle Admin Trigger */}
           <div className="pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
             <p>
               © {new Date().getFullYear()} நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை (Nallathe Nadakkum Social Trust). All rights reserved.
             </p>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setActiveTab('transparency')}
@@ -156,31 +139,21 @@ export default function App() {
               >
                 {lang === 'en' ? 'Legals & Disclaimers' : 'சட்ட விபரங்கள் & மறுப்புரை'}
               </button>
-              
-              {/* Trustee Dashboard Access Trigger */}
+
               <button
-                onClick={() => setIsAdminOpen(true)}
+                onClick={() => setActiveTab('transparency')}
                 className="text-gray-300 hover:text-emerald-600 transition-colors flex items-center space-x-1 cursor-pointer"
-                title="Trustee Staff Login"
-                id="footer-admin-trigger"
+                title="Security and transparency disclosures"
+                id="footer-security-trigger"
               >
-                <span>💼</span>
-                <span className="underline">{lang === 'en' ? 'Trustee Dashboard' : 'நிர்வாகப் பலகை'}</span>
+                <span>🛡️</span>
+                <span className="underline">{lang === 'en' ? 'Security Disclosures' : 'பாதுகாப்பு அறிவிப்புகள்'}</span>
               </button>
             </div>
           </div>
-
         </div>
       </footer>
-
-      {/* Administrative Dashboard Overlay */}
-      {isAdminOpen && (
-        <AdminPanel 
-          lang={lang} 
-          onClose={() => setIsAdminOpen(false)} 
-        />
-      )}
-
     </div>
   );
 }
+

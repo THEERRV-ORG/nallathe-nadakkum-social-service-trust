@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { OFFICIAL_CONTACT, SAMPLE_SPONSORS, buildMailtoUrl, hasMeaningfulText, isValidDonationAmount, isValidPersonName, sanitizeSingleLine } from '../security';
 import { motion } from 'motion/react';
 import {
   FaCircleExclamation, FaCreditCard, FaGift, FaHeart, FaUser, FaAward, FaCircleCheck,
@@ -9,11 +10,18 @@ interface DonateViewProps {
   lang: 'en' | 'ta';
 }
 
+type SponsorProgram = 'annadhanam' | 'student' | 'ambulance' | 'cremation';
+
+/**
+ * Donation page for public programme information and safe acknowledgement
+ * handoff. This component intentionally avoids client-side persistence for
+ * donor data.
+ */
 export default function DonateView({ lang }: DonateViewProps) {
-  const [sponsorType, setSponsorType] = useState('annadhanam');
+  const [sponsorType, setSponsorType] = useState<SponsorProgram>('annadhanam');
   const [multiplier, setMultiplier] = useState(1);
 
-  // Active YouTube video ID and lists
+  // Video content is curated and static so embeds stay predictable and auditable.
   const [activeVideoId, setActiveVideoId] = useState('nTjWxd91AMA');
   const trustVideos = [
     {
@@ -48,7 +56,8 @@ export default function DonateView({ lang }: DonateViewProps) {
     }
   ];
 
-  // Simulated Donor State
+  // Acknowledgement draft state. Inputs are validated, normalized, and handed
+  // off to the user's email client rather than being stored in-browser.
   const [donorName, setDonorName] = useState('');
   const [donationAmt, setDonationAmt] = useState('1000');
   const [donationItem, setDonationItem] = useState('');
@@ -57,10 +66,10 @@ export default function DonateView({ lang }: DonateViewProps) {
   const [donorLoading, setDonorLoading] = useState(false);
   const [donorSuccess, setDonorSuccess] = useState(false);
 
-  // Live sponsors list
+  // Public-facing, sample-only acknowledgement cards.
   const [wallSponsors, setWallSponsors] = useState<any[]>([]);
 
-  // Copy-to-clipboard state & helper
+  // Used for short-lived UI feedback when copying official payment details.
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const handleCopy = (text: string, type: string) => {
     navigator.clipboard.writeText(text);
@@ -68,7 +77,8 @@ export default function DonateView({ lang }: DonateViewProps) {
     setTimeout(() => setCopiedText(null), 2000);
   };
 
-  // Calculate simulated cost & impact
+  // These values are informational only. They help donors understand programme
+  // scale but are not used as a payment source of truth.
   const getImpactData = () => {
     switch (sponsorType) {
       case 'annadhanam':
@@ -103,62 +113,54 @@ export default function DonateView({ lang }: DonateViewProps) {
   const { cost, unit, impact } = getImpactData();
 
   useEffect(() => {
-    try {
-      const savedSponsors = localStorage.getItem('nn_sponsors_wall');
-      if (savedSponsors) {
-        setWallSponsors(JSON.parse(savedSponsors));
-      } else {
-        // Initial seeds for visual context
-        const initialSponsors = [
-          { name: 'K. Senthil Kumar', type: 'Sponsorship', item: 'Annadhanam (1 Day)', msg: 'Sponsoring in memory of my parents.', date: '20.07.2026' },
-          { name: 'Nandhini Devi', type: 'Material', item: '2 Rice bags (25kg)', msg: 'For the daily kitchen, thank you team!', date: '18.07.2026' },
-          { name: 'Ravi & Family', type: 'Sponsorship', item: 'Student Fees Support', msg: 'Wishing the trust all strength.', date: '15.07.2026' }
-        ];
-        localStorage.setItem('nn_sponsors_wall', JSON.stringify(initialSponsors));
-        setWallSponsors(initialSponsors);
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    setWallSponsors([...SAMPLE_SPONSORS]);
   }, []);
 
+  // Create a normalized acknowledgement draft for staff review. No payment is
+  // accepted or verified in this client-only flow.
   const handleSponsorSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!donorName) {
-      alert(lang === 'en' ? 'Please fill in your name.' : 'தயவுசெய்து உங்கள் பெயரை எழுதவும்.');
+    const normalizedName = sanitizeSingleLine(donorName, 80);
+    const normalizedMessage = sanitizeSingleLine(donorMsg, 160);
+    const normalizedItem = sanitizeSingleLine(donationItem, 120);
+
+    if (!isValidPersonName(normalizedName)) {
+      alert(lang === 'en' ? 'Enter a valid donor name before preparing the acknowledgement draft.' : 'பங்களிப்பை உறுதிப்படுத்த செல்லுபடியாகும் பெயரை வழங்கவும்.');
       return;
     }
+
+    if (donationType === 'Money' && !isValidDonationAmount(donationAmt)) {
+      alert(lang === 'en' ? 'Donation amounts must be between Rs. 10 and Rs. 10,00,000.' : 'நன்கொடை தொகை ரூ.10 முதல் ரூ.10,00,000 வரை இருக்க வேண்டும்.');
+      return;
+    }
+
+    if (donationType !== 'Money' && !hasMeaningfulText(normalizedItem, 3, 120)) {
+      alert(lang === 'en' ? 'Describe the material support you plan to provide.' : 'நீங்கள் வழங்கும் பொருளுதவியின் விவரத்தை குறிப்பிடவும்.');
+      return;
+    }
+
     setDonorLoading(true);
 
     setTimeout(() => {
-      const itemDetail = donationType === 'Money' 
-        ? `₹${Number(donationAmt).toLocaleString()}` 
-        : donationItem || 'Material Groceries';
-        
-      const newDonor = {
-        name: donorName,
-        type: donationType,
-        item: itemDetail,
-        msg: donorMsg || (lang === 'en' ? 'Blessed to support.' : 'உதவி செய்வதில் மகிழ்ச்சி.'),
-        date: new Date().toLocaleDateString()
-      };
+      const itemDetail = donationType === 'Money'
+        ? `Rs. ${Number(donationAmt).toLocaleString('en-IN')}`
+        : normalizedItem;
 
-      try {
-        const currentSponsors = JSON.parse(localStorage.getItem('nn_sponsors_wall') || '[]');
-        const updatedSponsors = [newDonor, ...currentSponsors];
-        localStorage.setItem('nn_sponsors_wall', JSON.stringify(updatedSponsors));
-        setWallSponsors(updatedSponsors);
-      } catch (err) {
-        console.error(err);
-      }
+      const mailtoUrl = buildMailtoUrl(OFFICIAL_CONTACT.email, 'Donation acknowledgement request', [
+        `Name: ${normalizedName}`,
+        `Support type: ${donationType}`,
+        `Support detail: ${itemDetail}`,
+        `Message: ${normalizedMessage || 'Blessed to support.'}`,
+      ]);
 
+      window.location.href = mailtoUrl;
       setDonorLoading(false);
       setDonorSuccess(true);
       setDonorName('');
       setDonationAmt('1000');
       setDonationItem('');
       setDonorMsg('');
-    }, 1200);
+    }, 500);
   };
 
   return (
@@ -233,7 +235,7 @@ export default function DonateView({ lang }: DonateViewProps) {
               ].map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => { setSponsorType(item.id); setMultiplier(1); }}
+                  onClick={() => { setSponsorType(item.id as SponsorProgram); setMultiplier(1); }}
                   className={`p-3 text-xs font-semibold rounded-xl text-center cursor-pointer transition-colors border ${
                     sponsorType === item.id 
                       ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' 
@@ -475,7 +477,7 @@ export default function DonateView({ lang }: DonateViewProps) {
             <span>{lang === 'en' ? 'Pledge a Donation / Material Support' : 'பொருட்கள் / உதவிப் பங்களிப்புகளைப் பதிவிட'}</span>
           </h3>
           <p className="text-xs sm:text-sm text-gray-500">
-            {lang === 'en' ? 'Simulate adding your support to our Wall of Gratitude below.' : 'உங்களது பொருள் உதவி அல்லது பங்களிப்பினைப் பதிந்து நன்றிக் கூடத்தில் இடம்பெறுக.'}
+            {lang === 'en' ? 'Prepare a direct acknowledgement request without storing donor details in this browser.' : 'உங்கள் விவரங்களை உலாவியில் சேமிக்காமல் நேரடி உறுதிப்படுத்தல் வரைவைத் தயாரிக்கவும்.'}
           </p>
         </div>
 
@@ -485,10 +487,10 @@ export default function DonateView({ lang }: DonateViewProps) {
               ✓
             </div>
             <div className="space-y-1">
-              <h4 className="font-display text-base font-bold text-gray-900">{lang === 'en' ? 'Thank You, Donor!' : 'மிக்க நன்றி!'}</h4>
+              <h4 className="font-display text-base font-bold text-gray-900">{lang === 'en' ? 'Acknowledgement Draft Prepared' : 'உறுதிப்படுத்தல் வரைவு தயாராகிவிட்டது'}</h4>
               <p className="text-xs text-gray-600">
                 {lang === 'en' 
-                  ? 'Your simulated contribution has been recorded on the device gratitude board.' 
+                  ? 'Your email app should now open with a pre-filled acknowledgement request instead of publishing donor details in the browser.' 
                   : 'உங்களது பங்களிப்பு வெற்றிகரமாக நன்றிக் கூடப் பலகையில் பதிவேற்றப்பட்டுள்ளது.'}
               </p>
             </div>
@@ -581,10 +583,10 @@ export default function DonateView({ lang }: DonateViewProps) {
       <section className="space-y-4 pt-4">
         <div className="text-center space-y-1">
           <h2 className="font-display text-2xl font-bold text-gray-900">
-            🌸 {lang === 'en' ? 'Sponsors Wall of Gratitude' : 'அறக்கட்டளையின் நன்றிக் கூடம்'}
+            🌸 {lang === 'en' ? 'Sample Gratitude Board' : 'மாதிரி நன்றிக் கூடம்'}
           </h2>
           <p className="text-xs text-gray-500">
-            {lang === 'en' ? 'A real-time ledger of kind-hearted individuals who support Tiruchengode street services.' : 'திருச்செங்கோடு மற்றும் அதன் சுற்றுவட்டாரப் பகுதிகளில் ஏழைகளுக்கு உதவிய நல்ல உள்ளங்களின் விபரம்.'}
+            {lang === 'en' ? 'Illustrative sample acknowledgements only. Real donor data is not stored client-side.' : 'இவை மாதிரி பதிவுகள் மட்டுமே. உண்மையான நன்கொடையாளர் விவரங்கள் கிளையன்ட் உலாவியில் சேமிக்கப்படாது.'}
           </p>
         </div>
 
@@ -653,11 +655,14 @@ export default function DonateView({ lang }: DonateViewProps) {
           <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
             <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-900 border border-gray-100 shadow-md relative">
               <iframe
-                src={`https://www.youtube.com/embed/${activeVideoId}?autoplay=0&rel=0`}
+                src={`https://www.youtube-nocookie.com/embed/${activeVideoId}?autoplay=0&rel=0`}
                 title="Trust Activity Video Player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                sandbox="allow-scripts allow-same-origin allow-presentation"
                 className="w-full h-full"
               ></iframe>
             </div>
@@ -748,3 +753,9 @@ export default function DonateView({ lang }: DonateViewProps) {
     </div>
   );
 }
+
+
+
+
+
+

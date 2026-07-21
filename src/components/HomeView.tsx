@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SAMPLE_SPONSORS } from '../security';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   FaHeart, FaHeartPulse, FaTruckMedical, FaUtensils, FaAward, FaFileLines, FaChevronRight,
@@ -33,23 +34,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
   }, []);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('nn_sponsors_wall');
-      if (saved) {
-        setRecentPledges(JSON.parse(saved).slice(0, 3));
-      } else {
-        // Initial seeds for display
-        const initialSponsors = [
-          { name: 'K. Senthil Kumar', type: 'Sponsorship', item: 'Annadhanam (1 Day)', msg: 'Sponsoring in memory of my parents.', date: '20.07.2026' },
-          { name: 'Nandhini Devi', type: 'Material', item: '2 Rice bags (25kg)', msg: 'For the daily kitchen, thank you team!', date: '18.07.2026' },
-          { name: 'Ravi & Family', type: 'Sponsorship', item: 'Student Fees Support', msg: 'Wishing the trust all strength.', date: '15.07.2026' }
-        ];
-        localStorage.setItem('nn_sponsors_wall', JSON.stringify(initialSponsors));
-        setRecentPledges(initialSponsors.slice(0, 3));
-      }
-    } catch (e) {
-      console.error(e);
-    }
+    setRecentPledges([...SAMPLE_SPONSORS].slice(0, 3));
   }, []);
   return (
     <div className="space-y-16 py-8">
@@ -728,3 +713,5 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
     </div>
   );
 }
+
+
