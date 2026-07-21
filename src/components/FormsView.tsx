@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ShieldCheck, Calendar, PhoneCall, CheckCircle, Clock, AlertTriangle, UserCheck, Heart, Trash2 } from 'lucide-react';
+import { FaShieldHalved, FaCalendarDays, FaPhoneFlip, FaCircleCheck, FaClock, FaTriangleExclamation, FaUserCheck, FaHeart, FaTrash } from 'react-icons/fa6';
 
 interface FormsViewProps {
   lang: 'en' | 'ta';
@@ -230,7 +230,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                         </div>
                         <p className="text-xs font-medium text-gray-700">{req.name} ({req.date})</p>
                         <div className="flex items-center space-x-1.5 pt-1">
-                          {req.status === 'Pending Verification' ? <Clock className="h-3 w-3 text-amber-500" /> : <CheckCircle className="h-3 w-3 text-emerald-600" />}
+                          {req.status === 'Pending Verification' ? <FaClock className="h-3 w-3 text-amber-500" /> : <FaCircleCheck className="h-3 w-3 text-emerald-600" />}
                           <span className="text-[10px] font-semibold text-gray-500">
                             {req.status === 'Pending Verification' 
                               ? (lang === 'en' ? 'Pending Verification' : 'விசாரணையில் உள்ளது')
@@ -243,7 +243,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                         className="text-gray-400 hover:text-red-600 p-1 cursor-pointer"
                         title={lang === 'en' ? 'Remove local record' : 'பதிவை நீக்கு'}
                       >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <FaTrash className="h-3.5 w-3.5" />
                       </button>
                     </div>
                   ))}
@@ -498,7 +498,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                         </div>
                         <p className="text-xs font-medium text-gray-700">{app.name} ({app.date})</p>
                         <div className="flex items-center space-x-1.5 pt-1">
-                          <UserCheck className="h-3 w-3 text-emerald-600" />
+                          <FaUserCheck className="h-3 w-3 text-emerald-600" />
                           <span className="text-[10px] font-semibold text-emerald-700">
                             {app.status === 'Registered' 
                               ? (lang === 'en' ? 'Registered - Pending WhatsApp Link' : 'விண்ணப்பம் ஏற்கப்பட்டது') 
@@ -511,7 +511,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                         className="text-gray-400 hover:text-red-600 p-1 cursor-pointer"
                         title={lang === 'en' ? 'Remove local record' : 'பதிவை நீக்கு'}
                       >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <FaTrash className="h-3.5 w-3.5" />
                       </button>
                     </div>
                   ))}

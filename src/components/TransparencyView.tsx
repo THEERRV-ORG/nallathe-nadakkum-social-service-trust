@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  ShieldCheck, ChevronDown, ChevronRight, FileText, Lock, Users, AlertTriangle, ShieldAlert,
-  MapPin, Map, ExternalLink
-} from 'lucide-react';
+import {
+  FaShieldHalved, FaChevronDown, FaChevronRight, FaFileLines, FaLock, FaUsers, FaTriangleExclamation, FaCircleExclamation,
+  FaLocationDot, FaMap, FaArrowUpRightFromSquare
+} from 'react-icons/fa6';
 import { faqData, commonTranslations } from '../data';
 
 interface TransparencyViewProps {
@@ -44,7 +44,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="p-3 bg-emerald-50 text-emerald-700 rounded-xl w-fit">
-              <ShieldCheck className="h-5 w-5" />
+              <FaShieldHalved className="h-5 w-5" />
             </div>
             <h3 className="font-display text-base font-bold text-gray-900">
               {lang === 'en' ? 'Irrevocable Public Trust' : 'மாற்ற முடியாத பொது அறக்கட்டளை'}
@@ -64,7 +64,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="p-3 bg-emerald-50 text-emerald-700 rounded-xl w-fit">
-              <Lock className="h-5 w-5" />
+              <FaLock className="h-5 w-5" />
             </div>
             <h3 className="font-display text-base font-bold text-gray-900">
               {lang === 'en' ? 'Dual Signatory Oversight' : 'இரட்டை கையொப்பக் கட்டுப்பாடு'}
@@ -84,7 +84,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="p-3 bg-emerald-50 text-emerald-700 rounded-xl w-fit">
-              <ShieldAlert className="h-5 w-5" />
+              <FaCircleExclamation className="h-5 w-5" />
             </div>
             <h3 className="font-display text-base font-bold text-gray-900">
               {lang === 'en' ? 'Foreign Contributions Blocked' : 'வெளிநாட்டு நிதிகள் மறுப்பு'}
@@ -208,11 +208,11 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
 
               <div className="space-y-1.5 pt-2 border-t border-gray-200/60 text-xs text-gray-600">
                 <div className="flex items-center space-x-2">
-                  <MapPin className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                  <FaLocationDot className="h-4 w-4 text-emerald-600 flex-shrink-0" />
                   <span><strong>{lang === 'en' ? 'Landmark:' : 'அடையாளம்:'}</strong> Opp. SPM Hospital</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Map className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                  <FaMap className="h-4 w-4 text-emerald-600 flex-shrink-0" />
                   <span><strong>{lang === 'en' ? 'Locality:' : 'பகுதி:'}</strong> Tiruchengode Town & Taluk</span>
                 </div>
               </div>
@@ -225,7 +225,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center space-x-2 w-full py-3 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
               >
-                <ExternalLink className="h-4 w-4" />
+                <FaArrowUpRightFromSquare className="h-4 w-4" />
                 <span>{lang === 'en' ? 'Open in Google Maps App' : 'கூகுள் மேப்ஸில் திறக்கவும்'}</span>
               </a>
               <p className="text-[11px] text-gray-400 text-center">
@@ -245,7 +245,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             >
               {/* Overlay Badge that appears on hover */}
               <div className="bg-emerald-950/95 backdrop-blur-xs text-white border border-emerald-500/30 px-4 py-2.5 rounded-xl flex items-center space-x-2 shadow-lg scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300">
-                <MapPin className="h-4 w-4 text-emerald-400 animate-bounce" />
+                <FaLocationDot className="h-4 w-4 text-emerald-400 animate-bounce" />
                 <span className="text-xs font-bold font-sans">
                   {lang === 'en' ? 'Click to Navigate on Google Maps →' : 'கூகுள் மேப்ஸில் வழிப்பாதையை காண்க →'}
                 </span>
@@ -289,7 +289,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
                   className="w-full flex justify-between items-center text-left font-sans text-sm font-semibold text-gray-900 hover:text-emerald-700 transition-colors py-1 cursor-pointer"
                 >
                   <span className="pr-4 leading-snug">{faq.question[lang]}</span>
-                  {isOpen ? <ChevronDown className="h-4 w-4 text-emerald-600 flex-shrink-0" /> : <ChevronRight className="h-4 w-4 text-gray-400 flex-shrink-0" />}
+                  {isOpen ? <FaChevronDown className="h-4 w-4 text-emerald-600 flex-shrink-0" /> : <FaChevronRight className="h-4 w-4 text-gray-400 flex-shrink-0" />}
                 </button>
                 
                 <AnimatePresence>

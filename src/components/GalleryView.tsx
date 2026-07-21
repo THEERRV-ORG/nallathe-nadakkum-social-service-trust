@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Filter, Calendar, MapPin, X, ChevronRight } from 'lucide-react';
+import { FaMagnifyingGlass, FaFilter, FaCalendarDays, FaLocationDot, FaXmark, FaChevronRight } from 'react-icons/fa6';
 import { galleryData, GalleryItem } from '../data';
 
 interface GalleryViewProps {
@@ -43,7 +43,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
         
         {/* Search */}
         <div className="relative w-full md:max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <FaMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <input
             type="text"
             placeholder={lang === 'en' ? 'Search activities...' : 'தேடவும்...'}
@@ -110,11 +110,11 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                 <div className="space-y-2">
                   <div className="flex items-center space-x-3 text-[10px] font-mono text-gray-400">
                     <span className="flex items-center space-x-1">
-                      <Calendar className="h-3 w-3" />
+                      <FaCalendarDays className="h-3 w-3" />
                       <span>{item.date}</span>
                     </span>
                     <span className="flex items-center space-x-1">
-                      <MapPin className="h-3 w-3" />
+                      <FaLocationDot className="h-3 w-3" />
                       <span>{item.location[lang]}</span>
                     </span>
                   </div>
@@ -138,7 +138,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                     className="text-xs font-semibold text-emerald-600 hover:text-emerald-800 cursor-pointer flex items-center space-x-1"
                   >
                     <span>{lang === 'en' ? 'View Details' : 'விபரம் பார்க்க'}</span>
-                    <ChevronRight className="h-3 w-3" />
+                    <FaChevronRight className="h-3 w-3" />
                   </button>
                 </div>
               </div>
@@ -210,18 +210,18 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                   onClick={() => setSelectedItem(null)}
                   className="absolute top-4 right-4 rounded-full bg-black/60 p-1.5 text-white hover:bg-black/80 transition-colors cursor-pointer"
                 >
-                  <X className="h-4 w-4" />
+                  <FaXmark className="h-4 w-4" />
                 </button>
               </div>
 
               <div className="p-6 overflow-y-auto space-y-4">
                 <div className="flex items-center justify-between text-xs font-mono text-gray-400">
                   <span className="flex items-center space-x-1">
-                    <Calendar className="h-3 w-3" />
+                    <FaCalendarDays className="h-3 w-3" />
                     <span>{selectedItem.date}</span>
                   </span>
                   <span className="flex items-center space-x-1">
-                    <MapPin className="h-3 w-3" />
+                    <FaLocationDot className="h-3 w-3" />
                     <span>{selectedItem.location[lang]}</span>
                   </span>
                 </div>

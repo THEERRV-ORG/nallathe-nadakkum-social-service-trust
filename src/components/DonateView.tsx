@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { 
-  ShieldAlert, CreditCard, Gift, Heart, User, Award, CheckCircle,
-  Play, Tv, Youtube, Video
-} from 'lucide-react';
+import {
+  FaCircleExclamation, FaCreditCard, FaGift, FaHeart, FaUser, FaAward, FaCircleCheck,
+  FaPlay, FaTv, FaYoutube, FaVideo
+} from 'react-icons/fa6';
 
 interface DonateViewProps {
   lang: 'en' | 'ta';
@@ -181,7 +181,7 @@ export default function DonateView({ lang }: DonateViewProps) {
         
         {/* Safety Warning */}
         <div className="rounded-2xl border border-red-200 bg-red-50/50 p-5 flex items-start space-x-3">
-          <ShieldAlert className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <FaCircleExclamation className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="space-y-1">
             <h4 className="text-xs font-bold text-red-900 uppercase tracking-wider">
               🚨 {lang === 'en' ? 'Important Safety Notice' : 'முக்கிய பாதுகாப்பு அறிவிப்பு'}
@@ -196,7 +196,7 @@ export default function DonateView({ lang }: DonateViewProps) {
 
         {/* Tax Exemption Status */}
         <div className="rounded-2xl border border-amber-200 bg-amber-50/50 p-5 flex items-start space-x-3">
-          <ShieldAlert className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <FaCircleExclamation className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
           <div className="space-y-1">
             <h4 className="text-xs font-bold text-amber-950 uppercase tracking-wider">
               🛡️ {lang === 'en' ? 'Tax Deduction & Exemption Status' : 'வரி விலக்கு நிலைப்பாடு'}
@@ -298,7 +298,7 @@ export default function DonateView({ lang }: DonateViewProps) {
       <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs space-y-6">
         <div className="space-y-1 border-b border-gray-100 pb-4">
           <h3 className="font-display text-xl font-bold text-gray-900 flex items-center space-x-2">
-            <CreditCard className="h-6 w-6 text-emerald-600" />
+            <FaCreditCard className="h-6 w-6 text-emerald-600" />
             <span>{lang === 'en' ? 'Official Banking Credentials' : 'அதிகாரப்பூர்வ வங்கிக் கணக்கு விபரங்கள்'}</span>
           </h3>
           <p className="text-xs sm:text-sm text-gray-500">
@@ -342,10 +342,7 @@ export default function DonateView({ lang }: DonateViewProps) {
                 <div className="bg-white border border-gray-100 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-2xs relative overflow-hidden group hover:border-sky-200 transition-all">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-1.5">
-                      <svg className="w-16 h-5" viewBox="0 0 100 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.4 8.2c-3.1 0-5.5 2.5-5.5 5.6v7.2c0 3.1 2.4 5.6 5.5 5.6s5.5-2.5 5.5-5.6v-7.2c0-3.1-2.4-5.6-5.5-5.6zm2.2 12.8c0 1.2-1 2.2-2.2 2.2s-2.2-1-2.2-2.2v-7.2c0-1.2 1-2.2 2.2-2.2s2.2 1 2.2 2.2v7.2zm7.6-12.2h5.1V26h-5.1V8.8zm15.4 0l-4.7 11-4.7-11H21l7.3 16.4c-.3.6-.7 1.1-1.3 1.1h-.9v3.1h.9c2.1 0 3.5-1.2 4.4-3.1l7.8-17.5H37.6zm13.1 3.2h-4.6V8.8h14.2v3.2H50.7V26h-5V12z" fill="#002E6E"/>
-                        <path d="M62.6 8.8h4.6l4.2 6.6 4.2-6.6h4.6V26h-4.6v-8.4l-4.2 6.6h-.1l-4.2-6.6V26h-4.6V8.8z" fill="#00BAF2"/>
-                      </svg>
+                      <img src="/icons/paytm.svg" alt="Paytm" className="h-7 w-auto object-contain" />
                     </div>
                     <button 
                       onClick={() => handleCopy('+917540017625', 'paytm')}
@@ -376,13 +373,20 @@ export default function DonateView({ lang }: DonateViewProps) {
                 <div className="bg-white border border-gray-100 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-2xs relative overflow-hidden group hover:border-purple-200 transition-all">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-1.5">
-                      <svg className="w-20 h-5" viewBox="0 0 100 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="18" height="18" rx="4" fill="#5F259F"/>
-                        <path d="M9 4c-2.5 0-4.5 2-4.5 4.5S6.5 13 9 13s4.5-2 4.5-4.5S11.5 4 9 4zm0 6.8c-1.3 0-2.3-1-2.3-2.3S7.7 6.2 9 6.2s2.3 1 2.3 2.3-1 2.3-2.3 2.3z" fill="white"/>
-                        <path d="M9 8.5v4.5" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-                        <path d="M6.5 10.8h5" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-                        <text x="24" y="14" fill="#5F259F" fontWeight="800" fontSize="12" fontFamily="sans-serif" letterSpacing="0.5">PhonePe</text>
-                      </svg>
+                      {/*
+                        PhonePe SVG has a 1366×768 canvas; the logo lives at
+                        roughly x=204-1060, y=257-515. Clip to that region so
+                        the rendered mark matches Paytm's visual height (28px).
+                        Scale = 28/258 ≈ 0.1085 → rendered img height = 83px.
+                      */}
+                      <span className="relative block overflow-hidden shrink-0" style={{width: '95px', height: '28px'}}>
+                        <img
+                          src="/icons/phonepe.svg"
+                          alt="PhonePe"
+                          className="absolute w-auto"
+                          style={{height: '83px', top: '-28px', left: '-22px'}}
+                        />
+                      </span>
                     </div>
                     <button 
                       onClick={() => handleCopy('+917540017625', 'phonepe')}
@@ -413,15 +417,8 @@ export default function DonateView({ lang }: DonateViewProps) {
                 <div className="bg-white border border-gray-100 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-2xs relative overflow-hidden group hover:border-blue-200 transition-all">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-1.5">
-                      <svg className="w-16 h-5" viewBox="0 0 74 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g transform="translate(2, 2)">
-                          <path d="M10.1 11.5c0-.6-.1-1.2-.2-1.7H5.2v3.3h2.8c-.1.7-.5 1.3-1.1 1.7v2.2h2.2c1.3-1.2 2-3 2-5.5z" fill="#4285F4"/>
-                          <path d="M5.2 16.5c1.4 0 2.6-.5 3.5-1.3l-2.2-2.2c-.6.4-1.4.6-2.2.6-1.7 0-3.1-1.2-3.6-2.7H.7v2.2c.9 1.8 2.8 3.4 5.1 3.4z" fill="#34A853"/>
-                          <path d="M1.6 10.9c-.1-.4-.2-.9-.2-1.4s.1-1 .2-1.4V5.9H.7c-.5 1-.8 2.1-.8 3.5s.3 2.5.8 3.5l1.6-1.6z" fill="#FBBC05"/>
-                          <path d="M5.2 6.3c.8 0 1.5.3 2 .8l2.2-2.2C8 .8 6.7.3 5.2.3 2.8.3.9 1.8 0 3.7l1.6 1.6c.5-1.5 1.9-2.7 3.6-2.7z" fill="#EA4335"/>
-                        </g>
-                        <text x="18" y="16" fill="#5F6368" fontWeight="bold" fontSize="13" fontFamily="sans-serif" letterSpacing="0.5">Pay</text>
-                      </svg>
+                      {/* GPay SVG is 24×24 square; scale up to h-8 to match visual weight */}
+                      <img src="/icons/google-pay.svg" alt="Google Pay" className="h-8 w-8 object-contain" />
                     </div>
                     <button 
                       onClick={() => handleCopy('+917540017625', 'gpay')}
@@ -474,7 +471,7 @@ export default function DonateView({ lang }: DonateViewProps) {
       <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs max-w-3xl mx-auto w-full space-y-6">
         <div className="space-y-1 text-center border-b border-gray-100 pb-4">
           <h3 className="font-display text-xl font-bold text-gray-900 flex items-center justify-center space-x-2">
-            <Gift className="h-6 w-6 text-emerald-600" />
+            <FaGift className="h-6 w-6 text-emerald-600" />
             <span>{lang === 'en' ? 'Pledge a Donation / Material Support' : 'பொருட்கள் / உதவிப் பங்களிப்புகளைப் பதிவிட'}</span>
           </h3>
           <p className="text-xs sm:text-sm text-gray-500">
@@ -639,7 +636,7 @@ export default function DonateView({ lang }: DonateViewProps) {
               {lang === 'en' ? 'See Impact in Motion' : 'நேரடி ஒளிபரப்பு'}
             </span>
             <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900 flex items-center space-x-2">
-              <Youtube className="h-6 w-6 text-red-600 flex-shrink-0 animate-pulse" />
+              <FaYoutube className="h-6 w-6 text-red-600 flex-shrink-0 animate-pulse" />
               <span>{lang === 'en' ? '📽️ Watch Trust Activities & Field Footage' : '📽️ எங்களது களப்பணி வீடியோக்களைக் காண்க'}</span>
             </h2>
             <p className="text-xs sm:text-sm text-gray-500 leading-relaxed max-w-2xl">
@@ -665,7 +662,7 @@ export default function DonateView({ lang }: DonateViewProps) {
               ></iframe>
             </div>
             <div className="bg-emerald-50/40 rounded-xl p-4 border border-emerald-100 flex items-start space-x-3 text-xs text-emerald-800">
-              <Video className="h-4 w-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+              <FaVideo className="h-4 w-4 text-emerald-600 flex-shrink-0 mt-0.5" />
               <p className="leading-relaxed">
                 {lang === 'en' 
                   ? 'All video documents are recorded directly by trust volunteers on the ground to guarantee that 100% of community sponsorship is put into direct social relief.' 
@@ -704,7 +701,7 @@ export default function DonateView({ lang }: DonateViewProps) {
                         <div className={`absolute inset-0 flex items-center justify-center transition-opacity ${
                           isActive ? 'bg-emerald-950/65' : 'bg-black/40 group-hover:bg-black/50'
                         }`}>
-                          <Play className={`h-4 w-4 fill-white text-white ${isActive ? 'animate-pulse' : ''}`} />
+                          <FaPlay className={`h-4 w-4 fill-white text-white ${isActive ? 'animate-pulse' : ''}`} />
                         </div>
                         <span className="absolute bottom-0.5 right-0.5 bg-black/85 text-white font-mono text-[8px] font-bold px-1 rounded">
                           {vid.duration}
@@ -740,7 +737,7 @@ export default function DonateView({ lang }: DonateViewProps) {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center space-x-2 py-3 px-4 rounded-xl bg-red-50 text-red-700 hover:bg-red-100 transition-colors text-xs font-bold w-full cursor-pointer border border-red-100"
             >
-              <Youtube className="h-4 w-4 text-red-600 fill-red-600" />
+              <FaYoutube className="h-4 w-4 text-red-600 fill-red-600" />
               <span>{lang === 'en' ? 'Subscribe to Trust YouTube Channel' : 'அறக்கட்டளை யூடியூப் சேனல்'}</span>
             </a>
           </div>

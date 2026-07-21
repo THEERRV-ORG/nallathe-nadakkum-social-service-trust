@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Award, ShieldCheck, HeartHandshake, FileText, CheckCircle } from 'lucide-react';
+import { FaAward, FaShieldHalved, FaHandHoldingHeart, FaFileLines, FaCircleCheck } from 'react-icons/fa6';
 import { commonTranslations } from '../data';
 
 interface AboutViewProps {
@@ -14,7 +14,7 @@ export default function AboutView({ lang }: AboutViewProps) {
         en: 'Treating every individual—whether living on a pavement or unclaimed in death—with the highest level of dignity and respect.', 
         ta: 'சாலையோரம் வசிப்பவரோ அல்லது உரிமை கோரப்படாமல் மறைந்தவரோ — அனைவரையும் முழு மனிதக் கண்ணியத்துடனும் மரியாதையுடனும் நடத்துதல்.' 
       },
-      icon: <HeartHandshake className="h-6 w-6 text-emerald-600" />
+      icon: <FaHandHoldingHeart className="h-6 w-6 text-emerald-600" />
     },
     {
       title: { en: 'Absolute Equality', ta: 'முழு சமத்துவம்' },
@@ -22,7 +22,7 @@ export default function AboutView({ lang }: AboutViewProps) {
         en: 'Providing services, food, and rescue operations without any regard to caste, religion, language, gender, or background.', 
         ta: 'சாதி, மதம், மொழி, பாலினம் அல்லது சமூகப் பின்னணி என எந்தவொரு பாகுபாடுமின்றி அனைவருக்கும் பாரபட்சமில்லாமல் சேவையாற்றுதல்.' 
       },
-      icon: <Award className="h-6 w-6 text-emerald-600" />
+      icon: <FaAward className="h-6 w-6 text-emerald-600" />
     },
     {
       title: { en: 'Financial Transparency', ta: 'நிதி வெளிப்படைத்தன்மை' },
@@ -30,7 +30,7 @@ export default function AboutView({ lang }: AboutViewProps) {
         en: 'Accounting for every single rupee received. Displaying expenses openly, avoiding cash transactions where possible, and keeping ledgers audited.', 
         ta: 'பெறப்படும் ஒவ்வொரு ரூபாய்க்கும் முறையான கணக்கு பராமரித்தல். வரவு செலவுகளை வெளிப்படையாக அறிவித்து, ஆண்டுதோறும் தணிக்கை செய்தல்.' 
       },
-      icon: <ShieldCheck className="h-6 w-6 text-emerald-600" />
+      icon: <FaShieldHalved className="h-6 w-6 text-emerald-600" />
     },
     {
       title: { en: 'Legal Integrity', ta: 'சட்டரீதியான நேர்மை' },
@@ -38,7 +38,7 @@ export default function AboutView({ lang }: AboutViewProps) {
         en: 'Running all activities in full compliance with the laws of the State. Coordinating with District Police departments, municipalities, and government health wings.', 
         ta: 'அனைத்து செயல்பாடுகளையும் நாட்டின் சட்டங்களுக்கு உட்பட்டு நடத்துதல். காவல்துறை, நகராட்சி மற்றும் அரசு மருத்துவமனைகளுடன் முழுமையாக ஒருங்கிணைந்து பணிபுரிதல்.' 
       },
-      icon: <FileText className="h-6 w-6 text-emerald-600" />
+      icon: <FaFileLines className="h-6 w-6 text-emerald-600" />
     }
   ];
 
@@ -46,6 +46,8 @@ export default function AboutView({ lang }: AboutViewProps) {
     {
       role: commonTranslations.founderTitle[lang],
       name: commonTranslations.founderName[lang],
+      initials: 'NK',
+      image: '/founder.jpeg',
       desc: {
         en: 'N. Kavinraj is a practicing Advocate in Tiruchengode Town with a deep passion for social justice and human rights. Having personally funded and coordinated street food distribution for two years before formal trust registration, he continues to lead rescue operations and police coordinations on the ground.',
         ta: 'வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள் திருச்செங்கோட்டில் வழக்கறிஞராகப் பணியாற்றி வருகிறார். அறக்கட்டளையை முறையாகப் பதிவு செய்வதற்கு முன்பு இரண்டு ஆண்டுகளாகத் தனது சொந்தச் செலவில் ஏழைகளுக்கு உணவு வழங்கியவர். தற்போது களப்பணிகள், மீட்பு நடவடிக்கைகள் மற்றும் போலீஸ் தொடர்புகளை நேரில் நின்று வழிநடத்துகிறார்.'
@@ -54,6 +56,8 @@ export default function AboutView({ lang }: AboutViewProps) {
     {
       role: commonTranslations.secretaryTitle[lang],
       name: commonTranslations.secretaryName[lang],
+      initials: 'SK',
+      image: null,
       desc: {
         en: 'S. Kolarisingar oversees administrative operations, legal documents, and ensures the trust matches up to standard protocols for non-governmental organizations. He handles coordinate linkages with other shelter structures.',
         ta: 'S. கொளரிசிங்கர் அவர்கள் அறக்கட்டளையின் நிர்வாக செயல்பாடுகள், ஆவணங்கள் மற்றும் பிற தொண்டு நிறுவனங்களுடனான தொடர்புகளை ஒருங்கிணைக்கும் பணிகளை மேற்கொள்கிறார்.'
@@ -62,6 +66,8 @@ export default function AboutView({ lang }: AboutViewProps) {
     {
       role: commonTranslations.treasurerTitle[lang],
       name: commonTranslations.treasurerName[lang],
+      initials: 'NK',
+      image: null,
       desc: {
         en: 'Mrs. N. Kogila maintains complete track of donations, bills, expense approvals, and accounts. Jointly operates the trust bank account alongside the Chairman to ensure total control of public charity funds.',
         ta: 'திருமதி. N. கோகிலா அவர்கள் அறக்கட்டளையின் வரவு செலவுகள், பில்கள் மற்றும் தணிக்கைக் கணக்குகளைப் பராமரிக்கிறார். தலைவருடன் இணைந்து கூட்டு வங்கிக் கணக்கை இயக்கி நிதி ஆளுமையை உறுதி செய்கிறார்.'
@@ -157,23 +163,44 @@ export default function AboutView({ lang }: AboutViewProps) {
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {trustees.map((tr, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: idx * 0.1 }}
-              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm flex flex-col space-y-4 hover:shadow-md transition-all"
+              className="rounded-2xl border border-gray-100 bg-white shadow-sm flex flex-col hover:shadow-md transition-all overflow-hidden"
             >
-              <div className="space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-                  {tr.role}
-                </span>
-                <h3 className="font-display text-base font-bold text-gray-900 pt-2">{tr.name}</h3>
+              {/* Full-width photo / placeholder */}
+              {tr.image ? (
+                <img
+                  src={tr.image}
+                  alt={tr.name}
+                  className="w-full h-64 object-cover object-top"
+                />
+              ) : (
+                <div className="w-full h-64 bg-gradient-to-br from-emerald-50 to-emerald-100 flex flex-col items-center justify-center gap-2">
+                  <span className="font-display text-5xl font-bold text-emerald-300 select-none">
+                    {tr.initials}
+                  </span>
+                  <span className="text-[10px] font-semibold text-emerald-400 tracking-widest uppercase">
+                    {lang === 'en' ? 'Photo coming soon' : 'படம் விரைவில்'}
+                  </span>
+                </div>
+              )}
+
+              {/* Card content */}
+              <div className="p-5 flex flex-col space-y-3 flex-grow">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+                    {tr.role}
+                  </span>
+                  <h3 className="font-display text-base font-bold text-gray-900 pt-2">{tr.name}</h3>
+                </div>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed flex-grow text-justify">
+                  {tr.desc[lang]}
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed flex-grow text-justify">
-                {tr.desc[lang]}
-              </p>
             </motion.div>
           ))}
         </div>

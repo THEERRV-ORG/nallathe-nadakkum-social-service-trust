@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Clock, CheckCircle, Trash2, ShieldAlert, Award, FileText, UserCheck, X, RefreshCw } from 'lucide-react';
+import { FaClock, FaCircleCheck, FaTrash, FaCircleExclamation, FaAward, FaFileLines, FaUserCheck, FaXmark, FaArrowsRotate } from 'react-icons/fa6';
 
 interface AdminPanelProps {
   lang: 'en' | 'ta';
@@ -127,7 +127,7 @@ export default function AdminPanel({ lang, onClose }: AdminPanelProps) {
             onClick={onClose}
             className="p-1.5 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-white transition-colors cursor-pointer"
           >
-            <X className="h-4 w-4" />
+            <FaXmark className="h-4 w-4" />
           </button>
         </div>
 
@@ -161,7 +161,7 @@ export default function AdminPanel({ lang, onClose }: AdminPanelProps) {
               className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 cursor-pointer flex items-center space-x-1"
               title="Loads standard real entries for audit display"
             >
-              <RefreshCw className="h-3 w-3" />
+              <FaArrowsRotate className="h-3 w-3" />
               <span>{lang === 'en' ? 'Seed Demo Records' : 'மாதிரி பதிவுகள் பதிவேற்று'}</span>
             </button>
             <button
@@ -205,7 +205,7 @@ export default function AdminPanel({ lang, onClose }: AdminPanelProps) {
                           onClick={() => deleteRequest(req.id)}
                           className="text-gray-300 hover:text-red-600 p-1 cursor-pointer"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <FaTrash className="h-4 w-4" />
                         </button>
                       </div>
 
@@ -269,7 +269,7 @@ export default function AdminPanel({ lang, onClose }: AdminPanelProps) {
                           onClick={() => deleteVol(vol.id)}
                           className="text-gray-300 hover:text-red-600 p-1 cursor-pointer"
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <FaTrash className="h-4 w-4" />
                         </button>
                       </div>
 
@@ -345,7 +345,7 @@ export default function AdminPanel({ lang, onClose }: AdminPanelProps) {
                               onClick={() => deleteDonor(d.name, d.date)}
                               className="text-gray-400 hover:text-red-600 p-1 cursor-pointer"
                             >
-                              <Trash2 className="h-3.5 w-3.5" />
+                              <FaTrash className="h-3.5 w-3.5" />
                             </button>
                           </td>
                         </tr>

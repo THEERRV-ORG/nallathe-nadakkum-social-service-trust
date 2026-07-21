@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Utensils, 
-  Ambulance as AmbulanceIcon, 
-  Heart, 
-  UserCheck, 
-  GraduationCap, 
-  Activity, 
-  X, 
-  PhoneCall, 
-  DollarSign, 
-  Users,
-  ChevronRight,
-  Info
-} from 'lucide-react';
+import {
+  FaUtensils,
+  FaTruckMedical,
+  FaHeart,
+  FaUserCheck,
+  FaGraduationCap,
+  FaHeartPulse,
+  FaXmark,
+  FaPhoneFlip,
+  FaIndianRupeeSign,
+  FaUsers,
+  FaChevronRight,
+  FaCircleInfo
+} from 'react-icons/fa6';
 import { servicesData, ServiceItem } from '../data';
 import ProgramImageSlider from './ProgramImageSlider';
 
@@ -28,13 +28,13 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
 
   const getIcon = (name: string) => {
     switch (name) {
-      case 'Utensils': return <Utensils className="h-6 w-6" />;
-      case 'Ambulance': return <AmbulanceIcon className="h-6 w-6" />;
-      case 'HeartHandshake': return <Heart className="h-6 w-6" />;
-      case 'UserCheck': return <UserCheck className="h-6 w-6" />;
-      case 'GraduationCap': return <GraduationCap className="h-6 w-6" />;
-      case 'Activity': return <Activity className="h-6 w-6" />;
-      default: return <Info className="h-6 w-6" />;
+      case 'Utensils': return <FaUtensils className="h-6 w-6" />;
+      case 'Ambulance': return <FaTruckMedical className="h-6 w-6" />;
+      case 'HeartHandshake': return <FaHeart className="h-6 w-6" />;
+      case 'UserCheck': return <FaUserCheck className="h-6 w-6" />;
+      case 'GraduationCap': return <FaGraduationCap className="h-6 w-6" />;
+      case 'Activity': return <FaHeartPulse className="h-6 w-6" />;
+      default: return <FaCircleInfo className="h-6 w-6" />;
     }
   };
 
@@ -122,7 +122,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                 className="text-xs font-semibold text-emerald-600 hover:text-emerald-800 flex items-center space-x-1 cursor-pointer"
               >
                 <span>{lang === 'en' ? 'More Info' : 'விவரம் அறிக'}</span>
-                <ChevronRight className="h-3 w-3" />
+                <FaChevronRight className="h-3 w-3" />
               </button>
             </div>
           </motion.div>
@@ -172,7 +172,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                   onClick={() => setSelectedService(null)}
                   className="rounded-full bg-emerald-700 p-1.5 text-emerald-100 hover:bg-emerald-600 transition-colors cursor-pointer"
                 >
-                  <X className="h-4 w-4" />
+                  <FaXmark className="h-4 w-4" />
                 </button>
               </div>
 
@@ -211,7 +211,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                   <div className="border border-gray-100 rounded-xl p-4 space-y-2 flex flex-col justify-between">
                     <div className="space-y-1">
                       <div className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center space-x-1">
-                        <PhoneCall className="h-3 w-3 text-emerald-600" />
+                        <FaPhoneFlip className="h-3 w-3 text-emerald-600" />
                         <span>{lang === 'en' ? 'Request help' : 'உதவி பெற'}</span>
                       </div>
                       <p className="text-xs text-gray-600 leading-relaxed">
@@ -226,7 +226,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                       className="text-xs font-semibold text-emerald-600 hover:underline hover:text-emerald-800 text-left pt-2 flex items-center space-x-1 cursor-pointer"
                     >
                       <span>{lang === 'en' ? 'Open Form' : 'படிவத்தை திறக்கவும்'}</span>
-                      <ChevronRight className="h-3 w-3" />
+                      <FaChevronRight className="h-3 w-3" />
                     </button>
                   </div>
 
@@ -234,7 +234,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                   <div className="border border-gray-100 rounded-xl p-4 space-y-2 flex flex-col justify-between">
                     <div className="space-y-1">
                       <div className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center space-x-1">
-                        <DollarSign className="h-3 w-3 text-emerald-600" />
+                        <FaIndianRupeeSign className="h-3 w-3 text-emerald-600" />
                         <span>{lang === 'en' ? 'Sponsor Program' : 'ஸ்பான்சர் செய்ய'}</span>
                       </div>
                       <p className="text-xs text-gray-600 leading-relaxed">
@@ -249,7 +249,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                       className="text-xs font-semibold text-emerald-600 hover:underline hover:text-emerald-800 text-left pt-2 flex items-center space-x-1 cursor-pointer"
                     >
                       <span>{lang === 'en' ? 'Sponsor Now' : 'இப்போதே ஸ்பான்சர் செய்ய'}</span>
-                      <ChevronRight className="h-3 w-3" />
+                      <FaChevronRight className="h-3 w-3" />
                     </button>
                   </div>
 
@@ -257,7 +257,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                   <div className="border border-gray-100 rounded-xl p-4 space-y-2 flex flex-col justify-between">
                     <div className="space-y-1">
                       <div className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center space-x-1">
-                        <Users className="h-3 w-3 text-emerald-600" />
+                        <FaUsers className="h-3 w-3 text-emerald-600" />
                         <span>{lang === 'en' ? 'Volunteer role' : 'தன்னார்வ பணி'}</span>
                       </div>
                       <p className="text-xs text-gray-600 leading-relaxed">
@@ -272,7 +272,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                       className="text-xs font-semibold text-emerald-600 hover:underline hover:text-emerald-800 text-left pt-2 flex items-center space-x-1 cursor-pointer"
                     >
                       <span>{lang === 'en' ? 'Join Us' : 'எங்களுடன் இணைய'}</span>
-                      <ChevronRight className="h-3 w-3" />
+                      <FaChevronRight className="h-3 w-3" />
                     </button>
                   </div>
 

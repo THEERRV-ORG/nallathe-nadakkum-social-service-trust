@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Heart, Globe, Mail, Phone, MapPin, ExternalLink, HeartHandshake } from 'lucide-react';
+import { FaHeart, FaGlobe, FaEnvelope, FaPhone, FaLocationDot, FaArrowUpRightFromSquare, FaHandHoldingHeart } from 'react-icons/fa6';
 import Navbar from './components/Navbar';
 import HomeView from './components/HomeView';
 import AboutView from './components/AboutView';
@@ -19,9 +19,10 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>('home');
   const [isAdminOpen, setIsAdminOpen] = useState<boolean>(false);
 
-  // Sync language selection to localStorage
+  // Sync language selection to localStorage and html[lang] attribute
   useEffect(() => {
     localStorage.setItem('nn_site_lang', lang);
+    document.documentElement.lang = lang;
   }, [lang]);
 
   // Smooth scroll to top when changing tabs
@@ -64,17 +65,19 @@ export default function App() {
 
       {/* Global Brand Footer */}
       <footer className="border-t border-gray-200 bg-white pt-12 pb-8">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
-          
+        <div className="px-6 sm:px-10 lg:px-16 space-y-12">
+
           {/* Top Footer: Grid Layout */}
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-4 lg:gap-16">
             
             {/* Column 1: Brand details */}
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-                  <HeartHandshake className="h-5 w-5" />
-                </div>
+                <img
+                  src="/logo.png"
+                  alt="Nallathe Nadakkum Social Service Trust logo"
+                  className="h-14 w-14 rounded-full object-cover shrink-0"
+                />
                 <div>
                   <h3 className="font-display text-sm font-bold text-gray-900">
                     {lang === 'en' ? 'Nallathe Nadakkum' : 'நல்லதே நடக்கும்'}
@@ -111,15 +114,15 @@ export default function App() {
               </h4>
               <ul className="space-y-2 text-xs text-gray-500">
                 <li className="flex items-start space-x-2">
-                  <MapPin className="h-3.5 w-3.5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <FaLocationDot className="h-3.5 w-3.5 text-emerald-600 flex-shrink-0 mt-0.5" />
                   <span className="leading-normal">38/5, Rajeev Nagar Cross Road, Opp. SPM Hospital, Tiruchengode - 637211</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <Phone className="h-3.5 w-3.5 text-emerald-600" />
+                  <FaPhone className="h-3.5 w-3.5 text-emerald-600" />
                   <span>+91 98765 43210</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <Mail className="h-3.5 w-3.5 text-emerald-600" />
+                  <FaEnvelope className="h-3.5 w-3.5 text-emerald-600" />
                   <span>nallathanadakum@gmail.com</span>
                 </li>
               </ul>

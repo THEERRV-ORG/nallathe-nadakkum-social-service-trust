@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
 
 interface ProgramImageSliderProps {
   programId: string;
@@ -82,7 +82,7 @@ export default function ProgramImageSlider({ programId }: ProgramImageSliderProp
         className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-10"
         title="Previous image"
       >
-        <ChevronLeft className="h-4 w-4" />
+        <FaChevronLeft className="h-4 w-4" />
       </button>
 
       <button
@@ -90,7 +90,7 @@ export default function ProgramImageSlider({ programId }: ProgramImageSliderProp
         className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-10"
         title="Next image"
       >
-        <ChevronRight className="h-4 w-4" />
+        <FaChevronRight className="h-4 w-4" />
       </button>
 
       {/* Dot Indicators */}
