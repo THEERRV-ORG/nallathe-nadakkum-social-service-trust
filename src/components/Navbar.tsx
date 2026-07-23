@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaBars, FaXmark, FaGlobe } from 'react-icons/fa6';
+import { FaBars, FaXmark, FaGlobe, FaHeart } from 'react-icons/fa6';
 import { navigationLabels } from '../data';
 
 interface NavbarProps {
@@ -16,6 +16,10 @@ interface NavbarProps {
  */
 export default function Navbar({ lang, setLang, activeTab, setActiveTab }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const standardNavItems = navigationLabels.filter((item) => item.id !== 'donate');
+  const donateNavItem = navigationLabels.find((item) => item.id === 'donate');
+  const isDonateActive = activeTab === 'donate';
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-gray-100 bg-white/95 backdrop-blur-md">
@@ -42,7 +46,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
         </button>
 
         <nav className="hidden lg:flex flex-1 items-center justify-center gap-0.5 xl:gap-1 overflow-x-auto scrollbar-none">
-          {navigationLabels.map((item) => (
+          {standardNavItems.map((item) => (
             <button
               key={item.id}
               id={`nav-${item.id}`}
@@ -56,6 +60,21 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
               {item.label[lang]}
             </button>
           ))}
+
+          {donateNavItem && (
+            <button
+              id="nav-donate"
+              onClick={() => setActiveTab(donateNavItem.id)}
+              className={`ml-2 inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-[11px] xl:text-xs font-semibold shadow-sm transition-all cursor-pointer ${
+                isDonateActive
+                  ? 'bg-emerald-700 text-white shadow-emerald-200'
+                  : 'bg-emerald-600 text-white hover:bg-emerald-700'
+              }`}
+            >
+              <FaHeart className="h-3.5 w-3.5 fill-white" />
+              <span>{donateNavItem.label[lang]}</span>
+            </button>
+          )}
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
@@ -83,7 +102,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
       {isMenuOpen && (
         <div className="lg:hidden border-t border-gray-100 bg-white">
           <div className="space-y-0.5 px-3 pb-3 pt-2">
-            {navigationLabels.map((item) => (
+            {standardNavItems.map((item) => (
               <button
                 key={item.id}
                 id={`mobile-nav-${item.id}`}
@@ -97,6 +116,22 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
                 {item.label[lang]}
               </button>
             ))}
+
+            {donateNavItem && (
+              <button
+                key={donateNavItem.id}
+                id="mobile-nav-donate"
+                onClick={() => { setActiveTab(donateNavItem.id); setIsMenuOpen(false); }}
+                className={`mt-2 flex w-full items-center justify-center gap-2 rounded-xl px-3 py-3 text-sm font-semibold transition-all ${
+                  isDonateActive
+                    ? 'bg-emerald-700 text-white'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-500'
+                }`}
+              >
+                <FaHeart className="h-4 w-4 fill-white" />
+                <span>{donateNavItem.label[lang]}</span>
+              </button>
+            )}
           </div>
         </div>
       )}

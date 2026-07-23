@@ -29,7 +29,7 @@ export default function App() {
   }, [activeTab]);
 
   return (
-    <div className="min-h-screen bg-slate-50/30 flex flex-col font-sans text-gray-800 antialiased selection:bg-emerald-100 selection:text-emerald-900">
+    <div className="site-shell min-h-screen bg-transparent flex flex-col font-sans text-gray-800 antialiased selection:bg-emerald-100 selection:text-emerald-900">
       <Navbar
         lang={lang}
         setLang={setLang}
@@ -156,4 +156,5 @@ export default function App() {
     </div>
   );
 }
+
 

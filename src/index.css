@@ -13,6 +13,56 @@
   --color-primary-800: #166534;
 }
 
+html {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(245, 210, 184, 0.16), transparent 20%),
+    radial-gradient(circle at 86% 78%, rgba(196, 214, 191, 0.14), transparent 18%),
+    radial-gradient(circle at 72% 22%, rgba(220, 217, 210, 0.12), transparent 14%),
+    #ffffff;
+}
+
+body {
+  background: transparent;
+}
+
+.site-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.site-shell::before,
+.site-shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.site-shell::before {
+  background:
+    radial-gradient(circle at 9% 20%, rgba(245, 210, 184, 0.18) 0, rgba(245, 210, 184, 0.18) 10%, transparent 11%),
+    radial-gradient(circle at 84% 18%, rgba(197, 214, 193, 0.14) 0, rgba(197, 214, 193, 0.14) 8%, transparent 9%),
+    radial-gradient(circle at 78% 70%, rgba(217, 214, 207, 0.12) 0, rgba(217, 214, 207, 0.12) 7%, transparent 8%),
+    radial-gradient(circle at 18% 82%, rgba(244, 201, 175, 0.12) 0, rgba(244, 201, 175, 0.12) 8%, transparent 9%),
+    radial-gradient(circle at 56% 40%, rgba(204, 215, 198, 0.08) 0, rgba(204, 215, 198, 0.08) 6%, transparent 7%),
+    linear-gradient(140deg, transparent 0 23%, rgba(184, 170, 156, 0.12) 23.2%, transparent 23.5%),
+    linear-gradient(165deg, transparent 0 74%, rgba(184, 170, 156, 0.1) 74.2%, transparent 74.5%);
+  opacity: 0.95;
+}
+
+.site-shell::after {
+  background:
+    radial-gradient(rgba(173, 159, 146, 0.24) 1px, transparent 1px),
+    radial-gradient(rgba(173, 159, 146, 0.14) 1px, transparent 1px),
+    repeating-linear-gradient(90deg, transparent 0 22px, rgba(186, 171, 156, 0.12) 22px 23px, transparent 23px 46px),
+    repeating-linear-gradient(0deg, transparent 0 26px, rgba(186, 171, 156, 0.08) 26px 27px, transparent 27px 54px);
+  background-size: 10px 10px, 10px 10px, 220px 76px, 86px 210px;
+  background-position: 88% 120px, 14% calc(100% - 180px), 100% 160px, 70px calc(100% - 220px);
+  background-repeat: no-repeat;
+  opacity: 0.5;
+}
+
 /*
   Tamil mode: reduce ONLY text sizes by 2px (0.125rem).
   Overrides Tailwind's --text-* CSS variables which control all text-{size}
