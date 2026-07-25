@@ -202,14 +202,14 @@ export default function App() {
                     href="https://theerrv.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-semibold text-emerald-700 underline hover:text-emerald-800"
+                    className="font-semibold text-brand-violet-700 underline hover:text-brand-violet"
                   >
                     THEERRV
                   </a>
                 </span>
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 flex items-center font-mono text-gray-400 opacity-100 transition-opacity duration-200 group-hover:opacity-0 group-focus-within:opacity-0"
+                  className="pointer-events-none absolute inset-0 flex items-center justify-end font-mono text-gray-400 opacity-100 transition-opacity duration-200 group-hover:opacity-0 group-focus-within:opacity-0"
                 >
                   v{__APP_VERSION__}
                 </span>
