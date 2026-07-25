@@ -1,3 +1,10 @@
+/** Pre-selection passed from the home "What Can You Donate" cards to the donate form. */
+export interface DonatePreset {
+  type: string;      // 'Money' | 'Groceries' | 'Blood' | 'Dress'
+  program?: string;  // for Money: 'annadhanam' | 'student' | 'ambulance' | 'cremation'
+  amount?: string;   // suggested rupee amount for Money
+}
+
 export interface ServiceItem {
   id: string;
   iconName: string;
@@ -37,6 +44,7 @@ export const navigationLabels = [
   { id: 'gallery', label: { en: 'Activities & Gallery', ta: 'செயல்பாடுகள் & புகைப்படங்கள்' } },
   { id: 'help', label: { en: 'Request Help', ta: 'உதவி கோர' } },
   { id: 'volunteer', label: { en: 'Volunteer', ta: 'தன்னார்வலர்' } },
+  { id: 'speaker', label: { en: 'Invite as Speaker', ta: 'சொற்பொழிவாளராக அழைக்க' } },
   { id: 'donate', label: { en: 'Donate', ta: 'நன்கொடை' } },
   { id: 'transparency', label: { en: 'Transparency & Legal', ta: 'வெளிப்படைத்தன்மை' } },
   { id: 'contact', label: { en: 'Contact Us', ta: 'தொடர்பு கொள்ள' } },

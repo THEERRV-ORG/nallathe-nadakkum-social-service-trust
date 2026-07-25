@@ -1,23 +1,13 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import {
-  FaShieldHalved, FaChevronDown, FaChevronRight, FaFileLines, FaLock, FaUsers, FaTriangleExclamation, FaCircleExclamation,
+  FaShieldHalved, FaLock, FaCircleExclamation,
   FaLocationDot, FaMap, FaArrowUpRightFromSquare
 } from 'react-icons/fa6';
-import { faqData, commonTranslations } from '../data';
-import Monogram from './Monogram';
 
 interface TransparencyViewProps {
   lang: 'en' | 'ta';
 }
 
 export default function TransparencyView({ lang }: TransparencyViewProps) {
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
-
-  const toggleFaq = (index: number) => {
-    setOpenFaqIndex(openFaqIndex === index ? null : index);
-  };
-
   const auditLogs = [
     { year: 'FY 2025–26', status: { en: 'Audit In Progress', ta: 'தணிக்கை நடைபெறுகிறது' }, auditor: { en: 'Tiruchengode Local Auditor Board', ta: 'திருச்செங்கோடு தணிக்கை வாரியம்' } },
     { year: 'Trust Deed (Deed No. 16/2025)', status: { en: 'Legally Active & Certified', ta: 'பதிவு செய்யப்பட்டது - ஆவணம் 16/2025' }, auditor: { en: 'Sub-Registrar, Tiruchengode', ta: 'சார்பதிவாளர் அலுவலகம், திருச்செங்கோடு' } },
@@ -45,14 +35,14 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-emerald-50 text-emerald-700 rounded-xl w-fit shrink-0">
+              <div className="p-3 bg-brand-blue-50 text-brand-blue-700 rounded-xl w-fit shrink-0">
                 <FaShieldHalved className="h-5 w-5" />
               </div>
-              <h3 className="font-display text-base font-bold text-gray-900">
+              <h3 className="font-display text-lg font-bold text-gray-900">
                 {lang === 'en' ? 'Irrevocable Public Trust' : 'மாற்ற முடியாத பொது அறக்கட்டளை'}
               </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify">
+            <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65]">
               {lang === 'en'
                 ? 'Nallathe Nadakkum is registered as an Irrevocable Public Charitable Trust governed under a Board of Trustees. The trust assets can never be redirected to any personal profit. In the event of dissolution, all assets can only be transferred to a similarly registered public trust.'
                 : 'எங்களது அறக்கட்டளை ஒரு மாற்ற முடியாத பொது தொண்டு அமைப்பாகும். இதன் சொத்துக்கள் அல்லது நிதி ஒருபோதும் தனிநபர் இலாபத்திற்காகப் பயன்படுத்தப்படாது. ஒருவேளை அறக்கட்டளை கலைக்கப்பட்டால், அதன் சொத்துக்கள் அனைத்தும் மற்றொரு பொது தொண்டு நிறுவனத்திடமே ஒப்படைக்கப்படும்.'}
@@ -67,14 +57,14 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-emerald-50 text-emerald-700 rounded-xl w-fit shrink-0">
+              <div className="p-3 bg-brand-violet-50 text-brand-violet-700 rounded-xl w-fit shrink-0">
                 <FaLock className="h-5 w-5" />
               </div>
-              <h3 className="font-display text-base font-bold text-gray-900">
+              <h3 className="font-display text-lg font-bold text-gray-900">
                 {lang === 'en' ? 'Dual Signatory Oversight' : 'இரட்டை கையொப்பக் கட்டுப்பாடு'}
               </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify">
+            <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65]">
               {lang === 'en'
                 ? 'Financial transactions require joint signatures from both the Chairman (Advocate N. Kavinraj) and the Treasurer (Mrs. N. Kogila). No single trustee possesses the right to withdraw or dispense public donations without Board approval.'
                 : 'அறக்கட்டளையின் அனைத்து நிதி பரிவர்த்தனைகளும் தலைவர் (வழக்கறிஞர் நா. கவின்ராஜ்) மற்றும் பொருளாளர் (திருமதி. N. கோகிலா) ஆகியோரின் கூட்டு கையொப்பத்துடன் மட்டுமே நிகழும். அறங்காவலர் குழு ஒப்புதல் இன்றி தனிநபர் யாரும் பணத்தை எடுக்கவோ செலுத்தவோ முடியாது.'}
@@ -89,14 +79,14 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
         <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-emerald-50 text-emerald-700 rounded-xl w-fit shrink-0">
+              <div className="p-3 bg-brand-gold-50 text-brand-gold-700 rounded-xl w-fit shrink-0">
                 <FaCircleExclamation className="h-5 w-5" />
               </div>
-              <h3 className="font-display text-base font-bold text-gray-900">
+              <h3 className="font-display text-lg font-bold text-gray-900">
                 {lang === 'en' ? 'Foreign Contributions Blocked' : 'வெளிநாட்டு நிதிகள் மறுப்பு'}
               </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify">
+            <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65]">
               {lang === 'en'
                 ? 'We strictly abide by FCRA regulations of the Ministry of Home Affairs. Nallathe Nadakkum trust DOES NOT hold an FCRA registration and, therefore, cannot accept any foreign donations from non-Indian bank accounts. We accept Indian rupees from accounts residing within India.'
                 : 'இந்திய அரசின் FCRA விதிகளுக்கு நாங்கள் முழுமையாகக் கட்டுப்படுகிறோம். எங்களது அறக்கட்டளையிடம் வெளிநாட்டு நிதி பெறுவதற்கான FCRA சான்றிதழ் இல்லை. எனவே, வெளிநாட்டு கணக்குகளில் இருந்து வரும் பணத்தை சட்டப்பூர்வமாக எங்களால் ஏற்க முடியாது.'}
@@ -110,13 +100,12 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
       </section>
 
       {/* Trust Deed & Auditor Listings */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+
         {/* Left: Registrations Table */}
         <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 shadow-xs space-y-4">
-          <h3 className="font-display text-base font-bold text-gray-900 flex items-center gap-2">
-            <Monogram label="L" size="sm" />
-            <span>{lang === 'en' ? 'Legal Framework & Statutory Registry' : 'அறக்கட்டளை பதிவு மற்றும் சட்ட விபரங்கள்'}</span>
+          <h3 className="font-display text-base font-bold text-gray-900">
+            {lang === 'en' ? 'Legal Framework & Statutory Registry' : 'அறக்கட்டளை பதிவு மற்றும் சட்ட விபரங்கள்'}
           </h3>
           <div className="divide-y divide-gray-100 text-xs sm:text-sm">
             <div className="py-3 flex justify-between">
@@ -150,11 +139,10 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
 
         {/* Right: Audited Ledger Books */}
         <div className="lg:col-span-5 bg-white rounded-2xl border border-gray-100 p-6 shadow-xs space-y-4">
-          <h3 className="font-display text-base font-bold text-gray-900 flex items-center gap-2">
-            <Monogram label="A" size="sm" />
-            <span>{lang === 'en' ? 'Audits & Filing Log' : 'தணிக்கை மற்றும் தாக்கல் விபரங்கள்'}</span>
+          <h3 className="font-display text-base font-bold text-gray-900">
+            {lang === 'en' ? 'Audits & Filing Log' : 'தணிக்கை மற்றும் தாக்கல் விபரங்கள்'}
           </h3>
-          <p className="text-base text-gray-900 leading-relaxed text-justify">
+          <p className="text-base text-gray-900 leading-relaxed">
             {lang === 'en'
               ? 'Our deed mandates that accounting logs be audited annually by a certified Chartered Accountant. Summaries will be made available here.'
               : 'அறக்கட்டளையின் கணக்கு வழக்குகள் தகுதிவாய்ந்த தணிக்கையாளரால் தணிக்கை செய்யப்பட்டு ஆண்டுதோறும் தாக்கல் செய்யப்பட வேண்டும் என்பது விதியாகும்.'}
@@ -184,11 +172,10 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
               {lang === 'en' ? 'Physical Presence' : 'நேரடி இருப்பிடம்'}
             </span>
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-              <Monogram label="O" size="sm" />
-              <span>{lang === 'en' ? 'Official Registered Office & Location Pin' : 'அதிகாரப்பூர்வ பதிவு அலுவலகம் & வரைபடம்'}</span>
+            <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900">
+              {lang === 'en' ? 'Official Registered Office & Location Pin' : 'அதிகாரப்பூர்வ பதிவு அலுவலகம் & வரைபடம்'}
             </h2>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
+            <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
               {lang === 'en' 
                 ? 'We operate in full transparency with a physical office in Tiruchengode. Click on the map below to immediately open GPS coordinates in Google Maps.' 
                 : 'நாங்கள் திருச்செங்கோட்டில் முறையான அலுவலகத்துடன் செயல்படுகிறோம். எங்களது இருப்பிடத்தை வரைபடம் மூலம் துல்லியமாக அறிந்து கொள்ள கீழே உள்ள வரைபடத்தை அழுத்தவும்.'}
@@ -208,7 +195,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
                 <p className="font-display text-sm font-bold text-gray-900 leading-snug">
                   Nallathe Nadakkum Trust
                 </p>
-                <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] font-medium">
+                <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] font-medium">
                   38/5, Rajeev Nagar Cross Road,<br />
                   Opp. SPM Hospital,<br />
                   Tiruchengode - 637211,<br />
@@ -274,53 +261,6 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             ></iframe>
           </div>
 
-        </div>
-      </section>
-
-      {/* Interactive FAQ Accordion */}
-      <section className="space-y-6 pt-4">
-        <div className="text-center space-y-1">
-          <h2 className="font-display text-2xl font-bold text-gray-900 flex items-center justify-center gap-2">
-            <Monogram label="?" size="sm" />
-            <span>{lang === 'en' ? 'Frequently Asked Questions' : 'அடிக்கடி கேட்கப்படும் கேள்விகள்'}</span>
-          </h2>
-          <p className="text-xs text-gray-900">
-            {lang === 'en' ? 'Have questions regarding our operations or financial management? Click on an item below.' : 'எங்கள் செயல்பாடுகள் அல்லது நிதி மேலாண்மை குறித்து ஏதேனும் கேள்விகள் இருந்தால் கீழே தேர்வு செய்து விபரம் அறியலாம்.'}
-          </p>
-        </div>
-
-        <div className="max-w-4xl mx-auto divide-y divide-gray-100 border-t border-b border-gray-100">
-          {faqData.map((faq, idx) => {
-            const isOpen = openFaqIndex === idx;
-            return (
-              <div key={idx} className="py-4">
-                <button
-                  id={`faq-btn-${idx}`}
-                  onClick={() => toggleFaq(idx)}
-                  className="w-full flex justify-between items-center text-left font-sans text-sm font-semibold text-gray-900 hover:text-emerald-700 transition-colors py-1 cursor-pointer"
-                >
-                  <span className="pr-4 leading-snug">{faq.question[lang]}</span>
-                  {isOpen ? <FaChevronDown className="h-4 w-4 text-emerald-600 flex-shrink-0" /> : <FaChevronRight className="h-4 w-4 text-gray-900 flex-shrink-0" />}
-                </button>
-                
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify pt-3 pr-6">
-                        {faq.answer[lang]}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
         </div>
       </section>
 

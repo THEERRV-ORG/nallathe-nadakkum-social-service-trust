@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { SAMPLE_SPONSORS } from '../security';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   FaHeart, FaHeartPulse, FaTruckMedical, FaUtensils, FaAward, FaFileLines, FaChevronRight,
-  FaGraduationCap, FaCircleExclamation, FaLock, FaWandMagicSparkles, FaGift, FaCoins, FaCircleCheck, FaCircleQuestion,
-  FaCamera, FaVideo, FaDroplet, FaShirt
+  FaGraduationCap, FaCircleCheck, FaCamera, FaVideo, FaDroplet, FaShirt
 } from 'react-icons/fa6';
-import { commonTranslations, statsData } from '../data';
+import { commonTranslations, statsData, DonatePreset } from '../data';
 import SocialConnect from './SocialConnect';
-import Monogram from './Monogram';
 import CountUpStat from './CountUpStat';
 
 interface HomeViewProps {
   lang: 'en' | 'ta';
   setActiveTab: (tab: string) => void;
+  onDonatePreset: (preset: DonatePreset) => void;
 }
 
 // Hero slides are ordered by programme priority so Food Donation and Last Rites
@@ -30,9 +28,7 @@ const heroImages = [
   { src: '/gallery/activity-elder-rescue.jpeg', alt: 'Destitute elderly rescued and cared for' },
 ];
 
-export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
-  const [activeHubTab, setActiveHubTab] = useState<'impact' | 'pledges' | 'disclosures'>('impact');
-  const [recentPledges, setRecentPledges] = useState<any[]>([]);
+export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeViewProps) {
   const [heroIndex, setHeroIndex] = useState(0);
 
   useEffect(() => {
@@ -42,9 +38,6 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    setRecentPledges([...SAMPLE_SPONSORS].slice(0, 3));
-  }, []);
   return (
     <div className="space-y-16 pb-8">
       {/* Hero Section */}
@@ -127,7 +120,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed sm:leading-[1.65] text-justify sm:text-left max-w-2xl"
+              className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed sm:leading-[1.65] max-w-2xl"
             >
               {commonTranslations.heroSub[lang]}
             </motion.p>
@@ -180,18 +173,18 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
       {/* Trust Introduction */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="rounded-2xl bg-white border border-gray-100 p-6 sm:p-10 shadow-sm">
-          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-10">
             {/* Logo — left on desktop, top on mobile */}
-            <div className="md:w-[28%] flex justify-center shrink-0">
+            <div className="md:w-[36%] flex justify-center shrink-0">
               <img
                 src="/logo.png"
                 alt="Nallathe Nadakkum Social Service Trust logo"
-                className="h-32 w-32 sm:h-40 sm:w-40 rounded-full object-cover"
+                className="h-48 w-48 sm:h-64 sm:w-64 md:h-72 md:w-72 rounded-full object-cover"
               />
             </div>
 
             {/* Content — right on desktop, left-aligned text */}
-            <div className="md:w-[72%] space-y-5 text-center md:text-left">
+            <div className="md:w-[64%] space-y-5 text-center md:text-left">
               <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
                 {lang === 'en' ? 'Who We Are' : 'எங்களை பற்றி'}
               </h2>
@@ -214,14 +207,14 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
 
       {/* Quick Stats Grid */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-emerald-800 text-white p-8 sm:p-12 shadow-md relative overflow-hidden">
-          <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-emerald-700/50 blur-xl"></div>
-          
+        <div className="rounded-2xl bg-brand-violet text-white p-8 sm:p-12 shadow-md relative overflow-hidden">
+          <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10 blur-xl"></div>
+
           <div className="mb-10 text-center space-y-2">
             <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
               {commonTranslations.quickStatsTitle[lang]}
             </h2>
-            <p className="text-emerald-200 text-xs sm:text-sm">
+            <p className="text-white/70 text-xs sm:text-sm">
               {commonTranslations.quickStatsNote[lang]}
             </p>
           </div>
@@ -238,9 +231,9 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               >
                 <CountUpStat
                   value={stat.value}
-                  className="font-display text-3xl font-extrabold text-emerald-100 sm:text-4xl"
+                  className="font-display text-3xl font-extrabold text-white sm:text-4xl"
                 />
-                <div className="text-[11px] sm:text-xs font-medium text-emerald-100/80 leading-snug">
+                <div className="text-[11px] sm:text-xs font-medium text-white/80 leading-snug">
                   {stat.label[lang]}
                 </div>
               </motion.div>
@@ -265,14 +258,14 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
             className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
           >
             <div className="flex items-center gap-3">
-              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-gold-50 text-brand-gold-700">
                 <FaCircleCheck className="h-6 w-6" />
               </div>
               <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
                 {lang === 'en' ? 'Contribution Recognition' : 'பங்களிப்பு அங்கீகாரம்'}
               </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify sm:text-left">
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
               {lang === 'en'
                 ? 'Every donation is recorded and acknowledged with gratitude, ensuring transparency and appreciation for each supporter.'
                 : 'ஒவ்வொரு நன்கொடையும் நன்றியுடன் பதிவு செய்து அங்கீகரிக்கப்படுகிறது. இதன் மூலம் ஒவ்வொரு ஆதரவாளரின் பங்களிப்பும் வெளிப்படையாக மதிப்பளிக்கப்படுகிறது.'}
@@ -288,14 +281,14 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
             className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
           >
             <div className="flex items-center gap-3">
-              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-blue-50 text-brand-blue-700">
                 <FaCamera className="h-6 w-6" />
               </div>
               <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
                 {lang === 'en' ? 'Photo Impact Updates' : 'புகைப்பட தாக்கப் பதிவுகள்'}
               </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify sm:text-left">
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
               {lang === 'en'
                 ? 'Photo updates help donors understand how their contributions are used and the difference they create in the community.'
                 : 'நன்கொடைகள் எவ்வாறு பயன்படுத்தப்படுகின்றன மற்றும் சமூகத்தில் அவை ஏற்படுத்தும் மாற்றத்தை புகைப்படப் பதிவுகள் மூலம் நன்கொடையாளர்கள் அறிந்துகொள்ளலாம்.'}
@@ -311,14 +304,14 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
             className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
           >
             <div className="flex items-center gap-3">
-              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-orange-50 text-brand-orange-700">
                 <FaVideo className="h-6 w-6" />
               </div>
               <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
                 {lang === 'en' ? 'Video Impact Stories' : 'காணொளி தாக்கக் கதைகள்'}
               </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify sm:text-left">
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
               {lang === 'en'
                 ? 'Video updates showcase the real outcomes of each initiative and highlight the meaningful impact made possible by donor support.'
                 : 'ஒவ்வொரு சேவை முயற்சியின் உண்மையான விளைவுகளையும், நன்கொடையாளர்களின் ஆதரவால் உருவாகும் நல்ல மாற்றங்களையும் காணொளிப் பதிவுகள் வெளிப்படுத்துகின்றன.'}
@@ -328,323 +321,177 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
         </div>
       </section>
 
-      {/* Donation Impact & Live Transparency Hub */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 animate-fade-in">
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 sm:p-8 shadow-xs space-y-8">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-100 pb-6">
-            <div className="space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
-                {lang === 'en' ? 'Live Trust Activity' : 'நேரடி அறக்கட்டளை தகவல்கள்'}
-              </span>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
-                <Monogram label="GT" size="sm" />
-                <span>{lang === 'en' ? 'Generosity & Transparency Hub' : 'தாராள மனப்பான்மை & வெளிப்படைத்தன்மை மையம்'}</span>
-              </h2>
-              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
-                {lang === 'en' 
-                  ? 'Explore where your contributions go, view real-time pledged donations, and read critical safety notices.' 
-                  : 'உங்கள் பங்களிப்புகள் எங்கு செல்கின்றன என்பதை ஆராயுங்கள், சமீபத்திய நன்கொடைகளைக் காணுங்கள் மற்றும் முக்கிய பாதுகாப்பு அறிவிப்புகளைப் படியுங்கள்.'}
-              </p>
-            </div>
+      {/* What Can You Donate */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center space-y-2 mb-8">
+          <p className="text-xs font-bold uppercase tracking-widest text-brand-violet-700">
+            {lang === 'en' ? 'Ways to Give' : 'உதவும் வழிகள்'}
+          </p>
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
+            {lang === 'en' ? 'What Can You Donate' : 'நீங்கள் எதை நன்கொடையாக வழங்கலாம்'}
+          </h2>
+          <p className="text-sm sm:text-base text-gray-900/70 max-w-2xl mx-auto">
+            {lang === 'en'
+              ? 'Choose a programme to support. Every contribution reaches the people who need it — 0% administrative deductions.'
+              : 'ஆதரிக்க ஒரு திட்டத்தைத் தேர்ந்தெடுங்கள். ஒவ்வொரு பங்களிப்பும் தேவைப்படுவோரை நேரடியாகச் சென்றடைகிறது — நிர்வாகச் செலவு பிடித்தம் இல்லை.'}
+          </p>
+        </div>
 
-            {/* Quick Efficiency Badge */}
-            <div className="bg-emerald-50/50 rounded-xl p-3 border border-emerald-100/60 flex items-center space-x-2 w-fit">
-              <FaWandMagicSparkles className="h-4 w-4 text-emerald-600 flex-shrink-0 animate-pulse" />
-              <div className="text-[10px] leading-tight">
-                <p className="font-bold text-emerald-900">{lang === 'en' ? '100% Direct Delivery' : '100% நேரடி உதவி'}</p>
-                <p className="text-emerald-700">{lang === 'en' ? '0% Administrative Deductions' : 'நிர்வாக செலவு பிடித்தங்கள் இல்லை'}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {([
+            {
+              id: 'annadhanam',
+              preset: { type: 'Money', program: 'annadhanam', amount: '2000' },
+              title: { en: 'Daily Annadhanam', ta: 'தினசரி அன்னதானம்' },
+              kicker: { en: 'Sponsorship Level', ta: 'உதவித் தொகை' },
+              amt: { en: 'From ₹2,000', ta: 'From ₹2,000' },
+              unit: { en: 'Per Meal Session', ta: 'ஒரு வேளை உணவு' },
+              desc: {
+                en: 'Sponsor a roadside or care-home meal session — costs range by session and location — serving fresh hot meals to destitute pavement dwellers, homeless elders, and hospital patients.',
+                ta: 'சாலையோரம் அல்லது முதியோர் இல்லத்தில் ஒரு வேளை உணவை ஸ்பான்சர் செய்யலாம் — வேளை மற்றும் இடத்தைப் பொறுத்து செலவு மாறுபடும் — ஆதரவற்ற ஏழைகள், முதியோர் மற்றும் நோயாளிகளுக்கு சத்தான உணவு வழங்கப்படும்.'
+              },
+              note: null,
+              icon: <FaUtensils className="h-5 w-5" />,
+              color: 'bg-brand-orange-50 text-brand-orange-700 border-brand-orange-100',
+              badge: 'bg-brand-orange-100 text-brand-orange-700',
+              cta: { en: 'Sponsor Program →', ta: 'ஸ்பான்சர் செய்ய →' }
+            },
+            {
+              id: 'student',
+              preset: { type: 'Money', program: 'student', amount: '5000' },
+              title: { en: 'Student Support', ta: 'மாணவர்கள் கல்வி' },
+              kicker: { en: 'Sponsorship Level', ta: 'உதவித் தொகை' },
+              amt: { en: '₹5,000', ta: '₹5,000' },
+              unit: { en: 'Annual Tuition Fee', ta: 'ஓராண்டு கல்வி கட்டணம்' },
+              desc: {
+                en: 'Directly remits full school tuition fees for a meritorious student from a daily-wage single-parent household to secure their classroom seat.',
+                ta: 'கல்வி தடைபடாமல் இருக்க வறிய நிலையில் உள்ள ஒரு பள்ளி/கல்லூரி மாணவரின் ஓராண்டு கல்வி கட்டணத்தை கல்வி நிலையத்திற்கு நேரடியாக செலுத்தும்.'
+              },
+              note: null,
+              icon: <FaGraduationCap className="h-5 w-5" />,
+              color: 'bg-brand-gold-50 text-brand-gold-700 border-brand-gold-100',
+              badge: 'bg-brand-gold-100 text-brand-gold-700',
+              cta: { en: 'Sponsor Program →', ta: 'ஸ்பான்சர் செய்ய →' }
+            },
+            {
+              id: 'ambulance',
+              preset: { type: 'Money', program: 'ambulance', amount: '2500' },
+              title: { en: 'Ambulance Fuel', ta: 'ஆம்புலன்ஸ் எரிபொருள்' },
+              kicker: { en: 'Sponsorship Level', ta: 'உதவித் தொகை' },
+              amt: { en: '₹2,500', ta: '₹2,500' },
+              unit: { en: '10 Emergency Trips', ta: '10 அவசரப் பயணங்கள்' },
+              desc: {
+                en: 'Covers diesel fuel logistics and patient transfer for 10 emergency runs carrying vulnerable patients to Salem Govt Hospital.',
+                ta: 'அவசர சிகிச்சை தேவைப்படும் ஏழைகளை அரசு மருத்துவமனைகளுக்கு அழைத்துச் செல்ல 10 இலவச பயணங்களுக்கான எரிபொருளை ஸ்பான்சர் செய்யும்.'
+              },
+              note: null,
+              icon: <FaTruckMedical className="h-5 w-5" />,
+              color: 'bg-brand-blue-50 text-brand-blue-700 border-brand-blue-100',
+              badge: 'bg-brand-blue-100 text-brand-blue-700',
+              cta: { en: 'Sponsor Program →', ta: 'ஸ்பான்சர் செய்ய →' }
+            },
+            {
+              id: 'cremation',
+              preset: { type: 'Money', program: 'cremation', amount: '5000' },
+              title: { en: 'Dignified Last Rites', ta: 'ஆதரவற்றோர் இறுதி மரியாதை' },
+              kicker: { en: 'Sponsorship Level', ta: 'உதவித் தொகை' },
+              amt: { en: '₹5,000', ta: '₹5,000' },
+              unit: { en: '1 Dignified Burial', ta: '1 தகனச் சடங்கு' },
+              desc: {
+                en: 'Covers municipal cremation fees, shroud cloth, and ceremonial materials for performing police-coordinated burial with complete dignity.',
+                ta: 'நாமக்கல்/சேலம் காவல்துறையின் முறைப்படியான அனுமதியுடன், உரிமை கோரப்படாத ஆதரவற்ற ஒரு உடலுக்கு இறுதிச் சடங்குகள் செய்யும்.'
+              },
+              note: null,
+              icon: <FaHeart className="h-5 w-5" />,
+              color: 'bg-brand-violet-50 text-brand-violet-700 border-brand-violet-100',
+              badge: 'bg-brand-violet-100 text-brand-violet-700',
+              cta: { en: 'Sponsor Program →', ta: 'ஸ்பான்சர் செய்ய →' }
+            },
+            {
+              id: 'blood',
+              preset: { type: 'Blood', program: undefined, amount: undefined },
+              title: { en: 'Blood Donation', ta: 'இரத்த நன்கொடை' },
+              kicker: { en: 'Life-Saving Gift', ta: 'உயிர் காக்கும் கொடை' },
+              amt: { en: 'Give Blood', ta: 'இரத்த தானம்' },
+              unit: { en: '1 Unit · up to 3 Lives', ta: '1 யூனிட் · 3 உயிர் வரை' },
+              desc: {
+                en: 'Register as a voluntary blood donor and respond to urgent requests for patients in need across Tiruchengode and nearby government hospitals.',
+                ta: 'தன்னார்வ இரத்த தானம் செய்பவராகப் பதிவு செய்து, திருச்செங்கோடு மற்றும் அருகிலுள்ள அரசு மருத்துவமனைகளில் அவசரத் தேவையுள்ள நோயாளிகளுக்கு உதவுங்கள்.'
+              },
+              note: null,
+              icon: <FaDroplet className="h-5 w-5" />,
+              color: 'bg-rose-50 text-rose-600 border-rose-100',
+              badge: 'bg-rose-100 text-rose-700',
+              cta: { en: 'Donate Blood →', ta: 'இரத்தம் தானம் செய்ய →' }
+            },
+            {
+              id: 'dress',
+              preset: { type: 'Dress', program: undefined, amount: undefined },
+              title: { en: 'Dress Donation', ta: 'ஆடை நன்கொடை' },
+              kicker: { en: 'Material Gift', ta: 'பொருள் கொடை' },
+              amt: { en: 'Donate Clothes', ta: 'ஆடை தானம்' },
+              unit: { en: 'New / Gently-used', ta: 'புதிய / சிறிது பயன்பட்ட' },
+              desc: {
+                en: 'Share dhotis, sarees, shirts, and school uniforms with roadside families and elders — restoring dignity through clean clothing.',
+                ta: 'வேட்டி, சேலை, சட்டைகள் மற்றும் பள்ளி சீருடைகளை சாலையோரக் குடும்பங்கள் மற்றும் முதியோருடன் பகிர்ந்து, ஆடை மூலம் கண்ணியத்தை மீட்டுத் தாருங்கள்.'
+              },
+              note: {
+                en: 'Please donate only new or gently-used clothes — not heavily worn — so they can be given with dignity.',
+                ta: 'தயவுசெய்து புதிய அல்லது சிறிது பயன்படுத்திய ஆடைகளை மட்டும் வழங்கவும் — அதிகம் பயன்பட்டவை வேண்டாம் — கண்ணியத்துடன் வழங்க உதவும்.'
+              },
+              icon: <FaShirt className="h-5 w-5" />,
+              color: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+              badge: 'bg-emerald-100 text-emerald-700',
+              cta: { en: 'Donate Clothes →', ta: 'ஆடை தானம் செய்ய →' }
+            }
+          ] as const).map((card) => (
+            <div
+              key={card.id}
+              className="rounded-2xl border border-gray-100 p-6 bg-white shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md hover:border-gray-200 transition-all group"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className={`p-2.5 rounded-xl border ${card.color}`}>
+                    {card.icon}
+                  </div>
+                  <h3 className="font-display font-bold text-gray-900 text-lg">
+                    {card.title[lang]}
+                  </h3>
+                </div>
+
+                <div className="space-y-0.5">
+                  <p className="text-[10px] text-gray-900 uppercase font-bold tracking-wider">
+                    {card.kicker[lang]}
+                  </p>
+                  <div className="flex items-baseline flex-wrap gap-x-1.5 gap-y-1">
+                    <span className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">
+                      {card.amt[lang]}
+                    </span>
+                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${card.badge}`}>
+                      {card.unit[lang]}
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-sm text-gray-900 leading-relaxed">
+                  {card.desc[lang]}
+                </p>
+
+                {card.note && (
+                  <p className="text-xs text-amber-700 leading-snug">
+                    {card.note[lang]}
+                  </p>
+                )}
               </div>
-            </div>
-          </div>
 
-          {/* Interactive Navigation Tabs */}
-          <div className="flex border-b border-gray-100 p-1 bg-gray-50/50 rounded-xl max-w-md">
-            {[
-              { id: 'impact', label: { en: 'How It Helps (Impact)', ta: 'உதவிகள் எவ்வாறு பயனாகின்றன' }, icon: <FaHeartPulse className="h-3.5 w-3.5" /> },
-              { id: 'pledges', label: { en: 'Recent Kindness', ta: 'சமீபத்திய பங்களிப்புகள்' }, icon: <FaGift className="h-3.5 w-3.5" /> },
-              { id: 'disclosures', label: { en: 'Trust Notices', ta: 'பாதுகாப்பு அறிவிப்புகள்' }, icon: <FaCircleExclamation className="h-3.5 w-3.5" /> }
-            ].map((tab) => (
               <button
-                key={tab.id}
-                onClick={() => setActiveHubTab(tab.id as any)}
-                className={`flex items-center justify-center space-x-1.5 py-2 px-3 text-xs font-bold rounded-lg flex-1 transition-all cursor-pointer ${
-                  activeHubTab === tab.id
-                    ? 'bg-white text-emerald-800 shadow-xs border border-gray-100'
-                    : 'text-gray-900/70 hover:text-gray-900'
-                }`}
+                onClick={() => { onDonatePreset({ type: card.preset.type, program: card.preset.program, amount: card.preset.amount }); setActiveTab('donate'); }}
+                className="w-full text-center py-2.5 rounded-lg bg-emerald-50 text-emerald-800 text-sm font-bold hover:bg-emerald-600 hover:text-white transition-all cursor-pointer"
               >
-                {tab.icon}
-                <span>{tab.label[lang]}</span>
+                {card.cta[lang]}
               </button>
-            ))}
-          </div>
-
-          {/* Tab Contents */}
-          <div className="pt-2">
-            <AnimatePresence mode="wait">
-              
-              {/* TAB 1: HOW IT HELPS (IMPACT MAP) */}
-              {activeHubTab === 'impact' && (
-                <motion.div
-                  key="impact"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                >
-                  {[
-                    {
-                      id: 'annadhanam',
-                      title: { en: 'Daily Annadhanam', ta: 'தினசரி அன்னதானம்' },
-                      amt: 'From ₹2,000',
-                      unit: { en: 'Per Meal Session', ta: 'ஒரு வேளை உணவு' },
-                      desc: {
-                        en: 'Sponsor a roadside or care-home meal session — costs range by session and location — serving fresh hot meals to destitute pavement dwellers, homeless elders, and hospital patients.',
-                        ta: 'சாலையோரம் அல்லது முதியோர் இல்லத்தில் ஒரு வேளை உணவை ஸ்பான்சர் செய்யலாம் — வேளை மற்றும் இடத்தைப் பொறுத்து செலவு மாறுபடும் — ஆதரவற்ற ஏழைகள், முதியோர் மற்றும் நோயாளிகளுக்கு சத்தான உணவு வழங்கப்படும்.'
-                      },
-                      icon: <FaUtensils className="h-4 w-4" />,
-                      color: 'bg-emerald-50 text-emerald-700 border-emerald-100',
-                      badge: 'bg-emerald-100 text-emerald-800'
-                    },
-                    {
-                      id: 'student',
-                      title: { en: 'Student Support', ta: 'மாணவர்கள் கல்வி' },
-                      amt: '₹5,000',
-                      unit: { en: 'Annual Tuition Fee', ta: 'ஓராண்டு கல்வி கட்டணம்' },
-                      desc: {
-                        en: 'Directly remits full school tuition fees for a meritorious student from a daily-wage single-parent household to secure their classroom seat.',
-                        ta: 'கல்வி தடைபடாமல் இருக்க வறிய நிலையில் உள்ள ஒரு பள்ளி/கல்லூரி மாணவரின் ஓராண்டு கல்வி கட்டணத்தை கல்வி நிலையத்திற்கு நேரடியாக செலுத்தும்.'
-                      },
-                      icon: <FaGraduationCap className="h-4 w-4" />,
-                      color: 'bg-sky-50 text-sky-700 border-sky-100',
-                      badge: 'bg-sky-100 text-sky-800'
-                    },
-                    {
-                      id: 'ambulance',
-                      title: { en: 'Ambulance Fuel', ta: 'ஆம்புலன்ஸ் எரிபொருள்' },
-                      amt: '₹2,500',
-                      unit: { en: '10 Emergency Trips', ta: '10 அவசரப் பயணங்கள்' },
-                      desc: {
-                        en: 'Covers diesel fuel logistics and patient transfer for 10 emergency runs carrying vulnerable patients to Salem Govt Hospital.',
-                        ta: 'அவசர சிகிச்சை தேவைப்படும் ஏழைகளை அரசு மருத்துவமனைகளுக்கு அழைத்துச் செல்ல 10 இலவச பயணங்களுக்கான எரிபொருளை ஸ்பான்சர் செய்யும்.'
-                      },
-                      icon: <FaTruckMedical className="h-4 w-4" />,
-                      color: 'bg-amber-50 text-amber-700 border-amber-100',
-                      badge: 'bg-amber-100 text-amber-800'
-                    },
-                    {
-                      id: 'cremation',
-                      title: { en: 'Dignified Last Rites', ta: 'ஆதரவற்றோர் இறுதி மரியாதை' },
-                      amt: '₹5,000',
-                      unit: { en: '1 Dignified Burial', ta: '1 தகனச் சடங்கு' },
-                      desc: {
-                        en: 'Covers municipal cremation fees, shroud cloth, and ceremonial materials for performing police-coordinated burial with complete dignity.',
-                        ta: 'நாமக்கல்/சேலம் காவல்துறையின் முறைப்படியான அனுமதியுடன், உரிமை கோரப்படாத ஆதரவற்ற ஒரு உடலுக்கு இறுதிச் சடங்குகள் செய்யும்.'
-                      },
-                      icon: <FaHeart className="h-4 w-4" />,
-                      color: 'bg-rose-50 text-rose-700 border-rose-100',
-                      badge: 'bg-rose-100 text-rose-800'
-                    }
-                  ].map((scenario) => (
-                    <div 
-                      key={scenario.id} 
-                      className="rounded-xl border border-gray-100 p-5 bg-white shadow-xs flex flex-col justify-between space-y-4 hover:border-gray-200 transition-all group"
-                    >
-                      <div className="space-y-3">
-                        {/* Title and Icon */}
-                        <div className="flex items-center space-x-2">
-                          <div className={`p-2 rounded-lg border ${scenario.color}`}>
-                            {scenario.icon}
-                          </div>
-                          <h4 className="font-display font-bold text-gray-900 text-xs sm:text-sm">
-                            {scenario.title[lang]}
-                          </h4>
-                        </div>
-
-                        {/* Amount Box */}
-                        <div className="space-y-0.5">
-                          <p className="text-[10px] text-gray-900 uppercase font-bold tracking-wider">
-                            {lang === 'en' ? 'Sponsorship Level' : 'உதவித் தொகை'}
-                          </p>
-                          <div className="flex items-baseline flex-wrap gap-x-1.5 gap-y-1">
-                            <span className="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">
-                              {scenario.amt}
-                            </span>
-                            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${scenario.badge}`}>
-                              {scenario.unit[lang]}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Description */}
-                        <p className="text-xs sm:text-sm text-gray-900 leading-relaxed text-justify">
-                          {scenario.desc[lang]}
-                        </p>
-                      </div>
-
-                      {/* Sponsor Action CTA */}
-                      <button
-                        onClick={() => setActiveTab('donate')}
-                        className="w-full text-center py-2 rounded-lg bg-emerald-50 text-emerald-800 text-[10px] sm:text-xs font-bold hover:bg-emerald-600 hover:text-white transition-all cursor-pointer"
-                      >
-                        {lang === 'en' ? 'Sponsor Program →' : 'இந்த திட்டத்திற்கு உதவவும் →'}
-                      </button>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-
-              {/* TAB 2: RECENT KINDNESS (DONATIONS PLEDGED) */}
-              {activeHubTab === 'pledges' && (
-                <motion.div
-                  key="pledges"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="space-y-6"
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {recentPledges.length === 0 ? (
-                      <div className="col-span-3 text-center py-10 text-xs text-gray-900">
-                        {lang === 'en' ? 'No recent contributions logged yet.' : 'சமீபத்திய பங்களிப்புகள் இன்னும் பதிவாகவில்லை.'}
-                      </div>
-                    ) : (
-                      recentPledges.map((pledge, idx) => (
-                        <div 
-                          key={idx} 
-                          className="rounded-xl border border-emerald-100/60 p-4 bg-emerald-50/10 flex flex-col justify-between space-y-3 relative overflow-hidden"
-                        >
-                          <div className="absolute top-0 right-0 h-8 w-8 bg-emerald-50 text-emerald-600 rounded-bl-full flex items-center justify-center text-[10px] font-bold">
-                            NN
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex items-center space-x-2">
-                              <div className="h-6 w-6 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center justify-center">
-                                {pledge.name.charAt(0)}
-                              </div>
-                              <div>
-                                <h5 className="text-xs font-bold text-gray-900 leading-tight">{pledge.name}</h5>
-                                <p className="text-[9px] text-gray-900 font-mono">{pledge.date}</p>
-                              </div>
-                            </div>
-                            <p className="text-xs sm:text-sm text-gray-900 italic leading-relaxed">
-                              "{pledge.msg}"
-                            </p>
-                          </div>
-                          
-                          <div className="pt-2 border-t border-emerald-100/50 flex justify-between items-center text-[10px]">
-                            <span className="font-semibold text-gray-900 uppercase tracking-wider">
-                              {pledge.type === 'Money' || pledge.type === 'Sponsorship' ? (lang === 'en' ? 'Pledged' : 'நிதி உதவி') : (lang === 'en' ? 'Material' : 'பொருளுதவி')}
-                            </span>
-                            <span className="font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                              {pledge.item}
-                            </span>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                  <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-gray-50 text-xs">
-                    <p className="text-gray-900">
-                      {lang === 'en' 
-                        ? 'Recent kindness logs demonstrating active community support on this device.' 
-                        : 'அறக்கட்டளையின் தாராள மனப்பான்மை நன்றிக்கூடம் தங்களின் தொடர் சமூக ஆதரவை மெய்ப்பிக்கின்றது.'}
-                    </p>
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => setActiveTab('donate')}
-                        className="text-emerald-700 font-bold hover:underline cursor-pointer flex items-center space-x-1"
-                      >
-                        <span>{lang === 'en' ? 'Pledge Your Support Now' : 'நன்றிக் கூடத்தில் உங்களை இணைக்க'}</span>
-                        <FaChevronRight className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* TAB 3: IMPORTANT TRUST DISCLOSURES & SAFETY */}
-              {activeHubTab === 'disclosures' && (
-                <motion.div
-                  key="disclosures"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
-                >
-                  
-                  {/* Warning 1: Official bank only */}
-                  <div className="rounded-xl border border-red-100 bg-red-50/30 p-5 flex flex-col justify-between space-y-3">
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2 text-red-700">
-                        <FaCircleExclamation className="h-4 w-4 flex-shrink-0" />
-                        <h4 className="text-xs font-bold uppercase tracking-wider">
-                          {lang === 'en' ? 'Official Account Only' : 'அதிகாரப்பூர்வ கணக்கு மட்டுமே'}
-                        </h4>
-                      </div>
-                      <p className="text-xs sm:text-sm text-red-900 leading-relaxed text-justify">
-                        {lang === 'en'
-                          ? 'Make payments only to the official Nallathe Nadakkum Trust bank account or official QR codes. Never send donations to any private personal bank accounts of members.'
-                          : 'நன்கொடைகளை அறக்கட்டளையின் பெயரில் உள்ள அதிகாரப்பூர்வ வங்கிக் கணக்கிற்கு மட்டுமே செலுத்துங்கள். தனிநபர்களின் சொந்தக் கணக்குகளுக்குப் பணம் அனுப்ப வேண்டாம்.'}
-                      </p>
-                    </div>
-                    <span className="text-[9px] font-mono font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded w-fit uppercase">
-                      {lang === 'en' ? 'Zero Commission Policy' : 'கமிஷன்கள் இல்லை'}
-                    </span>
-                  </div>
-
-                  {/* Warning 2: Tax Exemption Status */}
-                  <div className="rounded-xl border border-amber-100 bg-amber-50/30 p-5 flex flex-col justify-between space-y-3">
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2 text-amber-800">
-                        <FaLock className="h-4 w-4 flex-shrink-0" />
-                        <h4 className="text-xs font-bold uppercase tracking-wider">
-                          {lang === 'en' ? 'Tax Status Disclosures' : 'வரி விலக்கு நிலைப்பாடு'}
-                        </h4>
-                      </div>
-                      <p className="text-xs sm:text-sm text-amber-900 leading-relaxed text-justify">
-                        {lang === 'en'
-                          ? 'Nallathe Nadakkum is registered as Doc No. 16/2025. Applications for 12A and 80G tax exemptions are in process with the IT Department and are currently NOT tax-exempt.'
-                          : 'எங்களது அறக்கட்டளை Doc 16/2025 ஆக பதிவு செய்யப்பட்டுள்ளது. 12A மற்றும் 80G வரி விலக்கு விண்ணப்பங்கள் வருமான வரித்துறையிடம் நிலுவையில் இருப்பதால் தற்போது வரி விலக்கு பெற இயலாது.'}
-                      </p>
-                    </div>
-                    <span className="text-[9px] font-mono font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded w-fit uppercase">
-                      {lang === 'en' ? 'Pending Approval' : 'விண்ணப்பம் பரிசீலனையில்'}
-                    </span>
-                  </div>
-
-                  {/* Warning 3: FCRA blocking */}
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 flex flex-col justify-between space-y-3">
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2 text-gray-900">
-                        <FaCoins className="h-4 w-4 flex-shrink-0" />
-                        <h4 className="text-xs font-bold uppercase tracking-wider">
-                          {lang === 'en' ? 'FCRA & Foreign Funds' : 'வெளிநாட்டு நிதி மறுப்பு'}
-                        </h4>
-                      </div>
-                      <p className="text-xs sm:text-sm text-gray-900 leading-relaxed text-justify">
-                        {lang === 'en'
-                          ? 'We strictly comply with Home Ministry FCRA regulations. Since we do not hold FCRA registration, we cannot accept foreign currency donations or non-Indian remittances.'
-                          : 'FCRA சட்ட விதிகளின்படி, வெளிநாட்டு வங்கிக் கணக்குகளில் இருந்தோ அல்லது வெளிநாட்டுப் பணமாகவோ எங்களால் நன்கொடைகளை ஏற்க முடியாது என்பதைத் தெளிவுபடுத்துகிறோம்.'}
-                      </p>
-                    </div>
-                    <span className="text-[9px] font-mono font-bold text-gray-900 bg-slate-200 px-2 py-0.5 rounded w-fit uppercase">
-                      {lang === 'en' ? 'Domestic Only' : 'உள்நாட்டு நிதி மட்டுமே'}
-                    </span>
-                  </div>
-
-                </motion.div>
-              )}
-
-            </AnimatePresence>
-          </div>
-
+            </div>
+          ))}
         </div>
       </section>
 
@@ -654,32 +501,32 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
           
           {/* Mission Card */}
           <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm flex flex-col space-y-4 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-2 h-full bg-emerald-600"></div>
+            <div className="absolute top-0 left-0 w-2 h-full bg-brand-blue"></div>
             <div className="flex items-center gap-3">
-              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-blue-50 text-brand-blue-700">
                 <FaHeartPulse className="h-6 w-6" />
               </div>
               <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
                 {commonTranslations.missionTitle[lang]}
               </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] flex-grow text-justify">
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] flex-grow">
               {commonTranslations.missionText[lang]}
             </p>
           </div>
 
           {/* Vision Card */}
           <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm flex flex-col space-y-4 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-2 h-full bg-emerald-600"></div>
+            <div className="absolute top-0 left-0 w-2 h-full bg-brand-gold"></div>
             <div className="flex items-center gap-3">
-              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-gold-50 text-brand-gold-700">
                 <FaAward className="h-6 w-6" />
               </div>
               <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
                 {commonTranslations.visionTitle[lang]}
               </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] flex-grow text-justify">
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] flex-grow">
               {commonTranslations.visionText[lang]}
             </p>
           </div>
@@ -693,7 +540,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
           <img
             src="/founder.jpeg"
             alt={commonTranslations.founderName[lang]}
-            className="h-28 w-28 rounded-full object-cover object-top flex-shrink-0 border border-emerald-200"
+            className="h-40 w-40 sm:h-44 sm:w-44 rounded-full object-cover object-top flex-shrink-0 border border-emerald-200"
           />
           <div className="space-y-4 flex-grow">
             <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
@@ -708,6 +555,13 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               <p className="font-display text-sm font-bold text-gray-900">{commonTranslations.founderName[lang]}</p>
               <p className="text-xs text-gray-900">{lang === 'en' ? 'Founder & Chairman, Advocate' : 'நிறுவனர் மற்றும் தலைவர், வழக்கறிஞர்'}</p>
             </div>
+            <button
+              onClick={() => setActiveTab('speaker')}
+              className="text-emerald-700 font-semibold text-sm hover:text-emerald-800 hover:underline inline-flex items-center space-x-1 cursor-pointer"
+            >
+              <span>{lang === 'en' ? 'Invite our Founder to Speak' : 'எங்கள் நிறுவனரை சொற்பொழிவாளராக அழைக்க'}</span>
+              <FaChevronRight className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </section>
@@ -719,14 +573,14 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
         </h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[
-            { label: { en: 'Daily Food', ta: 'அன்னதானம்' }, tab: 'services', icon: <FaUtensils className="h-5 w-5" /> },
-            { label: { en: 'Free Ambulance', ta: 'இலவச ஆம்புலன்ஸ்' }, tab: 'services', icon: <FaTruckMedical className="h-5 w-5" /> },
-            { label: { en: 'Last Rites', ta: 'இறுதி மரியாதை' }, tab: 'services', icon: <FaHeart className="h-5 w-5" /> },
-            { label: { en: 'Elder Rescue', ta: 'முதியோர் மீட்பு' }, tab: 'services', icon: <FaAward className="h-5 w-5" /> },
-            { label: { en: 'Education Support', ta: 'கல்வி உதவி' }, tab: 'services', icon: <FaFileLines className="h-5 w-5" /> },
-            { label: { en: 'Emergency Help', ta: 'அவசர உதவி' }, tab: 'help', icon: <FaHeartPulse className="h-5 w-5" /> },
-            { label: { en: 'Blood Donation', ta: 'இரத்த நன்கொடை' }, tab: 'donate', icon: <FaDroplet className="h-5 w-5" /> },
-            { label: { en: 'Dress Donation', ta: 'ஆடை நன்கொடை' }, tab: 'donate', icon: <FaShirt className="h-5 w-5" /> }
+            { label: { en: 'Daily Food', ta: 'அன்னதானம்' }, tab: 'services', icon: <FaUtensils className="h-5 w-5" />, accent: 'bg-brand-orange-50 text-brand-orange-700 group-hover:bg-brand-orange-100' },
+            { label: { en: 'Free Ambulance', ta: 'இலவச ஆம்புலன்ஸ்' }, tab: 'services', icon: <FaTruckMedical className="h-5 w-5" />, accent: 'bg-brand-blue-50 text-brand-blue-700 group-hover:bg-brand-blue-100' },
+            { label: { en: 'Last Rites', ta: 'இறுதி மரியாதை' }, tab: 'services', icon: <FaHeart className="h-5 w-5" />, accent: 'bg-brand-violet-50 text-brand-violet-700 group-hover:bg-brand-violet-100' },
+            { label: { en: 'Elder Rescue', ta: 'முதியோர் மீட்பு' }, tab: 'services', icon: <FaAward className="h-5 w-5" />, accent: 'bg-emerald-50 text-emerald-700 group-hover:bg-emerald-100' },
+            { label: { en: 'Education Support', ta: 'கல்வி உதவி' }, tab: 'services', icon: <FaFileLines className="h-5 w-5" />, accent: 'bg-brand-gold-50 text-brand-gold-700 group-hover:bg-brand-gold-100' },
+            { label: { en: 'Emergency Help', ta: 'அவசர உதவி' }, tab: 'help', icon: <FaHeartPulse className="h-5 w-5" />, accent: 'bg-brand-blue-50 text-brand-blue-700 group-hover:bg-brand-blue-100' },
+            { label: { en: 'Blood Donation', ta: 'இரத்த நன்கொடை' }, tab: 'donate', icon: <FaDroplet className="h-5 w-5" />, accent: 'bg-rose-50 text-rose-600 group-hover:bg-rose-100' },
+            { label: { en: 'Dress Donation', ta: 'ஆடை நன்கொடை' }, tab: 'donate', icon: <FaShirt className="h-5 w-5" />, accent: 'bg-emerald-50 text-brand-leaf group-hover:bg-emerald-100' }
           ].map((prog, idx) => (
             <button
               key={idx}
@@ -734,7 +588,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               onClick={() => setActiveTab(prog.tab)}
               className="rounded-xl border border-gray-100 bg-white p-4 text-center shadow-sm hover:shadow-md hover:border-emerald-200 hover:bg-emerald-50/20 transition-all cursor-pointer flex flex-col items-center justify-center space-y-2 group"
             >
-              <div className="p-2 bg-emerald-50 text-emerald-700 rounded-lg group-hover:bg-emerald-100 transition-colors">
+              <div className={`p-2 rounded-lg transition-colors ${prog.accent}`}>
                 {prog.icon}
               </div>
               <span className="text-xs sm:text-sm font-semibold text-gray-900 leading-tight">

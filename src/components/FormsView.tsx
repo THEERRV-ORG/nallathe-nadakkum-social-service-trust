@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { OFFICIAL_CONTACT, buildMailtoUrl, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
-import { motion } from 'motion/react';
-import { FaShieldHalved, FaCalendarDays, FaPhoneFlip, FaTriangleExclamation, FaUserCheck, FaHeart } from 'react-icons/fa6';
+import { motion, AnimatePresence } from 'motion/react';
+import { FaLocationDot, FaEnvelope, FaPhone, FaChevronDown, FaChevronRight } from 'react-icons/fa6';
+import { faqData } from '../data';
 import Monogram from './Monogram';
 
 interface FormsViewProps {
@@ -42,6 +43,10 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
   const [contactMsg, setContactMsg] = useState('');
   const [contactLoading, setContactLoading] = useState(false);
   const [contactSuccess, setContactSuccess] = useState(false);
+
+  // Contact-page FAQ accordion
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const toggleFaq = (index: number) => setOpenFaqIndex(openFaqIndex === index ? null : index);
 
   const handleInterestToggle = (interest: string) => {
     if (volInterests.includes(interest)) {
@@ -169,13 +174,13 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           {/* Left Side: Form Details & Disclaimer */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+              <span className="text-xs font-bold uppercase tracking-wider text-brand-orange-700 bg-brand-orange-50 px-2.5 py-1 rounded-full">
                 {lang === 'en' ? 'Urgent Assistance Hub' : 'உதவி மையப்பகுதி'}
               </span>
               <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
                 {lang === 'en' ? 'Request Immediate Help' : 'நேரடி உதவி கோருங்கள்'}
               </h1>
-              <p className="text-gray-900 text-sm leading-relaxed text-justify">
+              <p className="text-gray-900 text-sm leading-relaxed">
                 {lang === 'en'
                   ? 'If you or someone in your vicinity is in severe distress (homelessness, abandonment in old age, needing last rites, or urgent hospital fees), please fill out our dispatch request. Our local network conducts a physical review within 24–48 hours.'
                   : 'உங்களுக்கோ அல்லது உங்கள் பகுதியில் வசிக்கும் யாராவது ஒருவருக்கு அவசரமாக உணவு, முதியோர் மீட்பு, மருத்துவ உதவி அல்லது கல்வி கட்டண உதவி தேவைப்பட்டால் கீழே உள்ள படிவத்தை நிரப்பவும். எங்களது தன்னார்வலர்கள் 24-48 மணி நேரத்திற்குள் நேரில் வந்து விசாரித்து உதவுவர்.'}
@@ -184,14 +189,22 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
             {/* Disclaimer Checklist */}
             <div className="rounded-xl bg-gray-50 p-5 border border-gray-200/60 space-y-3">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900">
-                <Monogram label="!" size="xs" tone="amber" className="mr-1 align-middle" />{lang === 'en' ? 'Requirements & Process' : 'அறிவிப்பும் செயல்முறையும்'}
+              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                <Monogram label="!" size="xs" tone="amber" />
+                <span>{lang === 'en' ? 'Requirements & Process' : 'அறிவிப்பும் செயல்முறையும்'}</span>
               </h3>
-              <ul className="text-base text-gray-900 space-y-2 list-disc pl-4 leading-relaxed">
-                <li>{lang === 'en' ? 'All requests undergo physical verification by our trustees/volunteers.' : 'அனைத்து கோரிக்கைகளும் எங்களது அறங்காவலர்கள் அல்லது தன்னார்வலர்களால் நேரடியாகச் சரிபார்க்கப்படும்.'}</li>
-                <li>{lang === 'en' ? 'Support is distributed based on the severity of distress and resource availability.' : 'வழங்கப்படும் உதவி நிலைமையின் தீவிரம் மற்றும் எங்களது நிதி ஆதாரத்தின் அடிப்படையிலேயே தீர்மானிக்கப்படும்.'}</li>
-                <li>{lang === 'en' ? 'Last rites support is coordinated strictly alongside the local Police Station.' : 'ஆதரவற்றோர் இறுதி மரியாதை உதவி முற்றிலும் காவல்துறையின் ஒப்புதல் மற்றும் ஆவணங்களின் அடிப்படையிலேயே நிகழும்.'}</li>
-                <li>{lang === 'en' ? 'Free ambulance dispatch is reserved strictly for families below the poverty line; eligibility is verified before dispatch.' : 'இலவச ஆம்புலன்ஸ் சேவை வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டுமே; அனுப்பும் முன் தகுதி உறுதி செய்யப்படும்.'}</li>
+              <ul className="text-base text-gray-900 space-y-2 leading-relaxed">
+                {[
+                  { en: 'All requests undergo physical verification by our trustees/volunteers.', ta: 'அனைத்து கோரிக்கைகளும் எங்களது அறங்காவலர்கள் அல்லது தன்னார்வலர்களால் நேரடியாகச் சரிபார்க்கப்படும்.' },
+                  { en: 'Support is distributed based on the severity of distress and resource availability.', ta: 'வழங்கப்படும் உதவி நிலைமையின் தீவிரம் மற்றும் எங்களது நிதி ஆதாரத்தின் அடிப்படையிலேயே தீர்மானிக்கப்படும்.' },
+                  { en: 'Last rites support is coordinated strictly alongside the local Police Station.', ta: 'ஆதரவற்றோர் இறுதி மரியாதை உதவி முற்றிலும் காவல்துறையின் ஒப்புதல் மற்றும் ஆவணங்களின் அடிப்படையிலேயே நிகழும்.' },
+                  { en: 'Free ambulance dispatch is reserved strictly for families below the poverty line; eligibility is verified before dispatch.', ta: 'இலவச ஆம்புலன்ஸ் சேவை வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டுமே; அனுப்பும் முன் தகுதி உறுதி செய்யப்படும்.' },
+                ].map((item, idx) => (
+                  <li key={idx} className="flex gap-2">
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-gray-400 shrink-0" />
+                    <span>{item[lang]}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -391,13 +404,13 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           {/* Left Column: Vol details */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+              <span className="text-xs font-bold uppercase tracking-wider text-brand-blue-700 bg-brand-blue-50 px-2.5 py-1 rounded-full">
                 {lang === 'en' ? 'Join Our Team' : 'எங்களுடன் இணையுங்கள்'}
               </span>
               <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
                 {lang === 'en' ? 'Become a Trust Volunteer' : 'தன்னார்வலராகச் சேவையற்றுக'}
               </h1>
-              <p className="text-gray-900 text-sm leading-relaxed text-justify">
+              <p className="text-gray-900 text-sm leading-relaxed">
                 {lang === 'en'
                   ? 'We have zero salaried administrative staffs. We rely on people who give a few hours a week—chopping vegetables for morning annadhanam, helping verify student profiles, driving ambulance transfers, or assisting in cemetery logistics. Join us to make a direct impact.'
                   : 'எங்கள் அறக்கட்டளையில் சம்பளம் பெறும் ஊழியர்கள் யாரும் இல்லை. வாரத்தில் ஒரு சில மணிநேரங்களை சமூகத்திற்காக வழங்கத் துடிக்கும் தன்னார்வலர்களை மட்டுமே நம்பியே எங்களது பணிகள் நடக்கின்றன. காலையில் உணவு பேக்கிங் செய்தல், முதியோர் மீட்பு, கள விசாரணை என ஏதேனும் ஒரு பணியில் உங்களை இணைத்துக் கொள்ளலாம்.'}
@@ -409,19 +422,17 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Volunteer Deployment Tracks' : 'உதவக்கூடிய பணிப் பிரிவுகள்'}
               </h3>
-              <ul className="text-xs text-gray-900 space-y-2 list-none">
-                <li className="flex items-center space-x-2">
-                  <Monogram label="F" size="xs" />
-                  <span><strong>{lang === 'en' ? 'Food Drive' : 'உணவு விநியோகம்'}:</strong> {lang === 'en' ? 'Meal packing & transport routes' : 'மதிய உணவு விநியோகம் மற்றும் பேக்கிங்'}</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Monogram label="A" size="xs" />
-                  <span><strong>{lang === 'en' ? 'Ambulance Support' : 'ஆம்புலன்ஸ் ஒருங்கிணைப்பு'}:</strong> {lang === 'en' ? 'Coordinating transfers & call log' : 'அவசர கால அழைப்புகளைப் பெறுதல்'}</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Monogram label="V" size="xs" />
-                  <span><strong>{lang === 'en' ? 'Outreach & Verification' : 'களப்பணி / சரிபார்ப்பு'}:</strong> {lang === 'en' ? 'Home audits for students & elders' : 'மாணவர்கள் மற்றும் முதியோர்களின் வீட்டு வசதிகளை விசாரித்தல்'}</span>
-                </li>
+              <ul className="text-xs text-gray-900 space-y-2">
+                {[
+                  { head: { en: 'Food Drive', ta: 'உணவு விநியோகம்' }, body: { en: 'Meal packing & transport routes', ta: 'மதிய உணவு விநியோகம் மற்றும் பேக்கிங்' } },
+                  { head: { en: 'Ambulance Support', ta: 'ஆம்புலன்ஸ் ஒருங்கிணைப்பு' }, body: { en: 'Coordinating transfers & call log', ta: 'அவசர கால அழைப்புகளைப் பெறுதல்' } },
+                  { head: { en: 'Outreach & Verification', ta: 'களப்பணி / சரிபார்ப்பு' }, body: { en: 'Home audits for students & elders', ta: 'மாணவர்கள் மற்றும் முதியோர்களின் வீட்டு வசதிகளை விசாரித்தல்' } },
+                ].map((track, idx) => (
+                  <li key={idx} className="flex gap-2">
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                    <span><strong>{track.head[lang]}:</strong> {track.body[lang]}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -604,13 +615,13 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           {/* Left Column: Coordinates */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+              <span className="text-xs font-bold uppercase tracking-wider text-brand-violet-700 bg-brand-violet-50 px-2.5 py-1 rounded-full">
                 {lang === 'en' ? 'Direct Coordinates' : 'தொடர்பு விபரம்'}
               </span>
               <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
                 {lang === 'en' ? 'Contact our Registered Office' : 'நேரடியாகத் தொடர்பு கொள்ள'}
               </h1>
-              <p className="text-gray-900 text-sm leading-relaxed text-justify">
+              <p className="text-gray-900 text-sm leading-relaxed">
                 {lang === 'en'
                   ? 'Our registered administrative office is located on Rajeev Nagar crossroad, opp. SPM Hospital, Tiruchengode town. For emergency ambulance requirements or reporting abandoned elderly, call us immediately.'
                   : 'எங்கள் பதிவு அலுவலகம் திருச்செங்கோடு ராஜிவ் நகர் குறுக்கு சாலை, SPM மருத்துவமனைக்கு எதிரில் அமைந்துள்ளது. அவசர ஆம்புலன்ஸ் தேவை அல்லது முதியவர்கள் மீட்புத் தகவல்களுக்கு உடனடியாக அழைக்கவும்.'}
@@ -619,30 +630,36 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
             <div className="space-y-4 pt-2">
               <div className="flex items-start space-x-3.5">
-                <Monogram label="A" size="md" />
+                <div className="h-8 w-8 shrink-0 rounded-full bg-brand-violet-50 text-brand-violet-700 flex items-center justify-center">
+                  <FaLocationDot className="h-4 w-4" />
+                </div>
                 <div>
                   <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Office address' : 'அலுவலக முகவரி'}</h4>
-                  <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
+                  <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
                     Door No. 38/5, Rajeev Nagar Cross Road, Opp. SPM Hospital, Sanga Kiri Main Road, Tiruchengode – 637211
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3.5">
-                <Monogram label="E" size="md" />
+                <div className="h-8 w-8 shrink-0 rounded-full bg-brand-blue-50 text-brand-blue-700 flex items-center justify-center">
+                  <FaEnvelope className="h-4 w-4" />
+                </div>
                 <div>
                   <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Email Address' : 'மின்னஞ்சல் முகவரி'}</h4>
-                  <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
+                  <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
                     nallathanadakum@gmail.com
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3.5">
-                <Monogram label="P" size="md" />
+                <div className="h-8 w-8 shrink-0 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                  <FaPhone className="h-4 w-4" />
+                </div>
                 <div>
                   <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Emergency Phone & WhatsApp' : 'அவசரத் தொடர்பு எண்கள்'}</h4>
-                  <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] mt-1 font-semibold">
+                  <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1 font-semibold">
                     +91 98765 43210 / +91 94435 67890
                   </p>
                   <p className="text-[10px] text-gray-900 mt-0.5">
@@ -736,6 +753,52 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
               </form>
             )}
+          </div>
+
+          {/* Frequently Asked Questions */}
+          <div className="lg:col-span-12 space-y-6 pt-6">
+            <div className="text-center space-y-1">
+              <h2 className="font-display text-2xl font-bold text-gray-900">
+                {lang === 'en' ? 'Frequently Asked Questions' : 'அடிக்கடி கேட்கப்படும் கேள்விகள்'}
+              </h2>
+              <p className="text-xs text-gray-900">
+                {lang === 'en' ? 'Have questions regarding our operations or financial management? Click on an item below.' : 'எங்கள் செயல்பாடுகள் அல்லது நிதி மேலாண்மை குறித்து ஏதேனும் கேள்விகள் இருந்தால் கீழே தேர்வு செய்து விபரம் அறியலாம்.'}
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto divide-y divide-gray-100 border-t border-b border-gray-100">
+              {faqData.map((faq, idx) => {
+                const isOpen = openFaqIndex === idx;
+                return (
+                  <div key={idx} className="py-4">
+                    <button
+                      id={`faq-btn-${idx}`}
+                      onClick={() => toggleFaq(idx)}
+                      className="w-full flex justify-between items-center text-left font-sans text-sm font-semibold text-gray-900 hover:text-emerald-700 transition-colors py-1 cursor-pointer"
+                    >
+                      <span className="pr-4 leading-snug">{faq.question[lang]}</span>
+                      {isOpen ? <FaChevronDown className="h-4 w-4 text-emerald-600 flex-shrink-0" /> : <FaChevronRight className="h-4 w-4 text-gray-900 flex-shrink-0" />}
+                    </button>
+
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] pt-3 pr-6">
+                            {faq.answer[lang]}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
         </div>

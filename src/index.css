@@ -6,19 +6,69 @@
   --font-display: "Space Grotesk", "Noto Sans Tamil", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  --color-primary-50: #f0fdf4;
-  --color-primary-100: #dcfce7;
-  --color-primary-600: #16a34a;
-  --color-primary-700: #15803d;
-  --color-primary-800: #166534;
+  /*
+    Brand green ramp — derived from the official logo greens so the site's
+    dominant `emerald-*` utilities render the trust's real palette:
+      600 = Primary Deep Green  #1F734A
+      500 = Leaf Green          #4D8F52
+      400 = Light Green         #7CAF50
+      300 = Yellow Green        #9BBE69
+  */
+  --color-emerald-50:  #eaf4ee;
+  --color-emerald-100: #cfe6d7;
+  --color-emerald-200: #a9d3b6;
+  --color-emerald-300: #9bbe69;
+  --color-emerald-400: #7caf50;
+  --color-emerald-500: #4d8f52;
+  --color-emerald-600: #1f734a;
+  --color-emerald-700: #1a6340;
+  --color-emerald-800: #165433;
+  --color-emerald-900: #0f3d26;
+  --color-emerald-950: #082416;
+
+  /* Keep the `primary-*` alias in sync with the brand green. */
+  --color-primary-50:  #eaf4ee;
+  --color-primary-100: #cfe6d7;
+  --color-primary-600: #1f734a;
+  --color-primary-700: #1a6340;
+  --color-primary-800: #165433;
+
+  /* Secondary logo accents — used in targeted, meaningful places. */
+  --color-brand-blue:      #207092; /* Primary Blue — medical / ambulance / info */
+  --color-brand-blue-50:   #e8f1f5;
+  --color-brand-blue-100:  #c9e0e9;
+  --color-brand-blue-700:  #185873;
+
+  --color-brand-orange:    #ee9432; /* Warm service orange — food / help */
+  --color-brand-orange-50: #fdf3e6;
+  --color-brand-orange-100:#fbe4c8;
+  --color-brand-orange-700:#b96d1c;
+
+  --color-brand-gold:      #efc981; /* Golden Yellow — education / highlights */
+  --color-brand-gold-50:   #fdf8ee;
+  --color-brand-gold-100:  #faeed2;
+  --color-brand-gold-700:  #a9812f;
+
+  --color-brand-violet:    #7c4db8; /* Violet (client request) — last rites / dignity */
+  --color-brand-violet-50: #f1ebf9;
+  --color-brand-violet-100:#e0d1f2;
+  --color-brand-violet-700:#5f3a8f;
+
+  --color-brand-leaf:      #4d8f52; /* Leaf Green — secondary green surfaces */
+  --color-brand-lime:      #9bbe69; /* Yellow/Lime Green — fresh highlight */
 }
 
+/*
+  Professional brand background: a clean near-white base with soft, wide
+  brand-green glows anchored to the corners. Calm and airy — no busy patterns.
+*/
 html {
   background:
-    radial-gradient(circle at 12% 8%, rgba(245, 210, 184, 0.16), transparent 20%),
-    radial-gradient(circle at 86% 78%, rgba(196, 214, 191, 0.14), transparent 18%),
-    radial-gradient(circle at 72% 22%, rgba(220, 217, 210, 0.12), transparent 14%),
-    #ffffff;
+    radial-gradient(60% 55% at 0% 0%, rgba(31, 115, 74, 0.06), transparent 70%),
+    radial-gradient(55% 55% at 100% 0%, rgba(32, 112, 146, 0.05), transparent 70%),
+    radial-gradient(70% 60% at 100% 100%, rgba(77, 143, 82, 0.06), transparent 70%),
+    #fbfdfb;
+  background-attachment: fixed;
 }
 
 body {
@@ -28,65 +78,33 @@ body {
 .site-shell {
   position: relative;
   isolation: isolate;
-}
-
-.site-shell::before,
-.site-shell::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.site-shell::before {
-  background:
-    radial-gradient(circle at 9% 20%, rgba(245, 210, 184, 0.18) 0, rgba(245, 210, 184, 0.18) 10%, transparent 11%),
-    radial-gradient(circle at 84% 18%, rgba(197, 214, 193, 0.14) 0, rgba(197, 214, 193, 0.14) 8%, transparent 9%),
-    radial-gradient(circle at 78% 70%, rgba(217, 214, 207, 0.12) 0, rgba(217, 214, 207, 0.12) 7%, transparent 8%),
-    radial-gradient(circle at 18% 82%, rgba(244, 201, 175, 0.12) 0, rgba(244, 201, 175, 0.12) 8%, transparent 9%),
-    radial-gradient(circle at 56% 40%, rgba(204, 215, 198, 0.08) 0, rgba(204, 215, 198, 0.08) 6%, transparent 7%),
-    linear-gradient(140deg, transparent 0 23%, rgba(184, 170, 156, 0.12) 23.2%, transparent 23.5%),
-    linear-gradient(165deg, transparent 0 74%, rgba(184, 170, 156, 0.1) 74.2%, transparent 74.5%);
-  opacity: 0.95;
-}
-
-.site-shell::after {
-  background:
-    radial-gradient(rgba(173, 159, 146, 0.24) 1px, transparent 1px),
-    radial-gradient(rgba(173, 159, 146, 0.14) 1px, transparent 1px),
-    repeating-linear-gradient(90deg, transparent 0 22px, rgba(186, 171, 156, 0.12) 22px 23px, transparent 23px 46px),
-    repeating-linear-gradient(0deg, transparent 0 26px, rgba(186, 171, 156, 0.08) 26px 27px, transparent 27px 54px);
-  background-size: 10px 10px, 10px 10px, 220px 76px, 86px 210px;
-  background-position: 88% 120px, 14% calc(100% - 180px), 100% 160px, 70px calc(100% - 220px);
-  background-repeat: no-repeat;
-  opacity: 0.5;
+  /* Safety net against accidental horizontal scroll on small screens.
+     `clip` (not `hidden`) does NOT create a scroll container, so the
+     pinned horizontal Journey timeline's position:sticky still works. */
+  overflow-x: clip;
 }
 
 /*
-  Tamil mode: reduce ONLY text sizes by 2px (0.125rem).
-  Overrides Tailwind's --text-* CSS variables which control all text-{size}
-  utilities. Spacing variables (--spacing-*) are intentionally untouched so
-  padding, margin, gap, and layout remain pixel-identical to English mode.
+  Tamil is the site's PRIMARY language. It renders at the SAME font-size as
+  English (no shrinking) — only the line-height is relaxed, because Tamil vowel
+  marks stack above/below the baseline and need more vertical breathing room.
+  Font-size variables are intentionally left at their defaults so both
+  languages share one type scale.
 */
-html[lang="ta"] {
-  --text-xs:   0.625rem;   /* 10px  (was 12px) */
-  --text-sm:   0.75rem;    /* 12px  (was 14px) */
-  --text-base: 0.875rem;   /* 14px  (was 16px) */
-  --text-lg:   1rem;       /* 16px  (was 18px) */
-  --text-xl:   1.125rem;   /* 18px  (was 20px) */
-  --text-2xl:  1.375rem;   /* 22px  (was 24px) */
-  --text-3xl:  1.75rem;    /* 28px  (was 30px) */
-  --text-4xl:  2.125rem;   /* 34px  (was 36px) */
-  --text-5xl:  2.875rem;   /* 46px  (was 48px) */
-  --text-6xl:  3.625rem;   /* 58px  (was 60px) */
+
+/* Body / reading text: more generous leading in Tamil. */
+html[lang="ta"] p,
+html[lang="ta"] li,
+html[lang="ta"] blockquote {
+  line-height: 1.85;
 }
 
-/* Tamil vowel marks stack above/below glyphs — headings need extra leading */
+/* Headings: enough leading for stacked marks without looking loose. */
 html[lang="ta"] h1,
 html[lang="ta"] h2,
-html[lang="ta"] h3 {
-  line-height: 1.55;
+html[lang="ta"] h3,
+html[lang="ta"] h4 {
+  line-height: 1.5;
   letter-spacing: 0;
 }
 

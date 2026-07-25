@@ -121,7 +121,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                   <h3 className="font-display text-sm sm:text-base font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">
                     {item.title[lang]}
                   </h3>
-                  <p className="text-base text-gray-900 leading-relaxed text-justify line-clamp-3">
+                  <p className="text-base text-gray-900 leading-relaxed line-clamp-3">
                     {item.description[lang]}
                   </p>
                 </div>
@@ -190,7 +190,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                   {selectedItem.title[lang]}
                 </h3>
 
-                <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify">
+                <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65]">
                   {selectedItem.description[lang]}
                 </p>
 

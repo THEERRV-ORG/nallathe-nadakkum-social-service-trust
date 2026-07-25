@@ -26,12 +26,20 @@ function parseStat(value: string): { num: number; suffix: string } {
  */
 export default function CountUpStat({ value, className, duration = 1600 }: CountUpStatProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-40px' });
+  // once:false so the count-up replays every time the section re-enters view.
+  const inView = useInView(ref, { once: false, margin: '-40px' });
   const { num, suffix } = parseStat(value);
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    if (!inView || Number.isNaN(num)) return;
+    if (Number.isNaN(num)) return;
+
+    // Reset to zero whenever the stat scrolls out of view, so it animates
+    // fresh on the next visit rather than only on the first load.
+    if (!inView) {
+      setDisplay(0);
+      return;
+    }
 
     const prefersReduced =
       typeof window !== 'undefined' &&

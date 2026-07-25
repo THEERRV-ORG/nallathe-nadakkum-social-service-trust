@@ -1,22 +1,85 @@
 import React, { useState, useEffect } from 'react';
-import { OFFICIAL_CONTACT, SAMPLE_SPONSORS, buildMailtoUrl, hasMeaningfulText, isValidDonationAmount, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeSingleLine } from '../security';
+import { OFFICIAL_CONTACT, SAMPLE_SPONSORS, buildMailtoUrl, buildWhatsAppUrl, hasMeaningfulText, isValidDonationAmount, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeSingleLine } from '../security';
 import { motion } from 'motion/react';
 import {
   FaCircleExclamation, FaCreditCard, FaGift, FaHeart,
-  FaPlay, FaYoutube, FaVideo
+  FaPlay, FaYoutube, FaVideo, FaBuildingColumns, FaMobileScreenButton,
+  FaCopy, FaCheck, FaWhatsapp, FaEnvelope
 } from 'react-icons/fa6';
-import Monogram from './Monogram';
+import { DonatePreset } from '../data';
 
 interface DonateViewProps {
   lang: 'en' | 'ta';
+  preset?: DonatePreset | null;
+  onPresetConsumed?: () => void;
 }
+
+const FINANCIAL_PROGRAMS: Record<string, { en: string; ta: string }> = {
+  general: { en: 'Where Most Needed', ta: 'மிக அவசியமான இடத்திற்கு' },
+  annadhanam: { en: 'Daily Annadhanam', ta: 'தினசரி அன்னதானம்' },
+  student: { en: 'Student Support', ta: 'மாணவர்கள் கல்வி' },
+  ambulance: { en: 'Ambulance Fuel', ta: 'ஆம்புலன்ஸ் எரிபொருள்' },
+  cremation: { en: 'Dignified Last Rites', ta: 'ஆதரவற்றோர் இறுதி மரியாதை' },
+  other: { en: 'Other (please specify)', ta: 'மற்றவை (குறிப்பிடவும்)' },
+};
+
+// Suggested contribution amounts per programme. When a programme has presets,
+// the amount field becomes a dropdown of these known costs (plus "Other" where
+// the visitor may enter a custom amount). Figures are owner-provided.
+type AmtOption = { id: string; amount: string; label: { en: string; ta: string } };
+type AmtGroup = { heading?: { en: string; ta: string }; options: AmtOption[] };
+const AMOUNT_PRESETS: Record<string, { allowOther: boolean; title: { en: string; ta: string }; groups: AmtGroup[] }> = {
+  annadhanam: {
+    allowOther: true,
+    title: { en: 'Sponsor a Meal — Daily Costs', ta: 'ஒரு வேளை உணவு வழங்க — தினசரி செலவு' },
+    groups: [
+      {
+        heading: { en: 'Outdoor Food Distribution (Daily)', ta: 'வெளிப்புற உணவு வழங்கல் (தினசரி)' },
+        options: [
+          { id: 'out-morning', amount: '2000', label: { en: 'Morning — ₹2,000', ta: 'காலை — ₹2,000' } },
+          { id: 'out-afternoon', amount: '3000', label: { en: 'Afternoon — ₹3,000', ta: 'மதியம் — ₹3,000' } },
+          { id: 'out-night', amount: '2000', label: { en: 'Night — ₹2,000', ta: 'இரவு — ₹2,000' } },
+        ],
+      },
+      {
+        heading: { en: 'Indoor Food — Mudhiyor Illam (Old-Age Home)', ta: 'உள்ளக உணவு — முதியோர் இல்லம்' },
+        options: [
+          { id: 'in-morning', amount: '4500', label: { en: 'Morning — ₹4,500', ta: 'காலை — ₹4,500' } },
+          { id: 'in-afternoon', amount: '6000', label: { en: 'Afternoon — ₹6,000', ta: 'மதியம் — ₹6,000' } },
+          { id: 'in-night', amount: '4500', label: { en: 'Night — ₹4,500', ta: 'இரவு — ₹4,500' } },
+        ],
+      },
+    ],
+  },
+  student: {
+    allowOther: true,
+    title: { en: 'Student Support', ta: 'மாணவர்கள் கல்வி உதவி' },
+    groups: [
+      { options: [{ id: 'tuition', amount: '5000', label: { en: 'Annual Tuition Fee — ₹5,000', ta: 'ஆண்டு கல்விக் கட்டணம் — ₹5,000' } }] },
+    ],
+  },
+  ambulance: {
+    allowOther: true,
+    title: { en: 'Ambulance Fuel', ta: 'ஆம்புலன்ஸ் எரிபொருள்' },
+    groups: [
+      { options: [{ id: 'amb-10', amount: '2500', label: { en: '10 Trips — ₹2,500', ta: '10 பயணங்கள் — ₹2,500' } }] },
+    ],
+  },
+  cremation: {
+    allowOther: false,
+    title: { en: 'Dignified Last Rites', ta: 'ஆதரவற்றோர் இறுதி மரியாதை' },
+    groups: [
+      { options: [{ id: 'last-rites', amount: '5000', label: { en: 'Dignified Last Rites — ₹5,000', ta: 'இறுதி மரியாதை — ₹5,000' } }] },
+    ],
+  },
+};
 
 /**
  * Donation page for public programme information and safe acknowledgement
  * handoff. This component intentionally avoids client-side persistence for
  * donor data.
  */
-export default function DonateView({ lang }: DonateViewProps) {
+export default function DonateView({ lang, preset, onPresetConsumed }: DonateViewProps) {
   // Video content is curated and static so embeds stay predictable and auditable.
   const [activeVideoId, setActiveVideoId] = useState('nTjWxd91AMA');
   const trustVideos = [
@@ -59,10 +122,55 @@ export default function DonateView({ lang }: DonateViewProps) {
   const [donationAmt, setDonationAmt] = useState('1000');
   const [donationItem, setDonationItem] = useState('');
   const [bloodType, setBloodType] = useState('O+');
+  const [bloodOther, setBloodOther] = useState('');
   const [donationType, setDonationType] = useState('Money');
+  const [financialProgram, setFinancialProgram] = useState('general');
+  const [programOther, setProgramOther] = useState('');
+  // Which preset amount option is picked ('other' means a custom amount).
+  const [amountPresetId, setAmountPresetId] = useState('');
   const [donorMsg, setDonorMsg] = useState('');
   const [donorLoading, setDonorLoading] = useState(false);
   const [donorSuccess, setDonorSuccess] = useState(false);
+
+  // Anchor so a preset selection can scroll the visitor straight to the form.
+  const formRef = React.useRef<HTMLDivElement>(null);
+
+  // Apply a pre-selection arriving from the home "What Can You Donate" cards.
+  useEffect(() => {
+    if (!preset) return;
+    setDonationType(preset.type);
+    if (preset.program) setFinancialProgram(preset.program);
+    if (preset.amount) setDonationAmt(preset.amount);
+    setDonorSuccess(false);
+
+    // Scroll to the form once the page has laid out, THEN clear the preset.
+    // (Clearing earlier would re-run this effect and cancel the pending scroll.)
+    const t = setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      onPresetConsumed?.();
+    }, 300);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [preset]);
+
+  // When the selected programme has preset amounts, keep the amount dropdown in
+  // sync: preserve an incoming matching amount, otherwise default to the first.
+  useEffect(() => {
+    const cfg = AMOUNT_PRESETS[financialProgram];
+    if (donationType !== 'Money' || !cfg) {
+      setAmountPresetId('');
+      return;
+    }
+    const all = cfg.groups.flatMap((g) => g.options);
+    const match = all.find((o) => o.amount === donationAmt);
+    if (match) {
+      setAmountPresetId(match.id);
+    } else {
+      setAmountPresetId(all[0].id);
+      setDonationAmt(all[0].amount);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [financialProgram, donationType]);
 
   // Public-facing, sample-only acknowledgement cards.
   const [wallSponsors, setWallSponsors] = useState<any[]>([]);
@@ -74,6 +182,32 @@ export default function DonateView({ lang }: DonateViewProps) {
     setCopiedText(type);
     setTimeout(() => setCopiedText(null), 2000);
   };
+
+  // Subtle, accessible copy affordance for official payment values.
+  const copyBtn = (value: string, id: string) => (
+    <button
+      type="button"
+      onClick={() => handleCopy(value, id)}
+      aria-label={lang === 'en' ? 'Copy to clipboard' : 'நகலெடு'}
+      className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold transition-colors shrink-0 ${
+        copiedText === id
+          ? 'text-emerald-700 bg-emerald-50'
+          : 'text-gray-500 hover:text-emerald-700 hover:bg-emerald-50'
+      }`}
+    >
+      {copiedText === id ? (
+        <>
+          <FaCheck className="h-3 w-3" />
+          <span>{lang === 'en' ? 'Copied' : 'நகலெடுத்தது'}</span>
+        </>
+      ) : (
+        <>
+          <FaCopy className="h-3 w-3" />
+          <span>{lang === 'en' ? 'Copy' : 'நகல்'}</span>
+        </>
+      )}
+    </button>
+  );
 
   useEffect(() => {
     setWallSponsors([...SAMPLE_SPONSORS]);
@@ -111,10 +245,11 @@ export default function DonateView({ lang }: DonateViewProps) {
     setDonorLoading(true);
 
     setTimeout(() => {
+      const bloodLabel = bloodType === 'Other' ? (sanitizeSingleLine(bloodOther, 40) || 'Other') : bloodType;
       const itemDetail = donationType === 'Money'
         ? `Rs. ${Number(donationAmt).toLocaleString('en-IN')}`
         : donationType === 'Blood'
-        ? `${bloodType} (${lang === 'en' ? 'Blood Type' : 'இரத்த வகை'})`
+        ? `${bloodLabel} (${lang === 'en' ? 'Blood Type' : 'இரத்த வகை'})`
         : normalizedItem;
 
       const donationTypeLabel = {
@@ -124,10 +259,16 @@ export default function DonateView({ lang }: DonateViewProps) {
         'Dress': lang === 'en' ? 'Clothes / Dress' : 'ஆடைகள் / உடை',
       }[donationType] || donationType;
 
+      const programLine =
+        donationType === 'Money'
+          ? `Programme: ${financialProgram === 'other' ? (sanitizeSingleLine(programOther, 80) || 'Other') : (FINANCIAL_PROGRAMS[financialProgram]?.en ?? financialProgram)}`
+          : '';
+
       const mailtoUrl = buildMailtoUrl(OFFICIAL_CONTACT.email, 'Donation acknowledgement request', [
         `Name: ${normalizedName}`,
         `Phone: ${normalizedPhone}`,
         `Support type: ${donationTypeLabel}`,
+        programLine,
         `Support detail: ${itemDetail}`,
         `Message: ${normalizedMessage || 'Blessed to support.'}`,
       ]);
@@ -169,7 +310,7 @@ export default function DonateView({ lang }: DonateViewProps) {
             <h4 className="text-xs font-bold text-red-900 uppercase tracking-wider">
               {lang === 'en' ? 'Important Safety Notice' : 'முக்கிய பாதுகாப்பு அறிவிப்பு'}
             </h4>
-            <p className="text-base sm:text-lg text-red-800 leading-relaxed sm:leading-[1.65] text-justify">
+            <p className="text-sm sm:text-base text-red-800 leading-relaxed sm:leading-[1.65]">
               {lang === 'en'
                 ? 'Please make payments only to the official trust bank account or UPI ID listed below. Do not send funds to any individual personal account claiming to represent the trust. If in doubt, contact us directly first.'
                 : 'தயவுசெய்து கீழே குறிப்பிடப்பட்டுள்ள அறக்கட்டளையின் அதிகாரப்பூர்வ வங்கிக் கணக்கு அல்லது UPI முகவரிக்கு மட்டுமே பணம் அனுப்புங்கள். அறக்கட்டளையின் ஊழியர் என்று கூறி வரும் தனிநபர் கணக்குகளுக்குப் பணம் அனுப்பக் கூடாது.'}
@@ -184,7 +325,7 @@ export default function DonateView({ lang }: DonateViewProps) {
             <h4 className="text-xs font-bold text-amber-950 uppercase tracking-wider">
               {lang === 'en' ? 'Tax Deduction & Exemption Status' : 'வரி விலக்கு நிலைப்பாடு'}
             </h4>
-            <p className="text-base sm:text-lg text-amber-900 leading-relaxed sm:leading-[1.65] text-justify">
+            <p className="text-sm sm:text-base text-amber-900 leading-relaxed sm:leading-[1.65]">
               {lang === 'en'
                 ? 'The trust is registered under deed Doc No. 16/2025. Applications for 12A and 80G tax-exempt registrations are pending. Donations are NOT currently eligible for tax deduction. We will update our notices once granted.'
                 : 'எங்களது அறக்கட்டளை 2025-ல் பதிவு செய்யப்பட்டுள்ளது. 12A / 80G வருமான வரி விலக்கிற்கான விண்ணப்பம் தற்போது நிலுவையில் உள்ளது. எனவே தற்போதைய நிலையில் வரி விலக்கு கோர இயலாது என்பதை வெளிப்படையாகத் தெரிவித்துக் கொள்கிறோம்.'}
@@ -194,208 +335,172 @@ export default function DonateView({ lang }: DonateViewProps) {
 
       </section>
 
-      {/* Official Bank Account Details Table */}
-      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs space-y-6">
-        <div className="space-y-1 border-b border-gray-100 pb-4">
-          <h3 className="font-display text-xl font-bold text-gray-900 flex items-center space-x-2">
-            <FaCreditCard className="h-6 w-6 text-emerald-600" />
-            <span>{lang === 'en' ? 'Official Banking Credentials' : 'அதிகாரப்பூர்வ வங்கிக் கணக்கு விபரங்கள்'}</span>
+      {/* Official Banking Credentials — symmetrical two-column payment section */}
+      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 lg:p-10 shadow-xs space-y-8">
+        {/* Shared header spanning both columns */}
+        <div className="max-w-2xl mx-auto text-center space-y-3">
+          <div className="inline-flex items-center gap-2 text-emerald-700">
+            <FaCreditCard className="h-5 w-5" />
+            <span className="text-[11px] font-bold uppercase tracking-widest">
+              {lang === 'en' ? 'Official Payment Methods' : 'அதிகாரப்பூர்வ பணம் செலுத்தும் வழிகள்'}
+            </span>
+          </div>
+          <h3 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
+            {lang === 'en' ? 'Official Banking Credentials' : 'அதிகாரப்பூர்வ வங்கிக் கணக்கு விபரங்கள்'}
           </h3>
-          <p className="text-xs sm:text-sm text-gray-900">
+          <p className="text-sm sm:text-base text-gray-900/80">
             {lang === 'en' ? 'Operated jointly by Chairman and Treasurer. Strictly audited.' : 'தலைவர் மற்றும் பொருளாளரால் மட்டுமே இயக்கப்படும் பாதுகாப்பான கணக்கு.'}
+          </p>
+          <p className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700">
+            <FaCheck className="h-3 w-3" />
+            {lang === 'en'
+              ? 'Registered Doc No. 16/2025 · Namakkal District, Tamil Nadu'
+              : 'பதிவு எண் 16/2025 · நாமக்கல் மாவட்டம், தமிழ்நாடு'}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-7 space-y-4">
-            <div className="rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-xs">
-              <table className="w-full text-left text-xs sm:text-sm">
-                <tbody className="divide-y divide-gray-100">
-                  <tr>
-                    <td className="px-4 py-3 font-semibold text-gray-900 bg-gray-50/50 w-1/3">{lang === 'en' ? 'Bank Name' : 'வங்கிப் பெயர்'}</td>
-                    <td className="px-4 py-3 font-bold text-gray-900">Equitas Small Finance Bank</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-3 font-semibold text-gray-900 bg-gray-50/50">{lang === 'en' ? 'Account Name' : 'கணக்கின் பெயர்'}</td>
-                    <td className="px-4 py-3 font-bold text-emerald-800">Nallathe Nadakkum Trust</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-3 font-semibold text-gray-900 bg-gray-50/50">{lang === 'en' ? 'Account Number' : 'கணக்கு எண்'}</td>
-                    <td className="px-4 py-3 font-mono font-bold text-gray-950 tracking-wider">20000300375</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-3 font-semibold text-gray-900 bg-gray-50/50">{lang === 'en' ? 'IFSC Code' : 'IFSC குறியீடு'}</td>
-                    <td className="px-4 py-3 font-mono font-bold text-gray-950 tracking-wider">ESFB0001138</td>
-                  </tr>
-                </tbody>
-              </table>
+        {/* True 50/50 payment columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+          {/* LEFT — Bank Transfer */}
+          <div className="flex flex-col rounded-2xl border border-gray-100 bg-gray-50/40 p-6 sm:p-8 space-y-5">
+            <div className="flex items-center gap-2.5 pb-1">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+                <FaBuildingColumns className="h-4 w-4" />
+              </span>
+              <h4 className="text-sm font-bold uppercase tracking-widest text-gray-900">
+                {lang === 'en' ? 'Bank Transfer' : 'வங்கி பரிமாற்றம்'}
+              </h4>
             </div>
 
-            {/* Quick UPI / Mobile Payment Option */}
-            <div className="rounded-2xl border border-emerald-100 bg-emerald-50/20 p-5 space-y-3 shadow-xs">
-              <h4 className="text-xs sm:text-sm font-bold text-emerald-950 flex items-center space-x-2">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-600 animate-pulse"></span>
-                <span>{lang === 'en' ? 'UPI & Mobile Transfer Methods' : 'UPI மற்றும் மொபைல் பேமெண்ட் வழிகள்'}</span>
+            <dl className="divide-y divide-gray-200/70">
+              <div className="py-3">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                  {lang === 'en' ? 'Bank Name' : 'வங்கிப் பெயர்'}
+                </dt>
+                <dd className="mt-0.5 text-sm sm:text-base font-semibold text-gray-900">Equitas Small Finance Bank</dd>
+              </div>
+              <div className="py-3">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                  {lang === 'en' ? 'Account Name' : 'கணக்கின் பெயர்'}
+                </dt>
+                <dd className="mt-0.5 text-sm sm:text-base font-bold text-emerald-800">Nallathe Nadakkum Trust</dd>
+              </div>
+              <div className="py-3">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                  {lang === 'en' ? 'Account Number' : 'கணக்கு எண்'}
+                </dt>
+                <dd className="mt-1 flex items-center justify-between gap-2">
+                  <span className="font-mono text-base sm:text-lg font-bold text-gray-950 tracking-wider">20000300375</span>
+                  {copyBtn('20000300375', 'acct')}
+                </dd>
+              </div>
+              <div className="py-3">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                  {lang === 'en' ? 'IFSC Code' : 'IFSC குறியீடு'}
+                </dt>
+                <dd className="mt-1 flex items-center justify-between gap-2">
+                  <span className="font-mono text-base sm:text-lg font-bold text-gray-950 tracking-wider">ESFB0001138</span>
+                  {copyBtn('ESFB0001138', 'ifsc')}
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          {/* RIGHT — UPI / Mobile Payment */}
+          <div className="flex flex-col rounded-2xl border border-gray-100 bg-gray-50/40 p-6 sm:p-8 space-y-5">
+            <div className="flex items-center gap-2.5 pb-1">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+                <FaMobileScreenButton className="h-4 w-4" />
+              </span>
+              <h4 className="text-sm font-bold uppercase tracking-widest text-gray-900">
+                {lang === 'en' ? 'UPI / Mobile Payment' : 'UPI / மொபைல் பேமெண்ட்'}
               </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                {/* Paytm Card */}
-                <div className="bg-white border border-gray-100 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-2xs relative overflow-hidden group hover:border-sky-200 transition-all">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1.5">
-                      <img src="/icons/paytm.svg" alt="Paytm" className="h-7 w-auto object-contain" />
-                    </div>
-                    <button 
-                      onClick={() => handleCopy('+917540017625', 'paytm')}
-                      className="p-1 rounded-md text-gray-900 hover:text-sky-600 hover:bg-sky-50 transition-colors"
-                      title="Copy Number"
-                    >
-                      {copiedText === 'paytm' ? (
-                        <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      ) : (
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                        </svg>
-                      )}
-                    </button>
-                  </div>
-                  <div>
-                    <span className="block text-[10px] text-gray-900 uppercase tracking-wider font-semibold">Paytm Number</span>
-                    <span className="font-mono font-bold text-gray-950 text-xs sm:text-sm tracking-wide">+91 75400 17625</span>
-                  </div>
-                  {copiedText === 'paytm' && (
-                    <span className="absolute bottom-1 right-2 text-[9px] text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded animate-fade-in">Copied!</span>
-                  )}
-                </div>
+            </div>
 
-                {/* PhonePe Card */}
-                <div className="bg-white border border-gray-100 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-2xs relative overflow-hidden group hover:border-purple-200 transition-all">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1.5">
-                      {/*
-                        PhonePe SVG has a 1366×768 canvas; the logo lives at
-                        roughly x=204-1060, y=257-515. Clip to that region so
-                        the rendered mark matches Paytm's visual height (28px).
-                        Scale = 28/258 ≈ 0.1085 → rendered img height = 83px.
-                      */}
-                      <span className="relative block overflow-hidden shrink-0" style={{width: '95px', height: '28px'}}>
-                        <img
-                          src="/icons/phonepe.svg"
-                          alt="PhonePe"
-                          className="absolute w-auto"
-                          style={{height: '83px', top: '-28px', left: '-22px'}}
-                        />
-                      </span>
-                    </div>
-                    <button 
-                      onClick={() => handleCopy('+917540017625', 'phonepe')}
-                      className="p-1 rounded-md text-gray-900 hover:text-purple-600 hover:bg-purple-50 transition-colors"
-                      title="Copy Number"
-                    >
-                      {copiedText === 'phonepe' ? (
-                        <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      ) : (
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                        </svg>
-                      )}
-                    </button>
-                  </div>
-                  <div>
-                    <span className="block text-[10px] text-gray-900 uppercase tracking-wider font-semibold">PhonePe Number</span>
-                    <span className="font-mono font-bold text-gray-950 text-xs sm:text-sm tracking-wide">+91 75400 17625</span>
-                  </div>
-                  {copiedText === 'phonepe' && (
-                    <span className="absolute bottom-1 right-2 text-[9px] text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded animate-fade-in">Copied!</span>
-                  )}
-                </div>
+            <div className="flex flex-1 flex-col items-center text-center gap-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                {lang === 'en' ? 'Scan & Pay via UPI' : 'UPI மூலம் ஸ்கேன் செய்து செலுத்த'}
+              </p>
 
-                {/* Google Pay Card */}
-                <div className="bg-white border border-gray-100 p-4 rounded-xl flex flex-col justify-between space-y-3 shadow-2xs relative overflow-hidden group hover:border-blue-200 transition-all">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1.5">
-                      {/* GPay SVG is 24×24 square; scale up to h-8 to match visual weight */}
-                      <img src="/icons/google-pay.svg" alt="Google Pay" className="h-8 w-8 object-contain" />
-                    </div>
-                    <button 
-                      onClick={() => handleCopy('+917540017625', 'gpay')}
-                      className="p-1 rounded-md text-gray-900 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-                      title="Copy Number"
-                    >
-                      {copiedText === 'gpay' ? (
-                        <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      ) : (
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                        </svg>
-                      )}
-                    </button>
-                  </div>
-                  <div>
-                    <span className="block text-[10px] text-gray-900 uppercase tracking-wider font-semibold">Google Pay Number</span>
-                    <span className="font-mono font-bold text-gray-950 text-xs sm:text-sm tracking-wide">+91 75400 17625</span>
-                  </div>
-                  {copiedText === 'gpay' && (
-                    <span className="absolute bottom-1 right-2 text-[9px] text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded animate-fade-in">Copied!</span>
-                  )}
+              {/* QR placeholder — replace this block's inner content with the real QR when available */}
+              <div className="h-48 w-48 rounded-2xl border-2 border-dashed border-gray-300 bg-white flex flex-col items-center justify-center gap-2 text-gray-400">
+                <svg className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5zM13.5 13.5h1.5v1.5h-1.5zM16.5 13.5H18V15h-1.5zM19.5 15H21v1.5h-1.5zM13.5 16.5H15V18h-1.5zM16.5 16.5H18V18h-1.5zM19.5 18H21v1.5h-1.5zM13.5 19.5H15V21h-1.5zM16.5 19.5H18V21h-1.5z" />
+                </svg>
+                <span className="text-[11px] font-bold uppercase tracking-widest leading-tight">
+                  {lang === 'en' ? 'QR Code' : 'QR குறியீடு'}<br />
+                  {lang === 'en' ? 'Coming Soon' : 'விரைவில்'}
+                </span>
+              </div>
+
+              {/* Single UPI / mobile number with copy */}
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-base sm:text-lg font-bold text-gray-950 tracking-wide">+91 75400 17625</span>
+                {copyBtn('+917540017625', 'upi')}
+              </div>
+
+              {/* Brand logos — one shared number, no repeated cards */}
+              <div className="mt-auto w-full border-t border-gray-200/70 pt-4">
+                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+                  <img src="/icons/paytm-logo.png" alt="Paytm" className="h-6 sm:h-7 w-auto object-contain" />
+                  <img src="/icons/phonepe-logo.png" alt="PhonePe" className="h-6 sm:h-7 w-auto object-contain" />
+                  <img src="/gpay.png" alt="Google Pay" className="h-6 sm:h-7 w-auto object-contain" />
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="lg:col-span-5 space-y-4">
-            {/* UPI QR Code */}
-            <div className="rounded-xl bg-white p-5 border border-emerald-100 shadow-xs flex flex-col items-center text-center space-y-3">
-              <h4 className="text-xs sm:text-sm font-bold text-emerald-950 flex items-center space-x-2">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-600 animate-pulse"></span>
-                <span>{lang === 'en' ? 'Scan & Pay via UPI' : 'UPI மூலம் ஸ்கேன் செய்து செலுத்த'}</span>
-              </h4>
-              <div className="h-44 w-44 rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 flex flex-col items-center justify-center gap-2 text-gray-900">
-                <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5zM13.5 13.5h1.5v1.5h-1.5zM16.5 13.5H18V15h-1.5zM19.5 15H21v1.5h-1.5zM13.5 16.5H15V18h-1.5zM16.5 16.5H18V18h-1.5zM19.5 18H21v1.5h-1.5zM13.5 19.5H15V21h-1.5zM16.5 19.5H18V21h-1.5z" />
-                </svg>
-                <span className="text-[10px] font-semibold uppercase tracking-wider">
-                  {lang === 'en' ? 'QR Code Coming Soon' : 'QR குறியீடு விரைவில்'}
-                </span>
-              </div>
-              <p className="text-base text-gray-900 leading-relaxed">
-                {lang === 'en'
-                  ? 'Official UPI QR code will be added here. Meanwhile, use the UPI numbers above.'
-                  : 'அதிகாரப்பூர்வ UPI QR குறியீடு விரைவில் இங்கே சேர்க்கப்படும். அதுவரை மேலே உள்ள UPI எண்களைப் பயன்படுத்தவும்.'}
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-gray-50 p-5 border border-gray-200/60 text-xs sm:text-sm text-gray-900 leading-relaxed space-y-3">
-              <h4 className="font-bold text-gray-900 flex items-center space-x-1.5">
-                <Monogram label="i" size="xs" />
-                <span>{lang === 'en' ? 'How to secure your receipt' : 'நன்கொடை ரசீது பெற'}</span>
-              </h4>
-              <p className="text-justify leading-relaxed">
-                {lang === 'en' 
-                  ? 'Please notify us of your bank remittance alongside transfer receipts via email or WhatsApp so our treasurer can mail you an official trust donation voucher.'
-                  : 'வங்கிக் கணக்கிற்கு பணம் அனுப்பிய பின், அதன் ரசீதை எங்களது வாட்ஸ்அப் அல்லது மின்னஞ்சலுக்கு அனுப்பி வைத்தால் முறையான அறக்கட்டளை ரசீது உங்களுக்கு அனுப்பி வைக்கப்படும்.'}
-              </p>
-            </div>
-            <p className="text-[11px] text-gray-900 text-center italic">
-              {lang === 'en' ? '✓ Registered Doc No. 16/2025 Namakkal District, Tamil Nadu.' : '✓ பதிவு எண் 16/2025 நாமக்கல் மாவட்டம், தமிழ்நாடு.'}
-            </p>
+        {/* Shared receipt / acknowledgement area below both columns */}
+        <div className="rounded-2xl border border-emerald-100 bg-emerald-50/30 p-6 sm:p-7 space-y-4">
+          <div className="flex items-center gap-2">
+            <FaCircleExclamation className="h-4 w-4 text-emerald-700" />
+            <h4 className="text-sm font-bold uppercase tracking-widest text-emerald-950">
+              {lang === 'en' ? 'After Making Your Donation' : 'நன்கொடை அளித்த பிறகு'}
+            </h4>
+          </div>
+          <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
+            {lang === 'en'
+              ? 'Send your payment receipt via WhatsApp or Email and our treasurer will issue you an official trust donation acknowledgement / voucher.'
+              : 'உங்கள் பணம் செலுத்திய ரசீதை வாட்ஸ்அப் அல்லது மின்னஞ்சல் மூலம் அனுப்புங்கள் — முறையான அறக்கட்டளை நன்கொடை ரசீது / வவுச்சர் உங்களுக்கு வழங்கப்படும்.'}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href={buildWhatsAppUrl(OFFICIAL_CONTACT.whatsappPhone, [
+                lang === 'en'
+                  ? 'Hello, I have made a donation to Nallathe Nadakkum Trust and would like to share my payment receipt.'
+                  : 'வணக்கம், நல்லதே நடக்கும் அறக்கட்டளைக்கு நான் நன்கொடை அளித்துள்ளேன், எனது ரசீதைப் பகிர விரும்புகிறேன்.',
+              ])}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition-colors"
+            >
+              <FaWhatsapp className="h-4 w-4" />
+              {lang === 'en' ? 'Send via WhatsApp' : 'வாட்ஸ்அப் மூலம் அனுப்பு'}
+            </a>
+            <a
+              href={buildMailtoUrl(OFFICIAL_CONTACT.email, 'Donation receipt', [
+                lang === 'en'
+                  ? 'Hello, I have made a donation to Nallathe Nadakkum Trust. Please find my payment receipt attached.'
+                  : 'வணக்கம், நல்லதே நடக்கும் அறக்கட்டளைக்கு நான் நன்கொடை அளித்துள்ளேன். எனது ரசீது இணைக்கப்பட்டுள்ளது.',
+              ])}
+              className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 hover:border-emerald-300 hover:text-emerald-700 transition-colors"
+            >
+              <FaEnvelope className="h-4 w-4" />
+              {lang === 'en' ? 'Send via Email' : 'மின்னஞ்சல் மூலம் அனுப்பு'}
+            </a>
           </div>
         </div>
       </section>
 
       {/* Pledge a Donation / Material Support */}
-      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs max-w-3xl mx-auto w-full space-y-6">
-        <div className="space-y-1 text-center border-b border-gray-100 pb-4">
-          <h3 className="font-display text-xl font-bold text-gray-900 flex items-center justify-center space-x-2">
+      <section ref={formRef} className="scroll-mt-24 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs max-w-4xl mx-auto w-full space-y-6">
+        <div className="space-y-2 text-center border-b border-gray-100 pb-5">
+          <h3 className="font-display text-2xl sm:text-3xl font-bold text-gray-900 flex items-center justify-center gap-2">
             <FaGift className="h-6 w-6 text-emerald-600" />
             <span>{lang === 'en' ? 'Pledge a Donation / Material Support' : 'பொருட்கள் / உதவிப் பங்களிப்புகளைப் பதிவிட'}</span>
           </h3>
-          <p className="text-xs sm:text-sm text-gray-900">
+          <p className="text-sm sm:text-base text-gray-900">
             {lang === 'en' ? 'Prepare a direct acknowledgement request without storing donor details in this browser.' : 'உங்கள் விவரங்களை உலாவியில் சேமிக்காமல் நேரடி உறுதிப்படுத்தல் வரைவைத் தயாரிக்கவும்.'}
           </p>
         </div>
@@ -422,75 +527,142 @@ export default function DonateView({ lang }: DonateViewProps) {
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSponsorSubmit} className="space-y-4">
-            
+          <form onSubmit={handleSponsorSubmit} className="space-y-5">
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *</label>
+                <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *</label>
                 <input
                   type="text"
                   required
                   value={donorName}
                   onChange={(e) => setDonorName(e.target.value)}
                   placeholder="e.g. S. Vinayagamoorthy"
-                  className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs focus:outline-hidden focus:border-emerald-500"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Contact Phone' : 'தொடர்பு எண்'} *</label>
+                <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Contact Phone' : 'தொடர்பு எண்'} *</label>
                 <input
                   type="tel"
                   required
                   value={donorPhone}
                   onChange={(e) => setDonorPhone(e.target.value)}
                   placeholder="e.g. 9876543210"
-                  className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs focus:outline-hidden focus:border-emerald-500"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-[10px] font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Support Type' : 'பங்களிப்பு வகை'}</label>
+                <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Support Type' : 'பங்களிப்பு வகை'}</label>
                 <select
                   value={donationType}
                   onChange={(e) => setDonationType(e.target.value)}
-                  className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs bg-white focus:outline-hidden focus:border-emerald-500"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 >
                   <option value="Money">{lang === 'en' ? 'Financial Remittance' : 'நிதிப் பங்களிப்பு'}</option>
                   <option value="Groceries">{lang === 'en' ? 'Groceries / Materials' : 'மளிகைப் பொருட்கள் / பொருளுதவி'}</option>
                   <option value="Blood">{lang === 'en' ? 'Blood Donation' : 'இரத்த நன்கொடை'}</option>
                   <option value="Dress">{lang === 'en' ? 'Clothes / Dress' : 'ஆடைகள் / உடை'}</option>
+                  <option value="Other">{lang === 'en' ? 'Other' : 'மற்றவை'}</option>
                 </select>
               </div>
 
               {donationType === 'Money' ? (
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Simulated Amount (₹)' : 'பங்களிப்புத் தொகை (₹)'}</label>
-                  <input
-                    type="number"
-                    value={donationAmt}
-                    onChange={(e) => setDonationAmt(e.target.value)}
-                    className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs focus:outline-hidden focus:border-emerald-500"
-                  />
-                </div>
+                (() => {
+                  const cfg = AMOUNT_PRESETS[financialProgram];
+                  const label = (
+                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
+                      {cfg ? cfg.title[lang] : (lang === 'en' ? 'Simulated Amount (₹)' : 'பங்களிப்புத் தொகை (₹)')}
+                    </label>
+                  );
+                  // Programmes without preset costs keep the free amount entry.
+                  if (!cfg) {
+                    return (
+                      <div className="space-y-1">
+                        {label}
+                        <input
+                          type="number"
+                          value={donationAmt}
+                          onChange={(e) => setDonationAmt(e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                        />
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="space-y-1">
+                      {label}
+                      <select
+                        value={amountPresetId}
+                        onChange={(e) => {
+                          const id = e.target.value;
+                          setAmountPresetId(id);
+                          if (id !== 'other') {
+                            const opt = cfg.groups.flatMap((g) => g.options).find((o) => o.id === id);
+                            if (opt) setDonationAmt(opt.amount);
+                          }
+                        }}
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                      >
+                        {cfg.groups.map((g, gi) =>
+                          g.heading ? (
+                            <optgroup key={gi} label={g.heading[lang]}>
+                              {g.options.map((o) => (
+                                <option key={o.id} value={o.id}>{o.label[lang]}</option>
+                              ))}
+                            </optgroup>
+                          ) : (
+                            g.options.map((o) => (
+                              <option key={o.id} value={o.id}>{o.label[lang]}</option>
+                            ))
+                          ),
+                        )}
+                        {cfg.allowOther && (
+                          <option value="other">{lang === 'en' ? 'Other (enter amount)' : 'மற்றவை (தொகையை உள்ளிடவும்)'}</option>
+                        )}
+                      </select>
+                      {amountPresetId === 'other' && (
+                        <input
+                          type="number"
+                          value={donationAmt}
+                          onChange={(e) => setDonationAmt(e.target.value)}
+                          placeholder={lang === 'en' ? 'Enter amount (₹)' : 'தொகையை உள்ளிடவும் (₹)'}
+                          className="mt-2 w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                        />
+                      )}
+                    </div>
+                  );
+                })()
               ) : donationType === 'Blood' ? (
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Blood Type' : 'இரத்த வகை'} *</label>
+                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Blood Type' : 'இரத்த வகை'} *</label>
                   <select
                     value={bloodType}
                     onChange={(e) => setBloodType(e.target.value)}
-                    className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs bg-white focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   >
                     {['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'].map((bt) => (
                       <option key={bt} value={bt}>{bt}</option>
                     ))}
+                    <option value="Other">{lang === 'en' ? 'Other / Not sure' : 'மற்றவை / தெரியாது'}</option>
                   </select>
+                  {bloodType === 'Other' && (
+                    <input
+                      type="text"
+                      value={bloodOther}
+                      onChange={(e) => setBloodOther(e.target.value)}
+                      placeholder={lang === 'en' ? 'Specify blood type / note' : 'இரத்த வகையைக் குறிப்பிடவும்'}
+                      className="mt-2 w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    />
+                  )}
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Describe your donation' : 'உங்கள் நன்கொடையை விவரிக்கவும்'} *</label>
+                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Describe your donation' : 'உங்கள் நன்கொடையை விவரிக்கவும்'} *</label>
                   <input
                     type="text"
                     required
@@ -499,9 +671,11 @@ export default function DonateView({ lang }: DonateViewProps) {
                     placeholder={
                       donationType === 'Dress'
                         ? (lang === 'en' ? 'e.g. 10 shirts, 5 dhotis' : 'எ.கா. 10 சட்டைகள், 5 வேட்டிகள்')
+                        : donationType === 'Other'
+                        ? (lang === 'en' ? 'Please describe your donation' : 'உங்கள் நன்கொடையை விவரிக்கவும்')
                         : (lang === 'en' ? 'e.g. 1 Bag of Raw Rice (25kg)' : 'எ.கா. 1 மூட்டை அரிசி (25கி)')
                     }
-                    className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   />
                   {donationType === 'Dress' && (
                     <p className="text-[10px] text-amber-700 leading-snug pt-0.5">
@@ -514,14 +688,39 @@ export default function DonateView({ lang }: DonateViewProps) {
               )}
             </div>
 
+            {/* Programme selector — only under Financial Remittance */}
+            {donationType === 'Money' && (
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Programme to Support' : 'ஆதரிக்க விரும்பும் திட்டம்'}</label>
+                <select
+                  value={financialProgram}
+                  onChange={(e) => setFinancialProgram(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                >
+                  {Object.entries(FINANCIAL_PROGRAMS).map(([key, val]) => (
+                    <option key={key} value={key}>{val[lang]}</option>
+                  ))}
+                </select>
+                {financialProgram === 'other' && (
+                  <input
+                    type="text"
+                    value={programOther}
+                    onChange={(e) => setProgramOther(e.target.value)}
+                    placeholder={lang === 'en' ? 'Specify the programme you wish to support' : 'நீங்கள் ஆதரிக்க விரும்பும் திட்டத்தைக் குறிப்பிடவும்'}
+                    className="mt-2 w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  />
+                )}
+              </div>
+            )}
+
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Blessing / Message for the board' : 'வாழ்த்துச் செய்தி / குறிப்பு'}</label>
+              <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Blessing / Message for the board' : 'வாழ்த்துச் செய்தி / குறிப்பு'}</label>
               <input
                 type="text"
                 value={donorMsg}
                 onChange={(e) => setDonorMsg(e.target.value)}
                 placeholder="e.g. May Good Things Happen to all!"
-                className="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs focus:outline-hidden focus:border-emerald-500"
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
               />
             </div>
 
@@ -529,7 +728,7 @@ export default function DonateView({ lang }: DonateViewProps) {
               id="submit-donor-pledge"
               type="submit"
               disabled={donorLoading}
-              className="w-full rounded-lg bg-emerald-600 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-700 transition-colors disabled:bg-emerald-400 cursor-pointer text-center"
+              className="w-full rounded-lg bg-emerald-600 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition-colors disabled:bg-emerald-400 cursor-pointer text-center"
             >
               {donorLoading ? (lang === 'en' ? 'Publishing...' : 'பதிவேற்றப்படுகிறது...') : (lang === 'en' ? 'Log Contribution on Gratitude Board' : 'அறக்கட்டளை நன்றிக் கூடப் பலகையில் வெளியிடவும்')}
             </button>
@@ -541,9 +740,8 @@ export default function DonateView({ lang }: DonateViewProps) {
       {/* Live Sponsors Board (Sponsors Wall of Gratitude) */}
       <section className="space-y-4 pt-4">
         <div className="text-center space-y-1">
-          <h2 className="font-display text-2xl font-bold text-gray-900 flex items-center justify-center gap-2">
-            <Monogram label="G" size="sm" />
-            <span>{lang === 'en' ? 'Sample Gratitude Board' : 'மாதிரி நன்றிக் கூடம்'}</span>
+          <h2 className="font-display text-2xl font-bold text-gray-900">
+            {lang === 'en' ? 'Sample Gratitude Board' : 'மாதிரி நன்றிக் கூடம்'}
           </h2>
           <p className="text-xs text-gray-900">
             {lang === 'en' ? 'Illustrative sample acknowledgements only. Real donor data is not stored client-side.' : 'இவை மாதிரி பதிவுகள் மட்டுமே. உண்மையான நன்கொடையாளர் விவரங்கள் கிளையன்ட் உலாவியில் சேமிக்கப்படாது.'}
@@ -601,7 +799,7 @@ export default function DonateView({ lang }: DonateViewProps) {
               <FaYoutube className="h-6 w-6 text-red-600 flex-shrink-0 animate-pulse" />
               <span>{lang === 'en' ? 'Watch Trust Activities & Field Footage' : 'எங்களது களப்பணி வீடியோக்களைக் காண்க'}</span>
             </h2>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
+            <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
               {lang === 'en' 
                 ? 'Watch real videos documenting our daily roadside lunch distributions, healthcare ambulance drives, and sacred burial rituals in Tamil Nadu.' 
                 : 'எங்கள் தினசரி அன்னதானம், இலவச அவசர ஆம்புலன்ஸ் இயக்கம் மற்றும் ஆதரவற்றோர் இறுதி மரியாதை போன்ற உண்மையான பணிகளை வீடியோ வடிவில் காணுங்கள்.'}
