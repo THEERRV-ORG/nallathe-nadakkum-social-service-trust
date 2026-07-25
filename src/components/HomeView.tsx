@@ -4,20 +4,29 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   FaHeart, FaHeartPulse, FaTruckMedical, FaUtensils, FaAward, FaFileLines, FaChevronRight,
   FaGraduationCap, FaCircleExclamation, FaLock, FaWandMagicSparkles, FaGift, FaCoins, FaCircleCheck, FaCircleQuestion,
-  FaCamera, FaVideo
+  FaCamera, FaVideo, FaDroplet, FaShirt
 } from 'react-icons/fa6';
 import { commonTranslations, statsData } from '../data';
+import SocialConnect from './SocialConnect';
+import Monogram from './Monogram';
+import CountUpStat from './CountUpStat';
 
 interface HomeViewProps {
   lang: 'en' | 'ta';
   setActiveTab: (tab: string) => void;
 }
 
+// Hero slides are ordered by programme priority so Food Donation and Last Rites
+// lead. When Kavin supplies dedicated Food / Last Rites photos or videos, replace
+// the first two entries in place — the slideshow architecture stays unchanged.
 const heroImages = [
-  { src: '/gallery/activity-school-books-distribution.jpeg', alt: 'Distributing notebooks at a government school' },
-  { src: '/gallery/activity-ambulance-banner.jpeg', alt: 'Nallathe Nadakkum free ambulance service launch' },
+  // 1. Food Donation / Annadhanam
   { src: '/gallery/activity-food-indoor.jpeg', alt: 'Elderly men eating a full meal at our shelter' },
+  // 2. Last Rites
+  { src: '/gallery/activity-last-rites-indoor.jpg', alt: 'Dignified last rites conducted with the family' },
+  // Supporting services
   { src: '/gallery/activity-water-street.jpg', alt: 'Street food and water distribution to elders' },
+  { src: '/gallery/activity-ambulance-banner.jpeg', alt: 'Nallathe Nadakkum free ambulance service launch' },
   { src: '/gallery/activity-elder-rescue.jpeg', alt: 'Destitute elderly rescued and cared for' },
 ];
 
@@ -37,7 +46,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
     setRecentPledges([...SAMPLE_SPONSORS].slice(0, 3));
   }, []);
   return (
-    <div className="space-y-16 py-8">
+    <div className="space-y-16 pb-8">
       {/* Hero Section */}
       <section className="relative w-full h-[620px] sm:h-[650px] md:h-[700px] flex items-center overflow-hidden">
         {/* Hero Slideshow Background */}
@@ -118,7 +127,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-xs sm:text-sm md:text-base text-gray-200 leading-relaxed text-justify sm:text-left max-w-2xl"
+              className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed sm:leading-[1.65] text-justify sm:text-left max-w-2xl"
             >
               {commonTranslations.heroSub[lang]}
             </motion.p>
@@ -171,21 +180,33 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
       {/* Trust Introduction */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="rounded-2xl bg-white border border-gray-100 p-6 sm:p-10 shadow-sm">
-          <div className="max-w-3xl mx-auto space-y-6 text-center">
-            <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
-              {lang === 'en' ? 'Who We Are' : 'எங்களை பற்றி'}
-            </h2>
-            <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-justify sm:text-center">
-              {commonTranslations.introText[lang]}
-            </p>
-            <div className="pt-2">
-              <button 
-                onClick={() => setActiveTab('about')}
-                className="text-emerald-700 font-semibold text-sm hover:text-emerald-800 hover:underline inline-flex items-center space-x-1 cursor-pointer"
-              >
-                <span>{lang === 'en' ? 'Read Our Full History & Trustees' : 'எங்கள் அறக்கட்டளையின் முழு வரலாறு & அறங்காவலர்கள் பற்றி படிக்க'}</span>
-                <FaChevronRight className="h-4 w-4" />
-              </button>
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+            {/* Logo — left on desktop, top on mobile */}
+            <div className="md:w-[28%] flex justify-center shrink-0">
+              <img
+                src="/logo.png"
+                alt="Nallathe Nadakkum Social Service Trust logo"
+                className="h-32 w-32 sm:h-40 sm:w-40 rounded-full object-cover"
+              />
+            </div>
+
+            {/* Content — right on desktop, left-aligned text */}
+            <div className="md:w-[72%] space-y-5 text-center md:text-left">
+              <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
+                {lang === 'en' ? 'Who We Are' : 'எங்களை பற்றி'}
+              </h2>
+              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl mx-auto md:mx-0">
+                {commonTranslations.introShort[lang]}
+              </p>
+              <div>
+                <button
+                  onClick={() => setActiveTab('about')}
+                  className="text-emerald-700 font-semibold text-sm hover:text-emerald-800 hover:underline inline-flex items-center space-x-1 cursor-pointer"
+                >
+                  <span>{lang === 'en' ? 'Read Our Full History & Trustees' : 'எங்கள் அறக்கட்டளையின் முழு வரலாறு & அறங்காவலர்கள் பற்றி படிக்க'}</span>
+                  <FaChevronRight className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -215,9 +236,10 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
                 className="space-y-2"
               >
-                <div className="font-display text-3xl font-extrabold text-emerald-100 sm:text-4xl">
-                  {stat.value}
-                </div>
+                <CountUpStat
+                  value={stat.value}
+                  className="font-display text-3xl font-extrabold text-emerald-100 sm:text-4xl"
+                />
                 <div className="text-[11px] sm:text-xs font-medium text-emerald-100/80 leading-snug">
                   {stat.label[lang]}
                 </div>
@@ -226,6 +248,9 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
           </div>
         </div>
       </section>
+
+      {/* Social Follow CTA */}
+      <SocialConnect lang={lang} />
 
       {/* Contribution, Photo & Video Evidence Transparency Highlights */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -239,19 +264,19 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
             transition={{ duration: 0.4 }}
             className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
           >
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-              <FaCircleCheck className="h-6 w-6" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-display text-base sm:text-lg font-bold text-gray-900">
+            <div className="flex items-center gap-3">
+              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+                <FaCircleCheck className="h-6 w-6" />
+              </div>
+              <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
                 {lang === 'en' ? 'Contribution Recognition' : 'பங்களிப்பு அங்கீகாரம்'}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify sm:text-left">
-                {lang === 'en' 
-                  ? 'Every donation is recorded and acknowledged with gratitude, ensuring transparency and appreciation for each supporter.'
-                  : 'ஒவ்வொரு நன்கொடையும் நன்றியுடன் பதிவு செய்து அங்கீகரிக்கப்படுகிறது. இதன் மூலம் ஒவ்வொரு ஆதரவாளரின் பங்களிப்பும் வெளிப்படையாக மதிப்பளிக்கப்படுகிறது.'}
-              </p>
             </div>
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify sm:text-left">
+              {lang === 'en'
+                ? 'Every donation is recorded and acknowledged with gratitude, ensuring transparency and appreciation for each supporter.'
+                : 'ஒவ்வொரு நன்கொடையும் நன்றியுடன் பதிவு செய்து அங்கீகரிக்கப்படுகிறது. இதன் மூலம் ஒவ்வொரு ஆதரவாளரின் பங்களிப்பும் வெளிப்படையாக மதிப்பளிக்கப்படுகிறது.'}
+            </p>
           </motion.div>
 
           {/* Card 2: Photo Impact Evidence */}
@@ -262,19 +287,19 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
             transition={{ duration: 0.4, delay: 0.1 }}
             className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
           >
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-              <FaCamera className="h-6 w-6" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-display text-base sm:text-lg font-bold text-gray-900">
+            <div className="flex items-center gap-3">
+              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+                <FaCamera className="h-6 w-6" />
+              </div>
+              <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
                 {lang === 'en' ? 'Photo Impact Updates' : 'புகைப்பட தாக்கப் பதிவுகள்'}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify sm:text-left">
-                {lang === 'en' 
-                  ? 'Photo updates help donors understand how their contributions are used and the difference they create in the community.'
-                  : 'நன்கொடைகள் எவ்வாறு பயன்படுத்தப்படுகின்றன மற்றும் சமூகத்தில் அவை ஏற்படுத்தும் மாற்றத்தை புகைப்படப் பதிவுகள் மூலம் நன்கொடையாளர்கள் அறிந்துகொள்ளலாம்.'}
-              </p>
             </div>
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify sm:text-left">
+              {lang === 'en'
+                ? 'Photo updates help donors understand how their contributions are used and the difference they create in the community.'
+                : 'நன்கொடைகள் எவ்வாறு பயன்படுத்தப்படுகின்றன மற்றும் சமூகத்தில் அவை ஏற்படுத்தும் மாற்றத்தை புகைப்படப் பதிவுகள் மூலம் நன்கொடையாளர்கள் அறிந்துகொள்ளலாம்.'}
+            </p>
           </motion.div>
 
           {/* Card 3: Video Impact Stories */}
@@ -285,19 +310,19 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
             transition={{ duration: 0.4, delay: 0.2 }}
             className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
           >
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-              <FaVideo className="h-6 w-6" />
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-display text-base sm:text-lg font-bold text-gray-900">
+            <div className="flex items-center gap-3">
+              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
+                <FaVideo className="h-6 w-6" />
+              </div>
+              <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
                 {lang === 'en' ? 'Video Impact Stories' : 'காணொளி தாக்கக் கதைகள்'}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify sm:text-left">
-                {lang === 'en' 
-                  ? 'Video updates showcase the real outcomes of each initiative and highlight the meaningful impact made possible by donor support.'
-                  : 'ஒவ்வொரு சேவை முயற்சியின் உண்மையான விளைவுகளையும், நன்கொடையாளர்களின் ஆதரவால் உருவாகும் நல்ல மாற்றங்களையும் காணொளிப் பதிவுகள் வெளிப்படுத்துகின்றன.'}
-              </p>
             </div>
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify sm:text-left">
+              {lang === 'en'
+                ? 'Video updates showcase the real outcomes of each initiative and highlight the meaningful impact made possible by donor support.'
+                : 'ஒவ்வொரு சேவை முயற்சியின் உண்மையான விளைவுகளையும், நன்கொடையாளர்களின் ஆதரவால் உருவாகும் நல்ல மாற்றங்களையும் காணொளிப் பதிவுகள் வெளிப்படுத்துகின்றன.'}
+            </p>
           </motion.div>
 
         </div>
@@ -313,10 +338,11 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
                 {lang === 'en' ? 'Live Trust Activity' : 'நேரடி அறக்கட்டளை தகவல்கள்'}
               </span>
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900">
-                {lang === 'en' ? '💖 Generosity & Transparency Hub' : '💖 தாராள மனப்பான்மை & வெளிப்படைத்தன்மை மையம்'}
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
+                <Monogram label="GT" size="sm" />
+                <span>{lang === 'en' ? 'Generosity & Transparency Hub' : 'தாராள மனப்பான்மை & வெளிப்படைத்தன்மை மையம்'}</span>
               </h2>
-              <p className="text-xs sm:text-sm text-gray-500 leading-relaxed max-w-2xl">
+              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
                 {lang === 'en' 
                   ? 'Explore where your contributions go, view real-time pledged donations, and read critical safety notices.' 
                   : 'உங்கள் பங்களிப்புகள் எங்கு செல்கின்றன என்பதை ஆராயுங்கள், சமீபத்திய நன்கொடைகளைக் காணுங்கள் மற்றும் முக்கிய பாதுகாப்பு அறிவிப்புகளைப் படியுங்கள்.'}
@@ -346,7 +372,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                 className={`flex items-center justify-center space-x-1.5 py-2 px-3 text-xs font-bold rounded-lg flex-1 transition-all cursor-pointer ${
                   activeHubTab === tab.id
                     ? 'bg-white text-emerald-800 shadow-xs border border-gray-100'
-                    : 'text-gray-500 hover:text-gray-900'
+                    : 'text-gray-900/70 hover:text-gray-900'
                 }`}
               >
                 {tab.icon}
@@ -373,11 +399,11 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                     {
                       id: 'annadhanam',
                       title: { en: 'Daily Annadhanam', ta: 'தினசரி அன்னதானம்' },
-                      amt: '₹3,000',
-                      unit: { en: '1 Day of Meals', ta: '1 நாள் மதிய உணவு' },
+                      amt: 'From ₹2,000',
+                      unit: { en: 'Per Meal Session', ta: 'ஒரு வேளை உணவு' },
                       desc: {
-                        en: 'Provides fresh hot meals directly to approximately 80 destitute pavement dwellers, homeless elders, and government hospital patients.',
-                        ta: 'சாலையோரம் வசிக்கும் மற்றும் அரசு மருத்துவமனை வளாகங்களில் உள்ள சுமார் 80 ஆதரவற்ற ஏழைகளுக்கு ஒரு நாள் சத்தான மதிய உணவு வழங்கப்படும்.'
+                        en: 'Sponsor a roadside or care-home meal session — costs range by session and location — serving fresh hot meals to destitute pavement dwellers, homeless elders, and hospital patients.',
+                        ta: 'சாலையோரம் அல்லது முதியோர் இல்லத்தில் ஒரு வேளை உணவை ஸ்பான்சர் செய்யலாம் — வேளை மற்றும் இடத்தைப் பொறுத்து செலவு மாறுபடும் — ஆதரவற்ற ஏழைகள், முதியோர் மற்றும் நோயாளிகளுக்கு சத்தான உணவு வழங்கப்படும்.'
                       },
                       icon: <FaUtensils className="h-4 w-4" />,
                       color: 'bg-emerald-50 text-emerald-700 border-emerald-100',
@@ -412,7 +438,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                     {
                       id: 'cremation',
                       title: { en: 'Dignified Last Rites', ta: 'ஆதரவற்றோர் இறுதி மரியாதை' },
-                      amt: '₹1,500',
+                      amt: '₹5,000',
                       unit: { en: '1 Dignified Burial', ta: '1 தகனச் சடங்கு' },
                       desc: {
                         en: 'Covers municipal cremation fees, shroud cloth, and ceremonial materials for performing police-coordinated burial with complete dignity.',
@@ -440,11 +466,11 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
 
                         {/* Amount Box */}
                         <div className="space-y-0.5">
-                          <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">
+                          <p className="text-[10px] text-gray-900 uppercase font-bold tracking-wider">
                             {lang === 'en' ? 'Sponsorship Level' : 'உதவித் தொகை'}
                           </p>
-                          <div className="flex items-baseline space-x-1.5">
-                            <span className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">
+                          <div className="flex items-baseline flex-wrap gap-x-1.5 gap-y-1">
+                            <span className="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">
                               {scenario.amt}
                             </span>
                             <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${scenario.badge}`}>
@@ -454,7 +480,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                         </div>
 
                         {/* Description */}
-                        <p className="text-[11px] sm:text-xs text-gray-600 leading-relaxed text-justify">
+                        <p className="text-xs sm:text-sm text-gray-900 leading-relaxed text-justify">
                           {scenario.desc[lang]}
                         </p>
                       </div>
@@ -483,7 +509,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {recentPledges.length === 0 ? (
-                      <div className="col-span-3 text-center py-10 text-xs text-gray-400">
+                      <div className="col-span-3 text-center py-10 text-xs text-gray-900">
                         {lang === 'en' ? 'No recent contributions logged yet.' : 'சமீபத்திய பங்களிப்புகள் இன்னும் பதிவாகவில்லை.'}
                       </div>
                     ) : (
@@ -492,8 +518,8 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                           key={idx} 
                           className="rounded-xl border border-emerald-100/60 p-4 bg-emerald-50/10 flex flex-col justify-between space-y-3 relative overflow-hidden"
                         >
-                          <div className="absolute top-0 right-0 h-8 w-8 bg-emerald-50 text-emerald-600 rounded-bl-full flex items-center justify-center text-xs">
-                            ❤️
+                          <div className="absolute top-0 right-0 h-8 w-8 bg-emerald-50 text-emerald-600 rounded-bl-full flex items-center justify-center text-[10px] font-bold">
+                            NN
                           </div>
                           <div className="space-y-2">
                             <div className="flex items-center space-x-2">
@@ -502,16 +528,16 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                               </div>
                               <div>
                                 <h5 className="text-xs font-bold text-gray-900 leading-tight">{pledge.name}</h5>
-                                <p className="text-[9px] text-gray-400 font-mono">{pledge.date}</p>
+                                <p className="text-[9px] text-gray-900 font-mono">{pledge.date}</p>
                               </div>
                             </div>
-                            <p className="text-xs text-gray-600 italic leading-relaxed">
+                            <p className="text-xs sm:text-sm text-gray-900 italic leading-relaxed">
                               "{pledge.msg}"
                             </p>
                           </div>
                           
                           <div className="pt-2 border-t border-emerald-100/50 flex justify-between items-center text-[10px]">
-                            <span className="font-semibold text-gray-400 uppercase tracking-wider">
+                            <span className="font-semibold text-gray-900 uppercase tracking-wider">
                               {pledge.type === 'Money' || pledge.type === 'Sponsorship' ? (lang === 'en' ? 'Pledged' : 'நிதி உதவி') : (lang === 'en' ? 'Material' : 'பொருளுதவி')}
                             </span>
                             <span className="font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
@@ -524,7 +550,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                   </div>
 
                   <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-gray-50 text-xs">
-                    <p className="text-gray-500">
+                    <p className="text-gray-900">
                       {lang === 'en' 
                         ? 'Recent kindness logs demonstrating active community support on this device.' 
                         : 'அறக்கட்டளையின் தாராள மனப்பான்மை நன்றிக்கூடம் தங்களின் தொடர் சமூக ஆதரவை மெய்ப்பிக்கின்றது.'}
@@ -559,10 +585,10 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                       <div className="flex items-center space-x-2 text-red-700">
                         <FaCircleExclamation className="h-4 w-4 flex-shrink-0" />
                         <h4 className="text-xs font-bold uppercase tracking-wider">
-                          🚨 {lang === 'en' ? 'Official Account Only' : 'அதிகாரப்பூர்வ கணக்கு மட்டுமே'}
+                          {lang === 'en' ? 'Official Account Only' : 'அதிகாரப்பூர்வ கணக்கு மட்டுமே'}
                         </h4>
                       </div>
-                      <p className="text-[11px] sm:text-xs text-red-900 leading-relaxed text-justify">
+                      <p className="text-xs sm:text-sm text-red-900 leading-relaxed text-justify">
                         {lang === 'en'
                           ? 'Make payments only to the official Nallathe Nadakkum Trust bank account or official QR codes. Never send donations to any private personal bank accounts of members.'
                           : 'நன்கொடைகளை அறக்கட்டளையின் பெயரில் உள்ள அதிகாரப்பூர்வ வங்கிக் கணக்கிற்கு மட்டுமே செலுத்துங்கள். தனிநபர்களின் சொந்தக் கணக்குகளுக்குப் பணம் அனுப்ப வேண்டாம்.'}
@@ -579,10 +605,10 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                       <div className="flex items-center space-x-2 text-amber-800">
                         <FaLock className="h-4 w-4 flex-shrink-0" />
                         <h4 className="text-xs font-bold uppercase tracking-wider">
-                          📋 {lang === 'en' ? 'Tax Status Disclosures' : 'வரி விலக்கு நிலைப்பாடு'}
+                          {lang === 'en' ? 'Tax Status Disclosures' : 'வரி விலக்கு நிலைப்பாடு'}
                         </h4>
                       </div>
-                      <p className="text-[11px] sm:text-xs text-amber-900 leading-relaxed text-justify">
+                      <p className="text-xs sm:text-sm text-amber-900 leading-relaxed text-justify">
                         {lang === 'en'
                           ? 'Nallathe Nadakkum is registered as Doc No. 16/2025. Applications for 12A and 80G tax exemptions are in process with the IT Department and are currently NOT tax-exempt.'
                           : 'எங்களது அறக்கட்டளை Doc 16/2025 ஆக பதிவு செய்யப்பட்டுள்ளது. 12A மற்றும் 80G வரி விலக்கு விண்ணப்பங்கள் வருமான வரித்துறையிடம் நிலுவையில் இருப்பதால் தற்போது வரி விலக்கு பெற இயலாது.'}
@@ -596,19 +622,19 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                   {/* Warning 3: FCRA blocking */}
                   <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 flex flex-col justify-between space-y-3">
                     <div className="space-y-2">
-                      <div className="flex items-center space-x-2 text-slate-700">
+                      <div className="flex items-center space-x-2 text-gray-900">
                         <FaCoins className="h-4 w-4 flex-shrink-0" />
                         <h4 className="text-xs font-bold uppercase tracking-wider">
-                          🚫 {lang === 'en' ? 'FCRA & Foreign Funds' : 'வெளிநாட்டு நிதி மறுப்பு'}
+                          {lang === 'en' ? 'FCRA & Foreign Funds' : 'வெளிநாட்டு நிதி மறுப்பு'}
                         </h4>
                       </div>
-                      <p className="text-[11px] sm:text-xs text-slate-700 leading-relaxed text-justify">
+                      <p className="text-xs sm:text-sm text-gray-900 leading-relaxed text-justify">
                         {lang === 'en'
                           ? 'We strictly comply with Home Ministry FCRA regulations. Since we do not hold FCRA registration, we cannot accept foreign currency donations or non-Indian remittances.'
                           : 'FCRA சட்ட விதிகளின்படி, வெளிநாட்டு வங்கிக் கணக்குகளில் இருந்தோ அல்லது வெளிநாட்டுப் பணமாகவோ எங்களால் நன்கொடைகளை ஏற்க முடியாது என்பதைத் தெளிவுபடுத்துகிறோம்.'}
                       </p>
                     </div>
-                    <span className="text-[9px] font-mono font-bold text-slate-700 bg-slate-200 px-2 py-0.5 rounded w-fit uppercase">
+                    <span className="text-[9px] font-mono font-bold text-gray-900 bg-slate-200 px-2 py-0.5 rounded w-fit uppercase">
                       {lang === 'en' ? 'Domestic Only' : 'உள்நாட்டு நிதி மட்டுமே'}
                     </span>
                   </div>
@@ -629,13 +655,15 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
           {/* Mission Card */}
           <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm flex flex-col space-y-4 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-2 h-full bg-emerald-600"></div>
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 mb-2">
-              <FaHeartPulse className="h-6 w-6" />
+            <div className="flex items-center gap-3">
+              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+                <FaHeartPulse className="h-6 w-6" />
+              </div>
+              <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
+                {commonTranslations.missionTitle[lang]}
+              </h3>
             </div>
-            <h3 className="font-display text-xl font-bold text-gray-900">
-              {commonTranslations.missionTitle[lang]}
-            </h3>
-            <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] flex-grow text-justify">
               {commonTranslations.missionText[lang]}
             </p>
           </div>
@@ -643,13 +671,15 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
           {/* Vision Card */}
           <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm flex flex-col space-y-4 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-2 h-full bg-emerald-600"></div>
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 mb-2">
-              <FaAward className="h-6 w-6" />
+            <div className="flex items-center gap-3">
+              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+                <FaAward className="h-6 w-6" />
+              </div>
+              <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
+                {commonTranslations.visionTitle[lang]}
+              </h3>
             </div>
-            <h3 className="font-display text-xl font-bold text-gray-900">
-              {commonTranslations.visionTitle[lang]}
-            </h3>
-            <p className="text-sm text-gray-600 leading-relaxed flex-grow text-justify">
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] flex-grow text-justify">
               {commonTranslations.visionText[lang]}
             </p>
           </div>
@@ -660,21 +690,23 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
       {/* Founder Message & Stated Claims Notice */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="rounded-2xl bg-gray-50 border border-gray-200/60 p-8 flex flex-col md:flex-row gap-8 items-center">
-          <div className="h-28 w-28 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-4xl flex-shrink-0 font-bold border border-emerald-200">
-            NK
-          </div>
+          <img
+            src="/founder.jpeg"
+            alt={commonTranslations.founderName[lang]}
+            className="h-28 w-28 rounded-full object-cover object-top flex-shrink-0 border border-emerald-200"
+          />
           <div className="space-y-4 flex-grow">
             <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
               {lang === 'en' ? 'A Message from our Founder' : 'நிறுவனரின் செய்தி'}
             </p>
-            <blockquote className="text-sm sm:text-base text-gray-700 italic leading-relaxed font-sans">
+            <blockquote className="text-base sm:text-lg text-gray-900 italic leading-relaxed sm:leading-[1.65] font-sans">
               {lang === 'en' 
                 ? '"Nallathe Nadakkum translates to Good things will happen. It is our firm conviction that consistent, small acts of daily compassion compound into real social reform. We do not wait behind a desk; we identify people on pavements, coordinate burials at the mortuary, and drive patients to emergency beds ourselves. We welcome anyone of any background to join this effort."' 
                 : '"நல்லதே நடக்கும் என்பது வெறும் பெயர் அல்ல, அது எங்களின் நம்பிக்கை. ஒவ்வொரு நாளும் நாம் செய்யும் சிறிய நற்செயல்களும் உதவிகளும் மிகப்பெரிய சமூக மாற்றத்தை ஏற்படுத்தும். நாங்கள் அலுவலகக் கதவுகளுக்குப் பின்னால் அமர்ந்து கொண்டிருக்கவில்லை; நேரடியாகச் சாலைகளுக்குச் செல்கிறோம், முதியவர்களை மீட்கிறோம், காவல்துறை அனுமதியுடன் இறுதி மரியாதைகளைச் செய்கிறோம். சாதி, மதம், பின்னணி வேறுபாடின்றி அனைவரும் இதில் இணைய அழைக்கிறோம்."'}
             </blockquote>
             <div>
               <p className="font-display text-sm font-bold text-gray-900">{commonTranslations.founderName[lang]}</p>
-              <p className="text-xs text-gray-500">{lang === 'en' ? 'Founder & Chairman, Advocate' : 'நிறுவனர் மற்றும் தலைவர், வழக்கறிஞர்'}</p>
+              <p className="text-xs text-gray-900">{lang === 'en' ? 'Founder & Chairman, Advocate' : 'நிறுவனர் மற்றும் தலைவர், வழக்கறிஞர்'}</p>
             </div>
           </div>
         </div>
@@ -682,17 +714,19 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
 
       {/* Core Activities Quick Links */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-6">
-        <h2 className="font-display text-2xl font-bold text-gray-900">
+        <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
           {lang === 'en' ? 'Our Direct Support Programs' : 'அறக்கட்டளையின் நேரடி திட்டங்கள்'}
         </h2>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[
             { label: { en: 'Daily Food', ta: 'அன்னதானம்' }, tab: 'services', icon: <FaUtensils className="h-5 w-5" /> },
             { label: { en: 'Free Ambulance', ta: 'இலவச ஆம்புலன்ஸ்' }, tab: 'services', icon: <FaTruckMedical className="h-5 w-5" /> },
             { label: { en: 'Last Rites', ta: 'இறுதி மரியாதை' }, tab: 'services', icon: <FaHeart className="h-5 w-5" /> },
             { label: { en: 'Elder Rescue', ta: 'முதியோர் மீட்பு' }, tab: 'services', icon: <FaAward className="h-5 w-5" /> },
             { label: { en: 'Education Support', ta: 'கல்வி உதவி' }, tab: 'services', icon: <FaFileLines className="h-5 w-5" /> },
-            { label: { en: 'Emergency Help', ta: 'அவசர உதவி' }, tab: 'help', icon: <FaHeartPulse className="h-5 w-5" /> }
+            { label: { en: 'Emergency Help', ta: 'அவசர உதவி' }, tab: 'help', icon: <FaHeartPulse className="h-5 w-5" /> },
+            { label: { en: 'Blood Donation', ta: 'இரத்த நன்கொடை' }, tab: 'donate', icon: <FaDroplet className="h-5 w-5" /> },
+            { label: { en: 'Dress Donation', ta: 'ஆடை நன்கொடை' }, tab: 'donate', icon: <FaShirt className="h-5 w-5" /> }
           ].map((prog, idx) => (
             <button
               key={idx}
@@ -703,7 +737,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               <div className="p-2 bg-emerald-50 text-emerald-700 rounded-lg group-hover:bg-emerald-100 transition-colors">
                 {prog.icon}
               </div>
-              <span className="text-xs font-semibold text-gray-800 leading-tight">
+              <span className="text-xs sm:text-sm font-semibold text-gray-900 leading-tight">
                 {prog.label[lang]}
               </span>
             </button>

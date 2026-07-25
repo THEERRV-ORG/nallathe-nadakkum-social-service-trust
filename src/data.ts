@@ -59,6 +59,10 @@ export const commonTranslations: TranslationSet = {
     en: 'Nallathe Nadakkum Samuga Sevai Arakkattalai is a registered public charitable trust founded by Advocate N. Kavinraj in Tiruchengode, Tamil Nadu. Two years before registration, he personally funded Saturday-only Annadhanam on the streets — cooking and distributing meals from his own resources. On 08.04.2025 it became an officially registered trust. Today, after 400+ consecutive days of daily service, the trust feeds 50–100 people daily and 3,000–5,000 people monthly, has conducted 30+ police-coordinated burials for unclaimed deceased, led 10 funeral ceremonies as a stand-in family, rescued 5 destitute elders into care homes, sponsored 7 students (3 in college, 4 in school), distributed festival clothes to 100+ during Diwali, fundraised for accident victims\' surgeries, and runs a free emergency ambulance service.',
     ta: 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை, திருச்செங்கோடு வழக்கறிஞர் நா. கவின்ராஜ் அவர்களால் தொடங்கப்பட்டது. அறக்கட்டளை பதிவிற்கு இரண்டு ஆண்டுகள் முன்பிருந்தே, ஒவ்வொரு சனிக்கிழமையும் தனது சொந்தச் செலவில் சாலையோரத்தில் அன்னதானம் செய்து வந்தார். 08.04.2025 அன்று முறையாக அறக்கட்டளையாக பதிவு செய்யப்பட்டது. இன்று 400-க்கும் மேற்பட்ட தொடர் நாட்களாக தினமும் 50 முதல் 100 பேருக்கும், மாதந்தோறும் 3,000 முதல் 5,000 பேருக்கும் உணவு வழங்கி வருகிறோம். 30-க்கும் மேற்பட்ட ஆதரவற்று இறந்தோருக்கு போலீஸ் ஒத்துழைப்புடன் நல்லடக்கம் செய்துள்ளோம், 10 பேரின் இறுதிச் சடங்கை உறவினராய் முன் நின்று நடத்தியுள்ளோம். 5 ஆதரவற்ற முதியவர்களை மீட்டு முதியோர் இல்லத்தில் சேர்த்துள்ளோம், 7 மாணவர்களின் (3 கல்லூரி, 4 பள்ளி) கல்விக் கட்டணம் ஏற்றுள்ளோம், தீபாவளியில் 100-க்கும் மேற்பட்டோருக்கு புத்தாடை வழங்கியுள்ளோம், மேலும் விபத்தில் காயமடைந்தோரின் அறுவை சிகிச்சைக்கு நிதி திரட்டி உதவியுள்ளோம்.'
   },
+  introShort: {
+    en: 'Nallathe Nadakkum Samuga Sevai Arakkattalai is a registered public charitable trust founded by Advocate N. Kavinraj in Tiruchengode, Tamil Nadu. Through daily Annadhanam, dignified last rites, free emergency ambulance and rescue, elder care and community assistance, the trust works directly with people who have nowhere else to turn.',
+    ta: 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை, திருச்செங்கோடு வழக்கறிஞர் நா. கவின்ராஜ் அவர்களால் தொடங்கப்பட்ட, பதிவு செய்யப்பட்ட பொது தொண்டு அறக்கட்டளை ஆகும். தினசரி அன்னதானம், கண்ணியமான இறுதி மரியாதை, இலவச அவசர ஆம்புலன்ஸ் மற்றும் மீட்பு, முதியோர் பராமரிப்பு மற்றும் சமூக உதவி மூலம், வேறு யாருடைய ஆதரவும் இல்லாத மக்களுக்கு நேரடியாக அறக்கட்டளை உதவுகிறது.'
+  },
   missionTitle: {
     en: 'Our Mission',
     ta: 'நமது நோக்கம்'
@@ -174,20 +178,20 @@ export const servicesData: ServiceItem[] = [
     iconName: 'Ambulance',
     title: { en: 'Free Ambulance Service', ta: 'இலவச ஆம்புலன்ஸ் சேவை' },
     description: {
-      en: 'Emergency medical transport and last-mile patient transfer for destitute individuals, free of charge.',
-      ta: 'வசதியற்ற ஏழை எளிய மக்களுக்கு அவசர மருத்துவக் காலங்களில் மருத்துவமனைக்குச் செல்ல இலவச ஆம்புலன்ஸ் போக்குவரத்து.'
+      en: 'Emergency medical transport and last-mile patient transfer, free of charge, exclusively for families living below the poverty line.',
+      ta: 'வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டும், அவசர மருத்துவக் காலங்களில் மருத்துவமனைக்குச் செல்ல இலவச ஆம்புலன்ஸ் போக்குவரத்து.'
     },
     detailedDescription: {
-      en: 'Launched on March 21, 2026, our dedicated trust ambulance is equipped with life support essentials and GPS tracking. We operate this service specifically for individuals who cannot afford standard private ambulance charges, focusing on transfers to Government Hospitals.',
-      ta: 'மார்ச் 21, 2026 அன்று தொடங்கப்பட்ட இந்த ஆம்புலன்ஸ் சேவை, அவசரக் காலங்களில் ஏழை எளிய மக்களை அரசு மருத்துவமனைக்குக் கொண்டு சேர்க்கப் பயன்படுகிறது. இதற்காக எந்தவொரு கட்டணமும் வசூலிக்கப்படுவதில்லை.'
+      en: 'Launched on March 21, 2026, our dedicated trust ambulance is equipped with life support essentials and GPS tracking. This service is reserved strictly for individuals and families below the poverty line (BPL) who cannot afford standard private ambulance charges — it is not a general-purpose or paid ambulance service. Eligibility is verified at the time of dispatch, and transfers focus on Government Hospitals.',
+      ta: 'மார்ச் 21, 2026 அன்று தொடங்கப்பட்ட இந்த ஆம்புலன்ஸ் சேவை, வறுமைக்கோட்டிற்குக் கீழே உள்ளவர்களுக்கு (BPL) மட்டுமே ஒதுக்கப்பட்டது — இது அனைவருக்குமான அல்லது கட்டணம் செலுத்தும் சேவை அல்ல. அழைப்பு நேரத்தில் தகுதி உறுதி செய்யப்பட்ட பின்னரே அரசு மருத்துவமனைக்கு இலவசமாக அழைத்துச் செல்லப்படுவார்கள்.'
     },
     benefits: {
-      en: 'Immediate transit during accidents or critical illness for individuals in Tiruchengode town and taluk. GPS-tracked transparent usage.',
-      ta: 'திருச்செங்கோடு மற்றும் சுற்றுவட்டாரப் பகுதிகளில் விபத்துகள் அல்லது அவசர மருத்துவத் தேவைகளின்போது உடனடி போக்குவரத்து.'
+      en: 'Immediate transit during accidents or critical illness for below-poverty-line individuals in Tiruchengode town and taluk. GPS-tracked transparent usage.',
+      ta: 'திருச்செங்கோடு மற்றும் சுற்றுவட்டாரப் பகுதிகளில் வறுமைக்கோட்டிற்குக் கீழே உள்ளோருக்கு விபத்துகள் அல்லது அவசர மருத்துவத் தேவைகளின்போது உடனடி போக்குவரத்து.'
     },
     howToRequest: {
-      en: 'Dial our emergency response line directly. Support is subject to vehicle availability at the time of the call.',
-      ta: 'எங்கள் அவசர தொலைபேசி எண்ணை நேரடியாக அழைக்கவும். வாகனத்தின் இருப்பைப் பொறுத்து உடனடியாக சேவை வழங்கப்படும்.'
+      en: 'Dial our emergency response line directly. This service is available only to families below the poverty line; eligibility is verified over the call, and support is subject to vehicle availability at the time of the call.',
+      ta: 'எங்கள் அவசர தொலைபேசி எண்ணை நேரடியாக அழைக்கவும். இச்சேவை வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டுமே கிடைக்கும்; அழைப்பின்போது தகுதி உறுதி செய்யப்படும், மேலும் வாகனத்தின் இருப்பைப் பொறுத்து சேவை வழங்கப்படும்.'
     },
     howToDonate: {
       en: 'Fuel sponsorship (monthly log published to sponsors), tyre replacement, or medical equipment additions.',

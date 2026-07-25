@@ -16,6 +16,7 @@ import {
 } from 'react-icons/fa6';
 import { servicesData, ServiceItem } from '../data';
 import ProgramImageSlider from './ProgramImageSlider';
+import Monogram from './Monogram';
 
 interface ServicesViewProps {
   lang: 'en' | 'ta';
@@ -50,7 +51,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
         <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl">
           {lang === 'en' ? 'Our Services & Social Activities' : 'நமது சேவைகள் மற்றும் மக்கள் பணிகள்'}
         </h1>
-        <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+        <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
           {lang === 'en' 
             ? 'We operate six direct humanitarian programs in Tiruchengode, Tamil Nadu, to reach those who fall outside traditional social safety nets.' 
             : 'திருச்செங்கோட்டில் முறையான அரசு உதவிகள் எட்டாத நலிந்த மக்களுக்கு உதவிட, நாங்கள் ஆறு முக்கிய மக்கள் நலத் திட்டங்களைச் செயல்படுத்தி வருகிறோம்.'}
@@ -64,7 +65,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
           className={`px-4 py-2 rounded-full text-xs font-semibold cursor-pointer transition-all ${
             filter === 'all' 
               ? 'bg-emerald-600 text-white shadow-sm' 
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
           }`}
         >
           {lang === 'en' ? 'All Programs' : 'அனைத்து பணிகள்'}
@@ -76,7 +77,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
             className={`px-4 py-2 rounded-full text-xs font-semibold cursor-pointer transition-all ${
               filter === s.id 
                 ? 'bg-emerald-600 text-white shadow-sm' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
             }`}
           >
             {s.title[lang].split(' (')[0]}
@@ -107,13 +108,13 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                 </h3>
               </div>
 
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify">
+              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify">
                 {service.description[lang]}
               </p>
             </div>
 
             <div className="pt-6 flex items-center justify-between">
-              <span className="text-[10px] text-gray-400 font-mono uppercase bg-gray-50 px-2 py-0.5 rounded">
+              <span className="text-[10px] text-gray-900 font-mono uppercase bg-gray-50 px-2 py-0.5 rounded">
                 ID: {service.id}
               </span>
               <button
@@ -131,10 +132,11 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
 
       {/* Bottom Legal Clarification banner */}
       <section className="rounded-2xl bg-gray-50 p-6 border border-gray-200/60 text-center space-y-2">
-        <p className="text-xs font-semibold text-emerald-800">
-          💡 {lang === 'en' ? 'All request submissions undergo physical verification' : 'கோரிக்கைகள் அனைத்தும் நேரடி ஆய்வுக்குப் பின்னரே ஏற்றுக்கொள்ளப்படும்'}
+        <p className="text-xs font-semibold text-emerald-800 flex items-center justify-center gap-1.5">
+          <Monogram label="i" size="xs" />
+          <span>{lang === 'en' ? 'All request submissions undergo physical verification' : 'கோரிக்கைகள் அனைத்தும் நேரடி ஆய்வுக்குப் பின்னரே ஏற்றுக்கொள்ளப்படும்'}</span>
         </p>
-        <p className="text-[11px] text-gray-500 max-w-2xl mx-auto">
+        <p className="text-[11px] text-gray-900 max-w-2xl mx-auto">
           {lang === 'en'
             ? 'Our local volunteer network verifies every help request prior to resource allocation to ensure donor funds go to genuine, highly distressed cases.'
             : 'நன்கொடையாளர் நிதி தகுதியுள்ள நபர்களைச் சென்றடைவதை உறுதிசெய்ய, உதவி கோரிக்கைகள் அனைத்தும் எமது தன்னார்வலர்களின் நேரடி ஆய்வுக்கு உட்படுத்தப்படும்.'}
@@ -189,7 +191,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                   <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800">
                     {lang === 'en' ? 'Description' : 'திட்ட விளக்கம்'}
                   </h4>
-                  <p className="text-sm text-gray-700 leading-relaxed text-justify">
+                  <p className="text-base text-gray-900 leading-relaxed text-justify">
                     {selectedService.detailedDescription[lang]}
                   </p>
                 </div>
@@ -197,10 +199,10 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                 {/* Benefits */}
                 <div className="space-y-2 bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-800 flex items-center space-x-1">
-                    <span>✨</span>
+                    <Monogram label="B" size="xs" />
                     <span>{lang === 'en' ? 'Stated Benefits & Stated Metrics' : 'நமது திட்ட இலக்குகள் & தாக்கங்கள்'}</span>
                   </h4>
-                  <p className="text-xs sm:text-sm text-emerald-900 leading-relaxed">
+                  <p className="text-base sm:text-lg text-emerald-900 leading-relaxed sm:leading-[1.65]">
                     {selectedService.benefits[lang]}
                   </p>
                 </div>
@@ -210,11 +212,11 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                   {/* How to Request */}
                   <div className="border border-gray-100 rounded-xl p-4 space-y-2 flex flex-col justify-between">
                     <div className="space-y-1">
-                      <div className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center space-x-1">
+                      <div className="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center space-x-1">
                         <FaPhoneFlip className="h-3 w-3 text-emerald-600" />
                         <span>{lang === 'en' ? 'Request help' : 'உதவி பெற'}</span>
                       </div>
-                      <p className="text-xs text-gray-600 leading-relaxed">
+                      <p className="text-base text-gray-900 leading-relaxed">
                         {selectedService.howToRequest[lang]}
                       </p>
                     </div>
@@ -233,11 +235,11 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                   {/* How to Donate */}
                   <div className="border border-gray-100 rounded-xl p-4 space-y-2 flex flex-col justify-between">
                     <div className="space-y-1">
-                      <div className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center space-x-1">
+                      <div className="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center space-x-1">
                         <FaIndianRupeeSign className="h-3 w-3 text-emerald-600" />
                         <span>{lang === 'en' ? 'Sponsor Program' : 'ஸ்பான்சர் செய்ய'}</span>
                       </div>
-                      <p className="text-xs text-gray-600 leading-relaxed">
+                      <p className="text-base text-gray-900 leading-relaxed">
                         {selectedService.howToDonate[lang]}
                       </p>
                     </div>
@@ -256,11 +258,11 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                   {/* Volunteer Role */}
                   <div className="border border-gray-100 rounded-xl p-4 space-y-2 flex flex-col justify-between">
                     <div className="space-y-1">
-                      <div className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center space-x-1">
+                      <div className="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center space-x-1">
                         <FaUsers className="h-3 w-3 text-emerald-600" />
                         <span>{lang === 'en' ? 'Volunteer role' : 'தன்னார்வ பணி'}</span>
                       </div>
-                      <p className="text-xs text-gray-600 leading-relaxed">
+                      <p className="text-base text-gray-900 leading-relaxed">
                         {selectedService.volunteerRole[lang]}
                       </p>
                     </div>
@@ -285,7 +287,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                 <button
                   id="btn-close-modal-footer"
                   onClick={() => setSelectedService(null)}
-                  className="rounded-lg bg-white border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="rounded-lg bg-white border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-900 hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   {lang === 'en' ? 'Close' : 'மூடவும்'}
                 </button>

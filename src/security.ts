@@ -10,6 +10,17 @@ export const OFFICIAL_CONTACT = {
 };
 
 /**
+ * Centralized official social-media handles. Kept alongside the other public
+ * contact details so links stay consistent wherever they are surfaced.
+ * NOTE: `facebook` is still a placeholder pending the trust's real page URL.
+ */
+export const OFFICIAL_SOCIAL = {
+  instagram: 'https://www.instagram.com/nn_socialservice_trust',
+  facebook: 'https://facebook.com',
+  youtube: 'https://www.youtube.com/@nallathenadakumsocialtrust',
+};
+
+/**
  * Sample-only acknowledgement entries displayed in the public UI.
  * These records are intentionally static so the site never implies that
  * donor data is being persisted securely on the client.

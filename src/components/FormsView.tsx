@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { OFFICIAL_CONTACT, buildMailtoUrl, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
 import { motion } from 'motion/react';
 import { FaShieldHalved, FaCalendarDays, FaPhoneFlip, FaTriangleExclamation, FaUserCheck, FaHeart } from 'react-icons/fa6';
+import Monogram from './Monogram';
 
 interface FormsViewProps {
   lang: 'en' | 'ta';
@@ -174,7 +175,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
                 {lang === 'en' ? 'Request Immediate Help' : 'நேரடி உதவி கோருங்கள்'}
               </h1>
-              <p className="text-gray-600 text-sm leading-relaxed text-justify">
+              <p className="text-gray-900 text-sm leading-relaxed text-justify">
                 {lang === 'en'
                   ? 'If you or someone in your vicinity is in severe distress (homelessness, abandonment in old age, needing last rites, or urgent hospital fees), please fill out our dispatch request. Our local network conducts a physical review within 24–48 hours.'
                   : 'உங்களுக்கோ அல்லது உங்கள் பகுதியில் வசிக்கும் யாராவது ஒருவருக்கு அவசரமாக உணவு, முதியோர் மீட்பு, மருத்துவ உதவி அல்லது கல்வி கட்டண உதவி தேவைப்பட்டால் கீழே உள்ள படிவத்தை நிரப்பவும். எங்களது தன்னார்வலர்கள் 24-48 மணி நேரத்திற்குள் நேரில் வந்து விசாரித்து உதவுவர்.'}
@@ -183,13 +184,14 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
             {/* Disclaimer Checklist */}
             <div className="rounded-xl bg-gray-50 p-5 border border-gray-200/60 space-y-3">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-700">
-                ⚠️ {lang === 'en' ? 'Requirements & Process' : 'அறிவிப்பும் செயல்முறையும்'}
+              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900">
+                <Monogram label="!" size="xs" tone="amber" className="mr-1 align-middle" />{lang === 'en' ? 'Requirements & Process' : 'அறிவிப்பும் செயல்முறையும்'}
               </h3>
-              <ul className="text-xs text-gray-600 space-y-2 list-disc pl-4 leading-relaxed">
+              <ul className="text-base text-gray-900 space-y-2 list-disc pl-4 leading-relaxed">
                 <li>{lang === 'en' ? 'All requests undergo physical verification by our trustees/volunteers.' : 'அனைத்து கோரிக்கைகளும் எங்களது அறங்காவலர்கள் அல்லது தன்னார்வலர்களால் நேரடியாகச் சரிபார்க்கப்படும்.'}</li>
                 <li>{lang === 'en' ? 'Support is distributed based on the severity of distress and resource availability.' : 'வழங்கப்படும் உதவி நிலைமையின் தீவிரம் மற்றும் எங்களது நிதி ஆதாரத்தின் அடிப்படையிலேயே தீர்மானிக்கப்படும்.'}</li>
                 <li>{lang === 'en' ? 'Last rites support is coordinated strictly alongside the local Police Station.' : 'ஆதரவற்றோர் இறுதி மரியாதை உதவி முற்றிலும் காவல்துறையின் ஒப்புதல் மற்றும் ஆவணங்களின் அடிப்படையிலேயே நிகழும்.'}</li>
+                <li>{lang === 'en' ? 'Free ambulance dispatch is reserved strictly for families below the poverty line; eligibility is verified before dispatch.' : 'இலவச ஆம்புலன்ஸ் சேவை வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டுமே; அனுப்பும் முன் தகுதி உறுதி செய்யப்படும்.'}</li>
               </ul>
             </div>
 
@@ -206,7 +208,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   <h3 className="font-display text-xl font-bold text-gray-900">
                     {lang === 'en' ? 'Secure Contact Draft Prepared' : 'பாதுகாப்பான தொடர்பு வரைவு தயாராகிவிட்டது'}
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-gray-900">
                     {lang === 'en' 
                       ? 'A WhatsApp handoff was prepared instead of storing this request in your browser.' 
                       : 'உங்கள் விண்ணப்பம் வெற்றிகரமாகப் பதிவேற்றப்பட்டு, ஆய்வில் உள்ளது.'}
@@ -215,7 +217,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     {lang === 'en' ? 'Reference:' : 'குறிப்பு எண்:'} {helpSuccess}
                   </div>
                 </div>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-900">
                   {lang === 'en'
                     ? 'For emergencies, call the trust directly as well. This site no longer stores distress requests on shared devices.'
                     : 'தயவுசெய்து உங்களது தொலைபேசியை தொடர்பில் வைத்திருக்கவும். தன்னார்வலர் விரைவில் அழைப்பார்.'}
@@ -234,7 +236,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   
                   {/* Name */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                       {lang === 'en' ? 'Beneficiary or Contact Name' : 'உதவி பெறுபவர் / தகவல் அளிப்பவர் பெயர்'} *
                     </label>
                     <input
@@ -249,7 +251,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                   {/* Phone */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                       {lang === 'en' ? 'Contact Phone / WhatsApp' : 'தொடர்பு எண் / WhatsApp'} *
                     </label>
                     <input
@@ -268,7 +270,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   
                   {/* Assistance Type */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                       {lang === 'en' ? 'Assistance Category' : 'தேவைப்படும் உதவி வகை'}
                     </label>
                     <select
@@ -288,12 +290,12 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                   {/* Urgency */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                       {lang === 'en' ? 'Urgency Level' : 'அவசர நிலை'}
                     </label>
                     <div className="flex gap-4 pt-1.5">
                       {['Immediate', 'Within a Week', 'Ongoing'].map((lvl) => (
-                        <label key={lvl} className="inline-flex items-center space-x-1.5 text-xs font-medium text-gray-700 cursor-pointer">
+                        <label key={lvl} className="inline-flex items-center space-x-1.5 text-xs font-medium text-gray-900 cursor-pointer">
                           <input
                             type="radio"
                             name="urgency"
@@ -316,7 +318,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Address */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                     {lang === 'en' ? 'Address / Location Details' : 'முகவரி / இருப்பிட விவரங்கள்'} *
                   </label>
                   <input
@@ -331,7 +333,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Situation Description */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                     {lang === 'en' ? 'Describe the distress or medical situation' : 'சூழ்நிலை அல்லது தேவையின் முழு விபரம்'} *
                   </label>
                   <textarea
@@ -357,7 +359,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     />
                   </div>
                   <div className="ml-3 text-xs">
-                    <label htmlFor="consent-check" className="font-medium text-gray-700 cursor-pointer">
+                    <label htmlFor="consent-check" className="font-medium text-gray-900 cursor-pointer">
                       {lang === 'en' 
                         ? 'I consent to the physical verification of these details by the trust volunteers.' 
                         : 'இந்த விவரங்கள் உண்மை என்றும், தன்னார்வலர்கள் நேரில் வந்து சரிபார்க்க முழு ஒப்புதல் அளிக்கிறேன்.'} *
@@ -395,7 +397,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
                 {lang === 'en' ? 'Become a Trust Volunteer' : 'தன்னார்வலராகச் சேவையற்றுக'}
               </h1>
-              <p className="text-gray-600 text-sm leading-relaxed text-justify">
+              <p className="text-gray-900 text-sm leading-relaxed text-justify">
                 {lang === 'en'
                   ? 'We have zero salaried administrative staffs. We rely on people who give a few hours a week—chopping vegetables for morning annadhanam, helping verify student profiles, driving ambulance transfers, or assisting in cemetery logistics. Join us to make a direct impact.'
                   : 'எங்கள் அறக்கட்டளையில் சம்பளம் பெறும் ஊழியர்கள் யாரும் இல்லை. வாரத்தில் ஒரு சில மணிநேரங்களை சமூகத்திற்காக வழங்கத் துடிக்கும் தன்னார்வலர்களை மட்டுமே நம்பியே எங்களது பணிகள் நடக்கின்றன. காலையில் உணவு பேக்கிங் செய்தல், முதியோர் மீட்பு, கள விசாரணை என ஏதேனும் ஒரு பணியில் உங்களை இணைத்துக் கொள்ளலாம்.'}
@@ -404,20 +406,20 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
             {/* Volunteer areas detail list */}
             <div className="rounded-xl border border-gray-100 bg-white p-5 shadow-xs space-y-3">
-              <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-700">
+              <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Volunteer Deployment Tracks' : 'உதவக்கூடிய பணிப் பிரிவுகள்'}
               </h3>
-              <ul className="text-xs text-gray-600 space-y-2 list-none">
+              <ul className="text-xs text-gray-900 space-y-2 list-none">
                 <li className="flex items-center space-x-2">
-                  <span className="text-emerald-600">🥘</span>
+                  <Monogram label="F" size="xs" />
                   <span><strong>{lang === 'en' ? 'Food Drive' : 'உணவு விநியோகம்'}:</strong> {lang === 'en' ? 'Meal packing & transport routes' : 'மதிய உணவு விநியோகம் மற்றும் பேக்கிங்'}</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <span className="text-emerald-600">🚑</span>
+                  <Monogram label="A" size="xs" />
                   <span><strong>{lang === 'en' ? 'Ambulance Support' : 'ஆம்புலன்ஸ் ஒருங்கிணைப்பு'}:</strong> {lang === 'en' ? 'Coordinating transfers & call log' : 'அவசர கால அழைப்புகளைப் பெறுதல்'}</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <span className="text-emerald-600">🔎</span>
+                  <Monogram label="V" size="xs" />
                   <span><strong>{lang === 'en' ? 'Outreach & Verification' : 'களப்பணி / சரிபார்ப்பு'}:</strong> {lang === 'en' ? 'Home audits for students & elders' : 'மாணவர்கள் மற்றும் முதியோர்களின் வீட்டு வசதிகளை விசாரித்தல்'}</span>
                 </li>
               </ul>
@@ -436,7 +438,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   <h3 className="font-display text-xl font-bold text-gray-900">
                     {lang === 'en' ? 'Volunteer Draft Prepared' : 'தன்னார்வ பதிவு வரைவு தயாரானது'}
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-600">
+                  <p className="text-xs sm:text-sm text-gray-900">
                     {lang === 'en'
                       ? 'Your email app should now contain a pre-filled volunteer registration draft.'
                       : 'சமூக சேவையில் உங்களை ஈடுபடுத்திக் கொண்டமைக்கு மனமார்ந்த நன்றிகள்.'}
@@ -445,7 +447,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     {lang === 'en' ? 'Reference:' : 'குறிப்பு எண்:'} {volSuccess}
                   </div>
                 </div>
-                <p className="text-xs text-gray-400 max-w-sm mx-auto leading-relaxed">
+                <p className="text-base text-gray-900 max-w-sm mx-auto leading-relaxed">
                   {lang === 'en'
                     ? 'This website no longer stores volunteer applications locally. Please send the prepared draft from your trusted device.'
                     : 'நமது ஒருங்கிணைப்பாளர் விரைவில் வாட்ஸ்அப் மூலம் தொடர்புகொண்டு அடுத்தகட்டப் பணிகள் குறித்து விவரிப்பார்.'}
@@ -464,7 +466,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   
                   {/* Name */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                       {lang === 'en' ? 'Your Full Name' : 'தன்னார்வலர் பெயர்'} *
                     </label>
                     <input
@@ -479,7 +481,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                   {/* Phone */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                       {lang === 'en' ? 'WhatsApp Phone Number' : 'WhatsApp எண்'} *
                     </label>
                     <input
@@ -499,7 +501,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   
                   {/* Location */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                       {lang === 'en' ? 'Your Location / Town' : 'வாழும் இடம் / இருப்பிடம்'} *
                     </label>
                     <input
@@ -514,7 +516,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                   {/* Availability */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                       {lang === 'en' ? 'Your Availability' : 'எப்போது வர இயலும்'}
                     </label>
                     <select
@@ -532,7 +534,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Interests checkboxes */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                     {lang === 'en' ? 'Areas of Interest' : 'பங்களிக்க விரும்பும் பகுதிகள்'} (choose at least one) *
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
@@ -566,7 +568,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Relevant Skills */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                     {lang === 'en' ? 'Any specific skills / message' : 'திறமைகள் / இதர தகவல்கள்'}
                   </label>
                   <textarea
@@ -608,7 +610,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
                 {lang === 'en' ? 'Contact our Registered Office' : 'நேரடியாகத் தொடர்பு கொள்ள'}
               </h1>
-              <p className="text-gray-600 text-sm leading-relaxed text-justify">
+              <p className="text-gray-900 text-sm leading-relaxed text-justify">
                 {lang === 'en'
                   ? 'Our registered administrative office is located on Rajeev Nagar crossroad, opp. SPM Hospital, Tiruchengode town. For emergency ambulance requirements or reporting abandoned elderly, call us immediately.'
                   : 'எங்கள் பதிவு அலுவலகம் திருச்செங்கோடு ராஜிவ் நகர் குறுக்கு சாலை, SPM மருத்துவமனைக்கு எதிரில் அமைந்துள்ளது. அவசர ஆம்புலன்ஸ் தேவை அல்லது முதியவர்கள் மீட்புத் தகவல்களுக்கு உடனடியாக அழைக்கவும்.'}
@@ -617,33 +619,33 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
             <div className="space-y-4 pt-2">
               <div className="flex items-start space-x-3.5">
-                <span className="text-xl">📍</span>
+                <Monogram label="A" size="md" />
                 <div>
                   <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Office address' : 'அலுவலக முகவரி'}</h4>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mt-1">
+                  <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
                     Door No. 38/5, Rajeev Nagar Cross Road, Opp. SPM Hospital, Sanga Kiri Main Road, Tiruchengode – 637211
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3.5">
-                <span className="text-xl">✉️</span>
+                <Monogram label="E" size="md" />
                 <div>
                   <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Email Address' : 'மின்னஞ்சல் முகவரி'}</h4>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mt-1">
+                  <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
                     nallathanadakum@gmail.com
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3.5">
-                <span className="text-xl">📞</span>
+                <Monogram label="P" size="md" />
                 <div>
                   <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Emergency Phone & WhatsApp' : 'அவசரத் தொடர்பு எண்கள்'}</h4>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mt-1 font-semibold">
+                  <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] mt-1 font-semibold">
                     +91 98765 43210 / +91 94435 67890
                   </p>
-                  <p className="text-[10px] text-gray-400 mt-0.5">
+                  <p className="text-[10px] text-gray-900 mt-0.5">
                     {lang === 'en' ? 'Operated jointly by Chairman & Trustees' : 'தலைவர் மற்றும் அறங்காவலர்களால் இயக்கப்படும் எண்கள்'}
                   </p>
                 </div>
@@ -661,7 +663,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 <h3 className="font-display text-lg font-bold text-gray-900">
                   {lang === 'en' ? 'Email Draft Prepared' : 'மின்னஞ்சல் வரைவு தயாராகிவிட்டது'}
                 </h3>
-                <p className="text-xs sm:text-sm text-gray-600 max-w-sm mx-auto">
+                <p className="text-xs sm:text-sm text-gray-900 max-w-sm mx-auto">
                   {lang === 'en'
                     ? 'Your email client should now open with a pre-filled message so your enquiry is not stored in this browser.'
                     : 'உங்கள் செய்தி எங்களை வந்தடைந்தது. விரைவில் பதில் அனுப்புகிறோம். நன்றி!'}
@@ -679,7 +681,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 
                 {/* Name */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                     {lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *
                   </label>
                   <input
@@ -694,7 +696,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Phone */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                     {lang === 'en' ? 'Your Phone Number' : 'உங்கள் தொடர்பு எண்'} *
                   </label>
                   <input
@@ -709,7 +711,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Message */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
                     {lang === 'en' ? 'Your Message or Enquiry' : 'உங்கள் செய்தி / கேள்வி'} *
                   </label>
                   <textarea

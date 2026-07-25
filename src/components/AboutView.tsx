@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { FaAward, FaShieldHalved, FaHandHoldingHeart, FaFileLines, FaCircleCheck } from 'react-icons/fa6';
 import { commonTranslations } from '../data';
+import SocialConnect from './SocialConnect';
 
 interface AboutViewProps {
   lang: 'en' | 'ta';
@@ -42,38 +43,15 @@ export default function AboutView({ lang }: AboutViewProps) {
     }
   ];
 
-  const trustees = [
-    {
-      role: commonTranslations.founderTitle[lang],
-      name: commonTranslations.founderName[lang],
-      initials: 'NK',
-      image: '/founder.jpeg',
-      desc: {
-        en: 'N. Kavinraj is a practicing Advocate in Tiruchengode Town with a deep passion for social justice and human rights. Having personally funded and coordinated street food distribution for two years before formal trust registration, he continues to lead rescue operations and police coordinations on the ground.',
-        ta: 'வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள் திருச்செங்கோட்டில் வழக்கறிஞராகப் பணியாற்றி வருகிறார். அறக்கட்டளையை முறையாகப் பதிவு செய்வதற்கு முன்பு இரண்டு ஆண்டுகளாகத் தனது சொந்தச் செலவில் ஏழைகளுக்கு உணவு வழங்கியவர். தற்போது களப்பணிகள், மீட்பு நடவடிக்கைகள் மற்றும் போலீஸ் தொடர்புகளை நேரில் நின்று வழிநடத்துகிறார்.'
-      }
-    },
-    {
-      role: commonTranslations.secretaryTitle[lang],
-      name: commonTranslations.secretaryName[lang],
-      initials: 'SK',
-      image: null,
-      desc: {
-        en: 'S. Kolarisingar oversees administrative operations, legal documents, and ensures the trust matches up to standard protocols for non-governmental organizations. He handles coordinate linkages with other shelter structures.',
-        ta: 'S. கொளரிசிங்கர் அவர்கள் அறக்கட்டளையின் நிர்வாக செயல்பாடுகள், ஆவணங்கள் மற்றும் பிற தொண்டு நிறுவனங்களுடனான தொடர்புகளை ஒருங்கிணைக்கும் பணிகளை மேற்கொள்கிறார்.'
-      }
-    },
-    {
-      role: commonTranslations.treasurerTitle[lang],
-      name: commonTranslations.treasurerName[lang],
-      initials: 'NK',
-      image: null,
-      desc: {
-        en: 'Mrs. N. Kogila maintains complete track of donations, bills, expense approvals, and accounts. Jointly operates the trust bank account alongside the Chairman to ensure total control of public charity funds.',
-        ta: 'திருமதி. N. கோகிலா அவர்கள் அறக்கட்டளையின் வரவு செலவுகள், பில்கள் மற்றும் தணிக்கைக் கணக்குகளைப் பராமரிக்கிறார். தலைவருடன் இணைந்து கூட்டு வங்கிக் கணக்கை இயக்கி நிதி ஆளுமையை உறுதி செய்கிறார்.'
-      }
+  const founder = {
+    role: commonTranslations.founderTitle[lang],
+    name: commonTranslations.founderName[lang],
+    image: '/founder.jpeg',
+    desc: {
+      en: 'N. Kavinraj is a practicing Advocate in Tiruchengode Town with a deep passion for social justice and human rights. Having personally funded and coordinated street food distribution for two years before formal trust registration, he continues to lead rescue operations and police coordinations on the ground.',
+      ta: 'வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள் திருச்செங்கோட்டில் வழக்கறிஞராகப் பணியாற்றி வருகிறார். அறக்கட்டளையை முறையாகப் பதிவு செய்வதற்கு முன்பு இரண்டு ஆண்டுகளாகத் தனது சொந்தச் செலவில் ஏழைகளுக்கு உணவு வழங்கியவர். தற்போது களப்பணிகள், மீட்பு நடவடிக்கைகள் மற்றும் போலீஸ் தொடர்புகளை நேரில் நின்று வழிநடத்துகிறார்.'
     }
-  ];
+  };
 
   return (
     <div className="space-y-16 py-8">
@@ -83,7 +61,7 @@ export default function AboutView({ lang }: AboutViewProps) {
         <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl">
           {lang === 'en' ? 'About Our Trust' : 'அறக்கட்டளை வரலாறு & ஆளுமை'}
         </h1>
-        <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+        <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
           {lang === 'en' 
             ? 'A structured commitment born from daily personal encounters with poverty on the pavements of Tiruchengode Town.' 
             : 'திருச்செங்கோடு சாலைகளில் கண்ட எளிய மக்களின் வறுமையைப் போக்க உருவான ஒரு முறையான சேவை அமைப்பு.'}
@@ -98,7 +76,7 @@ export default function AboutView({ lang }: AboutViewProps) {
             <h2 className="font-display text-2xl font-bold text-gray-900">
               {lang === 'en' ? 'Our Origin & Name' : 'தோற்றம் மற்றும் பெயர்க்காரணம்'}
             </h2>
-            <div className="text-sm sm:text-base text-gray-600 space-y-4 leading-relaxed text-justify">
+            <div className="text-base sm:text-lg text-gray-900 space-y-4 leading-relaxed sm:leading-[1.65] text-justify">
               <p>
                 {lang === 'en'
                   ? 'The phrase "Nallathe Nadakkum" translates to "Good things will happen." It is a foundational belief that consistent, small acts of daily compassion compound into real social security for those abandoned by society.'
@@ -130,7 +108,7 @@ export default function AboutView({ lang }: AboutViewProps) {
 
         </div>
       </section>
-upd
+
       {/* Journey Milestones Timeline */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="space-y-6">
@@ -138,7 +116,7 @@ upd
             <h2 className="font-display text-2xl font-bold text-gray-900">
               {lang === 'en' ? 'Our Journey' : 'எங்கள் பயணம்'}
             </h2>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-900">
               {lang === 'en' ? 'From one person\'s Saturday habit to a registered trust serving thousands.' : 'ஒரு நபரின் சனிக்கிழமை பழக்கம் இன்று ஆயிரங்களுக்கு சேவை செய்யும் அறக்கட்டளையாக மாறியது.'}
             </p>
           </div>
@@ -206,12 +184,12 @@ upd
                   {/* Dot + year */}
                   <div className="flex flex-col items-center gap-1 shrink-0 w-24 sm:w-28">
                     <div className={`h-3 w-3 rounded-full ring-2 ring-white shadow ${milestone.dot} mt-1`} />
-                    <span className="text-[10px] font-bold text-gray-500 text-center leading-tight">{milestone.year}</span>
+                    <span className="text-[10px] font-bold text-gray-900 text-center leading-tight">{milestone.year}</span>
                   </div>
                   {/* Content */}
                   <div className="pb-6 flex-1">
                     <h4 className="font-display text-sm font-bold text-gray-900 mb-1">{milestone.title[lang]}</h4>
-                    <p className="text-xs text-gray-600 leading-relaxed text-justify">{milestone.desc[lang]}</p>
+                    <p className="text-base text-gray-900 leading-relaxed text-justify">{milestone.desc[lang]}</p>
                   </div>
                 </motion.div>
               ))}
@@ -220,18 +198,21 @@ upd
         </div>
       </section>
 
+      {/* Social Follow CTA */}
+      <SocialConnect lang={lang} />
+
       {/* Trust Registration Legalities Info */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="rounded-2xl border border-dashed border-emerald-300 bg-emerald-50/50 p-6 sm:p-10">
           <div className="flex flex-col md:flex-row gap-6 md:items-center">
-            <div className="h-12 w-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 text-xl font-bold">
-              📜
+            <div className="h-12 w-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 text-base font-bold">
+              LF
             </div>
             <div className="space-y-2 flex-grow">
               <h3 className="font-display text-lg font-bold text-gray-900">
                 {lang === 'en' ? 'Official Legal Framework' : 'அதிகாரப்பூர்வ சட்டக் கட்டமைப்பு'}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-700 leading-relaxed text-justify">
+              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify">
                 {commonTranslations.deedDetails[lang]}
               </p>
             </div>
@@ -245,53 +226,36 @@ upd
           <h2 className="font-display text-2xl font-bold text-gray-900">
             {commonTranslations.trusteeTitle[lang]}
           </h2>
-          <p className="text-xs sm:text-sm text-gray-500">
+          <p className="text-xs sm:text-sm text-gray-900">
             {lang === 'en' ? 'The legally registered governing body of our charitable trust.' : 'அறக்கட்டளையின் சட்டப்பூர்வ நிர்வாகப் பொறுப்பாளர்கள்.'}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {trustees.map((tr, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
-              className="rounded-2xl border border-gray-100 bg-white shadow-sm flex flex-col hover:shadow-md transition-all overflow-hidden"
-            >
-              {/* Full-width photo / placeholder */}
-              {tr.image ? (
-                <img
-                  src={tr.image}
-                  alt={tr.name}
-                  className="w-full h-64 object-cover object-top"
-                />
-              ) : (
-                <div className="w-full h-64 bg-gradient-to-br from-emerald-50 to-emerald-100 flex flex-col items-center justify-center gap-2">
-                  <span className="font-display text-5xl font-bold text-emerald-300 select-none">
-                    {tr.initials}
-                  </span>
-                  <span className="text-[10px] font-semibold text-emerald-400 tracking-widest uppercase">
-                    {lang === 'en' ? 'Photo coming soon' : 'படம் விரைவில்'}
-                  </span>
-                </div>
-              )}
-
-              {/* Card content */}
-              <div className="p-5 flex flex-col space-y-3 flex-grow">
-                <div className="space-y-1">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-                    {tr.role}
-                  </span>
-                  <h3 className="font-display text-base font-bold text-gray-900 pt-2">{tr.name}</h3>
-                </div>
-                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed flex-grow text-justify">
-                  {tr.desc[lang]}
-                </p>
+        <div className="max-w-sm mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="rounded-2xl border border-gray-100 bg-white shadow-sm flex flex-col hover:shadow-md transition-all overflow-hidden"
+          >
+            <img
+              src={founder.image}
+              alt={founder.name}
+              className="w-full h-64 object-cover object-top"
+            />
+            <div className="p-5 flex flex-col space-y-3 flex-grow">
+              <div className="space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+                  {founder.role}
+                </span>
+                <h3 className="font-display text-base font-bold text-gray-900 pt-2">{founder.name}</h3>
               </div>
-            </motion.div>
-          ))}
+              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] flex-grow text-justify">
+                {founder.desc[lang]}
+              </p>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -301,7 +265,7 @@ upd
           <h2 className="font-display text-2xl font-bold text-gray-900">
             {lang === 'en' ? 'Our Ethical Guiding Values' : 'நமது தார்மீக வழிகாட்டி நெறிமுறைகள்'}
           </h2>
-          <p className="text-xs sm:text-sm text-gray-500">
+          <p className="text-xs sm:text-sm text-gray-900">
             {lang === 'en' ? 'These five codes direct our daily street programs and financial stewardship.' : 'இவை ஒவ்வொன்றும் எங்கள் அன்றாடக் களப்பணி மற்றும் நிதி நிர்வாகத்தை வழிநடத்துகின்றன.'}
           </p>
         </div>
@@ -312,13 +276,15 @@ upd
               key={idx}
               className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:border-emerald-100 hover:shadow-sm transition-all flex flex-col space-y-3"
             >
-              <div className="p-2.5 bg-emerald-50 text-emerald-700 rounded-xl w-fit">
-                {val.icon}
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-emerald-50 text-emerald-700 rounded-xl w-fit shrink-0">
+                  {val.icon}
+                </div>
+                <h3 className="font-display text-sm font-bold text-gray-900">
+                  {val.title[lang]}
+                </h3>
               </div>
-              <h3 className="font-display text-sm font-bold text-gray-900">
-                {val.title[lang]}
-              </h3>
-              <p className="text-xs text-gray-600 leading-relaxed text-justify">
+              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify">
                 {val.desc[lang]}
               </p>
             </div>

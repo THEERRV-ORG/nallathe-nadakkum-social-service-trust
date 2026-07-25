@@ -31,7 +31,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
         <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl">
           {lang === 'en' ? 'Our Activities & Gallery' : 'கடந்தகால பணிகள் மற்றும் புகைப்படத் தொகுப்பு'}
         </h1>
-        <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+        <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
           {lang === 'en' 
             ? 'A visual ledger of our daily presence in the streets, mortuaries, and classrooms of Namakkal and Salem districts.' 
             : 'நாமக்கல் மற்றும் சேலம் மாவட்டங்களில் நாங்கள் மேற்கொண்ட அவசரப் பணிகள், மீட்புகள் மற்றும் தினசரி அன்னதான நிகழ்வுகளின் நேரடிப் பதிவுகள்.'}
@@ -43,7 +43,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
         
         {/* Search */}
         <div className="relative w-full md:max-w-xs">
-          <FaMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <FaMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-900" />
           <input
             type="text"
             placeholder={lang === 'en' ? 'Search activities...' : 'தேடவும்...'}
@@ -62,7 +62,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
               className={`px-3.5 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-colors ${
                 activeFilter === cat
                   ? 'bg-emerald-600 text-white'
-                  : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                  : 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50'
               }`}
             >
               {lang === 'en' ? cat : (
@@ -108,7 +108,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
               {/* Content Frame */}
               <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
                 <div className="space-y-2">
-                  <div className="flex items-center space-x-3 text-[10px] font-mono text-gray-400">
+                  <div className="flex items-center space-x-3 text-[10px] font-mono text-gray-900">
                     <span className="flex items-center space-x-1">
                       <FaCalendarDays className="h-3 w-3" />
                       <span>{item.date}</span>
@@ -121,7 +121,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                   <h3 className="font-display text-sm sm:text-base font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">
                     {item.title[lang]}
                   </h3>
-                  <p className="text-xs text-gray-500 leading-relaxed text-justify line-clamp-3">
+                  <p className="text-base text-gray-900 leading-relaxed text-justify line-clamp-3">
                     {item.description[lang]}
                   </p>
                 </div>
@@ -146,46 +146,6 @@ export default function GalleryView({ lang }: GalleryViewProps) {
             </motion.div>
           ))}
         </AnimatePresence>
-      </section>
-
-      {/* Social Media Link Redirects Info */}
-      <section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="space-y-1">
-          <h3 className="font-display text-base font-bold text-gray-900">
-            {lang === 'en' ? 'Follow Real-time Daily Updates' : 'தினசரி பணிகளை உடனுக்குடன் பார்க்க'}
-          </h3>
-          <p className="text-xs text-gray-500 leading-normal max-w-xl">
-            {lang === 'en'
-              ? 'Our founder routinely posts on-site photos, police burial verification logs, and video updates directly onto our social pages.'
-              : 'எங்கள் நிறுவனரின் நேரடி மீட்பு மற்றும் இறுதி மரியாதை வீடியோக்கள், புகைப்படங்களை எங்களது அதிகாரப்பூர்வ சமூக ஊடகங்களில் தினமும் காணலாம்.'}
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <a
-            href="https://www.instagram.com/nn_socialservice_trust"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg bg-red-50 text-red-700 px-4 py-2 text-xs font-bold hover:bg-red-100 transition-colors"
-          >
-            Instagram
-          </a>
-          <a
-            href="https://www.youtube.com/@nallathenadakumsocialtrust"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg bg-red-50 text-red-700 px-4 py-2 text-xs font-bold hover:bg-red-100 transition-colors"
-          >
-            YouTube
-          </a>
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg bg-blue-50 text-blue-700 px-4 py-2 text-xs font-bold hover:bg-blue-100 transition-colors"
-          >
-            Facebook
-          </a>
-        </div>
       </section>
 
       {/* Expanded Modal Box */}
@@ -215,7 +175,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
               </div>
 
               <div className="p-6 overflow-y-auto space-y-4">
-                <div className="flex items-center justify-between text-xs font-mono text-gray-400">
+                <div className="flex items-center justify-between text-xs font-mono text-gray-900">
                   <span className="flex items-center space-x-1">
                     <FaCalendarDays className="h-3 w-3" />
                     <span>{selectedItem.date}</span>
@@ -230,13 +190,13 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                   {selectedItem.title[lang]}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed text-justify">
+                <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify">
                   {selectedItem.description[lang]}
                 </p>
 
                 {selectedItem.beneficiaries && (
                   <div className="pt-3 border-t border-gray-50 flex justify-between items-center">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
                       {lang === 'en' ? 'Stated Impact' : 'தாக்கம்/விபரம்'}
                     </span>
                     <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full">
@@ -250,7 +210,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                 <button
                   id="btn-close-gallery-modal-footer"
                   onClick={() => setSelectedItem(null)}
-                  className="rounded-lg bg-white border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="rounded-lg bg-white border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-900 hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   {lang === 'en' ? 'Close' : 'மூடவும்'}
                 </button>

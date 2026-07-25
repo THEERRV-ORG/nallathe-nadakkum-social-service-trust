@@ -54,7 +54,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
               className={`shrink-0 whitespace-nowrap rounded-md px-2.5 py-2 text-[11px] xl:text-xs font-medium transition-colors cursor-pointer ${
                 activeTab === item.id
                   ? 'bg-emerald-50 text-emerald-700 font-semibold'
-                  : 'text-gray-600 hover:text-emerald-600 hover:bg-gray-50'
+                  : 'text-gray-900 hover:text-emerald-600 hover:bg-gray-50'
               }`}
             >
               {item.label[lang]}
@@ -81,7 +81,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
           <button
             id="lang-toggle"
             onClick={() => setLang(lang === 'en' ? 'ta' : 'en')}
-            className="flex items-center gap-1 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-900 hover:bg-gray-50 transition-colors cursor-pointer whitespace-nowrap"
             title={lang === 'en' ? 'தமிழ் பதிப்பிற்கு மாற்றவும்' : 'Switch to English version'}
           >
             <FaGlobe className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
@@ -91,7 +91,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
           <button
             id="mobile-menu-toggle"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="inline-flex lg:hidden items-center justify-center rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-pointer"
+            className="inline-flex lg:hidden items-center justify-center rounded-md p-2 text-gray-900/70 hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-pointer"
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {isMenuOpen ? <FaXmark className="h-5 w-5" /> : <FaBars className="h-5 w-5" />}
@@ -110,7 +110,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
                 className={`flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
                   activeTab === item.id
                     ? 'bg-emerald-50 text-emerald-700 font-semibold border-l-4 border-emerald-600 pl-2'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-emerald-600'
+                    : 'text-gray-900 hover:bg-gray-50 hover:text-emerald-600'
                 }`}
               >
                 {item.label[lang]}
