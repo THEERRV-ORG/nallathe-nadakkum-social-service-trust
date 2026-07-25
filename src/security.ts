@@ -7,6 +7,8 @@ export const OFFICIAL_CONTACT = {
   email: 'nallathanadakum@gmail.com',
   emergencyPhone: '+919876543210',
   whatsappPhone: '+919443567890',
+  // Dedicated number that receives all website form submissions on WhatsApp.
+  formsPhone: '+917540017625',
 };
 
 /**

@@ -62,7 +62,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
     setLoading(true);
     setTimeout(() => {
       const trackingId = createReference('NN-SPK');
-      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.whatsappPhone, [
+      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
         `Speaker invitation reference: ${trackingId}`,
         `Name: ${nName}`,
         `Phone: ${nPhone}`,

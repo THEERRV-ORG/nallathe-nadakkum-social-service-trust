@@ -264,7 +264,8 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
           ? `Programme: ${financialProgram === 'other' ? (sanitizeSingleLine(programOther, 80) || 'Other') : (FINANCIAL_PROGRAMS[financialProgram]?.en ?? financialProgram)}`
           : '';
 
-      const mailtoUrl = buildMailtoUrl(OFFICIAL_CONTACT.email, 'Donation acknowledgement request', [
+      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+        `Form: Donation Pledge`,
         `Name: ${normalizedName}`,
         `Phone: ${normalizedPhone}`,
         `Support type: ${donationTypeLabel}`,
@@ -273,7 +274,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         `Message: ${normalizedMessage || 'Blessed to support.'}`,
       ]);
 
-      window.location.href = mailtoUrl;
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
       setDonorLoading(false);
       setDonorSuccess(true);
       setDonorName('');
@@ -511,11 +512,11 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
               ✓
             </div>
             <div className="space-y-1">
-              <h4 className="font-display text-base font-bold text-gray-900">{lang === 'en' ? 'Acknowledgement Draft Prepared' : 'உறுதிப்படுத்தல் வரைவு தயாராகிவிட்டது'}</h4>
+              <h4 className="font-display text-base font-bold text-gray-900">{lang === 'en' ? 'WhatsApp Message Prepared' : 'வாட்ஸ்அப் செய்தி தயாராகிவிட்டது'}</h4>
               <p className="text-xs text-gray-900">
-                {lang === 'en' 
-                  ? 'Your email app should now open with a pre-filled acknowledgement request instead of publishing donor details in the browser.' 
-                  : 'உங்களது பங்களிப்பு வெற்றிகரமாக நன்றிக் கூடப் பலகையில் பதிவேற்றப்பட்டுள்ளது.'}
+                {lang === 'en'
+                  ? 'WhatsApp should now open with your pledge details pre-filled instead of publishing donor details in the browser. Tap send to share them with us.'
+                  : 'உங்கள் பங்களிப்பு விவரங்களுடன் வாட்ஸ்அப் திறக்கும். எங்களுடன் பகிர அனுப்பு பொத்தானை அழுத்தவும்.'}
               </p>
             </div>
             <button

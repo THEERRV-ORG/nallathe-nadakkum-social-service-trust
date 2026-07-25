@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { OFFICIAL_CONTACT, buildMailtoUrl, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
+import { OFFICIAL_CONTACT, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
 import { motion, AnimatePresence } from 'motion/react';
 import { FaLocationDot, FaEnvelope, FaPhone, FaChevronDown, FaChevronRight } from 'react-icons/fa6';
 import { faqData } from '../data';
@@ -74,8 +74,9 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
     setTimeout(() => {
       const trackingId = createReference('NN-REQ');
-      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.whatsappPhone, [
-        `Help request reference: ${trackingId}`,
+      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+        `Form: Request Help`,
+        `Reference: ${trackingId}`,
         `Name: ${normalizedName}`,
         `Phone: ${normalizedPhone}`,
         `Address: ${normalizedAddress}`,
@@ -112,7 +113,8 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
     setTimeout(() => {
       const trackingId = createReference('NN-VOL');
-      const mailtoUrl = buildMailtoUrl(OFFICIAL_CONTACT.email, `Volunteer registration ${trackingId}`, [
+      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+        `Form: Volunteer Registration`,
         `Reference: ${trackingId}`,
         `Name: ${normalizedName}`,
         `Phone: ${normalizedPhone}`,
@@ -122,7 +124,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
         `Skills: ${normalizedSkills || 'Not provided'}`,
       ]);
 
-      window.location.href = mailtoUrl;
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
       setVolLoading(false);
       setVolSuccess(trackingId);
       setVolName('');
@@ -149,13 +151,14 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     setContactLoading(true);
 
     setTimeout(() => {
-      const mailtoUrl = buildMailtoUrl(OFFICIAL_CONTACT.email, 'Website contact request', [
+      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+        `Form: Contact / Enquiry`,
         `Name: ${normalizedName}`,
         `Phone: ${normalizedPhone}`,
         `Message: ${normalizedMessage}`,
       ]);
 
-      window.location.href = mailtoUrl;
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
       setContactLoading(false);
       setContactSuccess(true);
       setContactName('');
@@ -447,12 +450,12 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 </div>
                 <div className="space-y-2">
                   <h3 className="font-display text-xl font-bold text-gray-900">
-                    {lang === 'en' ? 'Volunteer Draft Prepared' : 'தன்னார்வ பதிவு வரைவு தயாரானது'}
+                    {lang === 'en' ? 'WhatsApp Message Prepared' : 'வாட்ஸ்அப் செய்தி தயாரானது'}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-900">
                     {lang === 'en'
-                      ? 'Your email app should now contain a pre-filled volunteer registration draft.'
-                      : 'சமூக சேவையில் உங்களை ஈடுபடுத்திக் கொண்டமைக்கு மனமார்ந்த நன்றிகள்.'}
+                      ? 'WhatsApp should now open with your volunteer details pre-filled. Tap send to complete your registration.'
+                      : 'உங்கள் தன்னார்வ விவரங்களுடன் வாட்ஸ்அப் திறக்கும். பதிவை முடிக்க அனுப்பு பொத்தானை அழுத்தவும்.'}
                   </p>
                   <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono text-sm font-bold px-4 py-2 rounded-lg mt-2">
                     {lang === 'en' ? 'Reference:' : 'குறிப்பு எண்:'} {volSuccess}
@@ -460,7 +463,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 </div>
                 <p className="text-base text-gray-900 max-w-sm mx-auto leading-relaxed">
                   {lang === 'en'
-                    ? 'This website no longer stores volunteer applications locally. Please send the prepared draft from your trusted device.'
+                    ? 'This website no longer stores volunteer applications locally. Please send the prepared WhatsApp message from your trusted device.'
                     : 'நமது ஒருங்கிணைப்பாளர் விரைவில் வாட்ஸ்அப் மூலம் தொடர்புகொண்டு அடுத்தகட்டப் பணிகள் குறித்து விவரிப்பார்.'}
                 </p>
                 <button
@@ -678,12 +681,12 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   ✓
                 </div>
                 <h3 className="font-display text-lg font-bold text-gray-900">
-                  {lang === 'en' ? 'Email Draft Prepared' : 'மின்னஞ்சல் வரைவு தயாராகிவிட்டது'}
+                  {lang === 'en' ? 'WhatsApp Message Prepared' : 'வாட்ஸ்அப் செய்தி தயாராகிவிட்டது'}
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-900 max-w-sm mx-auto">
                   {lang === 'en'
-                    ? 'Your email client should now open with a pre-filled message so your enquiry is not stored in this browser.'
-                    : 'உங்கள் செய்தி எங்களை வந்தடைந்தது. விரைவில் பதில் அனுப்புகிறோம். நன்றி!'}
+                    ? 'WhatsApp should now open with your message pre-filled so your enquiry is not stored in this browser. Tap send to reach us.'
+                    : 'உங்கள் செய்தியுடன் வாட்ஸ்அப் திறக்கும். எங்களைத் தொடர்பு கொள்ள அனுப்பு பொத்தானை அழுத்தவும்.'}
                 </p>
                 <button
                   id="reset-contact"
