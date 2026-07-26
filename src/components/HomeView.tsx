@@ -62,7 +62,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-black/90 sm:bg-gradient-to-r sm:from-black/95 sm:via-black/80 sm:to-emerald-950/30"></div>
           {/* Slide dot indicators */}
-          <div className="absolute bottom-36 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+          <div className="absolute bottom-6 right-6 sm:right-8 flex space-x-2 z-10">
             {heroImages.map((_, idx) => (
               <button
                 key={idx}
@@ -155,14 +155,14 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
             {/* Quick trust guarantee detail overlay badge */}
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.9 }}
+              animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="pt-4 flex items-start space-x-2.5 text-[10px] sm:text-xs text-[#6ee7b7]/90 leading-normal border-t border-white/10 mt-4 max-w-xl"
+              className="pt-4 flex items-start space-x-2.5 text-xs sm:text-sm text-[#6ee7b7] leading-relaxed border-t border-white/10 mt-4 max-w-2xl"
             >
               <FaAward className="h-4 w-4 text-[#34d399] flex-shrink-0 mt-0.5" />
               <p>
                 {lang === 'en' 
-                  ? 'Nallathe Nadakkum serves at the point where safety nets run thin—for people sleeping on pavements, elders with no family left, and the unclaimed dead.' 
+                  ? 'Nallathe Nadakkum serves at the point where safety nets run thin — for people sleeping on pavements, elders with no family left, and the unclaimed dead.'
                   : 'சாலையோரங்கள், மருத்துவமனைகளில் யாருமின்றி தவிக்கும் ஏழைகள், ஆதரவற்ற முதியவர்கள் மற்றும் உரிமை கோரப்படாத உடல்களுக்கு கண்ணியமான முறையில் தொண்டு செய்கிறோம்.'}
               </p>
             </motion.div>
