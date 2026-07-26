@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { FaAward, FaShieldHalved, FaHandHoldingHeart, FaFileLines, FaMicrophoneLines } from 'react-icons/fa6';
+import { FaAward, FaShieldHalved, FaHandHoldingHeart, FaFileLines, FaMicrophoneLines, FaChevronRight } from 'react-icons/fa6';
 import { commonTranslations } from '../data';
 import SocialConnect from './SocialConnect';
 import JourneyTimeline from './JourneyTimeline';
@@ -63,8 +63,11 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
   return (
     <div className="space-y-20 pb-8">
 
+      {/* Hero + Why grouped so they read together within one desktop screen. */}
+      <div className="space-y-[clamp(1.25rem,3.5vh,2.5rem)]">
+
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="text-center max-w-3xl mx-auto space-y-4 px-4 pt-14 sm:pt-16">
+      <section className="text-center max-w-3xl mx-auto space-y-3 px-4 pt-[clamp(1.25rem,3.5vh,2.5rem)]">
         <p className="text-xs font-bold uppercase tracking-widest text-emerald-700">
           {lang === 'en' ? 'About Nallathe Nadakkum' : 'நல்லதே நடக்கும் பற்றி'}
         </p>
@@ -77,7 +80,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
             : 'திருச்செங்கோடு சாலைகளில் கண்ட எளிய மக்களின் வறுமையைப் போக்க உருவான ஒரு முறையான சேவை அமைப்பு.'}
         </p>
         {/* Credibility meta row */}
-        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 pt-2 text-xs font-semibold text-gray-900/70">
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 pt-0.5 text-xs font-semibold text-gray-900/70">
           <span>{lang === 'en' ? 'Registered 2025' : '2025-ல் பதிவு'}</span>
           <span className="text-emerald-600/50">•</span>
           <span>{lang === 'en' ? 'Tiruchengode, Tamil Nadu' : 'திருச்செங்கோடு, தமிழ்நாடு'}</span>
@@ -86,61 +89,92 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
         </div>
       </section>
 
-      {/* ── Why Nallathe Nadakkum — editorial identity box ────── */}
+      {/* ── Why Nallathe Nadakkum — editorial identity ────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl border border-gray-100 bg-white p-8 sm:p-10 lg:p-14 shadow-sm">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
-            {/* Logo — left, on a soft radial halo */}
-            <div className="lg:col-span-4 flex justify-center">
-              <div className="relative flex items-center justify-center">
-                <div className="absolute h-56 w-56 sm:h-64 sm:w-64 rounded-full bg-[radial-gradient(circle,_rgba(31,115,74,0.10),_transparent_65%)] blur-xl" />
-                <img
-                  src="/logo.png"
-                  alt="Nallathe Nadakkum Social Service Trust logo"
-                  className="relative h-44 w-44 sm:h-60 sm:w-60 object-contain"
-                />
-              </div>
+        {/* Top: stacked heading (left) + logo as the main visual (right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-12 items-center">
+
+          {/* Heading block */}
+          <div className="space-y-3 text-center lg:text-left order-2 lg:order-1">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-violet-700">
+              {lang === 'en' ? 'Our Name' : 'எங்கள் பெயர்'}
+            </p>
+            <h2 className="font-display font-extrabold uppercase tracking-tight text-gray-900 text-4xl sm:text-5xl lg:text-6xl leading-[0.95]">
+              {lang === 'en' ? (
+                <>Why<br />Nallathe<br />Nadakkum</>
+              ) : (
+                <>ஏன்<br />நல்லதே<br />நடக்கும்</>
+              )}
+            </h2>
+
+            {/* Meaning — typographic emphasis, not a nested card */}
+            <p className="text-lg sm:text-xl text-gray-900">
+              <span className="font-display font-bold">{lang === 'en' ? '“Nallathe Nadakkum”' : '“நல்லதே நடக்கும்”'}</span>
+              <span className="text-gray-900/60"> — </span>
+              <span className="font-display font-bold text-emerald-700">
+                {lang === 'en' ? 'Good things will happen.' : 'நல்லது நடக்கும்.'}
+              </span>
+            </p>
+          </div>
+
+          {/* Logo — main visual, no card, vertically centered */}
+          <div className="flex justify-center lg:justify-end order-1 lg:order-2">
+            <div className="relative flex items-center justify-center">
+              <div className="absolute h-64 w-64 sm:h-72 sm:w-72 rounded-full bg-[radial-gradient(circle,_rgba(31,115,74,0.10),_transparent_65%)] blur-xl" />
+              <img
+                src="/logo.png"
+                alt="Nallathe Nadakkum Social Service Trust logo"
+                className="relative h-52 w-52 sm:h-64 sm:w-64 lg:h-[clamp(220px,26vh,290px)] lg:w-[clamp(220px,26vh,290px)] object-contain"
+              />
             </div>
+          </div>
+        </div>
 
-            {/* Content — right */}
-            <div className="lg:col-span-8 space-y-5 text-center lg:text-left">
-              <p className="text-xs font-bold uppercase tracking-widest text-brand-violet-700">
-                {lang === 'en' ? 'Our Name' : 'எங்கள் பெயர்'}
-              </p>
-              <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
-                {lang === 'en' ? 'Why Nallathe Nadakkum' : 'ஏன் “நல்லதே நடக்கும்”'}
-              </h2>
+        {/* Thin divider */}
+        <hr className="my-[clamp(1.25rem,2.5vh,2rem)] border-t border-gray-200" />
 
-              {/* Meaning — typographic emphasis, not a nested card */}
-              <p className="text-lg sm:text-xl text-gray-900">
-                <span className="font-display font-bold">{lang === 'en' ? '“Nallathe Nadakkum”' : '“நல்லதே நடக்கும்”'}</span>
-                <span className="text-gray-900/60"> — </span>
-                <span className="font-display font-bold text-emerald-700">
-                  {lang === 'en' ? 'Good things will happen.' : 'நல்லது நடக்கும்.'}
-                </span>
-              </p>
+        {/* Bottom: two balanced editorial columns (aligned from same top baseline) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
 
-              <div className="text-base sm:text-lg text-gray-900 space-y-4 leading-relaxed sm:leading-[1.65] max-w-2xl mx-auto lg:mx-0">
-                <p>
-                  {lang === 'en'
-                    ? 'It is a foundational belief that consistent, small acts of daily compassion compound into real social security for those abandoned by society.'
-                    : 'மனிதநேயத்துடன் நாம் செய்யும் ஒவ்வொரு சிறிய செயலும் தொடர்ந்து நடக்கும் போது, அது சமூகத்தால் கைவிடப்பட்ட மனிதர்களின் வாழ்வில் பெரிய நல்ல மாற்றங்களை ஏற்படுத்தும் என்ற நம்பிக்கையில் உருவானது.'}
-                </p>
-                <p>
-                  {lang === 'en'
-                    ? 'Our Founder, Advocate N. Kavinraj, grew up witnessing extreme economic hardships in his local vicinity. While practicing law, he initiated an informal weekend food drive, preparing meals in his kitchen and seeking out destitute individuals living on bus stands. Over two years, the scale of requirements grew rapidly, necessitating a structured public trust to legally manage volunteers and donor funds.'
-                    : 'எங்கள் நிறுவனர், வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள், தனது வழக்கறிஞர் பணிக்கு இடையே சாலையோரங்களில் ஆதரவின்றித் தவித்த மக்களுக்கு வார இறுதியில் தனது சொந்தச் செலவில் சமைத்து வழங்கத் தொடங்கினார். நாளடைவில் தேவைகள் அதிகரித்ததால், அதனை மேலும் முறைப்படுத்தி, பலருக்கும் உதவிட 08.04.2025 அன்று அறக்கட்டளையாக நிறுவினார்.'}
-                </p>
-              </div>
-            </div>
+          {/* Where it began */}
+          <div className="space-y-2.5">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-violet-700">
+              {lang === 'en' ? 'Where It Began' : 'எங்கே தொடங்கியது'}
+            </p>
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed max-w-prose">
+              {lang === 'en'
+                ? 'Our Founder, Advocate N. Kavinraj, grew up witnessing extreme economic hardships in his local vicinity. While practicing law, he initiated an informal weekend food drive, preparing meals in his kitchen and seeking out destitute individuals living on bus stands. Over two years, the scale of requirements grew rapidly, necessitating a structured public trust to legally manage volunteers and donor funds.'
+                : 'எங்கள் நிறுவனர், வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள், தனது வழக்கறிஞர் பணிக்கு இடையே சாலையோரங்களில் ஆதரவின்றித் தவித்த மக்களுக்கு வார இறுதியில் தனது சொந்தச் செலவில் சமைத்து வழங்கத் தொடங்கினார். நாளடைவில் தேவைகள் அதிகரித்ததால், அதனை மேலும் முறைப்படுத்தி, பலருக்கும் உதவிட 08.04.2025 அன்று அறக்கட்டளையாக நிறுவினார்.'}
+            </p>
+            <button
+              onClick={() => document.getElementById('our-journey')?.scrollIntoView({ behavior: 'smooth' })}
+              className="inline-flex items-center gap-1 text-emerald-700 font-semibold text-sm hover:text-emerald-800 hover:underline cursor-pointer"
+            >
+              <span>{lang === 'en' ? 'Our Journey' : 'எங்கள் பயணம்'}</span>
+              <FaChevronRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
 
+          {/* Why this name */}
+          <div className="space-y-2.5">
+            <p className="text-xs font-bold uppercase tracking-widest text-brand-violet-700">
+              {lang === 'en' ? 'Why This Name' : 'இந்தப் பெயர் ஏன்'}
+            </p>
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed max-w-prose">
+              {lang === 'en'
+                ? 'It is a foundational belief that consistent, small acts of daily compassion compound into real social security for those abandoned by society.'
+                : 'மனிதநேயத்துடன் நாம் செய்யும் ஒவ்வொரு சிறிய செயலும் தொடர்ந்து நடக்கும் போது, அது சமூகத்தால் கைவிடப்பட்ட மனிதர்களின் வாழ்வில் பெரிய நல்ல மாற்றங்களை ஏற்படுத்தும் என்ற நம்பிக்கையில் உருவானது.'}
+            </p>
           </div>
         </div>
       </section>
+      </div>{/* end hero + why group */}
 
       {/* ── Our Journey — chronological timeline ── */}
-      <JourneyTimeline lang={lang} />
+      <div id="our-journey" className="scroll-mt-20">
+        <JourneyTimeline lang={lang} />
+      </div>
 
       {/* ── Meet Our Founder ─────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
