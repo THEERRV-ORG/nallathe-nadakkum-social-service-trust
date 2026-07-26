@@ -169,7 +169,7 @@ export default function App() {
               <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Trust Disclosures' : 'சட்ட அறிவிப்புகள்'}
               </h4>
-              <div className="text-xs text-gray-900 space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-100">
+              <div className="text-xs text-gray-900 space-y-1 bg-slate-50 px-3 pb-3 pt-0 rounded-lg border border-slate-100">
                 <p><strong>Deed Number:</strong> Doc 16/2025</p>
                 <p><strong>Registry Office:</strong> Tiruchengode</p>
                 <p><strong>80G / 12A Status:</strong> <span className="text-amber-700 font-semibold">{lang === 'en' ? 'Pending' : 'நிலுவையில்'}</span></p>
