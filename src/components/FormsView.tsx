@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { OFFICIAL_CONTACT, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
 import { motion, AnimatePresence } from 'motion/react';
 import { FaLocationDot, FaEnvelope, FaPhone, FaChevronDown, FaChevronRight } from 'react-icons/fa6';
@@ -643,7 +643,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   <FaLocationDot className="h-4 w-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Office address' : 'அலுவலக முகவரி'}</h4>
+                  <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">{lang === 'en' ? 'Office address' : 'அலுவலக முகவரி'}</h4>
                   <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
                     Door No. 38/5, Rajeev Nagar Cross Road, Opp. SPM Hospital, Sanga Kiri Main Road, Tiruchengode – 637211
                   </p>
@@ -655,7 +655,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   <FaEnvelope className="h-4 w-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Email Address' : 'மின்னஞ்சல் முகவரி'}</h4>
+                  <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">{lang === 'en' ? 'Email Address' : 'மின்னஞ்சல் முகவரி'}</h4>
                   <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
                     nallathanadakum@gmail.com
                   </p>
@@ -667,7 +667,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   <FaPhone className="h-4 w-4" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Emergency Phone & WhatsApp' : 'அவசரத் தொடர்பு எண்கள்'}</h4>
+                  <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">{lang === 'en' ? 'Emergency Phone & WhatsApp' : 'அவசரத் தொடர்பு எண்கள்'}</h4>
                   <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1 font-semibold">
                     +91 98765 43210 / +91 94435 67890
                   </p>
@@ -816,3 +816,4 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     </div>
   );
 }
+

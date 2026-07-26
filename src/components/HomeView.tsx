@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   FaHeart, FaHeartPulse, FaTruckMedical, FaUtensils, FaAward, FaFileLines, FaChevronRight,
@@ -123,7 +123,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed sm:leading-[1.65] max-w-2xl"
+              className="text-sm sm:text-base md:text-lg text-white leading-relaxed sm:leading-[1.65] max-w-2xl"
             >
               {commonTranslations.heroSub[lang]}
             </motion.p>
@@ -217,7 +217,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
             <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
               {commonTranslations.quickStatsTitle[lang]}
             </h2>
-            <p className="text-white/70 text-xs sm:text-sm">
+            <p className="text-white text-xs sm:text-sm">
               {commonTranslations.quickStatsNote[lang]}
             </p>
           </div>
@@ -236,7 +236,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
                   value={stat.value}
                   className="font-display text-3xl font-extrabold text-white sm:text-4xl"
                 />
-                <div className="text-[11px] sm:text-xs font-medium text-white/80 leading-snug">
+                <div className="text-[11px] sm:text-xs font-medium text-white leading-snug">
                   {stat.label[lang]}
                 </div>
               </motion.div>
@@ -634,5 +634,6 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
     </div>
   );
 }
+
 
 

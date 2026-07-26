@@ -87,7 +87,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
 
   const inputCls =
     'w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500';
-  const labelCls = 'text-xs font-bold text-gray-700 uppercase tracking-wider block';
+  const labelCls = 'text-xs font-bold text-gray-900 uppercase tracking-wider block';
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-14">
@@ -233,4 +233,5 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
     </div>
   );
 }
+
 

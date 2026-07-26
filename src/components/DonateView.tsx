@@ -881,7 +881,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                           {vid.category[lang]}
                         </span>
                         <h4 className={`text-xs font-bold leading-tight truncate ${
-                          isActive ? 'text-emerald-900' : 'text-gray-800'
+                          isActive ? 'text-emerald-900' : 'text-gray-900'
                         }`}>
                           {vid.title[lang]}
                         </h4>
@@ -915,6 +915,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
     </div>
   );
 }
+
 
 
 

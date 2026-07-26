@@ -1,4 +1,4 @@
-import {
+﻿import {
   FaShieldHalved, FaLock, FaCircleExclamation,
   FaLocationDot, FaMap, FaArrowUpRightFromSquare
 } from 'react-icons/fa6';
@@ -152,7 +152,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             {auditLogs.map((log, idx) => (
               <div key={idx} className="p-4 border border-gray-100 rounded-xl bg-gray-50/50 flex items-start justify-between">
                 <div className="space-y-0.5">
-                  <h4 className="text-xs font-bold text-gray-800">{log.year}</h4>
+                  <h4 className="text-xs font-bold text-gray-900">{log.year}</h4>
                   <p className="text-[10px] text-gray-900">{log.auditor[lang]}</p>
                 </div>
                 <span className="text-[9px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full">
@@ -267,3 +267,4 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
     </div>
   );
 }
+

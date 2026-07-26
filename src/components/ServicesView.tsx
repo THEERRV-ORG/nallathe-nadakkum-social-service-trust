@@ -171,7 +171,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
             <h3 className="text-white font-display font-bold text-lg sm:text-xl leading-snug">
               {activeService.title[lang]}
             </h3>
-            <p className="text-white/70 text-xs mt-1.5 leading-relaxed line-clamp-2 max-w-xs">
+            <p className="text-white text-xs mt-1.5 leading-relaxed line-clamp-2 max-w-xs">
               {activeService.description[lang]}
             </p>
           </div>
@@ -192,7 +192,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
         <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-gray-900 leading-tight">
           {lang === 'en' ? 'Our Services & Social Activities' : 'நமது சேவைகள் மற்றும் மக்கள் பணிகள்'}
         </h1>
-        <p className="text-base sm:text-lg text-gray-700 leading-relaxed max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg text-gray-900 leading-relaxed max-w-2xl mx-auto">
           {lang === 'en'
             ? 'Six direct humanitarian programs reaching people who fall outside traditional social safety nets in Tiruchengode, Tamil Nadu.'
             : 'திருச்செங்கோட்டில் முறையான அரசு உதவிகள் எட்டாத நலிந்த மக்களுக்கு உதவிட செயல்படுகின்ற ஆறு மக்கள் நலத் திட்டங்கள்.'}
@@ -268,7 +268,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                   </motion.h2>
 
                   <motion.p
-                    className="text-base sm:text-lg text-gray-700 leading-relaxed"
+                    className="text-base sm:text-lg text-gray-900 leading-relaxed"
                     {...reveal(0.1)}
                   >
                     {service.detailedDescription[lang]}
@@ -319,7 +319,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                         </div>
                       ))}
 
-                      <p className="text-sm text-gray-700 leading-relaxed border-t border-white pt-4">
+                      <p className="text-sm text-gray-900 leading-relaxed border-t border-white pt-4">
                         <span className="font-bold text-gray-900">
                           {lang === 'en' ? 'No compromise on quality: ' : 'தரத்தில் சமரசம் இல்லை: '}
                         </span>
@@ -366,7 +366,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                     </button>
                     <button
                       onClick={() => setActiveTab('volunteer')}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold border border-gray-200 text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold border border-gray-200 text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer"
                     >
                       <FaUsers className="h-3.5 w-3.5" />
                       {lang === 'en' ? 'Volunteer' : 'தன்னார்வலர்'}
@@ -445,7 +445,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                 : 'கோரிக்கைகள் அனைத்தும் நேரடி ஆய்வுக்குப் பின்னரே ஏற்றுக்கொள்ளப்படும்'}
             </h3>
 
-            <p className="text-base sm:text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed sm:leading-[1.7]">
+            <p className="text-base sm:text-lg text-gray-900 max-w-2xl mx-auto leading-relaxed sm:leading-[1.7]">
               {lang === 'en'
                 ? 'Our local volunteer network verifies every help request prior to resource allocation to ensure donor funds go to genuine, highly distressed cases.'
                 : 'நன்கொடையாளர் நிதி தகுதியுள்ள நபர்களைச் சென்றடைவதை உறுதிசெய்ய, உதவி கோரிக்கைகள் அனைத்தும் எமது தன்னார்வலர்களின் நேரடி ஆய்வுக்கு உட்படுத்தப்படும்.'}
@@ -524,5 +524,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
     </div>
   );
 }
+
+
 
 

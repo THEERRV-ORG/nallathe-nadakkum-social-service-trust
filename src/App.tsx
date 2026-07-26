@@ -39,7 +39,7 @@ export default function App() {
   }, [activeTab]);
 
   return (
-    <div className="site-shell min-h-screen bg-transparent flex flex-col font-sans text-gray-800 antialiased selection:bg-emerald-100 selection:text-emerald-900">
+    <div className="site-shell min-h-screen bg-transparent flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
       {/* Decorative brand watermark layer — fixed, faint, non-interactive.
           Oversized mission glyphs anchored to the corners plus the grayscale
           logo, so every section that scrolls past carries a subtle brand mark. */}
