@@ -61,7 +61,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
   };
 
   return (
-    <div className="space-y-20 pb-8">
+    <div className="space-y-12 pb-8">
 
       {/* Hero + Why grouped so they read together within one desktop screen. */}
       <div className="space-y-[clamp(1.25rem,3.5vh,2.5rem)]">

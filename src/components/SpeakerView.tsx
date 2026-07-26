@@ -90,7 +90,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
   const labelCls = 'text-xs font-bold text-gray-900 uppercase tracking-wider block';
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-14">
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-12">
 
       {/* Header */}
       <section className="text-center max-w-3xl mx-auto space-y-4 pt-6">

@@ -42,7 +42,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
   }, []);
 
   return (
-    <div className="space-y-16 pb-8">
+    <div className="space-y-12 pb-8">
       {/* Hero Section */}
       <section className="relative w-full h-[620px] sm:h-[650px] md:h-[700px] flex items-center overflow-hidden">
         {/* Hero Slideshow Background */}

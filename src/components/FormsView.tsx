@@ -191,11 +191,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
             </div>
 
             {/* Disclaimer Checklist */}
-            <div className="rounded-xl border border-gray-100 bg-white p-5 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-3">
-              <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-900">
+            <div className="rounded-2xl border border-gray-100 bg-white p-6 sm:p-7 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-4">
+              <h3 className="font-display text-sm sm:text-base font-bold uppercase tracking-wider text-gray-900">
                 <span>{lang === 'en' ? 'Requirements & Process' : 'அறிவிப்பும் செயல்முறையும்'}</span>
               </h3>
-              <ul className="text-xs text-gray-900 space-y-2">
+              <ul className="text-sm sm:text-base text-gray-900 space-y-3">
                 {[
                   { en: 'All requests undergo physical verification by our trustees/volunteers.', ta: 'அனைத்து கோரிக்கைகளும் எங்களது அறங்காவலர்கள் அல்லது தன்னார்வலர்களால் நேரடியாகச் சரிபார்க்கப்படும்.' },
                   { en: 'Support is distributed based on the severity of distress and resource availability.', ta: 'வழங்கப்படும் உதவி நிலைமையின் தீவிரம் மற்றும் எங்களது நிதி ஆதாரத்தின் அடிப்படையிலேயே தீர்மானிக்கப்படும்.' },
@@ -203,7 +203,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   { en: 'Free ambulance dispatch is reserved strictly for families below the poverty line; eligibility is verified before dispatch.', ta: 'இலவச ஆம்புலன்ஸ் சேவை வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டுமே; அனுப்பும் முன் தகுதி உறுதி செய்யப்படும்.' },
                 ].map((item, idx) => (
                   <li key={idx} className="flex gap-2">
-                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                    <span className="mt-2 h-2 w-2 rounded-full bg-emerald-500 shrink-0" />
                     <span>{item[lang]}</span>
                   </li>
                 ))}
@@ -427,18 +427,18 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
             </div>
 
             {/* Volunteer areas detail list */}
-            <div className="rounded-xl border border-gray-100 bg-white p-5 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-3">
-              <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-900">
+            <div className="rounded-2xl border border-gray-100 bg-white p-6 sm:p-7 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-4">
+              <h3 className="font-display text-sm sm:text-base font-bold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Volunteer Deployment Tracks' : 'உதவக்கூடிய பணிப் பிரிவுகள்'}
               </h3>
-              <ul className="text-xs text-gray-900 space-y-2">
+              <ul className="text-sm sm:text-base text-gray-900 space-y-3">
                 {[
                   { head: { en: 'Food Drive', ta: 'உணவு விநியோகம்' }, body: { en: 'Meal packing & transport routes', ta: 'மதிய உணவு விநியோகம் மற்றும் பேக்கிங்' } },
                   { head: { en: 'Ambulance Support', ta: 'ஆம்புலன்ஸ் ஒருங்கிணைப்பு' }, body: { en: 'Coordinating transfers & call log', ta: 'அவசர கால அழைப்புகளைப் பெறுதல்' } },
                   { head: { en: 'Outreach & Verification', ta: 'களப்பணி / சரிபார்ப்பு' }, body: { en: 'Home audits for students & elders', ta: 'மாணவர்கள் மற்றும் முதியோர்களின் வீட்டு வசதிகளை விசாரித்தல்' } },
                 ].map((track, idx) => (
                   <li key={idx} className="flex gap-2">
-                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                    <span className="mt-2 h-2 w-2 rounded-full bg-emerald-500 shrink-0" />
                     <span><strong>{track.head[lang]}:</strong> {track.body[lang]}</span>
                   </li>
                 ))}
