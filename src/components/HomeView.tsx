@@ -489,11 +489,11 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
                   <p className="text-[10px] text-gray-900 uppercase font-bold tracking-wider">
                     {card.kicker[lang]}
                   </p>
-                  <div className="flex items-baseline flex-wrap gap-x-1.5 gap-y-1">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">
                       {card.amt[lang]}
                     </span>
-                    <span className={`text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded ${card.badge}`}>
+                    <span className={`shrink-0 text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded ${card.badge}`}>
                       {card.unit[lang]}
                     </span>
                   </div>
