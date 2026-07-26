@@ -92,7 +92,7 @@ body {
 :where(.site-shell p, .site-shell li, .site-shell blockquote) {
   text-align: justify;
   text-justify: inter-word;
-  hyphens: auto;
+  hyphens: none;
 }
 
 .site-shell :where(input, textarea)::placeholder {
