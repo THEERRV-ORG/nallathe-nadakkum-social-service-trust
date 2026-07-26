@@ -171,7 +171,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
         </div>
       </section>
 
-      {/* Trust Introduction */}
+      {/* Trust Introduction + Quick Stats — one unified "Who We Are" box */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="rounded-2xl bg-white border border-gray-100 p-6 sm:p-10 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04]">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-10">
@@ -203,26 +203,23 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Quick Stats Grid */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-brand-violet text-white p-8 sm:p-12 shadow-md relative overflow-hidden">
-          <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10 blur-xl"></div>
+          {/* Divider between intro and stats */}
+          <hr className="my-8 sm:my-10 border-t border-gray-100" />
 
-          <div className="mb-10 text-center space-y-2">
-            <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+          {/* Quick Stats — inside the same white box */}
+          <div className="mb-8 text-center space-y-1.5">
+            <h3 className="font-display text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
               {commonTranslations.quickStatsTitle[lang]}
-            </h2>
-            <p className="text-white text-xs sm:text-sm">
+            </h3>
+            <p className="text-gray-900 text-xs sm:text-sm">
               {commonTranslations.quickStatsNote[lang]}
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-6 text-center">
             {statsData.map((stat, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -232,9 +229,9 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
               >
                 <CountUpStat
                   value={stat.value}
-                  className="font-display text-3xl font-extrabold text-white sm:text-4xl"
+                  className="font-display text-3xl font-extrabold text-emerald-700 sm:text-4xl"
                 />
-                <div className="text-[11px] sm:text-xs font-medium text-white leading-snug">
+                <div className="text-[11px] sm:text-xs font-medium text-gray-900 leading-snug">
                   {stat.label[lang]}
                 </div>
               </motion.div>
