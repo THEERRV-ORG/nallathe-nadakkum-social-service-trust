@@ -191,7 +191,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
             </div>
 
             {/* Disclaimer Checklist */}
-            <div className="rounded-xl bg-gray-50 p-5 border border-gray-200/60 space-y-3">
+            <div className="rounded-xl border border-gray-100 bg-white p-5 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-3">
               <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-900">
                 <span>{lang === 'en' ? 'Requirements & Process' : 'அறிவிப்பும் செயல்முறையும்'}</span>
               </h3>
@@ -816,4 +816,3 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     </div>
   );
 }
-
