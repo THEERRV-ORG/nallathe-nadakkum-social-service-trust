@@ -75,6 +75,17 @@ body {
   background: transparent;
 }
 
+/*
+  Default long-form reading text to justified alignment across the site.
+  Wrapped in :where(...) so explicit Tailwind alignment utilities such as
+  text-center and text-left still take precedence for UI-specific sections.
+*/
+:where(.site-shell p, .site-shell li, .site-shell blockquote) {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
 .site-shell {
   position: relative;
   isolation: isolate;

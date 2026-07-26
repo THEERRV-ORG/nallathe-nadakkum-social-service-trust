@@ -31,7 +31,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
   const isCommunityActive = COMMUNITY_IDS.includes(activeTab);
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-gray-100 bg-white/95 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-emerald-100/80 bg-[#f8fbf8]/95 shadow-[0_1px_0_rgba(31,115,74,0.04),0_10px_28px_-24px_rgba(15,61,38,0.35)] backdrop-blur-md">
       <div className="flex h-16 items-center gap-2 sm:gap-4 pl-3 pr-4 sm:pl-4 sm:pr-6 lg:pl-6 lg:pr-8">
         <button
           className="flex min-w-0 shrink cursor-pointer items-center gap-2.5 focus:outline-none lg:shrink-0"
