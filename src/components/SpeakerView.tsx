@@ -135,7 +135,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
         <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-gold-100 text-brand-gold-700">
           <FaHeart className="h-6 w-6" />
         </div>
-        <blockquote className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] italic">
+        <blockquote className="rounded-xl border border-brand-gold-200 bg-white/70 px-4 py-3 text-base sm:text-lg font-bold text-gray-950 leading-relaxed sm:leading-[1.65] shadow-xs">
           {lang === 'en'
             ? '“We charge no fee for speaking engagements. If our words move you, we simply ask that you donate to the trust — whatever your heart is willing to give — as a token of love.”'
             : '“சொற்பொழிவுக்கு நாங்கள் எந்தக் கட்டணமும் வாங்குவதில்லை. எங்கள் வார்த்தைகள் உங்கள் மனதைத் தொட்டால், அன்பின் அடையாளமாக, உங்கள் மனம் விரும்பும் அளவு அறக்கட்டளைக்கு நன்கொடை அளியுங்கள் — அவ்வளவே.”'}
