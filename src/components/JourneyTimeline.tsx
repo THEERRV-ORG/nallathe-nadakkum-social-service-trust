@@ -71,10 +71,12 @@ const milestones: Milestone[] = [
   }
 ];
 
-function MilestoneCard({ m, lang, arrow = false }: { m: Milestone; lang: 'en' | 'ta'; arrow?: boolean }) {
+function MilestoneCard({ m, lang, arrow = false, fill = false }: { m: Milestone; lang: 'en' | 'ta'; arrow?: boolean; fill?: boolean }) {
   return (
     <div
       className={`w-full rounded-2xl bg-white p-5 sm:p-6 text-left shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] ${
+        fill ? 'h-full flex flex-col' : ''
+      } ${
         m.registration ? 'border border-emerald-200 ring-1 ring-emerald-100 shadow-sm' : 'border border-gray-100'
       }`}
     >
@@ -91,7 +93,7 @@ function MilestoneCard({ m, lang, arrow = false }: { m: Milestone; lang: 'en' | 
       <h4 className="font-display text-base sm:text-lg font-bold text-gray-900 mt-2.5 mb-1.5">
         {m.title[lang]}{arrow && m.growing ? ' →' : ''}
       </h4>
-      <p className="text-sm sm:text-base text-gray-900 leading-relaxed">{m.desc[lang]}</p>
+      <p className={`text-sm sm:text-base text-gray-900 leading-relaxed ${fill ? 'flex-grow' : ''}`}>{m.desc[lang]}</p>
     </div>
   );
 }
@@ -156,11 +158,11 @@ function HorizontalJourney({ lang }: JourneyTimelineProps) {
   );
 
   const cards = (
-    <div ref={trackRef} className="flex gap-8">
+    <div ref={trackRef} className="flex gap-8 items-stretch">
       {milestones.map((m, i) => (
         <div key={i} className="relative flex flex-col items-center w-[22rem] shrink-0">
-          <div className="w-full">
-            <MilestoneCard m={m} lang={lang} arrow />
+          <div className="w-full flex-1 flex">
+            <MilestoneCard m={m} lang={lang} arrow fill />
           </div>
           <div className="h-6 w-px bg-gray-200" />
           <span className={`relative z-10 h-5 w-5 rounded-full ring-4 ring-white shadow ${m.node}`} />
