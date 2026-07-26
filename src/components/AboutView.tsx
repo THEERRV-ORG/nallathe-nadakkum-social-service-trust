@@ -3,6 +3,7 @@ import { FaAward, FaShieldHalved, FaHandHoldingHeart, FaFileLines, FaMicrophoneL
 import { commonTranslations } from '../data';
 import SocialConnect from './SocialConnect';
 import JourneyTimeline from './JourneyTimeline';
+import AwardsShowcase from './AwardsShowcase';
 
 interface AboutViewProps {
   lang: 'en' | 'ta';
@@ -206,6 +207,9 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
         </div>
       </section>
 
+      {/* ── Awards & Recognition (founder) ───────────────────── */}
+      <AwardsShowcase lang={lang} />
+
       {/* ── Trust Credentials ────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
@@ -227,7 +231,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
             ].map((item, idx) => (
               <div
                 key={idx}
-                className="rounded-xl border border-gray-100 bg-white p-5 shadow-xs border-l-4 border-l-brand-blue flex flex-col justify-center lg:flex-1"
+                className="rounded-xl border border-gray-100 bg-white p-5 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] border-l-4 border-l-brand-blue flex flex-col justify-center lg:flex-1"
               >
                 <p className="text-[11px] font-bold uppercase tracking-wider text-brand-blue-700">
                   {item.label[lang]}

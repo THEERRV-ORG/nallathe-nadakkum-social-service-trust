@@ -11,9 +11,11 @@ import {
   FaIndianRupeeSign,
   FaUsers,
   FaChevronRight,
+  FaShareNodes,
+  FaUserLarge,
+  FaShieldHalved,
 } from 'react-icons/fa6';
 import { servicesData } from '../data';
-import Monogram from './Monogram';
 
 interface ServicesViewProps {
   lang: 'en' | 'ta';
@@ -101,7 +103,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
       </section>
 
       {/* ── Interactive Service Index ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-14">
         <div className="flex flex-col lg:flex-row border border-gray-100 rounded-2xl overflow-hidden shadow-sm bg-white">
 
           {/* Left: numbered list */}
@@ -190,7 +192,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
             key={service.id}
             ref={el => { chapterRefs.current[i] = el; }}
             id={`service-${service.id}`}
-            className={`scroll-mt-24 py-16 lg:py-24 ${sectionBg}`}
+            className={`scroll-mt-24 py-11 lg:py-16 ${sectionBg}`}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className={`flex flex-col ${imgLeft ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-10 lg:gap-16 items-start lg:items-center`}>
@@ -374,23 +376,98 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
         );
       })}
 
-      {/* ── Verification Notice ── */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center space-y-4">
-        <div className="w-10 h-px bg-gray-200 mx-auto" />
-        <div className="flex items-center justify-center gap-2 flex-wrap">
-          <Monogram label="i" size="xs" />
-          <p className="text-sm font-semibold text-emerald-800">
+      {/* ── Verification Notice — highlighted trust callout ── */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="relative overflow-hidden rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-emerald-50/60 p-8 sm:p-12 text-center shadow-[0_16px_40px_-16px_rgba(31,115,74,0.35)] ring-1 ring-emerald-100">
+          {/* Soft brand glow accents */}
+          <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-emerald-400/10 blur-2xl" />
+          <div className="pointer-events-none absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-emerald-500/10 blur-2xl" />
+
+          <div className="relative space-y-5">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-md">
+              <FaShieldHalved className="h-7 w-7" />
+            </div>
+
+            <h3 className="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-emerald-900 leading-snug">
+              {lang === 'en'
+                ? 'All request submissions undergo physical verification'
+                : 'கோரிக்கைகள் அனைத்தும் நேரடி ஆய்வுக்குப் பின்னரே ஏற்றுக்கொள்ளப்படும்'}
+            </h3>
+
+            <p className="text-base sm:text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed sm:leading-[1.7]">
+              {lang === 'en'
+                ? 'Our local volunteer network verifies every help request prior to resource allocation to ensure donor funds go to genuine, highly distressed cases.'
+                : 'நன்கொடையாளர் நிதி தகுதியுள்ள நபர்களைச் சென்றடைவதை உறுதிசெய்ய, உதவி கோரிக்கைகள் அனைத்தும் எமது தன்னார்வலர்களின் நேரடி ஆய்வுக்கு உட்படுத்தப்படும்.'}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Our Teams (placeholder) ──────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-4 space-y-10">
+        <div className="text-center space-y-2">
+          <p className="text-xs font-bold uppercase tracking-widest text-emerald-700">
+            {lang === 'en' ? 'The People Behind the Work' : 'பணியின் பின்னணியில் உள்ளவர்கள்'}
+          </p>
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
+            {lang === 'en' ? 'Our Teams' : 'எங்கள் குழுக்கள்'}
+          </h2>
+          <p className="text-sm sm:text-base text-gray-900/70 max-w-xl mx-auto">
             {lang === 'en'
-              ? 'All request submissions undergo physical verification'
-              : 'கோரிக்கைகள் அனைத்தும் நேரடி ஆய்வுக்குப் பின்னரே ஏற்றுக்கொள்ளப்படும்'}
+              ? 'Dedicated volunteers work across four core teams every day. Member photos and details will be added soon.'
+              : 'அர்ப்பணிப்புள்ள தன்னார்வலர்கள் நான்கு முக்கிய குழுக்களாக தினமும் செயல்படுகிறார்கள். உறுப்பினர்களின் படங்களும் விவரங்களும் விரைவில் இணைக்கப்படும்.'}
           </p>
         </div>
-        <p className="text-sm text-gray-600 max-w-xl mx-auto leading-relaxed">
-          {lang === 'en'
-            ? 'Our local volunteer network verifies every help request prior to resource allocation to ensure donor funds go to genuine, highly distressed cases.'
-            : 'நன்கொடையாளர் நிதி தகுதியுள்ள நபர்களைச் சென்றடைவதை உறுதிசெய்ய, உதவி கோரிக்கைகள் அனைத்தும் எமது தன்னார்வலர்களின் நேரடி ஆய்வுக்கு உட்படுத்தப்படும்.'}
-        </p>
-        <div className="w-10 h-px bg-gray-200 mx-auto" />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { icon: <FaUtensils className="h-5 w-5" />, tile: 'bg-brand-orange-50 text-brand-orange-700', name: { en: 'Cooking Team', ta: 'சமையல் குழு' }, desc: { en: 'Prepares and packs daily Annadhanam meals.', ta: 'தினசரி அன்னதான உணவைத் தயாரித்து பேக் செய்கிறது.' } },
+            { icon: <FaTruckMedical className="h-5 w-5" />, tile: 'bg-brand-blue-50 text-brand-blue-700', name: { en: 'Transport Team', ta: 'போக்குவரத்து குழு' }, desc: { en: 'Runs meal routes and the free ambulance.', ta: 'உணவு விநியோகம் மற்றும் இலவச ஆம்புலன்ஸ் இயக்குகிறது.' } },
+            { icon: <FaHeart className="h-5 w-5" />, tile: 'bg-brand-violet-50 text-brand-violet-700', name: { en: 'Last Rites Team', ta: 'இறுதிச் சடங்கு குழு' }, desc: { en: 'Handles dignified last rites coordination.', ta: 'கண்ணியமான இறுதிச் சடங்குகளை ஒருங்கிணைக்கிறது.' } },
+            { icon: <FaShareNodes className="h-5 w-5" />, tile: 'bg-brand-gold-50 text-brand-gold-700', name: { en: 'Social Media Team', ta: 'சமூக ஊடகக் குழு' }, desc: { en: 'Documents work and manages online updates.', ta: 'பணிகளைப் பதிவு செய்து ஆன்லைன் புதுப்பிப்புகளை நிர்வகிக்கிறது.' } },
+          ].map((team, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] flex flex-col space-y-4"
+            >
+              {/* Team header */}
+              <div className="flex items-center gap-3">
+                <div className={`p-2.5 rounded-xl w-fit shrink-0 ${team.tile}`}>
+                  {team.icon}
+                </div>
+                <h3 className="font-display text-base font-bold text-gray-900 leading-tight">
+                  {team.name[lang]}
+                </h3>
+              </div>
+
+              <p className="text-sm text-gray-900/70 leading-relaxed">
+                {team.desc[lang]}
+              </p>
+
+              {/* Member photo placeholders — replace with real member photos later */}
+              <div className="mt-auto space-y-2.5 pt-1">
+                {[0, 1, 2].map((m) => (
+                  <div key={m} className="flex items-center gap-3">
+                    <div className="h-9 w-9 shrink-0 rounded-full border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center text-gray-300">
+                      <FaUserLarge className="h-3.5 w-3.5" />
+                    </div>
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <div className="h-2 w-20 rounded bg-gray-100" />
+                      <div className="h-2 w-14 rounded bg-gray-100" />
+                    </div>
+                  </div>
+                ))}
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 pt-1">
+                  {lang === 'en' ? 'Members coming soon' : 'உறுப்பினர்கள் விரைவில்'}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </section>
 
     </div>

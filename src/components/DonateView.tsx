@@ -337,7 +337,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
       </section>
 
       {/* Official Banking Credentials — symmetrical two-column payment section */}
-      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 lg:p-10 shadow-xs space-y-8">
+      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 lg:p-10 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-8">
         {/* Shared header spanning both columns */}
         <div className="max-w-2xl mx-auto text-center space-y-3">
           <div className="inline-flex items-center gap-2 text-emerald-700">
@@ -495,7 +495,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
       </section>
 
       {/* Pledge a Donation / Material Support */}
-      <section ref={formRef} className="scroll-mt-24 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs max-w-4xl mx-auto w-full space-y-6">
+      <section ref={formRef} className="scroll-mt-24 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] max-w-4xl mx-auto w-full space-y-6">
         <div className="space-y-2 text-center border-b border-gray-100 pb-5">
           <h3 className="font-display text-2xl sm:text-3xl font-bold text-gray-900 flex items-center justify-center gap-2">
             <FaGift className="h-6 w-6 text-emerald-600" />
@@ -756,7 +756,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
-              className="p-5 border border-emerald-100 rounded-2xl bg-emerald-50/20 shadow-xs flex flex-col justify-between space-y-4 relative overflow-hidden"
+              className="p-5 border border-emerald-100 rounded-2xl bg-emerald-50/20 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] flex flex-col justify-between space-y-4 relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 h-10 w-10 bg-emerald-100/40 rounded-bl-full flex items-center justify-center text-emerald-700 text-[10px] font-bold">
                 NN
@@ -790,7 +790,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
       </section>
 
       {/* Interactive YouTube Video Showcase */}
-      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs space-y-6 animate-fade-in">
+      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-6 animate-fade-in">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-100 pb-5">
           <div className="space-y-1">
             <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
@@ -851,7 +851,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                       onClick={() => setActiveVideoId(vid.id)}
                       className={`w-full text-left p-2.5 rounded-xl border flex items-center space-x-3 transition-all cursor-pointer ${
                         isActive 
-                          ? 'border-emerald-600 bg-emerald-50/60 shadow-xs' 
+                          ? 'border-emerald-600 bg-emerald-50/60 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04]' 
                           : 'border-gray-100 bg-white hover:bg-gray-50'
                       }`}
                     >

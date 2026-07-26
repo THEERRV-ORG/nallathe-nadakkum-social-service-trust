@@ -13,6 +13,7 @@ import {
   sanitizeMultiLine,
 } from '../security';
 import PhotoPlaceholder from './PhotoPlaceholder';
+import AwardsShowcase from './AwardsShowcase';
 
 interface SpeakerViewProps {
   lang: 'en' | 'ta';
@@ -63,7 +64,8 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
     setTimeout(() => {
       const trackingId = createReference('NN-SPK');
       const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
-        `Speaker invitation reference: ${trackingId}`,
+        `Form: Invite as Speaker`,
+        `Reference: ${trackingId}`,
         `Name: ${nName}`,
         `Phone: ${nPhone}`,
         `Organisation / Function: ${nOrg}`,
@@ -141,7 +143,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
       </section>
 
       {/* Invitation form */}
-      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs max-w-3xl mx-auto w-full space-y-6">
+      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] max-w-3xl mx-auto w-full space-y-6">
         <div className="space-y-1 text-center border-b border-gray-100 pb-4">
           <h3 className="font-display text-xl font-bold text-gray-900 flex items-center justify-center gap-2">
             <FaMicrophoneLines className="h-6 w-6 text-emerald-600" />
@@ -225,6 +227,9 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
           </form>
         )}
       </section>
+
+      {/* ── Awards & Recognition (founder) — below the form ──── */}
+      <AwardsShowcase lang={lang} compact />
     </div>
   );
 }

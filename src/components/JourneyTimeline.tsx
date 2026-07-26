@@ -74,7 +74,7 @@ const milestones: Milestone[] = [
 function MilestoneCard({ m, lang, arrow = false }: { m: Milestone; lang: 'en' | 'ta'; arrow?: boolean }) {
   return (
     <div
-      className={`w-full rounded-2xl bg-white p-5 sm:p-6 text-left shadow-xs ${
+      className={`w-full rounded-2xl bg-white p-5 sm:p-6 text-left shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] ${
         m.registration ? 'border border-emerald-200 ring-1 ring-emerald-100 shadow-sm' : 'border border-gray-100'
       }`}
     >
@@ -129,6 +129,25 @@ function HorizontalJourney({ lang }: JourneyTimelineProps) {
   });
   const x = useTransform(scrollYProgress, [0, 1], [0, -scrollRange]);
 
+  // Heading is rendered inside the pinned area (desktop) so the title and the
+  // horizontal cards stay together on a single screen while the section is
+  // pinned — no large gap between them.
+  const heading = (
+    <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 text-center space-y-2">
+      <p className="text-xs font-bold uppercase tracking-widest text-brand-orange-700">
+        {lang === 'en' ? 'Our Journey' : 'எங்கள் பயணம்'}
+      </p>
+      <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
+        {lang === 'en' ? 'From a Saturday Habit to a Registered Trust' : 'சனிக்கிழமைப் பழக்கம் முதல் அறக்கட்டளை வரை'}
+      </h2>
+      <p className="text-sm sm:text-base text-gray-900/70 max-w-xl mx-auto">
+        {lang === 'en'
+          ? "One person's weekend meal drive now serves thousands every month."
+          : 'ஒரு நபரின் வார இறுதி அன்னதானம் இன்று மாதந்தோறும் ஆயிரக்கணக்கானோருக்கு சேவை செய்கிறது.'}
+      </p>
+    </div>
+  );
+
   const line = (
     <motion.div
       className="pointer-events-none absolute left-0 right-0 top-[7.5rem] h-[2px] bg-gray-200 origin-left"
@@ -159,7 +178,8 @@ function HorizontalJourney({ lang }: JourneyTimelineProps) {
   // Reduced-motion / no-overflow fallback: plain horizontal scroller.
   if (reduce) {
     return (
-      <div className="hidden lg:block">
+      <div className="hidden lg:block space-y-8">
+        {heading}
         <div className="overflow-x-auto pb-4 -mx-4 px-4 [scrollbar-width:thin]">
           <div className="relative min-w-max pt-2">
             {line}
@@ -176,7 +196,8 @@ function HorizontalJourney({ lang }: JourneyTimelineProps) {
       className="relative hidden lg:block"
       style={{ height: `calc(100vh + ${scrollRange}px)` }}
     >
-      <div className="sticky top-16 flex h-[calc(100vh-4rem)] items-center overflow-hidden">
+      <div className="sticky top-16 flex h-[calc(100vh-4rem)] flex-col justify-center gap-8 overflow-hidden">
+        {heading}
         <div ref={viewportRef} className="relative w-full px-4 sm:px-6 lg:px-8">
           <motion.div style={{ x }} className="relative w-max pt-2">
             {line}
@@ -202,7 +223,9 @@ export default function JourneyTimeline({ lang }: JourneyTimelineProps) {
 
   return (
     <section className="space-y-10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-2">
+      {/* Outer heading is for mobile/tablet only; desktop renders its heading
+          inside the pinned area (see HorizontalJourney) so title + cards align. */}
+      <div className="lg:hidden mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-2">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-orange-700">
           {lang === 'en' ? 'Our Journey' : 'எங்கள் பயணம்'}
         </p>

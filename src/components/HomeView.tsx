@@ -67,7 +67,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
                 key={idx}
                 onClick={() => setHeroIndex(idx)}
                 className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  idx === heroIndex ? 'w-6 bg-emerald-400' : 'w-1.5 bg-white/40 hover:bg-white/70'
+                  idx === heroIndex ? 'w-6 bg-[#34d399]' : 'w-1.5 bg-white/40 hover:bg-white/70'
                 }`}
               />
             ))}
@@ -83,9 +83,9 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center space-x-2 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 px-3 py-1 text-xs font-semibold text-emerald-300"
+              className="inline-flex items-center space-x-2 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 px-3 py-1 text-xs font-semibold text-[#6ee7b7]"
             >
-              <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="flex h-2 w-2 rounded-full bg-[#34d399] animate-pulse"></span>
               <span>{lang === 'en' ? 'Registered Trust: 16/2025' : 'பதிவு செய்யப்பட்ட அறக்கட்டளை: 16/2025'}</span>
             </motion.div>
             
@@ -96,7 +96,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
               transition={{ duration: 0.6, delay: 0.1 }}
               className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl leading-snug"
             >
-              <span className="text-emerald-400">
+              <span className="text-[#34d399]">
                 {lang === 'en' ? 'Nallathe Nadakkum' : 'நல்லதே நடக்கும்'}
               </span>
               <br />
@@ -110,7 +110,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-sans text-base sm:text-lg font-medium text-emerald-300 italic border-l-4 border-emerald-500 pl-4"
+              className="font-sans text-base sm:text-lg font-medium text-[#6ee7b7] italic border-l-4 border-[#10b981] pl-4"
             >
               "{commonTranslations.heroSlogan[lang]}"
             </motion.p>
@@ -147,7 +147,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
                 className="rounded-lg bg-white/10 backdrop-blur-md border border-white/20 px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-white/20 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer flex items-center space-x-2"
               >
                 <span>{commonTranslations.requestHelp[lang]}</span>
-                <FaChevronRight className="h-4 w-4 text-emerald-300" />
+                <FaChevronRight className="h-4 w-4 text-[#6ee7b7]" />
               </button>
             </motion.div>
 
@@ -156,9 +156,9 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.9 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="pt-4 flex items-start space-x-2.5 text-[10px] sm:text-xs text-emerald-300/90 leading-normal border-t border-white/10 mt-4 max-w-xl"
+              className="pt-4 flex items-start space-x-2.5 text-[10px] sm:text-xs text-[#6ee7b7]/90 leading-normal border-t border-white/10 mt-4 max-w-xl"
             >
-              <FaAward className="h-4 w-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+              <FaAward className="h-4 w-4 text-[#34d399] flex-shrink-0 mt-0.5" />
               <p>
                 {lang === 'en' 
                   ? 'Nallathe Nadakkum serves at the point where safety nets run thin—for people sleeping on pavements, elders with no family left, and the unclaimed dead.' 
@@ -172,7 +172,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
 
       {/* Trust Introduction */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-white border border-gray-100 p-6 sm:p-10 shadow-sm">
+        <div className="rounded-2xl bg-white border border-gray-100 p-6 sm:p-10 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04]">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-10">
             {/* Logo — left on desktop, top on mobile */}
             <div className="md:w-[36%] flex justify-center shrink-0">
@@ -255,7 +255,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
+            className="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
           >
             <div className="flex items-center gap-3">
               <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-gold-50 text-brand-gold-700">
@@ -278,7 +278,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
+            className="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
           >
             <div className="flex items-center gap-3">
               <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-blue-50 text-brand-blue-700">
@@ -301,7 +301,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.2 }}
-            className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
+            className="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
           >
             <div className="flex items-center gap-3">
               <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-orange-50 text-brand-orange-700">
@@ -447,7 +447,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
           ] as const).map((card) => (
             <div
               key={card.id}
-              className="rounded-2xl border border-gray-100 p-6 bg-white shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md hover:border-gray-200 transition-all group"
+              className="rounded-2xl border border-gray-100 p-6 bg-white shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] flex flex-col justify-between space-y-4 hover:shadow-md hover:border-gray-200 transition-all group"
             >
               <div className="space-y-3">
                 <div className="flex items-center gap-3">

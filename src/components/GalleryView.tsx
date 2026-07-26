@@ -90,7 +90,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
-              className="rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col group"
+              className="rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] hover:shadow-md transition-all flex flex-col group"
             >
               {/* Image Frame */}
               <div className="relative overflow-hidden h-48 bg-gray-100">

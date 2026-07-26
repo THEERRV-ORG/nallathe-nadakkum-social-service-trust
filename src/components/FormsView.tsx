@@ -214,7 +214,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           </div>
 
           {/* Right Side: Form */}
-          <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs">
+          <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04]">
             {helpSuccess ? (
               <div className="text-center py-10 space-y-6">
                 <div className="h-16 w-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-3xl mx-auto">
@@ -421,7 +421,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
             </div>
 
             {/* Volunteer areas detail list */}
-            <div className="rounded-xl border border-gray-100 bg-white p-5 shadow-xs space-y-3">
+            <div className="rounded-xl border border-gray-100 bg-white p-5 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-3">
               <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Volunteer Deployment Tracks' : 'உதவக்கூடிய பணிப் பிரிவுகள்'}
               </h3>
@@ -442,7 +442,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           </div>
 
           {/* Right Column: Volunteer Form */}
-          <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs">
+          <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04]">
             {volSuccess ? (
               <div className="text-center py-10 space-y-6">
                 <div className="h-16 w-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-3xl mx-auto">
@@ -674,7 +674,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           </div>
 
           {/* Right Column: Contact Message Form */}
-          <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs">
+          <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04]">
             {contactSuccess ? (
               <div className="text-center py-10 space-y-4">
                 <div className="h-14 w-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-2xl mx-auto">
