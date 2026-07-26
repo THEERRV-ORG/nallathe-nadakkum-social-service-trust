@@ -61,8 +61,6 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
           </AnimatePresence>
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-black/90 sm:bg-gradient-to-r sm:from-black/95 sm:via-black/80 sm:to-emerald-950/30"></div>
-          {/* Bottom fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-50 via-slate-50/10 to-transparent"></div>
           {/* Slide dot indicators */}
           <div className="absolute bottom-36 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
             {heroImages.map((_, idx) => (
