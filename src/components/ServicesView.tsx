@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import {
   FaUtensils,
@@ -84,6 +84,103 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
   const activeService = servicesData[indexActive];
   const activeImg = SERVICE_IMG[activeService.id];
 
+  // Desktop scroll-pin: while the section stays pinned, vertical scroll steps
+  // the selection through all six services (same visual as hovering) before the
+  // page continues down to the chapters.
+  const indexPinRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = indexPinRef.current;
+    if (!el || reduce) return;
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+      const total = el.offsetHeight - window.innerHeight; // scrollable while pinned
+      if (total <= 0) return;
+      const progressed = Math.min(Math.max(-rect.top, 0), total);
+      const p = progressed / total;
+      const idx = Math.min(
+        servicesData.length - 1,
+        Math.max(0, Math.floor(p * servicesData.length)),
+      );
+      setIndexActive(idx);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [reduce]);
+
+  // Shared index card (numbered list + live preview), used by both the
+  // desktop scroll-pinned version and the mobile/reduced-motion static version.
+  const indexInner = (
+    <div className="flex flex-col lg:flex-row border border-gray-100 rounded-2xl overflow-hidden shadow-sm bg-white">
+
+      {/* Left: numbered list */}
+      <div className="lg:w-1/2 divide-y divide-gray-50">
+        {servicesData.map((s, i) => {
+          const a = ACCENT[s.id] ?? ACCENT.food;
+          const isActive = i === indexActive;
+          return (
+            <button
+              key={s.id}
+              onMouseEnter={() => setIndexActive(i)}
+              onFocus={() => setIndexActive(i)}
+              onClick={() => scrollToChapter(i)}
+              className={`w-full text-left flex items-center gap-4 px-6 py-5 transition-all cursor-pointer border-l-4 ${
+                isActive ? `${a.bg} ${a.border}` : 'border-transparent hover:bg-gray-50'
+              }`}
+            >
+              <span className={`font-mono text-xl font-bold tabular-nums shrink-0 transition-colors ${
+                isActive ? a.text : 'text-gray-200'
+              }`}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                  isActive ? a.text : 'text-gray-400'
+                }`}>
+                  {SLUGS[s.id]?.[lang] ?? SLUGS[s.id]?.en}
+                </p>
+                <p className="font-display font-bold text-gray-900 text-sm sm:text-base truncate mt-0.5">
+                  {s.title[lang]}
+                </p>
+              </div>
+              <div className={`shrink-0 p-1.5 rounded-lg transition-colors ${isActive ? `${a.bg} ${a.text}` : 'text-gray-300'}`}>
+                {getIcon(s.iconName)}
+              </div>
+              <FaChevronRight className={`h-3 w-3 shrink-0 transition-colors ${isActive ? a.text : 'text-gray-200'}`} />
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Right: live image preview */}
+      <div className="lg:w-1/2 relative min-h-[260px] lg:min-h-0 overflow-hidden bg-gray-100">
+        <motion.img
+          key={activeService.id}
+          src={activeImg}
+          alt={activeService.title.en}
+          initial={reduce ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent flex items-end p-6">
+          <div>
+            <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-1">
+              {SLUGS[activeService.id]?.[lang] ?? ''}
+            </p>
+            <h3 className="text-white font-display font-bold text-lg sm:text-xl leading-snug">
+              {activeService.title[lang]}
+            </h3>
+            <p className="text-white/70 text-xs mt-1.5 leading-relaxed line-clamp-2 max-w-xs">
+              {activeService.description[lang]}
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  );
+
   return (
     <div className="pb-24">
 
@@ -103,79 +200,30 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
       </section>
 
       {/* ── Interactive Service Index ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-14">
-        <div className="flex flex-col lg:flex-row border border-gray-100 rounded-2xl overflow-hidden shadow-sm bg-white">
-
-          {/* Left: numbered list */}
-          <div className="lg:w-1/2 divide-y divide-gray-50">
-            {servicesData.map((s, i) => {
-              const a = ACCENT[s.id] ?? ACCENT.food;
-              const isActive = i === indexActive;
-              return (
-                <button
-                  key={s.id}
-                  onMouseEnter={() => setIndexActive(i)}
-                  onFocus={() => setIndexActive(i)}
-                  onClick={() => scrollToChapter(i)}
-                  className={`w-full text-left flex items-center gap-4 px-6 py-5 transition-all cursor-pointer border-l-4 ${
-                    isActive ? `${a.bg} ${a.border}` : 'border-transparent hover:bg-gray-50'
-                  }`}
-                >
-                  <span className={`font-mono text-xl font-bold tabular-nums shrink-0 transition-colors ${
-                    isActive ? a.text : 'text-gray-200'
-                  }`}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${
-                      isActive ? a.text : 'text-gray-400'
-                    }`}>
-                      {SLUGS[s.id]?.[lang] ?? SLUGS[s.id]?.en}
-                    </p>
-                    <p className="font-display font-bold text-gray-900 text-sm sm:text-base truncate mt-0.5">
-                      {s.title[lang]}
-                    </p>
-                  </div>
-                  <div className={`shrink-0 p-1.5 rounded-lg transition-colors ${isActive ? `${a.bg} ${a.text}` : 'text-gray-300'}`}>
-                    {getIcon(s.iconName)}
-                  </div>
-                  <FaChevronRight className={`h-3 w-3 shrink-0 transition-colors ${isActive ? a.text : 'text-gray-200'}`} />
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Right: live image preview */}
-          <div className="lg:w-1/2 relative min-h-[260px] lg:min-h-0 overflow-hidden bg-gray-100">
-            <motion.img
-              key={activeService.id}
-              src={activeImg}
-              alt={activeService.title.en}
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent flex items-end p-6">
-              <div>
-                <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-1">
-                  {SLUGS[activeService.id]?.[lang] ?? ''}
-                </p>
-                <h3 className="text-white font-display font-bold text-lg sm:text-xl leading-snug">
-                  {activeService.title[lang]}
-                </h3>
-                <p className="text-white/70 text-xs mt-1.5 leading-relaxed line-clamp-2 max-w-xs">
-                  {activeService.description[lang]}
-                </p>
-              </div>
+      {/* Desktop: scroll-pinned. While pinned, scrolling steps the selection
+          through all six services before the page continues to the chapters. */}
+      {!reduce && (
+        <div ref={indexPinRef} className="hidden lg:block relative" style={{ height: 'calc(100vh + 110vh)' }}>
+          <div className="sticky top-16 flex h-[calc(100vh-4rem)] items-center">
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {indexInner}
+              <p className="text-center text-[11px] text-gray-400 mt-3">
+                {lang === 'en'
+                  ? 'Scroll to browse each service · Click to jump to its chapter'
+                  : 'ஒவ்வொரு சேவையையும் காண உருட்டவும் · பகுதிக்குச் செல்ல கிளிக் செய்யவும்'}
+              </p>
             </div>
           </div>
-
         </div>
+      )}
+
+      {/* Mobile / reduced-motion: normal static index */}
+      <section className={`${reduce ? '' : 'lg:hidden'} max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-14`}>
+        {indexInner}
         <p className="text-center text-[11px] text-gray-400 mt-3">
           {lang === 'en'
-            ? 'Hover to preview · Click to jump to chapter'
-            : 'காட்சியைக் காண மேலே நகர்த்தவும் · பகுதிக்குச் செல்ல கிளிக் செய்யவும்'}
+            ? 'Tap a service to jump to its chapter'
+            : 'பகுதிக்குச் செல்ல ஒரு சேவையைத் தட்டவும்'}
         </p>
       </section>
 
@@ -195,19 +243,22 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
             className={`scroll-mt-24 py-11 lg:py-16 ${sectionBg}`}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className={`flex flex-col ${imgLeft ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-10 lg:gap-16 items-start lg:items-center`}>
+
+              {/* Chapter header — number + slug sit above both columns so the
+                  photo below starts exactly at the service title line. */}
+              <motion.div className="flex items-baseline gap-3 mb-5 lg:mb-6" {...reveal(0)}>
+                <span className={`font-mono text-6xl font-black leading-none select-none ${a.text} opacity-20`}>
+                  {num}
+                </span>
+                <span className={`text-[10px] font-bold uppercase tracking-widest ${a.text}`}>
+                  {slug}
+                </span>
+              </motion.div>
+
+              <div className={`flex flex-col ${imgLeft ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-10 lg:gap-16 items-start`}>
 
                 {/* ── Text side ── */}
                 <div className="flex-1 space-y-6 min-w-0">
-
-                  <motion.div className="flex items-baseline gap-3" {...reveal(0)}>
-                    <span className={`font-mono text-6xl font-black leading-none select-none ${a.text} opacity-20`}>
-                      {num}
-                    </span>
-                    <span className={`text-[10px] font-bold uppercase tracking-widest ${a.text}`}>
-                      {slug}
-                    </span>
-                  </motion.div>
 
                   <motion.h2
                     className="font-display text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight"
