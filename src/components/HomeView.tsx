@@ -28,6 +28,9 @@ const heroImages = [
   { src: '/gallery/activity-elder-rescue.jpeg', alt: 'Destitute elderly rescued and cared for' },
 ];
 
+// Display priority for the "What Can You Donate" cards (highest need first).
+const DONATE_PRIORITY = ['annadhanam', 'cremation', 'blood', 'ambulance', 'student', 'dress'];
+
 export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeViewProps) {
   const [heroIndex, setHeroIndex] = useState(0);
 
@@ -321,21 +324,42 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
         </div>
       </section>
 
-      {/* What Can You Donate */}
+      {/* What Can You Donate — bold spotlight panel (key conversion area) */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center space-y-2 mb-8">
-          <p className="text-xs font-bold uppercase tracking-widest text-brand-violet-700">
-            {lang === 'en' ? 'Ways to Give' : 'உதவும் வழிகள்'}
-          </p>
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
-            {lang === 'en' ? 'What Can You Donate' : 'நீங்கள் எதை நன்கொடையாக வழங்கலாம்'}
-          </h2>
-          <p className="text-sm sm:text-base text-gray-900/70 max-w-2xl mx-auto">
-            {lang === 'en'
-              ? 'Choose a programme to support. Every contribution reaches the people who need it — 0% administrative deductions.'
-              : 'ஆதரிக்க ஒரு திட்டத்தைத் தேர்ந்தெடுங்கள். ஒவ்வொரு பங்களிப்பும் தேவைப்படுவோரை நேரடியாகச் சென்றடைகிறது — நிர்வாகச் செலவு பிடித்தம் இல்லை.'}
-          </p>
-        </div>
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-700 via-emerald-600 to-emerald-800 p-6 sm:p-10 lg:p-14 shadow-[0_30px_80px_-30px_rgba(15,61,38,0.75)] ring-1 ring-emerald-900/20">
+          {/* Brand glow accents */}
+          <div className="pointer-events-none absolute -left-20 -top-16 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 -bottom-16 h-72 w-72 rounded-full bg-brand-gold/15 blur-3xl" />
+
+          <div className="relative">
+            <div className="text-center space-y-4 mb-10">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white ring-1 ring-white/25">
+                <FaHeart className="h-3 w-3 fill-white" />
+                {lang === 'en' ? 'Ways to Give' : 'உதவும் வழிகள்'}
+              </span>
+              <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+                {lang === 'en' ? 'What Can You Donate' : 'நீங்கள் எதை நன்கொடையாக வழங்கலாம்'}
+              </h2>
+              {/* Accent underline */}
+              <div className="mx-auto h-1.5 w-24 rounded-full bg-brand-gold" />
+              <p className="text-sm sm:text-base text-emerald-50/90 max-w-2xl mx-auto">
+                {lang === 'en'
+                  ? 'Choose a programme to support. Every contribution reaches the people who need it — 0% administrative deductions.'
+                  : 'ஆதரிக்க ஒரு திட்டத்தைத் தேர்ந்தெடுங்கள். ஒவ்வொரு பங்களிப்பும் தேவைப்படுவோரை நேரடியாகச் சென்றடைகிறது — நிர்வாகச் செலவு பிடித்தம் இல்லை.'}
+              </p>
+              {/* Trust line */}
+              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-1 text-xs font-semibold text-white">
+                <span className="inline-flex items-center gap-1.5">
+                  <FaCircleCheck className="h-3.5 w-3.5 text-brand-gold" />
+                  {lang === 'en' ? '0% administrative deductions' : '0% நிர்வாகச் செலவு'}
+                </span>
+                <span className="text-white/40">•</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <FaCircleCheck className="h-3.5 w-3.5 text-brand-gold" />
+                  {lang === 'en' ? '100% reaches the field' : '100% நேரடியாக மக்களுக்கு'}
+                </span>
+              </div>
+            </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {([
@@ -444,10 +468,17 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
               badge: 'bg-emerald-100 text-emerald-700',
               cta: { en: 'Donate Clothes →', ta: 'ஆடை தானம் செய்ய →' }
             }
-          ] as const).map((card) => (
-            <div
+          ] as const)
+            .slice()
+            .sort((a, b) => DONATE_PRIORITY.indexOf(a.id) - DONATE_PRIORITY.indexOf(b.id))
+            .map((card, i) => (
+            <motion.div
               key={card.id}
-              className="rounded-2xl border border-gray-100 p-6 bg-white shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] flex flex-col justify-between space-y-4 hover:shadow-md hover:border-gray-200 transition-all group"
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.4, delay: i * 0.07 }}
+              className="rounded-2xl border border-gray-100 p-6 bg-white shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] flex flex-col justify-between space-y-4 hover:shadow-2xl hover:-translate-y-1 hover:border-gray-200 transition-all duration-300 group"
             >
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
@@ -467,7 +498,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
                     <span className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">
                       {card.amt[lang]}
                     </span>
-                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${card.badge}`}>
+                    <span className={`text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded ${card.badge}`}>
                       {card.unit[lang]}
                     </span>
                   </div>
@@ -490,8 +521,10 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
               >
                 {card.cta[lang]}
               </button>
-            </div>
+            </motion.div>
           ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -536,7 +569,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
 
       {/* Founder Message & Stated Claims Notice */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-gray-50 border border-gray-200/60 p-8 flex flex-col md:flex-row gap-8 items-center">
+        <div className="rounded-2xl bg-emerald-50/50 border border-emerald-100 ring-1 ring-emerald-100/60 shadow-[0_10px_30px_-14px_rgba(16,84,51,0.25)] p-8 flex flex-col md:flex-row gap-8 items-center">
           <img
             src="/founder.jpeg"
             alt={commonTranslations.founderName[lang]}
