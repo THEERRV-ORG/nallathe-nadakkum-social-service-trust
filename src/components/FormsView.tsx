@@ -192,11 +192,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
             {/* Disclaimer Checklist */}
             <div className="rounded-xl bg-gray-50 p-5 border border-gray-200/60 space-y-3">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-2">
+              <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-2">
                 <Monogram label="!" size="xs" tone="amber" />
                 <span>{lang === 'en' ? 'Requirements & Process' : 'அறிவிப்பும் செயல்முறையும்'}</span>
               </h3>
-              <ul className="text-base text-gray-900 space-y-2 leading-relaxed">
+              <ul className="text-xs text-gray-900 space-y-2">
                 {[
                   { en: 'All requests undergo physical verification by our trustees/volunteers.', ta: 'அனைத்து கோரிக்கைகளும் எங்களது அறங்காவலர்கள் அல்லது தன்னார்வலர்களால் நேரடியாகச் சரிபார்க்கப்படும்.' },
                   { en: 'Support is distributed based on the severity of distress and resource availability.', ta: 'வழங்கப்படும் உதவி நிலைமையின் தீவிரம் மற்றும் எங்களது நிதி ஆதாரத்தின் அடிப்படையிலேயே தீர்மானிக்கப்படும்.' },
@@ -204,7 +204,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   { en: 'Free ambulance dispatch is reserved strictly for families below the poverty line; eligibility is verified before dispatch.', ta: 'இலவச ஆம்புலன்ஸ் சேவை வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டுமே; அனுப்பும் முன் தகுதி உறுதி செய்யப்படும்.' },
                 ].map((item, idx) => (
                   <li key={idx} className="flex gap-2">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-gray-400 shrink-0" />
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
                     <span>{item[lang]}</span>
                   </li>
                 ))}
@@ -302,6 +302,13 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                       <option value="Medical">{lang === 'en' ? 'Hospital Surgery Crowdfund' : 'அவசர மருத்துவ உதவி'}</option>
                       <option value="Other">{lang === 'en' ? 'Other Humanitarian Need' : 'இதர உதவிகள்'}</option>
                     </select>
+                    {helpType === 'Ambulance' && (
+                      <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] font-medium leading-relaxed text-amber-900">
+                        {lang === 'en'
+                          ? 'Ambulance support is reserved for below-poverty-line families, subject to eligibility verification, vehicle availability, and government hospital transfer priority. For emergencies, call the trust directly as well.'
+                          : 'இலவச ஆம்புலன்ஸ் உதவி வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டுமே; தகுதி சரிபார்ப்பு, வாகன கிடைப்புத் தன்மை, அரசு மருத்துவமனை மாற்று முன்னுரிமை ஆகியவற்றின் அடிப்படையில் வழங்கப்படும். அவசரநிலைகளில் அறக்கட்டளையை நேரடியாகவும் அழைக்கவும்.'}
+                      </p>
+                    )}
                   </div>
 
                   {/* Urgency */}
@@ -810,7 +817,6 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     </div>
   );
 }
-
 
 
 
