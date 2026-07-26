@@ -192,8 +192,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
             {/* Disclaimer Checklist */}
             <div className="rounded-xl bg-gray-50 p-5 border border-gray-200/60 space-y-3">
-              <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                <Monogram label="!" size="xs" tone="amber" />
+              <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-900">
                 <span>{lang === 'en' ? 'Requirements & Process' : 'அறிவிப்பும் செயல்முறையும்'}</span>
               </h3>
               <ul className="text-xs text-gray-900 space-y-2">
@@ -817,7 +816,5 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     </div>
   );
 }
-
-
 
 
