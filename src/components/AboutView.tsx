@@ -68,9 +68,6 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="text-center max-w-3xl mx-auto space-y-3 px-4 pt-[clamp(1.25rem,3.5vh,2.5rem)]">
-        <p className="section-eyebrow text-emerald-700">
-          {lang === 'en' ? 'About Nallathe Nadakkum' : 'நல்லதே நடக்கும் பற்றி'}
-        </p>
         <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl lg:text-5xl">
           {lang === 'en' ? 'About Our Trust' : 'அறக்கட்டளை வரலாறு & ஆளுமை'}
         </h1>
@@ -97,9 +94,6 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
 
           {/* Heading block */}
           <div className="space-y-3 text-center lg:text-left order-2 lg:order-1">
-            <p className="section-eyebrow text-brand-violet-700">
-              {lang === 'en' ? 'Our Name' : 'எங்கள் பெயர்'}
-            </p>
             <h2 className="font-display font-extrabold uppercase tracking-tight text-gray-900 text-4xl sm:text-5xl lg:text-6xl leading-[0.95]">
               {lang === 'en' ? (
                 <>Why<br />Nallathe<br />Nadakkum</>
@@ -179,9 +173,6 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
       {/* ── Meet Our Founder ─────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
-          <p className="section-eyebrow text-brand-blue-700">
-            {lang === 'en' ? 'Leadership' : 'தலைமை'}
-          </p>
           <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
             {lang === 'en' ? 'Meet Our Founder' : 'எங்கள் நிறுவனரை சந்திக்கவும்'}
           </h2>
@@ -247,9 +238,6 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
       {/* ── Trust Credentials ────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
-          <p className="section-eyebrow text-brand-blue-700">
-            {lang === 'en' ? 'Verified & Registered' : 'சரிபார்க்கப்பட்டது & பதிவு'}
-          </p>
           <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
             {lang === 'en' ? 'Trust Credentials' : 'அறக்கட்டளை சான்றுகள்'}
           </h2>
@@ -292,9 +280,6 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
       {/* ── Ethical Guiding Values ───────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
-          <p className="section-eyebrow text-brand-gold-700">
-            {lang === 'en' ? 'What Guides Us' : 'எங்களை வழிநடத்துபவை'}
-          </p>
           <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
             {lang === 'en' ? 'Our Ethical Guiding Values' : 'நமது தார்மீக வழிகாட்டி நெறிமுறைகள்'}
           </h2>

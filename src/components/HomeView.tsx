@@ -571,9 +571,6 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
             className="h-40 w-40 sm:h-44 sm:w-44 rounded-full object-cover object-top flex-shrink-0 border border-emerald-200"
           />
           <div className="space-y-4 flex-grow">
-            <p className="section-eyebrow text-emerald-700">
-              {lang === 'en' ? 'A Message from our Founder' : 'நிறுவனரின் செய்தி'}
-            </p>
             <blockquote className="text-base sm:text-lg text-gray-900 italic leading-relaxed sm:leading-[1.65] font-serif">
               {lang === 'en' 
                 ? '"Nallathe Nadakkum translates to Good things will happen. It is our firm conviction that consistent, small acts of daily compassion compound into real social reform. We do not wait behind a desk; we identify people on pavements, coordinate burials at the mortuary, and drive patients to emergency beds ourselves. We welcome anyone of any background to join this effort."' 

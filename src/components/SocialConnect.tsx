@@ -53,9 +53,6 @@ export default function SocialConnect({ lang }: SocialConnectProps) {
       >
         <div className="relative z-10 px-6 py-10 sm:px-10 sm:py-12 flex flex-col md:flex-row md:items-center justify-between gap-8 text-center md:text-left">
           <div className="space-y-2 max-w-xl">
-            <span className="section-eyebrow inline-block text-emerald-300">
-              {lang === 'en' ? 'Stay Connected' : 'எங்களுடன் இணைந்திருங்கள்'}
-            </span>
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">
               {lang === 'en' ? 'Follow Our Daily Work' : 'எங்கள் தினசரி பணிகளைப் பின்தொடருங்கள்'}
             </h2>

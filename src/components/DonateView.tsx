@@ -341,12 +341,6 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
       <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 lg:p-10 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-8">
         {/* Shared header spanning both columns */}
         <div className="max-w-2xl mx-auto text-center space-y-3">
-          <div className="inline-flex items-center gap-2 text-emerald-700">
-            <FaCreditCard className="h-5 w-5" />
-            <span className="section-eyebrow">
-              {lang === 'en' ? 'Official Payment Methods' : 'அதிகாரப்பூர்வ பணம் செலுத்தும் வழிகள்'}
-            </span>
-          </div>
           <h3 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
             {lang === 'en' ? 'Official Banking Credentials' : 'அதிகாரப்பூர்வ வங்கிக் கணக்கு விபரங்கள்'}
           </h3>
