@@ -87,13 +87,13 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
       </section>
 
       {/* ── Why Nallathe Nadakkum — editorial identity ────────── */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
         {/* Top: stacked heading (left) + logo as the main visual (right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
 
           {/* Heading block */}
-          <div className="space-y-3 text-center lg:text-left order-2 lg:order-1">
+          <div className="order-2 space-y-3 text-center lg:order-1 lg:text-left">
             <h2 className="font-display font-extrabold uppercase tracking-tight text-gray-900 text-4xl sm:text-5xl lg:text-6xl leading-[0.95]">
               {lang === 'en' ? (
                 <>Why<br />Nallathe<br />Nadakkum</>
@@ -103,7 +103,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
             </h2>
 
             {/* Meaning — typographic emphasis, not a nested card */}
-            <p className="text-lg sm:text-xl text-gray-900">
+            <p className="text-center text-lg sm:text-xl text-gray-900 lg:text-left">
               <span className="font-display font-bold">{lang === 'en' ? '“Nallathe Nadakkum”' : '“நல்லதே நடக்கும்”'}</span>
               <span className="text-gray-900"> — </span>
               <span className="font-serif font-bold italic text-emerald-700">
@@ -113,52 +113,42 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
           </div>
 
           {/* Logo — main visual, no card, vertically centered */}
-          <div className="flex justify-center lg:justify-end order-1 lg:order-2">
-            <div className="relative flex items-center justify-center">
-              <div className="absolute h-64 w-64 sm:h-72 sm:w-72 rounded-full bg-[radial-gradient(circle,_rgba(31,115,74,0.10),_transparent_65%)] blur-xl" />
-              <img
-                src="/logo.png"
-                alt="Nallathe Nadakkum Social Service Trust logo"
-                className="relative h-52 w-52 sm:h-64 sm:w-64 lg:h-[clamp(220px,26vh,290px)] lg:w-[clamp(220px,26vh,290px)] object-contain"
-              />
-            </div>
+          <div className="order-1 flex justify-center lg:order-2">
+            <img
+              src="/logo.png"
+              alt="Nallathe Nadakkum Social Service Trust logo"
+              className="h-48 w-48 object-contain sm:h-64 sm:w-64 lg:h-72 lg:w-72"
+            />
           </div>
         </div>
 
         {/* Thin divider */}
-        <hr className="my-[clamp(1.25rem,2.5vh,2rem)] border-t border-gray-200" />
+        <hr className="my-8 border-t border-gray-200 sm:my-10" />
 
-        {/* Bottom: two balanced editorial columns (aligned from same top baseline) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
-
-          {/* Where it began */}
-          <div className="space-y-2.5">
-            <p className="section-eyebrow text-brand-violet-700">
-              {lang === 'en' ? 'Where It Began' : 'எங்கே தொடங்கியது'}
-            </p>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed max-w-prose">
-              {lang === 'en'
-                ? 'Our Founder, Advocate N. Kavinraj, grew up witnessing extreme economic hardships in his local vicinity. While practicing law, he initiated an informal weekend food drive, preparing meals in his kitchen and seeking out destitute individuals living on bus stands. Over two years, the scale of requirements grew rapidly, necessitating a structured public trust to legally manage volunteers and donor funds.'
-                : 'எங்கள் நிறுவனர், வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள், தனது வழக்கறிஞர் பணிக்கு இடையே சாலையோரங்களில் ஆதரவின்றித் தவித்த மக்களுக்கு வார இறுதியில் தனது சொந்தச் செலவில் சமைத்து வழங்கத் தொடங்கினார். நாளடைவில் தேவைகள் அதிகரித்ததால், அதனை மேலும் முறைப்படுத்தி, பலருக்கும் உதவிட 08.04.2025 அன்று அறக்கட்டளையாக நிறுவினார்.'}
-            </p>
-            <button
-              onClick={() => document.getElementById('our-journey')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-1 text-emerald-700 font-semibold text-sm hover:text-emerald-800 hover:underline cursor-pointer"
-            >
-              <span>{lang === 'en' ? 'Our Journey' : 'எங்கள் பயணம்'}</span>
-              <FaChevronRight className="h-3.5 w-3.5" />
-            </button>
-          </div>
+        {/* Bottom: stacked editorial notes */}
+        <div className="grid grid-cols-1 items-start gap-8">
 
           {/* Why this name */}
           <div className="space-y-2.5">
             <p className="section-eyebrow text-brand-violet-700">
               {lang === 'en' ? 'Why This Name' : 'இந்தப் பெயர் ஏன்'}
             </p>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed max-w-prose">
+            <p className="text-left text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
               {lang === 'en'
                 ? 'It is a foundational belief that consistent, small acts of daily compassion compound into real social security for those abandoned by society.'
                 : 'மனிதநேயத்துடன் நாம் செய்யும் ஒவ்வொரு சிறிய செயலும் தொடர்ந்து நடக்கும் போது, அது சமூகத்தால் கைவிடப்பட்ட மனிதர்களின் வாழ்வில் பெரிய நல்ல மாற்றங்களை ஏற்படுத்தும் என்ற நம்பிக்கையில் உருவானது.'}
+            </p>
+          </div>
+
+          {/* Where it began */}
+          <div className="space-y-2.5">
+            <p className="section-eyebrow text-brand-violet-700">
+              {lang === 'en' ? 'Where It Began' : 'எங்கே தொடங்கியது'}
+            </p>
+            <p className="text-left text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
+              {lang === 'en'
+                ? 'Our Founder, Advocate N. Kavinraj, grew up witnessing extreme economic hardships in his local vicinity. While practicing law, he initiated an informal weekend food drive, preparing meals in his kitchen and seeking out destitute individuals living on bus stands. Over two years, the scale of requirements grew rapidly, necessitating a structured public trust to legally manage volunteers and donor funds.'
+                : 'எங்கள் நிறுவனர், வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள், தனது வழக்கறிஞர் பணிக்கு இடையே சாலையோரங்களில் ஆதரவின்றித் தவித்த மக்களுக்கு வார இறுதியில் தனது சொந்தச் செலவில் சமைத்து வழங்கத் தொடங்கினார். நாளடைவில் தேவைகள் அதிகரித்ததால், அதனை மேலும் முறைப்படுத்தி, பலருக்கும் உதவிட 08.04.2025 அன்று அறக்கட்டளையாக நிறுவினார்.'}
             </p>
           </div>
         </div>
