@@ -182,14 +182,14 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
             the right column carries the heading above and the story below.
             On mobile it stacks role → name → image → description → CTA. */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-14 gap-y-6 items-start">
-          {/* Heading — role + name (mobile: first; desktop: right column, top) */}
+          {/* Heading — name + role (mobile: first; desktop: right column, top) */}
           <div className="order-1 lg:order-2 lg:col-span-7 lg:col-start-6 space-y-3">
-            <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-brand-blue-700 bg-brand-blue-50 px-3 py-1 rounded-full">
-              {founder.role}
-            </span>
             <h3 className="font-display text-3xl sm:text-4xl font-bold leading-tight text-gray-900">
               {founder.name}
             </h3>
+            <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-brand-blue-700 bg-brand-blue-50 px-3 py-1 rounded-full">
+              {founder.role}
+            </span>
           </div>
 
           {/* Photo — larger editorial presence, natural aspect ratio */}
