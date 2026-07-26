@@ -271,79 +271,6 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                     {service.detailedDescription[lang]}
                   </motion.p>
 
-                  {/* ── Food: daily sponsorship costs + quality pledge ── */}
-                  {service.id === 'food' && (
-                    <motion.div
-                      className={`rounded-2xl border ${a.border} ${a.bg} p-5 sm:p-6 space-y-5`}
-                      {...reveal(0.12)}
-                    >
-                      <p className={`text-[11px] font-bold uppercase tracking-widest ${a.text}`}>
-                        {lang === 'en' ? 'Sponsor a Meal — Daily Costs' : 'ஒரு வேளை உணவை ஸ்பான்சர் செய்யுங்கள் — தினசரி செலவு'}
-                      </p>
-
-                      {[
-                        {
-                          head: { en: 'Outdoor Food Distribution (Daily)', ta: 'சாலையோர அன்னதானம் (தினசரி)' },
-                          slots: [
-                            { t: { en: 'Morning', ta: 'காலை' }, v: '2,000' },
-                            { t: { en: 'Afternoon', ta: 'மதியம்' }, v: '3,000' },
-                            { t: { en: 'Night', ta: 'இரவு' }, v: '2,000' },
-                          ],
-                        },
-                        {
-                          head: { en: 'Indoor Food — Mudhiyor Illam (Old-Age Home)', ta: 'முதியோர் இல்ல உணவு' },
-                          slots: [
-                            { t: { en: 'Morning', ta: 'காலை' }, v: '4,500' },
-                            { t: { en: 'Afternoon', ta: 'மதியம்' }, v: '6,000' },
-                            { t: { en: 'Night', ta: 'இரவு' }, v: '4,500' },
-                          ],
-                        },
-                      ].map((row, ri) => (
-                        <div key={ri} className="space-y-2">
-                          <p className="text-sm font-bold text-gray-900">{row.head[lang]}</p>
-                          <div className="grid grid-cols-3 gap-2">
-                            {row.slots.map((s, si) => (
-                              <div key={si} className="rounded-xl bg-white/80 border border-white px-3 py-2.5 text-center">
-                                <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-900">
-                                  {s.t[lang]}
-                                </p>
-                                <p className={`font-mono font-bold text-base sm:text-lg ${a.text}`}>
-                                  ₹{s.v}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-
-                      <p className="text-sm text-gray-900 leading-relaxed border-t border-white pt-4">
-                        <span className="font-bold text-gray-900">
-                          {lang === 'en' ? 'No compromise on quality: ' : 'தரத்தில் சமரசம் இல்லை: '}
-                        </span>
-                        {lang === 'en'
-                          ? 'every meal is prepared using top-quality ingredients — the same standard we would serve our own family.'
-                          : 'ஒவ்வொரு உணவும் தரமான, உயர்தர பொருட்களைக் கொண்டே தயாரிக்கப்படுகிறது — நம் சொந்தக் குடும்பத்திற்கு வழங்கும் அதே தரத்தில்.'}
-                      </p>
-                    </motion.div>
-                  )}
-
-                  {/* ── Ambulance: free-only-for-BPL emphasis ── */}
-                  {service.id === 'ambulance' && (
-                    <motion.div
-                      className={`rounded-2xl border ${a.border} ${a.bg} p-5 sm:p-6`}
-                      {...reveal(0.12)}
-                    >
-                      <p className={`text-[11px] font-bold uppercase tracking-widest ${a.text} mb-1.5`}>
-                        {lang === 'en' ? 'Eligibility' : 'தகுதி'}
-                      </p>
-                      <p className="text-base sm:text-lg font-semibold text-gray-900 leading-relaxed">
-                        {lang === 'en'
-                          ? 'A totally free ambulance service — provided only to people living below the poverty line.'
-                          : 'முற்றிலும் இலவச ஆம்புலன்ஸ் சேவை — வறுமைக்கோட்டிற்குக் கீழே உள்ள மக்களுக்கு மட்டுமே வழங்கப்படுகிறது.'}
-                      </p>
-                    </motion.div>
-                  )}
-
                   <motion.div className={`w-14 border-t-2 ${a.border}`} {...reveal(0.12)} />
 
                   <motion.div className="flex flex-wrap gap-3" {...reveal(0.15)}>
@@ -419,6 +346,82 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                 </motion.div>
 
               </div>
+
+              {/* ── Full-width detail box below the picture (keeps every service
+                  section symmetric — the special panels no longer stretch one
+                  column taller than the other). ── */}
+              {service.id === 'food' && (
+                <motion.div
+                  className={`mt-10 lg:mt-12 rounded-2xl border ${a.border} ${a.bg} p-5 sm:p-6 space-y-5`}
+                  {...reveal(0.12)}
+                >
+                  <p className={`text-[11px] font-bold uppercase tracking-widest ${a.text}`}>
+                    {lang === 'en' ? 'Sponsor a Meal — Daily Costs' : 'ஒரு வேளை உணவை ஸ்பான்சர் செய்யுங்கள் — தினசரி செலவு'}
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {[
+                      {
+                        head: { en: 'Outdoor Food Distribution (Daily)', ta: 'சாலையோர அன்னதானம் (தினசரி)' },
+                        slots: [
+                          { t: { en: 'Morning', ta: 'காலை' }, v: '2,000' },
+                          { t: { en: 'Afternoon', ta: 'மதியம்' }, v: '3,000' },
+                          { t: { en: 'Night', ta: 'இரவு' }, v: '2,000' },
+                        ],
+                      },
+                      {
+                        head: { en: 'Indoor Food — Mudhiyor Illam (Old-Age Home)', ta: 'முதியோர் இல்ல உணவு' },
+                        slots: [
+                          { t: { en: 'Morning', ta: 'காலை' }, v: '4,500' },
+                          { t: { en: 'Afternoon', ta: 'மதியம்' }, v: '6,000' },
+                          { t: { en: 'Night', ta: 'இரவு' }, v: '4,500' },
+                        ],
+                      },
+                    ].map((row, ri) => (
+                      <div key={ri} className="space-y-2">
+                        <p className="text-sm font-bold text-gray-900">{row.head[lang]}</p>
+                        <div className="grid grid-cols-3 gap-2">
+                          {row.slots.map((s, si) => (
+                            <div key={si} className="rounded-xl bg-white/80 border border-white px-3 py-2.5 text-center">
+                              <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-900">
+                                {s.t[lang]}
+                              </p>
+                              <p className={`font-mono font-bold text-base sm:text-lg ${a.text}`}>
+                                ₹{s.v}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <p className="text-sm text-gray-900 leading-relaxed border-t border-white pt-4">
+                    <span className="font-bold text-gray-900">
+                      {lang === 'en' ? 'No compromise on quality: ' : 'தரத்தில் சமரசம் இல்லை: '}
+                    </span>
+                    {lang === 'en'
+                      ? 'every meal is prepared using top-quality ingredients — the same standard we would serve our own family.'
+                      : 'ஒவ்வொரு உணவும் தரமான, உயர்தர பொருட்களைக் கொண்டே தயாரிக்கப்படுகிறது — நம் சொந்தக் குடும்பத்திற்கு வழங்கும் அதே தரத்தில்.'}
+                  </p>
+                </motion.div>
+              )}
+
+              {service.id === 'ambulance' && (
+                <motion.div
+                  className={`mt-10 lg:mt-12 rounded-2xl border ${a.border} ${a.bg} p-5 sm:p-6`}
+                  {...reveal(0.12)}
+                >
+                  <p className={`text-[11px] font-bold uppercase tracking-widest ${a.text} mb-1.5`}>
+                    {lang === 'en' ? 'Eligibility' : 'தகுதி'}
+                  </p>
+                  <p className="text-base sm:text-lg font-semibold text-gray-900 leading-relaxed">
+                    {lang === 'en'
+                      ? 'A totally free ambulance service — provided only to people living below the poverty line.'
+                      : 'முற்றிலும் இலவச ஆம்புலன்ஸ் சேவை — வறுமைக்கோட்டிற்குக் கீழே உள்ள மக்களுக்கு மட்டுமே வழங்கப்படுகிறது.'}
+                  </p>
+                </motion.div>
+              )}
             </div>
           </section>
         );
