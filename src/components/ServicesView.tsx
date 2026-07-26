@@ -244,10 +244,10 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
               {/* Chapter header — number + slug sit above both columns so the
                   photo below starts exactly at the service title line. */}
               <motion.div className="flex items-baseline gap-3 mb-5 lg:mb-6" {...reveal(0)}>
-                <span className={`font-mono text-6xl font-black leading-none select-none ${a.text} opacity-20`}>
+                <span className={`font-mono text-lg sm:text-2xl font-black leading-none select-none ${a.text} opacity-40`}>
                   {num}
                 </span>
-                <span className={`text-[10px] font-bold uppercase tracking-widest ${a.text}`}>
+                <span className={`text-lg sm:text-2xl font-bold uppercase tracking-wider ${a.text}`}>
                   {slug}
                 </span>
               </motion.div>
