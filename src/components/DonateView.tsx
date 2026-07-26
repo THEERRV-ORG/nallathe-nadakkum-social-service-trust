@@ -7,6 +7,7 @@ import {
   FaCopy, FaCheck, FaWhatsapp, FaEnvelope
 } from 'react-icons/fa6';
 import { DonatePreset } from '../data';
+import SocialConnect from './SocialConnect';
 
 interface DonateViewProps {
   lang: 'en' | 'ta';
@@ -909,10 +910,11 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         </div>
       </section>
 
+      <SocialConnect lang={lang} />
+
     </div>
   );
 }
-
 
 
 
