@@ -1,6 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { FaMicrophoneLines, FaCalendarDays, FaLocationDot, FaHeart } from 'react-icons/fa6';
+import { FaMicrophoneLines, FaCalendarDays, FaLocationDot } from 'react-icons/fa6';
 import {
   OFFICIAL_CONTACT,
   buildWhatsAppUrl,
@@ -127,20 +127,18 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
         </div>
       </section>
 
-      {/* No-fee / donate quote */}
-      <section className="rounded-2xl border border-brand-gold-100 bg-brand-gold-50 p-6 sm:p-8 flex flex-col sm:flex-row items-start gap-4 max-w-4xl mx-auto">
-        <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-gold-100 text-brand-gold-700">
-          <FaHeart className="h-6 w-6" />
-        </div>
-        <blockquote className="rounded-xl border border-brand-gold-200 bg-white/70 px-4 py-3 text-base sm:text-lg font-bold text-gray-950 leading-relaxed sm:leading-[1.65] shadow-xs font-serif">
-          {lang === 'en'
-            ? '“We charge no fee for speaking engagements. If our words move you, we simply ask that you donate to the trust — whatever your heart is willing to give — as a token of love.”'
-            : '“சொற்பொழிவுக்கு நாங்கள் எந்தக் கட்டணமும் வாங்குவதில்லை. எங்கள் வார்த்தைகள் உங்கள் மனதைத் தொட்டால், அன்பின் அடையாளமாக, உங்கள் மனம் விரும்பும் அளவு அறக்கட்டளைக்கு நன்கொடை அளியுங்கள் — அவ்வளவே.”'}
-        </blockquote>
-      </section>
+      {/* Invitation card — highlighted no-fee quote + form together */}
+      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] max-w-4xl mx-auto w-full space-y-6">
 
-      {/* Invitation form */}
-      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] max-w-3xl mx-auto w-full space-y-6">
+        {/* Highlighted no-fee / donate quote */}
+        <div className="rounded-xl bg-emerald-50 border-l-4 border-brand-gold px-5 py-4 sm:px-6 sm:py-5">
+          <blockquote className="font-serif italic text-emerald-900 text-base sm:text-xl leading-relaxed sm:leading-[1.7]">
+            {lang === 'en'
+              ? '“We charge no fee for speaking engagements. If our words move you, we simply ask that you donate to the trust — whatever your heart is willing to give — as a token of love.”'
+              : '“சொற்பொழிவுக்கு நாங்கள் எந்தக் கட்டணமும் வாங்குவதில்லை. எங்கள் வார்த்தைகள் உங்கள் மனதைத் தொட்டால், அன்பின் அடையாளமாக, உங்கள் மனம் விரும்பும் அளவு அறக்கட்டளைக்கு நன்கொடை அளியுங்கள் — அவ்வளவே.”'}
+          </blockquote>
+        </div>
+
         <div className="space-y-1 text-center border-b border-gray-100 pb-4">
           <h3 className="font-display text-xl font-bold text-gray-900 flex items-center justify-center gap-2">
             <FaMicrophoneLines className="h-6 w-6 text-emerald-600" />
