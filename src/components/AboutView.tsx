@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+﻿import { motion } from 'motion/react';
 import { FaAward, FaShieldHalved, FaHandHoldingHeart, FaFileLines, FaMicrophoneLines, FaChevronRight } from 'react-icons/fa6';
 import { commonTranslations } from '../data';
 import SocialConnect from './SocialConnect';
@@ -80,7 +80,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
             : 'திருச்செங்கோடு சாலைகளில் கண்ட எளிய மக்களின் வறுமையைப் போக்க உருவான ஒரு முறையான சேவை அமைப்பு.'}
         </p>
         {/* Credibility meta row */}
-        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 pt-0.5 text-xs font-semibold text-gray-900/70">
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 pt-0.5 text-xs font-semibold text-gray-900">
           <span>{lang === 'en' ? 'Registered 2025' : '2025-ல் பதிவு'}</span>
           <span className="text-emerald-600/50">•</span>
           <span>{lang === 'en' ? 'Tiruchengode, Tamil Nadu' : 'திருச்செங்கோடு, தமிழ்நாடு'}</span>
@@ -111,8 +111,8 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
             {/* Meaning — typographic emphasis, not a nested card */}
             <p className="text-lg sm:text-xl text-gray-900">
               <span className="font-display font-bold">{lang === 'en' ? '“Nallathe Nadakkum”' : '“நல்லதே நடக்கும்”'}</span>
-              <span className="text-gray-900/60"> — </span>
-              <span className="font-display font-bold text-emerald-700">
+              <span className="text-gray-900"> — </span>
+              <span className="font-serif font-bold italic text-emerald-700">
                 {lang === 'en' ? 'Good things will happen.' : 'நல்லது நடக்கும்.'}
               </span>
             </p>
@@ -221,7 +221,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
             <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
               {founder.desc[lang]}
             </p>
-            <blockquote className="border-l-4 border-emerald-500 pl-4 text-base sm:text-lg italic text-gray-900/90 leading-relaxed">
+            <blockquote className="border-l-4 border-emerald-500 pl-4 text-base sm:text-lg italic text-gray-900 leading-relaxed font-serif">
               {lang === 'en'
                 ? '“We seek those who have nobody left, and we stand beside them in life, in sickness, and in death.”'
                 : '“யாருமற்ற நிலைக்குத் தள்ளப்பட்ட மக்களைக் கண்டறிந்து, அவர்கள் வாழ்விலும், மரணத்திலும் நாங்கள் உடனிருக்கிறோம்.”'}
@@ -298,7 +298,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
           <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
             {lang === 'en' ? 'Our Ethical Guiding Values' : 'நமது தார்மீக வழிகாட்டி நெறிமுறைகள்'}
           </h2>
-          <p className="text-sm sm:text-base text-gray-900/70 max-w-xl mx-auto">
+          <p className="text-sm sm:text-base text-gray-900 max-w-xl mx-auto">
             {lang === 'en' ? 'These four principles guide our daily street programs and financial stewardship.' : 'இந்த நான்கு நெறிமுறைகள் எங்கள் அன்றாடக் களப்பணி மற்றும் நிதி நிர்வாகத்தை வழிநடத்துகின்றன.'}
           </p>
         </div>
@@ -331,3 +331,4 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import {
   FaUtensils,
@@ -307,7 +307,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                           <div className="grid grid-cols-3 gap-2">
                             {row.slots.map((s, si) => (
                               <div key={si} className="rounded-xl bg-white/80 border border-white px-3 py-2.5 text-center">
-                                <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500">
+                                <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-900">
                                   {s.t[lang]}
                                 </p>
                                 <p className={`font-mono font-bold text-base sm:text-lg ${a.text}`}>
@@ -381,7 +381,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                       <p className={`text-[10px] font-bold uppercase tracking-wider ${a.text}`}>
                         {lang === 'en' ? 'How to Request' : 'உதவி பெறுவது எப்படி'}
                       </p>
-                      <p className="text-xs text-gray-600 leading-relaxed">
+                      <p className="text-xs text-gray-900 leading-relaxed">
                         {service.howToRequest[lang]}
                       </p>
                     </div>
@@ -389,7 +389,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                       <p className={`text-[10px] font-bold uppercase tracking-wider ${a.text}`}>
                         {lang === 'en' ? 'How to Donate' : 'நன்கொடை வழங்குவது எப்படி'}
                       </p>
-                      <p className="text-xs text-gray-600 leading-relaxed">
+                      <p className="text-xs text-gray-900 leading-relaxed">
                         {service.howToDonate[lang]}
                       </p>
                     </div>
@@ -397,7 +397,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                       <p className={`text-[10px] font-bold uppercase tracking-wider ${a.text}`}>
                         {lang === 'en' ? 'Volunteer Role' : 'தன்னார்வ பணி'}
                       </p>
-                      <p className="text-xs text-gray-600 leading-relaxed">
+                      <p className="text-xs text-gray-900 leading-relaxed">
                         {service.volunteerRole[lang]}
                       </p>
                     </div>
@@ -463,7 +463,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
           <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
             {lang === 'en' ? 'Our Teams' : 'எங்கள் குழுக்கள்'}
           </h2>
-          <p className="text-sm sm:text-base text-gray-900/70 max-w-xl mx-auto">
+          <p className="text-sm sm:text-base text-gray-900 max-w-xl mx-auto">
             {lang === 'en'
               ? 'Dedicated volunteers work across four core teams every day. Member photos and details will be added soon.'
               : 'அர்ப்பணிப்புள்ள தன்னார்வலர்கள் நான்கு முக்கிய குழுக்களாக தினமும் செயல்படுகிறார்கள். உறுப்பினர்களின் படங்களும் விவரங்களும் விரைவில் இணைக்கப்படும்.'}
@@ -495,7 +495,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                 </h3>
               </div>
 
-              <p className="text-sm text-gray-900/70 leading-relaxed">
+              <p className="text-sm text-gray-900 leading-relaxed">
                 {team.desc[lang]}
               </p>
 
@@ -524,3 +524,5 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
     </div>
   );
 }
+
+

@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+﻿import { Fragment, useState } from 'react';
 import { FaBars, FaXmark, FaGlobe, FaHeart, FaChevronDown } from 'react-icons/fa6';
 import { navigationLabels } from '../data';
 
@@ -143,7 +143,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
           <button
             id="mobile-menu-toggle"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="inline-flex lg:hidden items-center justify-center rounded-md p-2 text-gray-900/70 hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-pointer"
+            className="inline-flex lg:hidden items-center justify-center rounded-md p-2 text-gray-900 hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-pointer"
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {isMenuOpen ? <FaXmark className="h-5 w-5" /> : <FaBars className="h-5 w-5" />}
@@ -193,7 +193,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
                             className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                               activeTab === ci.id
                                 ? 'bg-emerald-50 text-emerald-700 font-semibold'
-                                : 'text-gray-900/90 hover:bg-gray-50 hover:text-emerald-600'
+                                : 'text-gray-900 hover:bg-gray-50 hover:text-emerald-600'
                             }`}
                           >
                             {ci.label[lang]}
@@ -227,3 +227,4 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
     </header>
   );
 }
+

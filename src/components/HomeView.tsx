@@ -113,7 +113,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-sans text-base sm:text-lg font-medium text-[#6ee7b7] italic border-l-4 border-[#10b981] pl-4"
+              className="font-serif text-base sm:text-lg font-medium text-[#6ee7b7] italic border-l-4 border-[#10b981] pl-4"
             >
               "{commonTranslations.heroSlogan[lang]}"
             </motion.p>
@@ -579,7 +579,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
             <p className="section-eyebrow text-emerald-700">
               {lang === 'en' ? 'A Message from our Founder' : 'நிறுவனரின் செய்தி'}
             </p>
-            <blockquote className="text-base sm:text-lg text-gray-900 italic leading-relaxed sm:leading-[1.65] font-sans">
+            <blockquote className="text-base sm:text-lg text-gray-900 italic leading-relaxed sm:leading-[1.65] font-serif">
               {lang === 'en' 
                 ? '"Nallathe Nadakkum translates to Good things will happen. It is our firm conviction that consistent, small acts of daily compassion compound into real social reform. We do not wait behind a desk; we identify people on pavements, coordinate burials at the mortuary, and drive patients to emergency beds ourselves. We welcome anyone of any background to join this effort."' 
                 : '"நல்லதே நடக்கும் என்பது வெறும் பெயர் அல்ல, அது எங்களின் நம்பிக்கை. ஒவ்வொரு நாளும் நாம் செய்யும் சிறிய நற்செயல்களும் உதவிகளும் மிகப்பெரிய சமூக மாற்றத்தை ஏற்படுத்தும். நாங்கள் அலுவலகக் கதவுகளுக்குப் பின்னால் அமர்ந்து கொண்டிருக்கவில்லை; நேரடியாகச் சாலைகளுக்குச் செல்கிறோம், முதியவர்களை மீட்கிறோம், காவல்துறை அனுமதியுடன் இறுதி மரியாதைகளைச் செய்கிறோம். சாதி, மதம், பின்னணி வேறுபாடின்றி அனைவரும் இதில் இணைய அழைக்கிறோம்."'}

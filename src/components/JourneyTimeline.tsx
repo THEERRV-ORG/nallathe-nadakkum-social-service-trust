@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+﻿import { useLayoutEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { FaArrowRightLong, FaArrowDownLong } from 'react-icons/fa6';
 
@@ -140,7 +140,7 @@ function HorizontalJourney({ lang }: JourneyTimelineProps) {
       <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
         {lang === 'en' ? 'From a Saturday Habit to a Registered Trust' : 'சனிக்கிழமைப் பழக்கம் முதல் அறக்கட்டளை வரை'}
       </h2>
-      <p className="text-sm sm:text-base text-gray-900/70 max-w-xl mx-auto">
+      <p className="text-sm sm:text-base text-gray-900 max-w-xl mx-auto">
         {lang === 'en'
           ? "One person's weekend meal drive now serves thousands every month."
           : 'ஒரு நபரின் வார இறுதி அன்னதானம் இன்று மாதந்தோறும் ஆயிரக்கணக்கானோருக்கு சேவை செய்கிறது.'}
@@ -232,7 +232,7 @@ export default function JourneyTimeline({ lang }: JourneyTimelineProps) {
         <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
           {lang === 'en' ? 'From a Saturday Habit to a Registered Trust' : 'சனிக்கிழமைப் பழக்கம் முதல் அறக்கட்டளை வரை'}
         </h2>
-        <p className="text-sm sm:text-base text-gray-900/70 max-w-xl mx-auto">
+        <p className="text-sm sm:text-base text-gray-900 max-w-xl mx-auto">
           {lang === 'en'
             ? "One person's weekend meal drive now serves thousands every month."
             : 'ஒரு நபரின் வார இறுதி அன்னதானம் இன்று மாதந்தோறும் ஆயிரக்கணக்கானோருக்கு சேவை செய்கிறது.'}
@@ -278,3 +278,4 @@ export default function JourneyTimeline({ lang }: JourneyTimelineProps) {
     </section>
   );
 }
+

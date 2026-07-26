@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { OFFICIAL_CONTACT, SAMPLE_SPONSORS, buildMailtoUrl, buildWhatsAppUrl, hasMeaningfulText, isValidDonationAmount, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeSingleLine } from '../security';
 import { motion } from 'motion/react';
 import {
@@ -193,7 +193,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
       className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold transition-colors shrink-0 ${
         copiedText === id
           ? 'text-emerald-700 bg-emerald-50'
-          : 'text-gray-500 hover:text-emerald-700 hover:bg-emerald-50'
+          : 'text-gray-900 hover:text-emerald-700 hover:bg-emerald-50'
       }`}
     >
       {copiedText === id ? (
@@ -350,7 +350,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
           <h3 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
             {lang === 'en' ? 'Official Banking Credentials' : 'அதிகாரப்பூர்வ வங்கிக் கணக்கு விபரங்கள்'}
           </h3>
-          <p className="text-sm sm:text-base text-gray-900/80">
+          <p className="text-sm sm:text-base text-gray-900">
             {lang === 'en' ? 'Operated jointly by Chairman and Treasurer. Strictly audited.' : 'தலைவர் மற்றும் பொருளாளரால் மட்டுமே இயக்கப்படும் பாதுகாப்பான கணக்கு.'}
           </p>
           <p className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700">
@@ -376,19 +376,19 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
 
             <dl className="divide-y divide-gray-200/70">
               <div className="py-3">
-                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
                   {lang === 'en' ? 'Bank Name' : 'வங்கிப் பெயர்'}
                 </dt>
                 <dd className="mt-0.5 text-sm sm:text-base font-semibold text-gray-900">Equitas Small Finance Bank</dd>
               </div>
               <div className="py-3">
-                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
                   {lang === 'en' ? 'Account Name' : 'கணக்கின் பெயர்'}
                 </dt>
                 <dd className="mt-0.5 text-sm sm:text-base font-bold text-emerald-800">Nallathe Nadakkum Trust</dd>
               </div>
               <div className="py-3">
-                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
                   {lang === 'en' ? 'Account Number' : 'கணக்கு எண்'}
                 </dt>
                 <dd className="mt-1 flex items-center justify-between gap-2">
@@ -397,7 +397,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                 </dd>
               </div>
               <div className="py-3">
-                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
                   {lang === 'en' ? 'IFSC Code' : 'IFSC குறியீடு'}
                 </dt>
                 <dd className="mt-1 flex items-center justify-between gap-2">
@@ -420,7 +420,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
             </div>
 
             <div className="flex flex-1 flex-col items-center text-center gap-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Scan & Pay via UPI' : 'UPI மூலம் ஸ்கேன் செய்து செலுத்த'}
               </p>
 
@@ -915,4 +915,6 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
     </div>
   );
 }
+
+
 

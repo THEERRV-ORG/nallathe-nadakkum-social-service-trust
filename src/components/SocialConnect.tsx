@@ -1,4 +1,4 @@
-import { FaInstagram, FaFacebookF, FaYoutube } from 'react-icons/fa6';
+﻿import { FaInstagram, FaFacebookF, FaYoutube } from 'react-icons/fa6';
 import { OFFICIAL_SOCIAL } from '../security';
 import { StarsBackground } from './ui/stars';
 
@@ -79,7 +79,7 @@ export default function SocialConnect({ lang }: SocialConnectProps) {
                   {link.icon}
                 </span>
                 <span className="text-left leading-tight">
-                  <span className="block text-[10px] font-semibold uppercase tracking-wider text-gray-900/60">
+                  <span className="block text-[10px] font-semibold uppercase tracking-wider text-gray-900">
                     {link.cue[lang]}
                   </span>
                   <span className="block text-sm font-bold text-gray-900">
@@ -94,3 +94,4 @@ export default function SocialConnect({ lang }: SocialConnectProps) {
     </section>
   );
 }
+

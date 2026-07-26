@@ -1,9 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Tamil:wght@300;400;500;600;700;800&display=swap');
+/* ─── FONT STACK ──────────────────────────────────────────────────────────
+   To swap any typeface: change the @import URL and the matching CSS variable
+   below. Three tokens drive the entire site:
+     --font-display  → headings, section titles, big stats, CTAs
+     --font-sans     → body copy, navbar, forms, footer, all UI text
+     --font-serif    → founder quotes, emotional statements, taglines
+   ──────────────────────────────────────────────────────────────────────── */
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,600,700,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Tamil:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", "Noto Sans Tamil", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Noto Sans Tamil", sans-serif;
+  --font-display: "Cabinet Grotesk", "Noto Sans Tamil", sans-serif;   /* headings · stats · CTAs */
+  --font-sans:    "Manrope", "Noto Sans Tamil", ui-sans-serif, system-ui, sans-serif; /* body · UI · forms · footer */
+  --font-serif:   "Source Serif 4", "Noto Sans Tamil", Georgia, serif;               /* quotes · taglines · editorial */
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   /*
@@ -90,6 +99,14 @@ body {
   color: #9ca3af;
   font-weight: 500;
   opacity: 1;
+}
+
+/* Buttons and major CTAs use the display font. Nav link buttons keep body/UI font (overridden below). */
+button, [role="button"], input[type="submit"], input[type="button"] {
+  font-family: var(--font-display);
+}
+nav button, nav [role="button"], header button:not(.cta-btn) {
+  font-family: var(--font-sans);
 }
 
 .section-eyebrow {

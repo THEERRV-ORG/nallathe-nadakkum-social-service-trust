@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+﻿import { motion } from 'motion/react';
 import { FaTrophy, FaMedal, FaAward, FaCertificate } from 'react-icons/fa6';
 
 interface AwardsShowcaseProps {
@@ -52,7 +52,7 @@ export default function AwardsShowcase({ lang, compact = false }: AwardsShowcase
         <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
           {lang === 'en' ? 'Awards & Recognition' : 'விருதுகள் & அங்கீகாரம்'}
         </h2>
-        <p className="text-sm sm:text-base text-gray-900/70 max-w-xl mx-auto">
+        <p className="text-sm sm:text-base text-gray-900 max-w-xl mx-auto">
           {lang === 'en'
             ? 'Recognition received by our founder, Adv. N. Kavinraj, for community service. Details will be updated soon.'
             : 'சமூக சேவைக்காக எங்கள் நிறுவனர் வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள் பெற்ற அங்கீகாரங்கள். விவரங்கள் விரைவில் இணைக்கப்படும்.'}
@@ -85,13 +85,13 @@ export default function AwardsShowcase({ lang, compact = false }: AwardsShowcase
                 <h3 className="font-display text-base font-bold text-gray-900">
                   {award.title[lang]}
                 </h3>
-                <p className="text-xs text-gray-900/70">
+                <p className="text-xs text-gray-900">
                   {award.org[lang]} · {award.year}
                 </p>
               </div>
             </div>
 
-            <p className="text-sm text-gray-900/70 leading-relaxed">
+            <p className="text-sm text-gray-900 leading-relaxed">
               {lang === 'en'
                 ? 'Short description of the award and why it was received will appear here.'
                 : 'விருது மற்றும் அது வழங்கப்பட்டதற்கான சுருக்கமான விவரம் இங்கு இடம்பெறும்.'}
@@ -102,3 +102,4 @@ export default function AwardsShowcase({ lang, compact = false }: AwardsShowcase
     </section>
   );
 }
+

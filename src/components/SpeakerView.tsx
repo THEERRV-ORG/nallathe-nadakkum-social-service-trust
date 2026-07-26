@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { FaMicrophoneLines, FaCalendarDays, FaLocationDot, FaHeart } from 'react-icons/fa6';
 import {
@@ -113,7 +113,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
           <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
             {lang === 'en' ? 'Past Talks & Speeches' : 'முன்னைய உரைகள் & சொற்பொழிவுகள்'}
           </h2>
-          <p className="text-sm sm:text-base text-gray-900/70">
+          <p className="text-sm sm:text-base text-gray-900">
             {lang === 'en' ? 'A selection of recent speaking engagements — coming soon.' : 'சமீபத்திய சொற்பொழிவு நிகழ்வுகள் விரைவில் இணைக்கப்படும்.'}
           </p>
         </div>
@@ -135,7 +135,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
         <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-gold-100 text-brand-gold-700">
           <FaHeart className="h-6 w-6" />
         </div>
-        <blockquote className="rounded-xl border border-brand-gold-200 bg-white/70 px-4 py-3 text-base sm:text-lg font-bold text-gray-950 leading-relaxed sm:leading-[1.65] shadow-xs">
+        <blockquote className="rounded-xl border border-brand-gold-200 bg-white/70 px-4 py-3 text-base sm:text-lg font-bold text-gray-950 leading-relaxed sm:leading-[1.65] shadow-xs font-serif">
           {lang === 'en'
             ? '“We charge no fee for speaking engagements. If our words move you, we simply ask that you donate to the trust — whatever your heart is willing to give — as a token of love.”'
             : '“சொற்பொழிவுக்கு நாங்கள் எந்தக் கட்டணமும் வாங்குவதில்லை. எங்கள் வார்த்தைகள் உங்கள் மனதைத் தொட்டால், அன்பின் அடையாளமாக, உங்கள் மனம் விரும்பும் அளவு அறக்கட்டளைக்கு நன்கொடை அளியுங்கள் — அவ்வளவே.”'}
@@ -149,7 +149,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
             <FaMicrophoneLines className="h-6 w-6 text-emerald-600" />
             <span>{lang === 'en' ? 'Send a Speaker Invitation' : 'சொற்பொழிவு அழைப்பை அனுப்பவும்'}</span>
           </h3>
-          <p className="text-xs sm:text-sm text-gray-900/70">
+          <p className="text-xs sm:text-sm text-gray-900">
             {lang === 'en' ? 'Your request is sent securely via WhatsApp — nothing is stored in this browser.' : 'உங்கள் கோரிக்கை வாட்ஸ்அப் மூலம் பாதுகாப்பாக அனுப்பப்படும் — உலாவியில் எதுவும் சேமிக்கப்படாது.'}
           </p>
         </div>
@@ -163,7 +163,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
               <h4 className="font-display text-lg font-bold text-gray-900">
                 {lang === 'en' ? 'Invitation Prepared' : 'அழைப்பு தயாராகிவிட்டது'}
               </h4>
-              <p className="text-sm text-gray-900/70 max-w-sm mx-auto">
+              <p className="text-sm text-gray-900 max-w-sm mx-auto">
                 {lang === 'en'
                   ? 'A WhatsApp message with your event details is ready to send. Our team will confirm availability shortly.'
                   : 'உங்கள் நிகழ்வு விவரங்களுடன் வாட்ஸ்அப் செய்தி அனுப்பத் தயாராக உள்ளது. எங்கள் குழு விரைவில் உறுதிப்படுத்தும்.'}
@@ -233,3 +233,4 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
     </div>
   );
 }
+
