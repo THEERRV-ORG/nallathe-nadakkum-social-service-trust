@@ -86,6 +86,12 @@ body {
   hyphens: auto;
 }
 
+.site-shell :where(input, textarea)::placeholder {
+  color: #9ca3af;
+  font-weight: 500;
+  opacity: 1;
+}
+
 .section-eyebrow {
   font-family: var(--font-display);
   font-size: 0.875rem;

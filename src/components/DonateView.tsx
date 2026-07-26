@@ -539,7 +539,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                   required
                   value={donorName}
                   onChange={(e) => setDonorName(e.target.value)}
-                  placeholder="e.g. S. Vinayagamoorthy"
+                  placeholder="e.g. S. Kumar"
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
@@ -732,7 +732,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
               disabled={donorLoading}
               className="w-full rounded-lg bg-emerald-600 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition-colors disabled:bg-emerald-400 cursor-pointer text-center"
             >
-              {donorLoading ? (lang === 'en' ? 'Publishing...' : 'பதிவேற்றப்படுகிறது...') : (lang === 'en' ? 'Log Contribution on Gratitude Board' : 'அறக்கட்டளை நன்றிக் கூடப் பலகையில் வெளியிடவும்')}
+              {donorLoading ? (lang === 'en' ? 'Preparing WhatsApp...' : 'வாட்ஸ்அப் தயாராகிறது...') : (lang === 'en' ? 'Send Donation Pledge via WhatsApp' : 'வாட்ஸ்அப் மூலம் நன்கொடை உறுதியை அனுப்பவும்')}
             </button>
 
           </form>
@@ -915,6 +915,4 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
     </div>
   );
 }
-
-
 

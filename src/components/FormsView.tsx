@@ -259,7 +259,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                       required
                       value={helpName}
                       onChange={(e) => setHelpName(e.target.value)}
-                      placeholder="e.g. N. Arumugam"
+                      placeholder="e.g. S. Kumar"
                       className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
@@ -494,7 +494,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                       required
                       value={volName}
                       onChange={(e) => setVolName(e.target.value)}
-                      placeholder="e.g. S. Karthik"
+                      placeholder="e.g. S. Kumar"
                       className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
@@ -715,7 +715,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     required
                     value={contactName}
                     onChange={(e) => setContactName(e.target.value)}
-                    placeholder="e.g. Mohan"
+                    placeholder="e.g. S. Kumar"
                     className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   />
                 </div>

@@ -184,7 +184,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-1.5">
                 <label className={labelCls}>{lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *</label>
-                <input type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. R. Senthil" className={inputCls} />
+                <input type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. S. Kumar" className={inputCls} />
               </div>
               <div className="space-y-1.5">
                 <label className={labelCls}>{lang === 'en' ? 'Phone / WhatsApp' : 'தொலைபேசி / வாட்ஸ்அப்'} *</label>
