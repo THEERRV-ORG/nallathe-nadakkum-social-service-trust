@@ -186,7 +186,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
 
       {/* ── Page Hero ── */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-14 text-center space-y-4">
-        <p className="text-xs font-bold uppercase tracking-widest text-emerald-700">
+        <p className="section-eyebrow text-emerald-700">
           {lang === 'en' ? 'Nallathe Nadakkum Social Service Trust' : 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை'}
         </p>
         <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-gray-900 leading-tight">
@@ -457,7 +457,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
       {/* ── Our Teams (placeholder) ──────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-4 space-y-10">
         <div className="text-center space-y-2">
-          <p className="text-xs font-bold uppercase tracking-widest text-emerald-700">
+          <p className="section-eyebrow text-emerald-700">
             {lang === 'en' ? 'The People Behind the Work' : 'பணியின் பின்னணியில் உள்ளவர்கள்'}
           </p>
           <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">

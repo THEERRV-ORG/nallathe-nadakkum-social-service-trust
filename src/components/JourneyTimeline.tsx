@@ -134,7 +134,7 @@ function HorizontalJourney({ lang }: JourneyTimelineProps) {
   // pinned — no large gap between them.
   const heading = (
     <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 text-center space-y-2">
-      <p className="text-xs font-bold uppercase tracking-widest text-brand-orange-700">
+      <p className="section-eyebrow text-brand-orange-700">
         {lang === 'en' ? 'Our Journey' : 'எங்கள் பயணம்'}
       </p>
       <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
@@ -226,7 +226,7 @@ export default function JourneyTimeline({ lang }: JourneyTimelineProps) {
       {/* Outer heading is for mobile/tablet only; desktop renders its heading
           inside the pinned area (see HorizontalJourney) so title + cards align. */}
       <div className="lg:hidden mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-2">
-        <p className="text-xs font-bold uppercase tracking-widest text-brand-orange-700">
+        <p className="section-eyebrow text-brand-orange-700">
           {lang === 'en' ? 'Our Journey' : 'எங்கள் பயணம்'}
         </p>
         <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">

@@ -177,7 +177,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           {/* Left Side: Form Details & Disclaimer */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-orange-700 bg-brand-orange-50 px-2.5 py-1 rounded-full">
+              <span className="section-eyebrow text-brand-orange-700 bg-brand-orange-50 px-2.5 py-1 rounded-full">
                 {lang === 'en' ? 'Urgent Assistance Hub' : 'உதவி மையப்பகுதி'}
               </span>
               <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
@@ -413,7 +413,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           {/* Left Column: Vol details */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-blue-700 bg-brand-blue-50 px-2.5 py-1 rounded-full">
+              <span className="section-eyebrow text-brand-blue-700 bg-brand-blue-50 px-2.5 py-1 rounded-full">
                 {lang === 'en' ? 'Join Our Team' : 'எங்களுடன் இணையுங்கள்'}
               </span>
               <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
@@ -624,7 +624,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           {/* Left Column: Coordinates */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-violet-700 bg-brand-violet-50 px-2.5 py-1 rounded-full">
+              <span className="section-eyebrow text-brand-violet-700 bg-brand-violet-50 px-2.5 py-1 rounded-full">
                 {lang === 'en' ? 'Direct Coordinates' : 'தொடர்பு விபரம்'}
               </span>
               <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
@@ -816,5 +816,4 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     </div>
   );
 }
-
 

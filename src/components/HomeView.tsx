@@ -333,7 +333,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
 
           <div className="relative">
             <div className="text-center space-y-4 mb-10">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white ring-1 ring-white/25">
+              <span className="section-eyebrow inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-3.5 py-1.5 text-white ring-1 ring-white/25">
                 <FaHeart className="h-3 w-3 fill-white" />
                 {lang === 'en' ? 'Ways to Give' : 'உதவும் வழிகள்'}
               </span>
@@ -576,7 +576,7 @@ export default function HomeView({ lang, setActiveTab, onDonatePreset }: HomeVie
             className="h-40 w-40 sm:h-44 sm:w-44 rounded-full object-cover object-top flex-shrink-0 border border-emerald-200"
           />
           <div className="space-y-4 flex-grow">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="section-eyebrow text-emerald-700">
               {lang === 'en' ? 'A Message from our Founder' : 'நிறுவனரின் செய்தி'}
             </p>
             <blockquote className="text-base sm:text-lg text-gray-900 italic leading-relaxed sm:leading-[1.65] font-sans">

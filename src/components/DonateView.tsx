@@ -343,7 +343,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         <div className="max-w-2xl mx-auto text-center space-y-3">
           <div className="inline-flex items-center gap-2 text-emerald-700">
             <FaCreditCard className="h-5 w-5" />
-            <span className="text-[11px] font-bold uppercase tracking-widest">
+            <span className="section-eyebrow">
               {lang === 'en' ? 'Official Payment Methods' : 'அதிகாரப்பூர்வ பணம் செலுத்தும் வழிகள்'}
             </span>
           </div>
@@ -794,7 +794,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
       <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-6 animate-fade-in">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-100 pb-5">
           <div className="space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
+            <span className="section-eyebrow text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
               {lang === 'en' ? 'See Impact in Motion' : 'நேரடி ஒளிபரப்பு'}
             </span>
             <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900 flex items-center space-x-2">
@@ -915,8 +915,6 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
     </div>
   );
 }
-
-
 
 
 

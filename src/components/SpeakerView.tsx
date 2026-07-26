@@ -94,7 +94,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
 
       {/* Header */}
       <section className="text-center max-w-3xl mx-auto space-y-4 pt-6">
-        <p className="text-xs font-bold uppercase tracking-widest text-brand-violet-700">
+        <p className="section-eyebrow text-brand-violet-700">
           {lang === 'en' ? 'Invite Our Founder' : 'எங்கள் நிறுவனரை அழையுங்கள்'}
         </p>
         <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl">

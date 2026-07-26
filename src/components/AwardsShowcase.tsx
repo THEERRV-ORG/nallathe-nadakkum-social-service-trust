@@ -46,7 +46,7 @@ export default function AwardsShowcase({ lang, compact = false }: AwardsShowcase
   return (
     <section className={`mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ${compact ? 'space-y-6' : 'space-y-8'}`}>
       <div className="text-center space-y-2">
-        <p className="text-xs font-bold uppercase tracking-widest text-brand-gold-700">
+        <p className="section-eyebrow text-brand-gold-700">
           {lang === 'en' ? 'Honours' : 'கௌரவங்கள்'}
         </p>
         <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">

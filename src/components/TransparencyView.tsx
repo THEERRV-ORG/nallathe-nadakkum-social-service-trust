@@ -169,7 +169,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
       <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs space-y-6 animate-fade-in">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-100 pb-5">
           <div className="space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
+            <span className="section-eyebrow text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
               {lang === 'en' ? 'Physical Presence' : 'நேரடி இருப்பிடம்'}
             </span>
             <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900">
