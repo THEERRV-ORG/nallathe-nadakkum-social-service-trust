@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaEnvelope, FaPhone, FaLocationDot, FaInstagram, FaFacebookF, FaYoutube } from 'react-icons/fa6';
+import { FaPhone, FaLocationDot, FaInstagram, FaFacebookF, FaYoutube } from 'react-icons/fa6';
 import { OFFICIAL_SOCIAL } from './security';
 import { DonatePreset } from './data';
 import Navbar from './components/Navbar';
@@ -30,6 +30,24 @@ export default function App() {
       document.getElementById(`service-${serviceId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 80);
   };
+
+  const footerSitemap = [
+    { id: 'home', label: { en: 'Home', ta: 'முகப்பு' } },
+    { id: 'about', label: { en: 'About Us', ta: 'எங்களைப் பற்றி' } },
+    { id: 'services', label: { en: 'Services', ta: 'சேவைகள்' } },
+    { id: 'donate', label: { en: 'Donate', ta: 'நன்கொடை' } },
+    { id: 'help', label: { en: 'Request Help', ta: 'உதவி கோருங்கள்' } },
+    { id: 'volunteer', label: { en: 'Volunteer', ta: 'தன்னார்வலர்' } },
+  ];
+
+  const footerServices = [
+    { id: 'food', label: { en: 'Daily Annadhanam', ta: 'தினசரி அன்னதானம்' } },
+    { id: 'ambulance', label: { en: 'Free Ambulance Service', ta: 'இலவச ஆம்புலன்ஸ் சேவை' } },
+    { id: 'lastrites', label: { en: 'Last Rites for the Unclaimed', ta: 'ஆதரவற்றோருக்கு இறுதி மரியாதை' } },
+    { id: 'elderly', label: { en: 'Elderly Rescue and Rehousing', ta: 'முதியோர் மீட்பு மற்றும் மறுவாழ்வு' } },
+    { id: 'education', label: { en: 'Education Support', ta: 'கல்வி உதவி' } },
+    { id: 'medical', label: { en: 'Emergency Medical Fundraising', ta: 'அவசர மருத்துவ நிதி உதவி' } },
+  ];
 
   // Pre-selection carried from the home "What Can You Donate" cards to the donate form.
   const [donatePreset, setDonatePreset] = useState<DonatePreset | null>(null);
@@ -139,35 +157,37 @@ export default function App() {
 
             <div className="space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900">
-                Sitemap
+                {lang === 'en' ? 'Sitemap' : 'தள வரைபடம்'}
               </h4>
               <ul className="space-y-2 text-xs text-gray-900">
-                <li><button onClick={() => setActiveTab('home')} className="hover:text-emerald-700 hover:underline cursor-pointer">Home</button></li>
-                <li><button onClick={() => setActiveTab('about')} className="hover:text-emerald-700 hover:underline cursor-pointer">About Us</button></li>
-                <li><button onClick={() => setActiveTab('services')} className="hover:text-emerald-700 hover:underline cursor-pointer">Services</button></li>
-                <li><button onClick={() => setActiveTab('donate')} className="hover:text-emerald-700 hover:underline cursor-pointer">Donate</button></li>
-                <li><button onClick={() => setActiveTab('help')} className="hover:text-emerald-700 hover:underline cursor-pointer">Request Help</button></li>
-                <li><button onClick={() => setActiveTab('volunteer')} className="hover:text-emerald-700 hover:underline cursor-pointer">Volunteer</button></li>
+                {footerSitemap.map((item) => (
+                  <li key={item.id}>
+                    <button onClick={() => setActiveTab(item.id)} className="hover:text-emerald-700 hover:underline cursor-pointer">
+                      {item.label[lang]}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div className="space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900">
-                Our Services
+                {lang === 'en' ? 'Our Services' : 'எங்கள் சேவைகள்'}
               </h4>
               <ul className="space-y-2 text-xs text-gray-900">
-                <li><button onClick={() => openFooterService('food')} className="hover:text-emerald-700 hover:underline cursor-pointer">Daily Annadhanam</button></li>
-                <li><button onClick={() => openFooterService('ambulance')} className="hover:text-emerald-700 hover:underline cursor-pointer">Free Ambulance Service</button></li>
-                <li><button onClick={() => openFooterService('lastrites')} className="hover:text-emerald-700 hover:underline cursor-pointer">Last Rites for the Unclaimed</button></li>
-                <li><button onClick={() => openFooterService('elderly')} className="hover:text-emerald-700 hover:underline cursor-pointer">Elderly Rescue and Rehousing</button></li>
-                <li><button onClick={() => openFooterService('education')} className="hover:text-emerald-700 hover:underline cursor-pointer">Education Support</button></li>
-                <li><button onClick={() => openFooterService('medical')} className="hover:text-emerald-700 hover:underline cursor-pointer">Emergency Medical Fundraising</button></li>
+                {footerServices.map((service) => (
+                  <li key={service.id}>
+                    <button onClick={() => openFooterService(service.id)} className="hover:text-emerald-700 hover:underline cursor-pointer">
+                      {service.label[lang]}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div className="space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900">
-                Office Coordinates
+                {lang === 'en' ? 'Office Coordinates' : 'அலுவலக தொடர்பு விவரங்கள்'}
               </h4>
               <ul className="space-y-2 text-xs text-gray-900">
                 <li className="flex items-start space-x-2">
