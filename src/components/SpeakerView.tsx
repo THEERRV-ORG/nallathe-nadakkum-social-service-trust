@@ -1,6 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { FaMicrophoneLines, FaCalendarDays, FaLocationDot } from 'react-icons/fa6';
+import { FaMicrophoneLines, FaCalendarDays, FaLocationDot, FaCheck } from 'react-icons/fa6';
 import {
   OFFICIAL_CONTACT,
   buildWhatsAppUrl,
@@ -14,6 +14,7 @@ import {
 } from '../security';
 import PhotoPlaceholder from './PhotoPlaceholder';
 import AwardsShowcase from './AwardsShowcase';
+import { DatePicker } from './ui/FormControls';
 
 interface SpeakerViewProps {
   lang: 'en' | 'ta';
@@ -33,6 +34,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
   const [details, setDetails] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState('');
 
   const today = new Date().toISOString().slice(0, 10);
 
@@ -52,7 +54,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
       nVenue.length < 3 ||
       !hasMeaningfulText(nDetails, 5, 500)
     ) {
-      alert(
+      setError(
         lang === 'en'
           ? 'Enter a valid name, Indian phone number, organisation, event date, venue, and a short note about the event.'
           : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண், அமைப்பின் பெயர், நிகழ்வுத் தேதி, இடம் மற்றும் நிகழ்வு பற்றிய குறிப்பை வழங்கவும்.'
@@ -60,6 +62,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
       return;
     }
 
+    setError('');
     setLoading(true);
     setTimeout(() => {
       const trackingId = createReference('NN-SPK');
@@ -87,14 +90,14 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
 
   const inputCls =
     'w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500';
-  const labelCls = 'text-xs font-bold text-gray-900 uppercase tracking-wider block';
+  const labelCls = 'text-xs font-bold text-gray-900 tracking-wide block';
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-12">
 
       {/* Header */}
       <section className="text-center max-w-3xl mx-auto space-y-4 pt-6">
-        <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        <h1 className="h1-page">
           {lang === 'en' ? 'Invite Advocate N. Kavinraj as a Speaker' : 'வழக்கறிஞர் நா. கவின்ராஜை சொற்பொழிவாளராக அழையுங்கள்'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
@@ -107,7 +110,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
       {/* Past speeches placeholder (content to be added later) */}
       <section className="space-y-4">
         <div className="text-center space-y-1">
-          <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
+          <h2 className="h2-section">
             {lang === 'en' ? 'Past Talks & Speeches' : 'முன்னைய உரைகள் & சொற்பொழிவுகள்'}
           </h2>
           <p className="text-sm sm:text-base text-gray-900">
@@ -128,7 +131,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
       </section>
 
       {/* Invitation card — highlighted no-fee quote + form together */}
-      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] max-w-4xl mx-auto w-full space-y-6">
+      <section id="speaker-invite-form" className="scroll-mt-24 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] max-w-4xl mx-auto w-full space-y-6">
 
         {/* Highlighted no-fee / donate quote */}
         <div className="rounded-xl bg-emerald-50 border-l-4 border-brand-gold px-5 py-4 sm:px-6 sm:py-5">
@@ -140,7 +143,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
         </div>
 
         <div className="space-y-1 text-center border-b border-gray-100 pb-4">
-          <h3 className="font-display text-xl font-bold text-gray-900 flex items-center justify-center gap-2">
+          <h3 className="font-display text-lg font-bold text-gray-900 flex items-center justify-center gap-2">
             <FaMicrophoneLines className="h-6 w-6 text-emerald-600" />
             <span>{lang === 'en' ? 'Send a Speaker Invitation' : 'சொற்பொழிவு அழைப்பை அனுப்பவும்'}</span>
           </h3>
@@ -152,7 +155,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
         {success ? (
           <div className="text-center py-8 space-y-4">
             <div className="h-14 w-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-2xl mx-auto">
-              ✓
+              <FaCheck className="h-6 w-6" />
             </div>
             <div className="space-y-2">
               <h4 className="font-display text-lg font-bold text-gray-900">
@@ -163,7 +166,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
                   ? 'A WhatsApp message with your event details is ready to send. Our team will confirm availability shortly.'
                   : 'உங்கள் நிகழ்வு விவரங்களுடன் வாட்ஸ்அப் செய்தி அனுப்பத் தயாராக உள்ளது. எங்கள் குழு விரைவில் உறுதிப்படுத்தும்.'}
               </p>
-              <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono text-sm font-bold px-4 py-2 rounded-lg mt-1">
+              <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-display text-sm font-bold px-4 py-2 rounded-lg mt-1">
                 {lang === 'en' ? 'Reference:' : 'குறிப்பு எண்:'} {success}
               </div>
             </div>
@@ -176,6 +179,11 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold leading-relaxed text-red-800">
+                {error}
+              </p>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-1.5">
                 <label className={labelCls}>{lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *</label>
@@ -197,7 +205,12 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
                 <label className={labelCls}>
                   <span className="inline-flex items-center gap-1.5"><FaCalendarDays className="h-3 w-3 text-emerald-600" />{lang === 'en' ? 'Event Date' : 'நிகழ்வுத் தேதி'} *</span>
                 </label>
-                <input type="date" required min={today} value={eventDate} onChange={(e) => setEventDate(e.target.value)} className={inputCls} />
+                <DatePicker
+                  value={eventDate}
+                  onChange={setEventDate}
+                  min={today}
+                  ariaLabel={lang === 'en' ? 'Event Date' : 'நிகழ்வுத் தேதி'}
+                />
               </div>
               <div className="space-y-1.5">
                 <label className={labelCls}>
@@ -228,5 +241,6 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
     </div>
   );
 }
+
 
 

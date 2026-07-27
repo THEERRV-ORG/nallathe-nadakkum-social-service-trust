@@ -12,7 +12,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('All');
 
-  const categories = ['All', 'Food', 'Ambulance', 'Last Rites', 'Rescue', 'Education', 'Essentials'];
+  const categories = ['All', 'Food', 'Ambulance', 'Last Rites', 'Rescue', 'Education', 'Essentials', 'Events'];
 
   const filteredItems = galleryData.filter(item => {
     const matchesCategory = activeFilter === 'All' || item.category === activeFilter;
@@ -28,7 +28,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
       
       {/* Title Header */}
       <section className="text-center max-w-3xl mx-auto space-y-4">
-        <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        <h1 className="h1-page">
           {lang === 'en' ? 'Our Activities & Gallery' : 'கடந்தகால பணிகள் மற்றும் புகைப்படத் தொகுப்பு'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
@@ -71,7 +71,8 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                 cat === 'Ambulance' ? 'ஆம்புலன்ஸ்' :
                 cat === 'Last Rites' ? 'இறுதிச் சடங்கு' :
                 cat === 'Rescue' ? 'முதியோர் மீட்பு' :
-                cat === 'Education' ? 'கல்வி' : 'அத்தியாவசியம்'
+                cat === 'Education' ? 'கல்வி' :
+                cat === 'Events' ? 'நிகழ்வுகள்' : 'அத்தியாவசியம்'
               )}
             </button>
           ))}
@@ -108,7 +109,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
               {/* Content Frame */}
               <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
                 <div className="space-y-2">
-                  <div className="flex items-center space-x-3 text-[10px] font-mono text-gray-900">
+                  <div className="flex items-center space-x-3 text-[10px] font-sans font-semibold text-gray-900">
                     <span className="flex items-center space-x-1">
                       <FaCalendarDays className="h-3 w-3" />
                       <span>{item.date}</span>
@@ -118,20 +119,12 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                       <span>{item.location[lang]}</span>
                     </span>
                   </div>
-                  <h3 className="font-display text-sm sm:text-base font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">
+                  <h3 className="font-display text-sm sm:text-base font-bold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-1">
                     {item.title[lang]}
                   </h3>
-                  <p className="text-base text-gray-900 leading-relaxed line-clamp-3">
-                    {item.description[lang]}
-                  </p>
                 </div>
 
                 <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-                  {item.beneficiaries && (
-                    <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full">
-                      {item.beneficiaries[lang]}
-                    </span>
-                  )}
                   <button
                     id={`btn-open-gallery-${item.id}`}
                     onClick={() => setSelectedItem(item)}
@@ -158,11 +151,11 @@ export default function GalleryView({ lang }: GalleryViewProps) {
               exit={{ opacity: 0, scale: 0.95 }}
               className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl overflow-hidden border border-gray-100 flex flex-col max-h-[85vh]"
             >
-              <div className="relative overflow-hidden h-56 bg-gray-100">
+              <div className="relative overflow-hidden bg-gray-100">
                 <img
                   src={selectedItem.image}
                   alt={selectedItem.title[lang]}
-                  className="h-full w-full object-cover"
+                  className="max-h-[68vh] w-full object-contain"
                   referrerPolicy="no-referrer"
                 />
                 <button
@@ -175,7 +168,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
               </div>
 
               <div className="p-6 overflow-y-auto space-y-4">
-                <div className="flex items-center justify-between text-xs font-mono text-gray-900">
+                <div className="flex items-center justify-between text-xs font-sans font-semibold text-gray-900">
                   <span className="flex items-center space-x-1">
                     <FaCalendarDays className="h-3 w-3" />
                     <span>{selectedItem.date}</span>
@@ -186,15 +179,11 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                   </span>
                 </div>
 
-                <h3 className="font-display text-base sm:text-lg font-bold text-gray-900 leading-tight">
+                <h3 className="font-display text-base font-bold text-gray-900 leading-tight line-clamp-1">
                   {selectedItem.title[lang]}
                 </h3>
 
-                <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65]">
-                  {selectedItem.description[lang]}
-                </p>
-
-                {selectedItem.beneficiaries && (
+                {false && selectedItem.beneficiaries && (
                   <div className="pt-3 border-t border-gray-50 flex justify-between items-center">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
                       {lang === 'en' ? 'Stated Impact' : 'தாக்கம்/விபரம்'}

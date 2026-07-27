@@ -16,8 +16,7 @@ export default function SocialConnect({ lang }: SocialConnectProps) {
     {
       key: 'instagram',
       href: OFFICIAL_SOCIAL.instagram,
-      label: 'Instagram',
-      cue: { en: 'Follow', ta: 'பின்தொடர' },
+      label: 'Instagram',
       icon: <FaInstagram className="h-6 w-6" />,
       // Instagram brand pink/magenta.
       iconText: 'text-[#E4405F]',
@@ -26,8 +25,7 @@ export default function SocialConnect({ lang }: SocialConnectProps) {
     {
       key: 'facebook',
       href: OFFICIAL_SOCIAL.facebook,
-      label: 'Facebook',
-      cue: { en: 'Connect', ta: 'இணைய' },
+      label: 'Facebook',
       icon: <FaFacebookF className="h-6 w-6" />,
       // Facebook blue.
       iconText: 'text-[#1877F2]',
@@ -36,8 +34,7 @@ export default function SocialConnect({ lang }: SocialConnectProps) {
     {
       key: 'youtube',
       href: OFFICIAL_SOCIAL.youtube,
-      label: 'YouTube',
-      cue: { en: 'Watch', ta: 'பார்க்க' },
+      label: 'YouTube',
       icon: <FaYoutube className="h-6 w-6" />,
       // YouTube red.
       iconText: 'text-[#FF0000]',
@@ -69,16 +66,13 @@ export default function SocialConnect({ lang }: SocialConnectProps) {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${link.cue.en} Nallathe Nadakkum on ${link.label}`}
+                aria-label={`Nallathe Nadakkum on ${link.label}`}
                 className="inline-flex items-center gap-3 rounded-xl border border-white/15 bg-white/95 pl-2.5 pr-4 py-2.5 shadow-md backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 group"
               >
                 <span className={`inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gray-50 transition-colors ${link.iconText} ${link.iconHover}`}>
                   {link.icon}
                 </span>
-                <span className="text-left leading-tight">
-                  <span className="block text-[10px] font-semibold uppercase tracking-wider text-gray-900">
-                    {link.cue[lang]}
-                  </span>
+                <span className="flex min-h-12 items-center text-left leading-tight">
                   <span className="block text-sm font-bold text-gray-900">
                     {link.label}
                   </span>

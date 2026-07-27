@@ -1,5 +1,4 @@
-﻿import { motion } from 'motion/react';
-import { FaTrophy, FaMedal, FaAward, FaCertificate } from 'react-icons/fa6';
+﻿import { FaTrophy, FaMedal, FaAward } from 'react-icons/fa6';
 
 interface AwardsShowcaseProps {
   lang: 'en' | 'ta';
@@ -46,7 +45,7 @@ export default function AwardsShowcase({ lang, compact = false }: AwardsShowcase
   return (
     <section className={`mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ${compact ? 'space-y-6' : 'space-y-8'}`}>
       <div className="text-center space-y-2">
-        <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
+        <h2 className="h2-section">
           {lang === 'en' ? 'Awards & Recognition' : 'விருதுகள் & அங்கீகாரம்'}
         </h2>
         <p className="text-sm sm:text-base text-gray-900 max-w-xl mx-auto">
@@ -56,45 +55,21 @@ export default function AwardsShowcase({ lang, compact = false }: AwardsShowcase
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {PLACEHOLDER_AWARDS.map((award, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: idx * 0.05 }}
-            className="rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] flex flex-col space-y-4"
-          >
-            {/* Photo placeholder — replace with the award/certificate photo later */}
-            <div className="aspect-[4/3] w-full rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center gap-2 text-gray-400">
-              <FaCertificate className="h-8 w-8" />
-              <span className="text-[11px] font-semibold uppercase tracking-wider">
-                {lang === 'en' ? 'Photo coming soon' : 'படம் விரைவில்'}
-              </span>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className={`p-2.5 rounded-xl w-fit shrink-0 ${award.tile}`}>
-                {award.icon}
-              </div>
-              <div className="space-y-0.5">
-                <h3 className="font-display text-base font-bold text-gray-900">
-                  {award.title[lang]}
-                </h3>
-                <p className="text-xs text-gray-900">
-                  {award.org[lang]} · {award.year}
-                </p>
-              </div>
-            </div>
-
-            <p className="text-sm text-gray-900 leading-relaxed">
-              {lang === 'en'
-                ? 'Short description of the award and why it was received will appear here.'
-                : 'விருது மற்றும் அது வழங்கப்பட்டதற்கான சுருக்கமான விவரம் இங்கு இடம்பெறும்.'}
-            </p>
-          </motion.div>
-        ))}
+      {/* Soft placeholder — one quiet row of muted icons instead of three empty
+          cards, so the section reads as intentionally-pending, not broken. */}
+      <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50/60 px-6 py-8 flex flex-col items-center gap-4 text-center">
+        <div className="flex items-center gap-3 text-gray-300">
+          {PLACEHOLDER_AWARDS.map((award, idx) => (
+            <span key={idx} className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white border border-gray-100">
+              {award.icon}
+            </span>
+          ))}
+        </div>
+        <p className="text-sm text-gray-500 max-w-md">
+          {lang === 'en'
+            ? 'Award certificates and recognitions will be published here soon.'
+            : 'விருது சான்றிதழ்கள் மற்றும் அங்கீகாரங்கள் விரைவில் இங்கு வெளியிடப்படும்.'}
+        </p>
       </div>
     </section>
   );

@@ -1,13 +1,14 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { OFFICIAL_CONTACT, SAMPLE_SPONSORS, buildMailtoUrl, buildWhatsAppUrl, hasMeaningfulText, isValidDonationAmount, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeSingleLine } from '../security';
+import { OFFICIAL_CONTACT, SAMPLE_SPONSORS, buildWhatsAppUrl, hasMeaningfulText, isValidDonationAmount, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeSingleLine } from '../security';
 import { motion } from 'motion/react';
 import {
-  FaCircleExclamation, FaCreditCard, FaGift, FaHeart,
+  FaCircleExclamation, FaCreditCard, FaHeart,
   FaPlay, FaYoutube, FaVideo, FaBuildingColumns, FaMobileScreenButton,
-  FaCopy, FaCheck, FaWhatsapp, FaEnvelope
+  FaCopy, FaCheck, FaWhatsapp, FaPhone, FaChevronRight
 } from 'react-icons/fa6';
-import { DonatePreset } from '../data';
+import { DonatePreset, faqData } from '../data';
 import SocialConnect from './SocialConnect';
+import { CustomSelect, SelectOption } from './ui/FormControls';
 
 interface DonateViewProps {
   lang: 'en' | 'ta';
@@ -21,6 +22,8 @@ const FINANCIAL_PROGRAMS: Record<string, { en: string; ta: string }> = {
   student: { en: 'Student Support', ta: 'மாணவர்கள் கல்வி' },
   ambulance: { en: 'Ambulance Fuel', ta: 'ஆம்புலன்ஸ் எரிபொருள்' },
   cremation: { en: 'Dignified Last Rites', ta: 'ஆதரவற்றோர் இறுதி மரியாதை' },
+  elderly: { en: 'Elderly Rescue', ta: 'முதியோர் மீட்பு' },
+  medical: { en: 'Emergency Medical Fund', ta: 'அவசர மருத்துவ நிதி' },
   other: { en: 'Other (please specify)', ta: 'மற்றவை (குறிப்பிடவும்)' },
 };
 
@@ -83,6 +86,7 @@ const AMOUNT_PRESETS: Record<string, { allowOther: boolean; title: { en: string;
 export default function DonateView({ lang, preset, onPresetConsumed }: DonateViewProps) {
   // Video content is curated and static so embeds stay predictable and auditable.
   const [activeVideoId, setActiveVideoId] = useState('nTjWxd91AMA');
+  const [openDonorQuestion, setOpenDonorQuestion] = useState(-1);
   const trustVideos = [
     {
       id: 'nTjWxd91AMA',
@@ -132,6 +136,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
   const [donorMsg, setDonorMsg] = useState('');
   const [donorLoading, setDonorLoading] = useState(false);
   const [donorSuccess, setDonorSuccess] = useState(false);
+  const [donorError, setDonorError] = useState('');
 
   // Anchor so a preset selection can scroll the visitor straight to the form.
   const formRef = React.useRef<HTMLDivElement>(null);
@@ -178,6 +183,24 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
 
   // Used for short-lived UI feedback when copying official payment details.
   const [copiedText, setCopiedText] = useState<string | null>(null);
+
+  const donationTypeOptions: SelectOption[] = [
+    { value: 'Money', label: lang === 'en' ? 'Financial Remittance' : 'நிதிப் பங்களிப்பு' },
+    { value: 'Groceries', label: lang === 'en' ? 'Groceries / Materials' : 'மளிகைப் பொருட்கள் / பொருளுதவி' },
+    { value: 'Blood', label: lang === 'en' ? 'Blood Donation' : 'இரத்த நன்கொடை' },
+    { value: 'Dress', label: lang === 'en' ? 'Clothes / Dress' : 'ஆடைகள் / உடை' },
+    { value: 'Other', label: lang === 'en' ? 'Other' : 'மற்றவை' },
+  ];
+
+  const bloodTypeOptions: SelectOption[] = [
+    ...['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'].map((bt) => ({ value: bt, label: bt })),
+    { value: 'Other', label: lang === 'en' ? 'Other / Not sure' : 'மற்றவை / தெரியாது' },
+  ];
+
+  const financialProgramOptions: SelectOption[] = Object.entries(FINANCIAL_PROGRAMS).map(([key, val]) => ({
+    value: key,
+    label: val[lang],
+  }));
   const handleCopy = (text: string, type: string) => {
     navigator.clipboard.writeText(text);
     setCopiedText(type);
@@ -190,7 +213,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
       type="button"
       onClick={() => handleCopy(value, id)}
       aria-label={lang === 'en' ? 'Copy to clipboard' : 'நகலெடு'}
-      className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold transition-colors shrink-0 ${
+      className={`inline-flex items-center justify-center gap-1 rounded-md px-3 py-2 min-h-[2.5rem] text-[11px] font-semibold transition-colors shrink-0 ${
         copiedText === id
           ? 'text-emerald-700 bg-emerald-50'
           : 'text-gray-900 hover:text-emerald-700 hover:bg-emerald-50'
@@ -224,25 +247,26 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
     const normalizedItem = sanitizeSingleLine(donationItem, 120);
 
     if (!isValidPersonName(normalizedName)) {
-      alert(lang === 'en' ? 'Enter a valid donor name before preparing the acknowledgement draft.' : 'பங்களிப்பை உறுதிப்படுத்த செல்லுபடியாகும் பெயரை வழங்கவும்.');
+      setDonorError(lang === 'en' ? 'Enter a valid donor name before preparing the acknowledgement draft.' : 'பங்களிப்பை உறுதிப்படுத்த செல்லுபடியாகும் பெயரை வழங்கவும்.');
       return;
     }
 
     if (!isValidIndianPhone(normalizedPhone)) {
-      alert(lang === 'en' ? 'Enter a valid Indian phone number so we can follow up with you.' : 'தொடர்பு கொள்ள செல்லுபடியாகும் இந்திய தொலைபேசி எண்ணை வழங்கவும்.');
+      setDonorError(lang === 'en' ? 'Enter a valid Indian phone number so we can follow up with you.' : 'தொடர்பு கொள்ள செல்லுபடியாகும் இந்திய தொலைபேசி எண்ணை வழங்கவும்.');
       return;
     }
 
     if (donationType === 'Money' && !isValidDonationAmount(donationAmt)) {
-      alert(lang === 'en' ? 'Donation amounts must be between Rs. 10 and Rs. 10,00,000.' : 'நன்கொடை தொகை ரூ.10 முதல் ரூ.10,00,000 வரை இருக்க வேண்டும்.');
+      setDonorError(lang === 'en' ? 'Donation amounts must be between Rs. 10 and Rs. 10,00,000.' : 'நன்கொடை தொகை ரூ.10 முதல் ரூ.10,00,000 வரை இருக்க வேண்டும்.');
       return;
     }
 
     if (donationType !== 'Money' && donationType !== 'Blood' && !hasMeaningfulText(normalizedItem, 3, 120)) {
-      alert(lang === 'en' ? 'Please describe what you are donating.' : 'நீங்கள் வழங்கும் நன்கொடையின் விவரத்தை குறிப்பிடவும்.');
+      setDonorError(lang === 'en' ? 'Please describe what you are donating.' : 'நீங்கள் வழங்கும் நன்கொடையின் விவரத்தை குறிப்பிடவும்.');
       return;
     }
 
+    setDonorError('');
     setDonorLoading(true);
 
     setTimeout(() => {
@@ -292,7 +316,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
       
       {/* Title Header */}
       <section className="text-center max-w-3xl mx-auto space-y-4">
-        <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        <h1 className="h1-page">
           {lang === 'en' ? 'Sponsor & Direct Support Page' : 'மக்களுக்கு நேரடியாக உதவ நன்கொடைகள்'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
@@ -302,52 +326,19 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         </p>
       </section>
 
-      {/* Safety & Tax Warnings */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        {/* Safety Warning */}
-        <div className="rounded-2xl border border-red-200 bg-red-50/50 p-5 flex items-start space-x-3">
-          <FaCircleExclamation className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-          <div className="space-y-1">
-            <h4 className="text-xs font-bold text-red-900 uppercase tracking-wider">
-              {lang === 'en' ? 'Important Safety Notice' : 'முக்கிய பாதுகாப்பு அறிவிப்பு'}
-            </h4>
-            <p className="text-sm sm:text-base text-red-800 leading-relaxed sm:leading-[1.65]">
-              {lang === 'en'
-                ? 'Please make payments only to the official trust bank account or UPI ID listed below. Do not send funds to any individual personal account claiming to represent the trust. If in doubt, contact us directly first.'
-                : 'தயவுசெய்து கீழே குறிப்பிடப்பட்டுள்ள அறக்கட்டளையின் அதிகாரப்பூர்வ வங்கிக் கணக்கு அல்லது UPI முகவரிக்கு மட்டுமே பணம் அனுப்புங்கள். அறக்கட்டளையின் ஊழியர் என்று கூறி வரும் தனிநபர் கணக்குகளுக்குப் பணம் அனுப்பக் கூடாது.'}
-            </p>
-          </div>
-        </div>
-
-        {/* Tax Exemption Status */}
-        <div className="rounded-2xl border border-amber-200 bg-amber-50/50 p-5 flex items-start space-x-3">
-          <FaCircleExclamation className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
-          <div className="space-y-1">
-            <h4 className="text-xs font-bold text-amber-950 uppercase tracking-wider">
-              {lang === 'en' ? 'Tax Deduction & Exemption Status' : 'வரி விலக்கு நிலைப்பாடு'}
-            </h4>
-            <p className="text-sm sm:text-base text-amber-900 leading-relaxed sm:leading-[1.65]">
-              {lang === 'en'
-                ? 'The trust is registered under deed Doc No. 16/2025. Applications for 12A and 80G tax-exempt registrations are pending. Donations are NOT currently eligible for tax deduction. We will update our notices once granted.'
-                : 'எங்களது அறக்கட்டளை 2025-ல் பதிவு செய்யப்பட்டுள்ளது. 12A / 80G வருமான வரி விலக்கிற்கான விண்ணப்பம் தற்போது நிலுவையில் உள்ளது. எனவே தற்போதைய நிலையில் வரி விலக்கு கோர இயலாது என்பதை வெளிப்படையாகத் தெரிவித்துக் கொள்கிறோம்.'}
-            </p>
-          </div>
-        </div>
-
-      </section>
-
       {/* Official Banking Credentials — symmetrical two-column payment section */}
-      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 lg:p-10 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-8">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-700 via-emerald-600 to-emerald-800 p-5 sm:p-6 lg:p-8 shadow-[0_30px_80px_-30px_rgba(15,61,38,0.75)] ring-1 ring-emerald-900/20 space-y-6">
+        <div className="pointer-events-none absolute -left-20 -top-16 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-20 -bottom-16 h-72 w-72 rounded-full bg-brand-gold/15 blur-3xl" />
         {/* Shared header spanning both columns */}
-        <div className="max-w-2xl mx-auto text-center space-y-3">
-          <h3 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
+        <div className="relative max-w-2xl mx-auto text-center space-y-2">
+          <h3 className="font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
             {lang === 'en' ? 'Official Banking Credentials' : 'அதிகாரப்பூர்வ வங்கிக் கணக்கு விபரங்கள்'}
           </h3>
-          <p className="text-sm sm:text-base text-gray-900">
+          <p className="text-sm sm:text-base text-emerald-50">
             {lang === 'en' ? 'Operated jointly by Chairman and Treasurer. Strictly audited.' : 'தலைவர் மற்றும் பொருளாளரால் மட்டுமே இயக்கப்படும் பாதுகாப்பான கணக்கு.'}
           </p>
-          <p className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700">
+          <p className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-100">
             <FaCheck className="h-3 w-3" />
             {lang === 'en'
               ? 'Registered Doc No. 16/2025 · Namakkal District, Tamil Nadu'
@@ -356,9 +347,9 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         </div>
 
         {/* True 50/50 payment columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
           {/* LEFT — Bank Transfer */}
-          <div className="flex flex-col rounded-2xl border border-gray-100 bg-gray-50/40 p-6 sm:p-8 space-y-5">
+          <div className="flex flex-col rounded-2xl border border-white/20 bg-white/95 p-5 sm:p-6 space-y-5">
             <div className="flex items-center gap-2.5 pb-1">
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
                 <FaBuildingColumns className="h-4 w-4" />
@@ -386,7 +377,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                   {lang === 'en' ? 'Account Number' : 'கணக்கு எண்'}
                 </dt>
                 <dd className="mt-1 flex items-center justify-between gap-2">
-                  <span className="font-mono text-base sm:text-lg font-bold text-gray-950 tracking-wider">20000300375</span>
+                  <span className="font-display text-base sm:text-lg font-bold text-gray-950 tracking-wider">20000300375</span>
                   {copyBtn('20000300375', 'acct')}
                 </dd>
               </div>
@@ -395,7 +386,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                   {lang === 'en' ? 'IFSC Code' : 'IFSC குறியீடு'}
                 </dt>
                 <dd className="mt-1 flex items-center justify-between gap-2">
-                  <span className="font-mono text-base sm:text-lg font-bold text-gray-950 tracking-wider">ESFB0001138</span>
+                  <span className="font-display text-base sm:text-lg font-bold text-gray-950 tracking-wider">ESFB0001138</span>
                   {copyBtn('ESFB0001138', 'ifsc')}
                 </dd>
               </div>
@@ -403,7 +394,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
           </div>
 
           {/* RIGHT — UPI / Mobile Payment */}
-          <div className="flex flex-col rounded-2xl border border-gray-100 bg-gray-50/40 p-6 sm:p-8 space-y-5">
+          <div className="flex flex-col rounded-2xl border border-white/20 bg-white/95 p-5 sm:p-6 space-y-5">
             <div className="flex items-center gap-2.5 pb-1">
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
                 <FaMobileScreenButton className="h-4 w-4" />
@@ -413,14 +404,14 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
               </h4>
             </div>
 
-            <div className="flex flex-1 flex-col items-center text-center gap-4">
+            <div className="flex flex-1 flex-col gap-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Scan & Pay via UPI' : 'UPI மூலம் ஸ்கேன் செய்து செலுத்த'}
               </p>
 
               {/* QR placeholder — replace this block's inner content with the real QR when available */}
-              <div className="h-48 w-48 rounded-2xl border-2 border-dashed border-gray-300 bg-white flex flex-col items-center justify-center gap-2 text-gray-400">
-                <svg className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <div className="mx-auto flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-gray-300 bg-white text-gray-400">
+                <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5zM13.5 13.5h1.5v1.5h-1.5zM16.5 13.5H18V15h-1.5zM19.5 15H21v1.5h-1.5zM13.5 16.5H15V18h-1.5zM16.5 16.5H18V18h-1.5zM19.5 18H21v1.5h-1.5zM13.5 19.5H15V21h-1.5zM16.5 19.5H18V21h-1.5z" />
                 </svg>
                 <span className="text-[11px] font-bold uppercase tracking-widest leading-tight">
@@ -429,19 +420,47 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                 </span>
               </div>
 
-              {/* Single UPI / mobile number with copy */}
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-base sm:text-lg font-bold text-gray-950 tracking-wide">+91 75400 17625</span>
-                {copyBtn('+917540017625', 'upi')}
-              </div>
+              <dl className="w-full divide-y divide-gray-200/70 border-y border-gray-200/70 text-left">
+                <div className="py-3">
+                  <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
+                    {lang === 'en' ? 'Account Holder' : 'கணக்கு வைத்திருப்பவர்'}
+                  </dt>
+                  <dd className="mt-0.5 text-sm sm:text-base font-bold text-emerald-800">
+                    Nallathe Nadakkum Trust
+                  </dd>
+                </div>
+                <div className="py-3">
+                  <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
+                    {lang === 'en' ? 'Mobile / UPI Number' : 'மொபைல் / UPI எண்'}
+                  </dt>
+                  <dd className="mt-1 flex items-center justify-between gap-2">
+                    <span className="font-display text-base sm:text-lg font-bold text-gray-950 tracking-wide">+91 75400 17625</span>
+                    {copyBtn('+917540017625', 'upi')}
+                  </dd>
+                </div>
+                <div className="py-3">
+                  <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
+                    {lang === 'en' ? 'UPI ID' : 'UPI ஐடி'}
+                  </dt>
+                  <dd className="mt-0.5 font-sans text-xs font-semibold text-gray-500">
+                    upi-id-coming-soon
+                  </dd>
+                </div>
+              </dl>
 
               {/* Brand logos — one shared number, no repeated cards */}
-              <div className="mt-auto w-full border-t border-gray-200/70 pt-4">
-                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-                  <img src="/icons/paytm-logo.png" alt="Paytm" className="h-6 sm:h-7 w-auto object-contain" />
-                  <img src="/icons/phonepe-logo.png" alt="PhonePe" className="h-6 sm:h-7 w-auto object-contain" />
-                  <img src="/gpay.png" alt="Google Pay" className="h-6 sm:h-7 w-auto object-contain" />
+              <div className="mt-auto w-full border-t border-gray-200/70 pt-4 space-y-3">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
+                  {lang === 'en' ? 'Supported UPI Apps' : 'ஆதரிக்கப்படும் UPI செயலிகள்'}
+                </p>
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <img src="/icons/google-pay.svg" alt="Google Pay" className="h-6 w-auto object-contain" />
+                  <img src="/icons/phonepe-logo.png" alt="PhonePe" className="h-6 w-auto object-contain" />
+                  <img src="/icons/paytm-logo.png" alt="Paytm" className="h-6 w-auto object-contain" />
                 </div>
+                <p className="text-xs font-medium text-gray-600">
+                  {lang === 'en' ? 'Works with any UPI-enabled app' : 'UPI ஆதரவு உள்ள எந்த செயலியிலும் இயங்கும்'}
+                </p>
               </div>
             </div>
           </div>
@@ -457,8 +476,8 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
           </div>
           <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
             {lang === 'en'
-              ? 'Send your payment receipt via WhatsApp or Email and our treasurer will issue you an official trust donation acknowledgement / voucher.'
-              : 'உங்கள் பணம் செலுத்திய ரசீதை வாட்ஸ்அப் அல்லது மின்னஞ்சல் மூலம் அனுப்புங்கள் — முறையான அறக்கட்டளை நன்கொடை ரசீது / வவுச்சர் உங்களுக்கு வழங்கப்படும்.'}
+              ? 'Send your payment receipt via WhatsApp or call us directly, and our treasurer will issue you an official trust donation acknowledgement / voucher.'
+              : 'உங்கள் பணம் செலுத்திய ரசீதை வாட்ஸ்அப் மூலம் அனுப்புங்கள் அல்லது எங்களை நேரடியாக அழைக்கவும் — முறையான அறக்கட்டளை நன்கொடை ரசீது / வவுச்சர் உங்களுக்கு வழங்கப்படும்.'}
           </p>
           <div className="flex flex-wrap gap-3">
             <a
@@ -475,26 +494,56 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
               {lang === 'en' ? 'Send via WhatsApp' : 'வாட்ஸ்அப் மூலம் அனுப்பு'}
             </a>
             <a
-              href={buildMailtoUrl(OFFICIAL_CONTACT.email, 'Donation receipt', [
-                lang === 'en'
-                  ? 'Hello, I have made a donation to Nallathe Nadakkum Trust. Please find my payment receipt attached.'
-                  : 'வணக்கம், நல்லதே நடக்கும் அறக்கட்டளைக்கு நான் நன்கொடை அளித்துள்ளேன். எனது ரசீது இணைக்கப்பட்டுள்ளது.',
-              ])}
+              href={`tel:${OFFICIAL_CONTACT.whatsappPhone}`}
               className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-900 hover:border-emerald-300 hover:text-emerald-700 transition-colors"
             >
-              <FaEnvelope className="h-4 w-4" />
-              {lang === 'en' ? 'Send via Email' : 'மின்னஞ்சல் மூலம் அனுப்பு'}
+              <FaPhone className="h-4 w-4" />
+              {lang === 'en' ? 'Call Us' : 'எங்களை அழைக்கவும்'}
             </a>
           </div>
         </div>
       </section>
 
+      {/* Safety & Tax Warnings */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        {/* Safety Warning */}
+        <div className="rounded-2xl border border-red-200 bg-red-50/50 p-5 flex items-start space-x-3">
+          <FaCircleExclamation className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h3 className="text-xs font-bold text-red-900 uppercase tracking-wider">
+              {lang === 'en' ? 'Important Safety Notice' : 'முக்கிய பாதுகாப்பு அறிவிப்பு'}
+            </h3>
+            <p className="text-sm sm:text-base text-red-800 leading-relaxed sm:leading-[1.65]">
+              {lang === 'en'
+                ? 'Please make payments only to the official bank account and UPI details mentioned above. Do not send funds to any individual personal account claiming to represent the trust.'
+                : 'தயவுசெய்து மேலே குறிப்பிடப்பட்டுள்ள அதிகாரப்பூர்வ வங்கிக் கணக்கு மற்றும் UPI விவரங்களுக்கு மட்டுமே பணம் அனுப்புங்கள். அறக்கட்டளையை பிரதிநிதித்துவப்படுத்துவதாகக் கூறும் எந்த தனிநபர் கணக்கிற்கும் பணம் அனுப்ப வேண்டாம்.'}
+            </p>
+          </div>
+        </div>
+
+        {/* Tax Exemption Status */}
+        <div className="rounded-2xl border border-amber-200 bg-amber-50/50 p-5 flex items-start space-x-3">
+          <FaCircleExclamation className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h3 className="text-xs font-bold text-amber-950 uppercase tracking-wider">
+              {lang === 'en' ? 'Tax Deduction & Exemption Status' : 'வரி விலக்கு நிலைப்பாடு'}
+            </h3>
+            <p className="text-sm sm:text-base text-amber-900 leading-relaxed sm:leading-[1.65]">
+              {lang === 'en'
+                ? 'The trust is registered under deed Doc No. 16/2025. Applications for 12A and 80G tax-exempt registrations are pending. Donations are NOT currently eligible for tax deduction. We will update our notices once granted.'
+                : 'எங்களது அறக்கட்டளை 2025-ல் பதிவு செய்யப்பட்டுள்ளது. 12A / 80G வருமான வரி விலக்கிற்கான விண்ணப்பம் தற்போது நிலுவையில் உள்ளது. எனவே தற்போதைய நிலையில் வரி விலக்கு கோர இயலாது என்பதை வெளிப்படையாகத் தெரிவித்துக் கொள்கிறோம்.'}
+            </p>
+          </div>
+        </div>
+
+      </section>
+
       {/* Pledge a Donation / Material Support */}
       <section ref={formRef} className="scroll-mt-24 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] max-w-4xl mx-auto w-full space-y-6">
         <div className="space-y-2 text-center border-b border-gray-100 pb-5">
-          <h3 className="font-display text-2xl sm:text-3xl font-bold text-gray-900 flex items-center justify-center gap-2">
-            <FaGift className="h-6 w-6 text-emerald-600" />
-            <span>{lang === 'en' ? 'Pledge a Donation / Material Support' : 'பொருட்கள் / உதவிப் பங்களிப்புகளைப் பதிவிட'}</span>
+          <h3 className="h2-section">
+            {lang === 'en' ? 'Pledge a Donation / Material Support' : 'பொருட்கள் / உதவிப் பங்களிப்புகளைப் பதிவிட'}
           </h3>
           <p className="text-sm sm:text-base text-gray-900">
             {lang === 'en' ? 'Prepare a direct acknowledgement request without storing donor details in this browser.' : 'உங்கள் விவரங்களை உலாவியில் சேமிக்காமல் நேரடி உறுதிப்படுத்தல் வரைவைத் தயாரிக்கவும்.'}
@@ -504,7 +553,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         {donorSuccess ? (
           <div className="text-center py-6 space-y-4">
             <div className="h-12 w-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xl mx-auto">
-              ✓
+              <FaCheck className="h-5 w-5" />
             </div>
             <div className="space-y-1">
               <h4 className="font-display text-base font-bold text-gray-900">{lang === 'en' ? 'WhatsApp Message Prepared' : 'வாட்ஸ்அப் செய்தி தயாராகிவிட்டது'}</h4>
@@ -524,10 +573,15 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
           </div>
         ) : (
           <form onSubmit={handleSponsorSubmit} className="space-y-5">
+            {donorError && (
+              <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold leading-relaxed text-red-800">
+                {donorError}
+              </p>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *</label>
+                <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *</label>
                 <input
                   type="text"
                   required
@@ -539,7 +593,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Contact Phone' : 'தொடர்பு எண்'} *</label>
+                <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Contact Phone' : 'தொடர்பு எண்'} *</label>
                 <input
                   type="tel"
                   required
@@ -553,25 +607,20 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Support Type' : 'பங்களிப்பு வகை'}</label>
-                <select
+                <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Support Type' : 'பங்களிப்பு வகை'}</label>
+                <CustomSelect
                   value={donationType}
-                  onChange={(e) => setDonationType(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                >
-                  <option value="Money">{lang === 'en' ? 'Financial Remittance' : 'நிதிப் பங்களிப்பு'}</option>
-                  <option value="Groceries">{lang === 'en' ? 'Groceries / Materials' : 'மளிகைப் பொருட்கள் / பொருளுதவி'}</option>
-                  <option value="Blood">{lang === 'en' ? 'Blood Donation' : 'இரத்த நன்கொடை'}</option>
-                  <option value="Dress">{lang === 'en' ? 'Clothes / Dress' : 'ஆடைகள் / உடை'}</option>
-                  <option value="Other">{lang === 'en' ? 'Other' : 'மற்றவை'}</option>
-                </select>
+                  onChange={setDonationType}
+                  options={donationTypeOptions}
+                  ariaLabel={lang === 'en' ? 'Support Type' : 'பங்களிப்பு வகை'}
+                />
               </div>
 
               {donationType === 'Money' ? (
                 (() => {
                   const cfg = AMOUNT_PRESETS[financialProgram];
                   const label = (
-                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
                       {cfg ? cfg.title[lang] : (lang === 'en' ? 'Simulated Amount (₹)' : 'பங்களிப்புத் தொகை (₹)')}
                     </label>
                   );
@@ -589,38 +638,28 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                       </div>
                     );
                   }
+                  const amountOptions: SelectOption[] = [
+                    ...cfg.groups.flatMap((g, gi) => [
+                      ...(g.heading ? [{ value: `heading-${gi}`, label: g.heading[lang], disabled: true }] : []),
+                      ...g.options.map((o) => ({ value: o.id, label: o.label[lang] })),
+                    ]),
+                    ...(cfg.allowOther ? [{ value: 'other', label: lang === 'en' ? 'Other (enter amount)' : 'மற்றவை (தொகையை உள்ளிடவும்)' }] : []),
+                  ];
                   return (
                     <div className="space-y-1">
                       {label}
-                      <select
+                      <CustomSelect
                         value={amountPresetId}
-                        onChange={(e) => {
-                          const id = e.target.value;
+                        onChange={(id) => {
                           setAmountPresetId(id);
                           if (id !== 'other') {
                             const opt = cfg.groups.flatMap((g) => g.options).find((o) => o.id === id);
                             if (opt) setDonationAmt(opt.amount);
                           }
                         }}
-                        className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                      >
-                        {cfg.groups.map((g, gi) =>
-                          g.heading ? (
-                            <optgroup key={gi} label={g.heading[lang]}>
-                              {g.options.map((o) => (
-                                <option key={o.id} value={o.id}>{o.label[lang]}</option>
-                              ))}
-                            </optgroup>
-                          ) : (
-                            g.options.map((o) => (
-                              <option key={o.id} value={o.id}>{o.label[lang]}</option>
-                            ))
-                          ),
-                        )}
-                        {cfg.allowOther && (
-                          <option value="other">{lang === 'en' ? 'Other (enter amount)' : 'மற்றவை (தொகையை உள்ளிடவும்)'}</option>
-                        )}
-                      </select>
+                        options={amountOptions}
+                        ariaLabel={cfg.title[lang]}
+                      />
                       {amountPresetId === 'other' && (
                         <input
                           type="number"
@@ -635,17 +674,13 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                 })()
               ) : donationType === 'Blood' ? (
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Blood Type' : 'இரத்த வகை'} *</label>
-                  <select
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Blood Type' : 'இரத்த வகை'} *</label>
+                  <CustomSelect
                     value={bloodType}
-                    onChange={(e) => setBloodType(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                  >
-                    {['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'].map((bt) => (
-                      <option key={bt} value={bt}>{bt}</option>
-                    ))}
-                    <option value="Other">{lang === 'en' ? 'Other / Not sure' : 'மற்றவை / தெரியாது'}</option>
-                  </select>
+                    onChange={setBloodType}
+                    options={bloodTypeOptions}
+                    ariaLabel={lang === 'en' ? 'Blood Type' : 'இரத்த வகை'}
+                  />
                   {bloodType === 'Other' && (
                     <input
                       type="text"
@@ -658,7 +693,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Describe your donation' : 'உங்கள் நன்கொடையை விவரிக்கவும்'} *</label>
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Describe your donation' : 'உங்கள் நன்கொடையை விவரிக்கவும்'} *</label>
                   <input
                     type="text"
                     required
@@ -687,16 +722,13 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
             {/* Programme selector — only under Financial Remittance */}
             {donationType === 'Money' && (
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Programme to Support' : 'ஆதரிக்க விரும்பும் திட்டம்'}</label>
-                <select
+                <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Programme to Support' : 'ஆதரிக்க விரும்பும் திட்டம்'}</label>
+                <CustomSelect
                   value={financialProgram}
-                  onChange={(e) => setFinancialProgram(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                >
-                  {Object.entries(FINANCIAL_PROGRAMS).map(([key, val]) => (
-                    <option key={key} value={key}>{val[lang]}</option>
-                  ))}
-                </select>
+                  onChange={setFinancialProgram}
+                  options={financialProgramOptions}
+                  ariaLabel={lang === 'en' ? 'Programme to Support' : 'ஆதரிக்க விரும்பும் திட்டம்'}
+                />
                 {financialProgram === 'other' && (
                   <input
                     type="text"
@@ -710,7 +742,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
             )}
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">{lang === 'en' ? 'Blessing / Message for the board' : 'வாழ்த்துச் செய்தி / குறிப்பு'}</label>
+              <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Blessing / Message for the board' : 'வாழ்த்துச் செய்தி / குறிப்பு'}</label>
               <input
                 type="text"
                 value={donorMsg}
@@ -733,10 +765,12 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         )}
       </section>
 
-      {/* Live Sponsors Board (Sponsors Wall of Gratitude) */}
+      {/*
+      Live Sponsors Board (Sponsors Wall of Gratitude)
+      Hidden by request; kept here for future restoration.
       <section className="space-y-4 pt-4">
         <div className="text-center space-y-1">
-          <h2 className="font-display text-2xl font-bold text-gray-900">
+          <h2 className="h2-section">
             {lang === 'en' ? 'Sample Gratitude Board' : 'மாதிரி நன்றிக் கூடம்'}
           </h2>
           <p className="text-xs text-gray-900">
@@ -775,7 +809,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                 <span className="font-semibold text-gray-900 uppercase tracking-wider">
                   {spo.type === 'Money' || spo.type === 'Sponsorship' ? (lang === 'en' ? 'Sponsored' : 'ஸ்பான்சர்') : (lang === 'en' ? 'Donated Materials' : 'பொருளுதவி')}
                 </span>
-                <span className="font-mono font-bold text-emerald-700 bg-emerald-100/60 px-2 py-0.5 rounded">
+                <span className="font-display font-bold text-emerald-700 bg-emerald-100/60 px-2 py-0.5 rounded">
                   {spo.item}
                 </span>
               </div>
@@ -783,6 +817,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
           ))}
         </div>
       </section>
+      */}
 
       {/* Interactive YouTube Video Showcase */}
       <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-6 animate-fade-in">
@@ -791,8 +826,8 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
             <span className="section-eyebrow text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
               {lang === 'en' ? 'See Impact in Motion' : 'நேரடி ஒளிபரப்பு'}
             </span>
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900 flex items-center space-x-2">
-              <FaYoutube className="h-6 w-6 text-red-600 flex-shrink-0 animate-pulse" />
+            <h2 className="h2-section flex items-center space-x-2">
+              <FaYoutube className="h-6 w-6 text-red-600 flex-shrink-0" />
               <span>{lang === 'en' ? 'Watch Trust Activities & Field Footage' : 'எங்களது களப்பணி வீடியோக்களைக் காண்க'}</span>
             </h2>
             <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
@@ -862,7 +897,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                         }`}>
                           <FaPlay className={`h-4 w-4 fill-white text-white ${isActive ? 'animate-pulse' : ''}`} />
                         </div>
-                        <span className="absolute bottom-0.5 right-0.5 bg-black/85 text-white font-mono text-[8px] font-bold px-1 rounded">
+                        <span className="absolute bottom-0.5 right-0.5 bg-black/85 text-white font-sans text-[8px] font-bold px-1 rounded">
                           {vid.duration}
                         </span>
                       </div>
@@ -904,11 +939,71 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         </div>
       </section>
 
+      {/* Your money → outcome — concrete proof strip */}
+      <section className="rounded-2xl border border-emerald-100 bg-emerald-50/40 p-5 sm:p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-emerald-100 text-center">
+          {[
+            { amt: '₹2,000', out: { en: 'feeds one roadside meal session', ta: 'ஒரு வேளை சாலையோர அன்னதானம்' } },
+            { amt: '₹2,500', out: { en: 'fuels 10 emergency ambulance trips', ta: '10 அவசர ஆம்புலன்ஸ் பயணங்கள்' } },
+            { amt: '₹5,000', out: { en: 'covers one dignified last rite', ta: 'ஒரு கண்ணியமான இறுதிச் சடங்கு' } },
+          ].map((row, i) => (
+            <div key={i} className="px-4 py-3 sm:py-1 space-y-1">
+              <p className="font-display text-2xl font-extrabold text-emerald-700">{row.amt}</p>
+              <p className="text-xs sm:text-sm text-gray-900 leading-snug">{row.out[lang]}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-center text-[11px] font-semibold text-emerald-800">
+          {lang === 'en' ? '0% administrative deductions · 100% reaches the field' : '0% நிர்வாகச் செலவு · 100% நேரடியாக மக்களுக்கு'}
+        </p>
+      </section>
+
+      {/* Donor confidence — key questions surfaced on the donate page itself */}
+      <section className="max-w-4xl mx-auto w-full space-y-6">
+        <div className="text-center space-y-1">
+          <h2 className="h2-section">
+            {lang === 'en' ? 'Before You Give — Common Questions' : 'நன்கொடை அளிக்கும் முன் — பொதுவான கேள்விகள்'}
+          </h2>
+          <p className="text-sm text-gray-900">
+            {lang === 'en' ? 'The essentials donors ask most. See the Transparency page for full legal details.' : 'நன்கொடையாளர்கள் அடிக்கடி கேட்கும் முக்கியக் கேள்விகள். முழு விபரங்களுக்கு வெளிப்படைத்தன்மை பக்கத்தைப் பார்க்கவும்.'}
+          </p>
+        </div>
+        <div className="divide-y divide-gray-100 border-y border-gray-100">
+          {faqData.slice(0, 3).map((faq, idx) => (
+            <div key={idx}>
+              <button
+                type="button"
+                onClick={() => setOpenDonorQuestion(openDonorQuestion === idx ? -1 : idx)}
+                className="flex min-h-[4.25rem] w-full items-center justify-between gap-4 py-4 text-left font-sans cursor-pointer"
+                aria-expanded={openDonorQuestion === idx}
+              >
+                <span className="font-display text-sm sm:text-base font-bold text-gray-900 leading-snug">
+                  {faq.question[lang]}
+                </span>
+                <FaChevronRight
+                  className={`h-4 w-4 shrink-0 text-emerald-700 transition-transform ${
+                    openDonorQuestion === idx ? 'rotate-90' : ''
+                  }`}
+                />
+              </button>
+              {openDonorQuestion === idx && (
+                <div className="pb-5 pr-8">
+                  <p className="text-sm sm:text-base text-gray-900 leading-relaxed">
+                    {faq.answer[lang]}
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
       <SocialConnect lang={lang} />
 
     </div>
   );
 }
+
 
 
 

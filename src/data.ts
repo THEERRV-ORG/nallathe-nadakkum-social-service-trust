@@ -135,7 +135,7 @@ export const commonTranslations: TranslationSet = {
   submitButton: { en: 'Submit Request', ta: 'விண்ணப்பிக்கவும்' },
   submitting: { en: 'Submitting...', ta: 'சமர்ப்பிக்கப்படுகிறது...' },
   successMsg: { en: 'Successfully submitted!', ta: 'வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!' },
-  quickStatsTitle: { en: 'Stated Reach & Social Action (FY 2025–26)', ta: 'நமது பணிகள் மற்றும் தாக்கங்கள் (FY 2025–26)' },
+  quickStatsTitle: { en: 'Stated Reach & Social Action', ta: 'நமது பணிகள் மற்றும் தாக்கங்கள்' },
   quickStatsNote: {
     en: 'Based on the founder\'s documentation and active social service reports.',
     ta: 'அறக்கட்டளையின் செயல்பாட்டு ஆவணங்கள் மற்றும் சமூகப் பணி அறிக்கைகளின் அடிப்படையில்.'

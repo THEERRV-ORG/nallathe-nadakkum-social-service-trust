@@ -84,21 +84,15 @@ body {
   background: transparent;
 }
 
-/*
-  Default long-form reading text to justified alignment across the site.
-  Wrapped in :where(...) so explicit Tailwind alignment utilities such as
-  text-center and text-left still take precedence for UI-specific sections.
-*/
-:where(.site-shell p, .site-shell li, .site-shell blockquote) {
-  text-align: justify;
-  text-justify: inter-word;
-  hyphens: none;
-}
-
 .site-shell :where(input, textarea)::placeholder {
   color: #9ca3af;
   font-weight: 500;
   opacity: 1;
+}
+
+.site-shell :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-emerald-600);
+  outline-offset: 3px;
 }
 
 /* Buttons and major CTAs use the display font. Nav link buttons keep body/UI font (overridden below). */
@@ -123,6 +117,124 @@ nav button, nav [role="button"], header button:not(.cta-btn) {
     font-size: 0.9375rem;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CENTRALIZED DESIGN TOKENS
+   One place for elevation, radius, buttons, and the type scale so every
+   surface stays consistent. Prefer these classes over ad-hoc utilities.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Elevation — exactly two levels. */
+.shadow-card   { box-shadow: 0 10px 30px -12px rgba(16,24,40,0.15); }
+.shadow-raised { box-shadow: 0 22px 50px -20px rgba(16,24,40,0.28); }
+
+/* Radius scale (documented): 0.5rem controls · 1rem cards · 9999px pills.
+   Use Tailwind rounded-lg / rounded-2xl / rounded-full accordingly. */
+
+/* Surface (card/panel) — resting card look in one class. */
+.surface-card {
+  background: #fff;
+  border: 1px solid var(--color-emerald-50, #eaf4ee);
+  border-color: rgba(17,24,39,0.06);
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px -12px rgba(16,24,40,0.15);
+}
+
+/* Buttons — three tiers. All get a visible focus ring via the global rule. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0.5rem; font-family: var(--font-display); font-weight: 600;
+  min-height: 2.75rem; padding: 0.625rem 1.25rem; border-radius: 0.5rem;
+  cursor: pointer; transition: all .2s ease; line-height: 1;
+}
+.btn-pill { border-radius: 9999px; }
+.btn-primary   { background: var(--color-emerald-600); color: #fff; }
+.btn-primary:hover   { background: var(--color-emerald-700); }
+.btn-secondary { background: #fff; color: #111827; border: 1px solid #e5e7eb; }
+.btn-secondary:hover { border-color: var(--color-emerald-300); color: var(--color-emerald-700); }
+.btn-tertiary  { background: transparent; color: var(--color-emerald-700); min-height: auto; padding: 0.25rem 0; }
+.btn-tertiary:hover  { text-decoration: underline; }
+
+/* Type scale — locked heading sizes. Reserve `.display-hero` for ONE
+   major conversion block only. */
+.h1-page {
+  font-family: var(--font-display); font-weight: 800; line-height: 1.1;
+  font-size: 1.875rem; color: #111827;
+}
+.h2-section {
+  font-family: var(--font-display); font-weight: 700; line-height: 1.2;
+  font-size: 1.5rem; color: #111827;
+}
+.display-hero {
+  font-family: var(--font-display); font-weight: 800; line-height: 1.05;
+  font-size: 2.25rem; color: #fff;
+}
+@media (min-width: 640px) {
+  .h1-page    { font-size: 2.25rem; }
+  .h2-section { font-size: 1.875rem; }
+  .display-hero { font-size: 3rem; }
+}
+
+.form-copy {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.info-list {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.form-field {
+  font-size: 0.9375rem;
+}
+
+.form-label {
+  display: block;
+  color: #111827;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+}
+
+.form-control,
+.site-shell :where(input:not([type="checkbox"]):not([type="radio"]), textarea) {
+  min-height: 2.875rem;
+  width: 100%;
+  border: 1px solid #dfe4ea;
+  border-radius: 0.625rem;
+  background: #fff;
+  color: #111827;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  padding: 0.625rem 0.875rem;
+  transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+
+.site-shell textarea {
+  min-height: auto;
+  resize: vertical;
+}
+
+.form-control:hover,
+.site-shell :where(input:not([type="checkbox"]):not([type="radio"]), textarea):hover {
+  border-color: #b7c3cd;
+}
+
+.form-control:focus,
+.form-control:focus-visible,
+.site-shell :where(input:not([type="checkbox"]):not([type="radio"]), textarea):focus {
+  border-color: var(--color-emerald-600);
+  box-shadow: 0 0 0 3px rgba(31, 115, 74, 0.11);
+  outline: none;
+}
+
+.site-shell :where(input[type="checkbox"], input[type="radio"]) {
+  accent-color: var(--color-emerald-600);
+}
+
+/* Minimum comfortable tap target for small icon controls. */
+.tap-target { min-height: 2.5rem; min-width: 2.5rem; }
 
 .site-shell {
   position: relative;
@@ -161,4 +273,10 @@ html[lang="ta"] h4 {
 html[lang="ta"] * {
   word-break: break-word;
   overflow-wrap: break-word;
+}
+
+.offbit-credit {
+  font-family: "OffBit", "Space Grotesk", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }

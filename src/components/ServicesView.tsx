@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import {
   FaUtensils,
@@ -10,16 +10,15 @@ import {
   FaPhoneFlip,
   FaIndianRupeeSign,
   FaUsers,
-  FaChevronRight,
   FaShareNodes,
-  FaUserLarge,
   FaShieldHalved,
 } from 'react-icons/fa6';
-import { servicesData } from '../data';
+import { DonatePreset, servicesData } from '../data';
 
 interface ServicesViewProps {
   lang: 'en' | 'ta';
   setActiveTab: (tab: string) => void;
+  setDonatePreset: (preset: DonatePreset) => void;
 }
 
 // Confirmed image assets in /public/gallery/
@@ -50,6 +49,15 @@ const SLUGS: Record<string, { en: string; ta: string }> = {
   medical:   { en: 'MEDICAL SUPPORT',      ta: 'மருத்துவ உதவி' },
 };
 
+const DONATE_PRESETS: Record<string, DonatePreset> = {
+  food: { type: 'Money', program: 'annadhanam', amount: '2000' },
+  ambulance: { type: 'Money', program: 'ambulance', amount: '2500' },
+  lastrites: { type: 'Money', program: 'cremation', amount: '5000' },
+  elderly: { type: 'Money', program: 'elderly', amount: '1000' },
+  education: { type: 'Money', program: 'student', amount: '5000' },
+  medical: { type: 'Money', program: 'medical', amount: '1000' },
+};
+
 function getIcon(name: string) {
   switch (name) {
     case 'Utensils':      return <FaUtensils className="h-5 w-5" />;
@@ -62,15 +70,10 @@ function getIcon(name: string) {
   }
 }
 
-export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) {
+export default function ServicesView({ lang, setActiveTab, setDonatePreset }: ServicesViewProps) {
   const [indexActive, setIndexActive] = useState(0);
+  const [mealSlideIndex, setMealSlideIndex] = useState(0);
   const reduce = useReducedMotion();
-  const chapterRefs = useRef<(HTMLElement | null)[]>([]);
-
-  const scrollToChapter = (i: number) => {
-    chapterRefs.current[i]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
   const reveal = (delay = 0) =>
     reduce
       ? { initial: false as const }
@@ -83,110 +86,35 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
 
   const activeService = servicesData[indexActive];
   const activeImg = SERVICE_IMG[activeService.id];
+  const activeAccent = ACCENT[activeService.id] ?? ACCENT.food;
+  const mealSlides = [
+    { label: { en: 'Breakfast', ta: 'காலை உணவு' }, src: '/gallery/activity-food-indoor.jpeg' },
+    { label: { en: 'Lunch', ta: 'மதிய உணவு' }, src: '/gallery/activity-water-street.jpg' },
+    { label: { en: 'Dinner', ta: 'இரவு உணவு' }, src: '/gallery/activity-clothes-distribution.jpeg' },
+  ];
 
-  // Desktop scroll-pin: while the section stays pinned, vertical scroll steps
-  // the selection through all six services (same visual as hovering) before the
-  // page continues down to the chapters.
-  const indexPinRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const el = indexPinRef.current;
-    if (!el || reduce) return;
-    const onScroll = () => {
-      const rect = el.getBoundingClientRect();
-      const total = el.offsetHeight - window.innerHeight; // scrollable while pinned
-      if (total <= 0) return;
-      const progressed = Math.min(Math.max(-rect.top, 0), total);
-      const p = progressed / total;
-      const idx = Math.min(
-        servicesData.length - 1,
-        Math.max(0, Math.floor(p * servicesData.length)),
-      );
-      setIndexActive(idx);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
+    if (reduce) return;
+    const timer = window.setInterval(() => {
+      setIndexActive((current) => (current + 1) % servicesData.length);
+    }, 4500);
+    return () => window.clearInterval(timer);
   }, [reduce]);
 
-  // Shared index card (numbered list + live preview), used by both the
-  // desktop scroll-pinned version and the mobile/reduced-motion static version.
-  const indexInner = (
-    <div className="flex flex-col lg:flex-row border border-gray-100 rounded-2xl overflow-hidden shadow-sm bg-white">
-
-      {/* Left: numbered list */}
-      <div className="lg:w-1/2 divide-y divide-gray-50">
-        {servicesData.map((s, i) => {
-          const a = ACCENT[s.id] ?? ACCENT.food;
-          const isActive = i === indexActive;
-          return (
-            <button
-              key={s.id}
-              onMouseEnter={() => setIndexActive(i)}
-              onFocus={() => setIndexActive(i)}
-              onClick={() => scrollToChapter(i)}
-              className={`w-full text-left flex items-center gap-4 px-6 py-5 transition-all cursor-pointer border-l-4 ${
-                isActive ? `${a.bg} ${a.border}` : 'border-transparent hover:bg-gray-50'
-              }`}
-            >
-              <span className={`font-mono text-xl font-bold tabular-nums shrink-0 transition-colors ${
-                isActive ? a.text : 'text-gray-200'
-              }`}>
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <div className="flex-1 min-w-0">
-                <p className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${
-                  isActive ? a.text : 'text-gray-400'
-                }`}>
-                  {SLUGS[s.id]?.[lang] ?? SLUGS[s.id]?.en}
-                </p>
-                <p className="font-display font-bold text-gray-900 text-sm sm:text-base truncate mt-0.5">
-                  {s.title[lang]}
-                </p>
-              </div>
-              <div className={`shrink-0 p-1.5 rounded-lg transition-colors ${isActive ? `${a.bg} ${a.text}` : 'text-gray-300'}`}>
-                {getIcon(s.iconName)}
-              </div>
-              <FaChevronRight className={`h-3 w-3 shrink-0 transition-colors ${isActive ? a.text : 'text-gray-200'}`} />
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Right: live image preview */}
-      <div className="lg:w-1/2 relative min-h-[260px] lg:min-h-0 overflow-hidden bg-gray-100">
-        <motion.img
-          key={activeService.id}
-          src={activeImg}
-          alt={activeService.title.en}
-          initial={reduce ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent flex items-end p-6">
-          <div>
-            <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-1">
-              {SLUGS[activeService.id]?.[lang] ?? ''}
-            </p>
-            <h3 className="text-white font-display font-bold text-lg sm:text-xl leading-snug">
-              {activeService.title[lang]}
-            </h3>
-            <p className="text-white text-xs mt-1.5 leading-relaxed line-clamp-2 max-w-xs">
-              {activeService.description[lang]}
-            </p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  );
+  useEffect(() => {
+    if (reduce) return;
+    const timer = window.setInterval(() => {
+      setMealSlideIndex((current) => (current + 1) % mealSlides.length);
+    }, 3000);
+    return () => window.clearInterval(timer);
+  }, [mealSlides.length, reduce]);
 
   return (
     <div className="pb-24">
 
       {/* ── Page Hero ── */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-14 text-center space-y-4">
-        <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-gray-900 leading-tight">
+        <h1 className="h1-page">
           {lang === 'en' ? 'Our Services & Social Activities' : 'நமது சேவைகள் மற்றும் மக்கள் பணிகள்'}
         </h1>
         <p className="text-base sm:text-lg text-gray-900 leading-relaxed max-w-2xl mx-auto">
@@ -196,32 +124,48 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
         </p>
       </section>
 
-      {/* ── Interactive Service Index ── */}
-      {/* Desktop: scroll-pinned. While pinned, scrolling steps the selection
-          through all six services before the page continues to the chapters. */}
-      {!reduce && (
-        <div ref={indexPinRef} className="hidden lg:block relative" style={{ height: 'calc(100vh + 110vh)' }}>
-          <div className="sticky top-16 flex h-[calc(100vh-4rem)] items-center">
-            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {indexInner}
-              <p className="text-center text-[11px] text-gray-400 mt-3">
-                {lang === 'en'
-                  ? 'Scroll to browse each service · Click to jump to its chapter'
-                  : 'ஒவ்வொரு சேவையையும் காண உருட்டவும் · பகுதிக்குச் செல்ல கிளிக் செய்யவும்'}
+      {/* Rotating Service Image Showcase */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-14">
+        <div className="relative min-h-[380px] overflow-hidden rounded-2xl bg-gray-100 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] sm:min-h-[520px]">
+          <motion.img
+            key={activeService.id}
+            src={activeImg}
+            alt={activeService.title.en}
+            initial={reduce ? false : { opacity: 0, scale: 1.02 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/5" />
+          <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8 lg:p-12">
+            <div className="max-w-3xl space-y-3">
+              <span className={`section-eyebrow inline-flex items-center gap-2 rounded-full px-3 py-1.5 ring-1 backdrop-blur ${activeAccent.bg} ${activeAccent.text} ${activeAccent.border}`}>
+                {getIcon(activeService.iconName)}
+                {SLUGS[activeService.id]?.[lang] ?? ''}
+              </span>
+              <h2 className="font-display text-3xl font-extrabold leading-tight text-white sm:text-5xl">
+                {activeService.title[lang]}
+              </h2>
+              <p className="max-w-2xl text-sm leading-relaxed text-white/90 sm:text-base">
+                {activeService.description[lang]}
               </p>
             </div>
           </div>
+          <div className="absolute bottom-5 right-5 flex gap-2 sm:bottom-8 sm:right-8">
+            {servicesData.map((service, i) => {
+              const dotAccent = ACCENT[service.id] ?? ACCENT.food;
+              return (
+              <span
+                key={service.id}
+                className={`h-2 rounded-full transition-all ${
+                  i === indexActive ? `w-8 ${dotAccent.bg}` : 'w-2 bg-white/45'
+                }`}
+                aria-hidden="true"
+              />
+              );
+            })}
+          </div>
         </div>
-      )}
-
-      {/* Mobile / reduced-motion: normal static index */}
-      <section className={`${reduce ? '' : 'lg:hidden'} max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-14`}>
-        {indexInner}
-        <p className="text-center text-[11px] text-gray-400 mt-3">
-          {lang === 'en'
-            ? 'Tap a service to jump to its chapter'
-            : 'பகுதிக்குச் செல்ல ஒரு சேவையைத் தட்டவும்'}
-        </p>
       </section>
 
       {/* ── Service Chapters ── */}
@@ -230,12 +174,11 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
         const num = String(i + 1).padStart(2, '0');
         const slug = SLUGS[service.id]?.[lang] ?? SLUGS[service.id]?.en ?? '';
         const imgLeft = i % 2 === 1;
-        const sectionBg = i % 2 === 0 ? '' : 'bg-gray-50/70';
+        const sectionBg = i % 2 === 0 ? '' : 'bg-emerald-50/45';
 
         return (
           <section
             key={service.id}
-            ref={el => { chapterRefs.current[i] = el; }}
             id={`service-${service.id}`}
             className={`scroll-mt-24 py-11 lg:py-16 ${sectionBg}`}
           >
@@ -244,7 +187,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
               {/* Chapter header — number + slug sit above both columns so the
                   photo below starts exactly at the service title line. */}
               <motion.div className="flex items-baseline gap-3 mb-5 lg:mb-6" {...reveal(0)}>
-                <span className={`font-mono text-lg sm:text-2xl font-black leading-none select-none ${a.text} opacity-40`}>
+                <span className={`font-display text-lg sm:text-2xl font-black leading-none select-none ${a.text} opacity-40`}>
                   {num}
                 </span>
                 <span className={`text-lg sm:text-2xl font-bold uppercase tracking-wider ${a.text}`}>
@@ -258,7 +201,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                 <div className="flex-1 space-y-6 min-w-0">
 
                   <motion.h2
-                    className="font-display text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight"
+                    className="h2-section"
                     {...reveal(0.05)}
                   >
                     {service.title[lang]}
@@ -282,7 +225,10 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                       {lang === 'en' ? 'Request Help' : 'உதவி கோர'}
                     </button>
                     <button
-                      onClick={() => setActiveTab('donate')}
+                      onClick={() => {
+                        setDonatePreset(DONATE_PRESETS[service.id] ?? { type: 'Money', program: 'general', amount: '1000' });
+                        setActiveTab('donate');
+                      }}
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors cursor-pointer"
                     >
                       <FaIndianRupeeSign className="h-3.5 w-3.5" />
@@ -337,11 +283,6 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
-                    <div className="absolute top-3 left-3">
-                      <span className={`inline-block text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm ${a.text}`}>
-                        {num} / {SLUGS[service.id]?.en}
-                      </span>
-                    </div>
                   </div>
                 </motion.div>
 
@@ -355,54 +296,84 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                   className={`mt-10 lg:mt-12 rounded-2xl border ${a.border} ${a.bg} p-5 sm:p-6 space-y-5`}
                   {...reveal(0.12)}
                 >
-                  <p className={`text-[11px] font-bold uppercase tracking-widest ${a.text}`}>
-                    {lang === 'en' ? 'Sponsor a Meal — Daily Costs' : 'ஒரு வேளை உணவை ஸ்பான்சர் செய்யுங்கள் — தினசரி செலவு'}
-                  </p>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {[
-                      {
-                        head: { en: 'Outdoor Food Distribution (Daily)', ta: 'சாலையோர அன்னதானம் (தினசரி)' },
-                        slots: [
-                          { t: { en: 'Morning', ta: 'காலை' }, v: '2,000' },
-                          { t: { en: 'Afternoon', ta: 'மதியம்' }, v: '3,000' },
-                          { t: { en: 'Night', ta: 'இரவு' }, v: '2,000' },
-                        ],
-                      },
-                      {
-                        head: { en: 'Indoor Food — Mudhiyor Illam (Old-Age Home)', ta: 'முதியோர் இல்ல உணவு' },
-                        slots: [
-                          { t: { en: 'Morning', ta: 'காலை' }, v: '4,500' },
-                          { t: { en: 'Afternoon', ta: 'மதியம்' }, v: '6,000' },
-                          { t: { en: 'Night', ta: 'இரவு' }, v: '4,500' },
-                        ],
-                      },
-                    ].map((row, ri) => (
-                      <div key={ri} className="space-y-2">
-                        <p className="text-sm font-bold text-gray-900">{row.head[lang]}</p>
-                        <div className="grid grid-cols-3 gap-2">
-                          {row.slots.map((s, si) => (
-                            <div key={si} className="rounded-xl bg-white/80 border border-white px-3 py-2.5 text-center">
-                              <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-900">
-                                {s.t[lang]}
-                              </p>
-                              <p className={`font-mono font-bold text-base sm:text-lg ${a.text}`}>
-                                ₹{s.v}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+                  <div className="space-y-1">
+                    <p className={`text-[11px] font-bold uppercase tracking-widest ${a.text}`}>
+                      {lang === 'en' ? 'Sponsor a Meal' : 'ஒரு வேளை உணவை ஆதரிக்க'}
+                    </p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {lang === 'en' ? 'Choose a meal session to support.' : 'ஆதரிக்க வேண்டிய உணவு நேரத்தைத் தேர்வு செய்யுங்கள்.'}
+                    </p>
                   </div>
 
-                  <p className="text-sm text-gray-900 leading-relaxed border-t border-white pt-4">
-                    <span className="font-bold text-gray-900">
-                      {lang === 'en' ? 'No compromise on quality: ' : 'தரத்தில் சமரசம் இல்லை: '}
-                    </span>
-                    {lang === 'en'
-                      ? 'every meal is prepared using top-quality ingredients — the same standard we would serve our own family.'
-                      : 'ஒவ்வொரு உணவும் தரமான, உயர்தர பொருட்களைக் கொண்டே தயாரிக்கப்படுகிறது — நம் சொந்தக் குடும்பத்திற்கு வழங்கும் அதே தரத்தில்.'}
+                  <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(220px,0.34fr)] lg:items-stretch">
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-0">
+                      {[
+                        {
+                          head: { en: 'Roadside Meals', ta: 'சாலையோர உணவு' },
+                          sub: { en: 'Food distributed outdoors', ta: 'வெளிப்புறங்களில் வழங்கப்படும் உணவு' },
+                          slots: [
+                            { t: { en: 'Breakfast', ta: 'காலை உணவு' }, v: '2,000' },
+                            { t: { en: 'Lunch', ta: 'மதிய உணவு' }, v: '3,000' },
+                            { t: { en: 'Dinner', ta: 'இரவு உணவு' }, v: '2,000' },
+                          ],
+                        },
+                        {
+                          head: { en: 'Old-Age Home Meals', ta: 'முதியோர் இல்ல உணவு' },
+                          sub: { en: 'Mudhiyor Illam', ta: 'முதியோர் இல்லம்' },
+                          slots: [
+                            { t: { en: 'Breakfast', ta: 'காலை உணவு' }, v: '4,500' },
+                            { t: { en: 'Lunch', ta: 'மதிய உணவு' }, v: '6,000' },
+                            { t: { en: 'Dinner', ta: 'இரவு உணவு' }, v: '4,500' },
+                          ],
+                        },
+                      ].map((row, ri) => (
+                        <div key={ri} className={`space-y-3 ${ri === 1 ? 'sm:border-l sm:border-brand-orange-200 sm:pl-5' : 'sm:pr-5'}`}>
+                          <div>
+                            <p className="font-display text-sm font-bold uppercase tracking-wider text-gray-900">{row.head[lang]}</p>
+                            <p className="text-xs font-medium text-gray-700">{row.sub[lang]}</p>
+                          </div>
+                          <div className="divide-y divide-brand-orange-200/70">
+                            {row.slots.map((s, si) => (
+                              <div key={si} className="grid grid-cols-[1fr_auto] items-center gap-4 py-2 first:pt-0 last:pb-0">
+                                <p className="text-sm font-semibold text-gray-900">
+                                  {s.t[lang]}
+                                </p>
+                                <p className={`text-right font-display text-base font-black leading-none sm:text-lg ${a.text}`}>
+                                  ₹{s.v}
+                                  <span className="ml-1 font-sans text-[10px] font-bold uppercase tracking-wide text-gray-600">
+                                    {lang === 'en' ? 'per session' : 'ஒரு நேரம்'}
+                                  </span>
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="relative min-h-[170px] overflow-hidden rounded-xl bg-brand-orange-100/60">
+                      <motion.img
+                        key={mealSlides[mealSlideIndex].label.en}
+                        src={mealSlides[mealSlideIndex].src}
+                        alt={mealSlides[mealSlideIndex].label.en}
+                        initial={reduce ? false : { opacity: 0, scale: 1.03 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.45 }}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                      <div className="absolute bottom-3 left-3">
+                        <p className="rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gray-900 backdrop-blur">
+                          {mealSlides[mealSlideIndex].label[lang]}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="border-t border-brand-orange-200/70 pt-4 text-sm leading-relaxed text-gray-900">
+                    <span className="font-bold">{lang === 'en' ? 'Each amount sponsors one complete meal session. ' : 'ஒவ்வொரு தொகையும் ஒரு முழு உணவு நேரத்தை ஆதரிக்கும். '}</span>
+                    {lang === 'en' ? 'We never compromise on food quality.' : 'உணவின் தரத்தில் எப்போதும் சமரசம் இல்லை.'}
                   </p>
                 </motion.div>
               )}
@@ -428,7 +399,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
       })}
 
       {/* ── Verification Notice — highlighted trust callout ── */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="relative overflow-hidden rounded-3xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-emerald-50/60 p-8 sm:p-12 text-center shadow-[0_16px_40px_-16px_rgba(31,115,74,0.35)] ring-1 ring-emerald-100">
           {/* Soft brand glow accents */}
           <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-emerald-400/10 blur-2xl" />
@@ -439,7 +410,7 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
               <FaShieldHalved className="h-7 w-7" />
             </div>
 
-            <h3 className="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-emerald-900 leading-snug">
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-emerald-900 leading-snug">
               {lang === 'en'
                 ? 'All request submissions undergo physical verification'
                 : 'கோரிக்கைகள் அனைத்தும் நேரடி ஆய்வுக்குப் பின்னரே ஏற்றுக்கொள்ளப்படும்'}
@@ -457,8 +428,8 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
       {/* ── Our Teams (placeholder) ──────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-4 space-y-10">
         <div className="text-center space-y-2">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
-            {lang === 'en' ? 'Our Teams' : 'எங்கள் குழுக்கள்'}
+          <h2 className="h2-section">
+            {lang === 'en' ? 'Our Teams - People Behind The Work' : 'எங்கள் குழுக்கள்'}
           </h2>
           <p className="text-sm sm:text-base text-gray-900 max-w-xl mx-auto">
             {lang === 'en'
@@ -496,20 +467,9 @@ export default function ServicesView({ lang, setActiveTab }: ServicesViewProps) 
                 {team.desc[lang]}
               </p>
 
-              {/* Member photo placeholders — replace with real member photos later */}
-              <div className="mt-auto space-y-2.5 pt-1">
-                {[0, 1, 2].map((m) => (
-                  <div key={m} className="flex items-center gap-3">
-                    <div className="h-9 w-9 shrink-0 rounded-full border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center text-gray-300">
-                      <FaUserLarge className="h-3.5 w-3.5" />
-                    </div>
-                    <div className="min-w-0 flex-1 space-y-1">
-                      <div className="h-2 w-20 rounded bg-gray-100" />
-                      <div className="h-2 w-14 rounded bg-gray-100" />
-                    </div>
-                  </div>
-                ))}
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 pt-1">
+              {/* Quiet pending note (member photos to be added later) */}
+              <div className="mt-auto pt-3 border-t border-gray-100">
+                <p className="text-[11px] font-semibold text-gray-500">
                   {lang === 'en' ? 'Members coming soon' : 'உறுப்பினர்கள் விரைவில்'}
                 </p>
               </div>

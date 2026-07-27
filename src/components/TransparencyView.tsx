@@ -1,5 +1,5 @@
 ﻿import {
-  FaShieldHalved, FaLock, FaCircleExclamation,
+  FaShieldHalved, FaLock,
   FaLocationDot, FaMap, FaArrowUpRightFromSquare
 } from 'react-icons/fa6';
 
@@ -18,7 +18,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
       
       {/* Title Header */}
       <section className="text-center max-w-3xl mx-auto space-y-4">
-        <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl">
+        <h1 className="h1-page">
           {lang === 'en' ? 'Transparency, Legals & Audit Ledger' : 'வெளிப்படைத்தன்மை மற்றும் சட்டப்பூர்வ விபரங்கள்'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
@@ -28,82 +28,58 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
         </p>
       </section>
 
-      {/* Trust Legal Profile Cards */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
-        {/* Irrevocable Charter Info */}
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4 flex flex-col justify-between">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-brand-blue-50 text-brand-blue-700 rounded-xl w-fit shrink-0">
-                <FaShieldHalved className="h-5 w-5" />
+      {/* Trust Legal Profile — editorial list (one panel, not three cards) */}
+      <section className="rounded-2xl border border-gray-100 bg-white divide-y divide-gray-100 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] overflow-hidden">
+        {[
+          {
+            icon: <FaShieldHalved className="h-5 w-5" />,
+            tile: 'bg-brand-blue-50 text-brand-blue-700',
+            title: { en: 'Irrevocable Public Trust', ta: 'மாற்ற முடியாத பொது அறக்கட்டளை' },
+            body: {
+              en: 'Nallathe Nadakkum is registered as an Irrevocable Public Charitable Trust governed under a Board of Trustees. The trust assets can never be redirected to any personal profit. In the event of dissolution, all assets can only be transferred to a similarly registered public trust.',
+              ta: 'எங்களது அறக்கட்டளை ஒரு மாற்ற முடியாத பொது தொண்டு அமைப்பாகும். இதன் சொத்துக்கள் அல்லது நிதி ஒருபோதும் தனிநபர் இலாபத்திற்காகப் பயன்படுத்தப்படாது. ஒருவேளை அறக்கட்டளை கலைக்கப்பட்டால், அதன் சொத்துக்கள் அனைத்தும் மற்றொரு பொது தொண்டு நிறுவனத்திடமே ஒப்படைக்கப்படும்.',
+            },
+            status: { en: 'Status: Active and Compliant', ta: 'நிலை: செயல்பாட்டில் உள்ளது' },
+            statusCls: 'text-gray-900 bg-gray-50',
+          },
+          {
+            icon: <FaLock className="h-5 w-5" />,
+            tile: 'bg-brand-violet-50 text-brand-violet-700',
+            title: { en: 'Dual Signatory Oversight', ta: 'இரட்டை கையொப்பக் கட்டுப்பாடு' },
+            body: {
+              en: 'Financial transactions require joint signatures from both the Chairman (Advocate N. Kavinraj) and the Treasurer (Mrs. N. Kogila). No single trustee possesses the right to withdraw or dispense public donations without Board approval.',
+              ta: 'அறக்கட்டளையின் அனைத்து நிதி பரிவர்த்தனைகளும் தலைவர் (வழக்கறிஞர் நா. கவின்ராஜ்) மற்றும் பொருளாளர் (திருமதி. N. கோகிலா) ஆகியோரின் கூட்டு கையொப்பத்துடன் மட்டுமே நிகழும். அறங்காவலர் குழு ஒப்புதல் இன்றி தனிநபர் யாரும் பணத்தை எடுக்கவோ செலுத்தவோ முடியாது.',
+            },
+            status: { en: 'Process: Joint Bank Mandate', ta: 'வழிமுறை: கூட்டு வங்கிக் கணக்கு' },
+            statusCls: 'text-gray-900 bg-gray-50',
+          },
+        ].map((item, idx) => (
+          <div key={idx} className="flex flex-col sm:flex-row gap-4 sm:gap-8 p-6 sm:p-8">
+            <div className="flex items-center gap-4 sm:w-1/3 shrink-0">
+              <div className={`p-3 rounded-xl w-fit shrink-0 ${item.tile}`}>
+                {item.icon}
               </div>
-              <h3 className="font-display text-lg font-bold text-gray-900">
-                {lang === 'en' ? 'Irrevocable Public Trust' : 'மாற்ற முடியாத பொது அறக்கட்டளை'}
+              <h3 className="font-display text-base font-bold text-gray-900 leading-snug">
+                {item.title[lang]}
               </h3>
             </div>
-            <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65]">
-              {lang === 'en'
-                ? 'Nallathe Nadakkum is registered as an Irrevocable Public Charitable Trust governed under a Board of Trustees. The trust assets can never be redirected to any personal profit. In the event of dissolution, all assets can only be transferred to a similarly registered public trust.'
-                : 'எங்களது அறக்கட்டளை ஒரு மாற்ற முடியாத பொது தொண்டு அமைப்பாகும். இதன் சொத்துக்கள் அல்லது நிதி ஒருபோதும் தனிநபர் இலாபத்திற்காகப் பயன்படுத்தப்படாது. ஒருவேளை அறக்கட்டளை கலைக்கப்பட்டால், அதன் சொத்துக்கள் அனைத்தும் மற்றொரு பொது தொண்டு நிறுவனத்திடமே ஒப்படைக்கப்படும்.'}
-            </p>
-          </div>
-          <span className="text-[10px] font-mono text-gray-900 bg-gray-50 px-2 py-0.5 rounded w-fit">
-            {lang === 'en' ? 'Status: Active and Compliant' : 'நிலை: செயல்பாட்டில் உள்ளது'}
-          </span>
-        </div>
-
-        {/* Dual Signatory Control */}
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4 flex flex-col justify-between">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-brand-violet-50 text-brand-violet-700 rounded-xl w-fit shrink-0">
-                <FaLock className="h-5 w-5" />
-              </div>
-              <h3 className="font-display text-lg font-bold text-gray-900">
-                {lang === 'en' ? 'Dual Signatory Oversight' : 'இரட்டை கையொப்பக் கட்டுப்பாடு'}
-              </h3>
+            <div className="sm:flex-1 space-y-3">
+              <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65]">
+                {item.body[lang]}
+              </p>
+              <span className={`inline-block text-[10px] font-sans font-semibold px-2 py-0.5 rounded w-fit ${item.statusCls}`}>
+                {item.status[lang]}
+              </span>
             </div>
-            <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65]">
-              {lang === 'en'
-                ? 'Financial transactions require joint signatures from both the Chairman (Advocate N. Kavinraj) and the Treasurer (Mrs. N. Kogila). No single trustee possesses the right to withdraw or dispense public donations without Board approval.'
-                : 'அறக்கட்டளையின் அனைத்து நிதி பரிவர்த்தனைகளும் தலைவர் (வழக்கறிஞர் நா. கவின்ராஜ்) மற்றும் பொருளாளர் (திருமதி. N. கோகிலா) ஆகியோரின் கூட்டு கையொப்பத்துடன் மட்டுமே நிகழும். அறங்காவலர் குழு ஒப்புதல் இன்றி தனிநபர் யாரும் பணத்தை எடுக்கவோ செலுத்தவோ முடியாது.'}
-            </p>
           </div>
-          <span className="text-[10px] font-mono text-gray-900 bg-gray-50 px-2 py-0.5 rounded w-fit">
-            {lang === 'en' ? 'Process: Joint Bank Mandate' : 'வழிமுறை: கூட்டு வங்கிக் கணக்கு'}
-          </span>
-        </div>
-
-        {/* Foreign Funding Compliance */}
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4 flex flex-col justify-between">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-brand-gold-50 text-brand-gold-700 rounded-xl w-fit shrink-0">
-                <FaCircleExclamation className="h-5 w-5" />
-              </div>
-              <h3 className="font-display text-lg font-bold text-gray-900">
-                {lang === 'en' ? 'Foreign Contributions Blocked' : 'வெளிநாட்டு நிதிகள் மறுப்பு'}
-              </h3>
-            </div>
-            <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65]">
-              {lang === 'en'
-                ? 'We strictly abide by FCRA regulations of the Ministry of Home Affairs. Nallathe Nadakkum trust DOES NOT hold an FCRA registration and, therefore, cannot accept any foreign donations from non-Indian bank accounts. We accept Indian rupees from accounts residing within India.'
-                : 'இந்திய அரசின் FCRA விதிகளுக்கு நாங்கள் முழுமையாகக் கட்டுப்படுகிறோம். எங்களது அறக்கட்டளையிடம் வெளிநாட்டு நிதி பெறுவதற்கான FCRA சான்றிதழ் இல்லை. எனவே, வெளிநாட்டு கணக்குகளில் இருந்து வரும் பணத்தை சட்டப்பூர்வமாக எங்களால் ஏற்க முடியாது.'}
-            </p>
-          </div>
-          <span className="text-[10px] font-mono text-gray-900 bg-gray-50 px-2 py-0.5 rounded w-fit text-red-600 font-semibold">
-            {lang === 'en' ? 'FCRA: Not Registered' : 'FCRA: பதிவு செய்யப்படவில்லை'}
-          </span>
-        </div>
-
+        ))}
       </section>
 
       {/* Trust Deed & Auditor Listings */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
 
         {/* Left: Registrations Table */}
-        <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 shadow-xs space-y-4">
+        <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-4">
           <h3 className="font-display text-base font-bold text-gray-900">
             {lang === 'en' ? 'Legal Framework & Statutory Registry' : 'அறக்கட்டளை பதிவு மற்றும் சட்ட விபரங்கள்'}
           </h3>
@@ -114,7 +90,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             </div>
             <div className="py-3 flex justify-between">
               <span className="font-semibold text-gray-900">{lang === 'en' ? 'Registration Deed Number' : 'அறக்கட்டளை பதிவு எண்'}</span>
-              <span className="font-medium text-gray-900 text-right font-mono">Doc No. 16/2025</span>
+              <span className="font-display font-semibold text-gray-900 text-right">Doc No. 16/2025</span>
             </div>
             <div className="py-3 flex justify-between">
               <span className="font-semibold text-gray-900">{lang === 'en' ? 'Sub-Registrar Office' : 'சார்பதிவாளர் அலுவலகம்'}</span>
@@ -122,7 +98,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             </div>
             <div className="py-3 flex justify-between">
               <span className="font-semibold text-gray-900">{lang === 'en' ? 'Date of Registry' : 'பதிவு செய்யப்பட்ட தேதி'}</span>
-              <span className="font-medium text-gray-900 text-right font-mono">08.04.2025</span>
+              <span className="font-display font-semibold text-gray-900 text-right">08.04.2025</span>
             </div>
             <div className="py-3 flex justify-between">
               <span className="font-semibold text-gray-900">{lang === 'en' ? 'Drafting Advocate' : 'ஆவணத்தை வடிவமைத்த வழக்கறிஞர்'}</span>
@@ -138,7 +114,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
         </div>
 
         {/* Right: Audited Ledger Books */}
-        <div className="lg:col-span-5 bg-white rounded-2xl border border-gray-100 p-6 shadow-xs space-y-4">
+        <div className="lg:col-span-5 bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-4">
           <h3 className="font-display text-base font-bold text-gray-900">
             {lang === 'en' ? 'Audits & Filing Log' : 'தணிக்கை மற்றும் தாக்கல் விபரங்கள்'}
           </h3>
@@ -166,13 +142,13 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
       </section>
 
       {/* Official Registered Office Location & Map Section */}
-      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs space-y-6 animate-fade-in">
+      <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-6 animate-fade-in">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-100 pb-5">
           <div className="space-y-1">
             <span className="section-eyebrow text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
               {lang === 'en' ? 'Physical Presence' : 'நேரடி இருப்பிடம்'}
             </span>
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-gray-900">
+            <h2 className="h2-section">
               {lang === 'en' ? 'Official Registered Office & Location Pin' : 'அதிகாரப்பூர்வ பதிவு அலுவலகம் & வரைபடம்'}
             </h2>
             <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
@@ -232,7 +208,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
           </div>
 
           {/* Right Column: Google Map Iframe with hover action overlay */}
-          <div className="lg:col-span-7 h-[300px] sm:h-[350px] rounded-2xl overflow-hidden border border-gray-100 shadow-sm relative group cursor-pointer">
+          <div className="lg:col-span-7 h-[300px] sm:h-[350px] rounded-2xl overflow-hidden border border-gray-100 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] relative group cursor-pointer">
             <a
               href="https://www.google.com/maps/search/?api=1&query=38%2F5%2C+Rajeev+Nagar+Cross+Road%2C+Opp.+SPM+Hospital%2C+Tiruchengode+-+637211"
               target="_blank"

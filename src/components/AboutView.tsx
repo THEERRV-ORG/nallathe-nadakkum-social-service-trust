@@ -68,7 +68,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="text-center max-w-3xl mx-auto space-y-3 px-4 pt-[clamp(1.25rem,3.5vh,2.5rem)]">
-        <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl lg:text-5xl">
+        <h1 className="h1-page">
           {lang === 'en' ? 'About Our Trust' : 'அறக்கட்டளை வரலாறு & ஆளுமை'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65] max-w-2xl mx-auto">
@@ -125,32 +125,43 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
         {/* Thin divider */}
         <hr className="my-8 border-t border-gray-200 sm:my-10" />
 
-        {/* Bottom: stacked editorial notes */}
-        <div className="grid grid-cols-1 items-start gap-8">
-
-          {/* Why this name */}
-          <div className="space-y-2.5">
-            <p className="section-eyebrow text-brand-violet-700">
-              {lang === 'en' ? 'Why This Name' : 'இந்தப் பெயர் ஏன்'}
-            </p>
-            <p className="text-left text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
-              {lang === 'en'
-                ? 'It is a foundational belief that consistent, small acts of daily compassion compound into real social security for those abandoned by society.'
-                : 'மனிதநேயத்துடன் நாம் செய்யும் ஒவ்வொரு சிறிய செயலும் தொடர்ந்து நடக்கும் போது, அது சமூகத்தால் கைவிடப்பட்ட மனிதர்களின் வாழ்வில் பெரிய நல்ல மாற்றங்களை ஏற்படுத்தும் என்ற நம்பிக்கையில் உருவானது.'}
-            </p>
-          </div>
-
-          {/* Where it began */}
-          <div className="space-y-2.5">
-            <p className="section-eyebrow text-brand-violet-700">
-              {lang === 'en' ? 'Where It Began' : 'எங்கே தொடங்கியது'}
-            </p>
-            <p className="text-left text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
-              {lang === 'en'
-                ? 'Our Founder, Advocate N. Kavinraj, grew up witnessing extreme economic hardships in his local vicinity. While practicing law, he initiated an informal weekend food drive, preparing meals in his kitchen and seeking out destitute individuals living on bus stands. Over two years, the scale of requirements grew rapidly, necessitating a structured public trust to legally manage volunteers and donor funds.'
-                : 'எங்கள் நிறுவனர், வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள், தனது வழக்கறிஞர் பணிக்கு இடையே சாலையோரங்களில் ஆதரவின்றித் தவித்த மக்களுக்கு வார இறுதியில் தனது சொந்தச் செலவில் சமைத்து வழங்கத் தொடங்கினார். நாளடைவில் தேவைகள் அதிகரித்ததால், அதனை மேலும் முறைப்படுத்தி, பலருக்கும் உதவிட 08.04.2025 அன்று அறக்கட்டளையாக நிறுவினார்.'}
-            </p>
-          </div>
+        {/* Bottom: unified origin timeline */}
+        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] sm:p-8">
+          {[
+            {
+              num: '01',
+              title: { en: 'Why This Name', ta: 'இந்தப் பெயர் ஏன்' },
+              body: {
+                en: 'It is a foundational belief that consistent, small acts of daily compassion compound into real social security for those abandoned by society.',
+                ta: 'மனிதநேயத்துடன் நாம் செய்யும் ஒவ்வொரு சிறிய செயலும் தொடர்ந்து நடக்கும் போது, அது சமூகத்தால் கைவிடப்பட்ட மனிதர்களின் வாழ்வில் பெரிய நல்ல மாற்றங்களை ஏற்படுத்தும் என்ற நம்பிக்கையில் உருவானது.'
+              }
+            },
+            {
+              num: '02',
+              title: { en: 'Where It Began', ta: 'எங்கே தொடங்கியது' },
+              body: {
+                en: 'Our Founder, Advocate N. Kavinraj, grew up witnessing extreme economic hardships in his local vicinity. While practicing law, he initiated an informal weekend food drive, preparing meals in his kitchen and seeking out destitute individuals living on bus stands. Over two years, the scale of requirements grew rapidly, necessitating a structured public trust to legally manage volunteers and donor funds.',
+                ta: 'எங்கள் நிறுவனர், வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள், தனது வழக்கறிஞர் பணிக்கு இடையே சாலையோரங்களில் ஆதரவின்றித் தவித்த மக்களுக்கு வார இறுதியில் தனது சொந்தச் செலவில் சமைத்து வழங்கத் தொடங்கினார். நாளடைவில் தேவைகள் அதிகரித்ததால், அதனை மேலும் முறைப்படுத்தி, பலருக்கும் உதவிட 08.04.2025 அன்று அறக்கட்டளையாக நிறுவினார்.'
+              }
+            }
+          ].map((item, idx) => (
+            <div key={item.num} className={`relative grid grid-cols-[2.75rem_minmax(0,1fr)] gap-4 ${idx > 0 ? 'border-t border-gray-100 pt-6 mt-6' : ''}`}>
+              <div className="relative flex justify-center">
+                <span className="z-10 flex h-9 w-9 items-center justify-center rounded-full bg-brand-violet-50 text-[11px] font-bold text-brand-violet-700 ring-1 ring-brand-violet-100">
+                  {item.num}
+                </span>
+                {idx === 0 && <span className="absolute top-9 h-[calc(100%+1.5rem)] w-px bg-brand-violet-100" />}
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-display text-base font-bold uppercase tracking-wider text-gray-900">
+                  {item.title[lang]}
+                </h3>
+                <p className="text-base text-gray-900 leading-relaxed">
+                  {item.body[lang]}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
       </div>{/* end hero + why group */}
@@ -163,7 +174,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
       {/* ── Meet Our Founder ─────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
+          <h2 className="font-display text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
             {lang === 'en' ? 'Meet Our Founder' : 'எங்கள் நிறுவனரை சந்திக்கவும்'}
           </h2>
         </div>
@@ -171,11 +182,20 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
         {/* Editorial split: image occupies the left column across both rows;
             the right column carries the heading above and the story below.
             On mobile it stacks role → name → image → description → CTA. */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-14 gap-y-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-14 gap-y-4 items-start">
           {/* Heading — name + role (mobile: first; desktop: right column, top) */}
-          <div className="order-1 lg:order-2 lg:col-span-7 lg:col-start-6 space-y-3">
-            <h3 className="font-display text-3xl sm:text-4xl font-bold leading-tight text-gray-900">
-              {founder.name}
+          <div className="order-1 lg:order-2 lg:col-span-7 lg:col-start-6 space-y-2">
+              <h3 className="font-display text-5xl font-extrabold leading-[0.98] tracking-tight text-gray-900 sm:text-6xl">
+              {lang === 'en' ? (
+                <>
+                  <span>N. Kavinraj</span>
+                  <span className="ml-2 align-middle text-[0.5em] font-semibold text-gray-700">
+                    B.Com., LLM., Advocate
+                  </span>
+                </>
+              ) : (
+                founder.name
+              )}
             </h3>
             <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-brand-blue-700 bg-brand-blue-50 px-3 py-1 rounded-full">
               {founder.role}
@@ -198,7 +218,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
           </motion.div>
 
           {/* Story + CTA (mobile: after image; desktop: right column, below heading) */}
-          <div className="order-3 lg:col-span-7 lg:col-start-6 space-y-5">
+          <div className="order-3 lg:col-span-7 lg:col-start-6 space-y-5 lg:-mt-1">
             <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
               {founder.desc[lang]}
             </p>
@@ -228,7 +248,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
       {/* ── Trust Credentials ────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
+          <h2 className="h2-section">
             {lang === 'en' ? 'Trust Credentials' : 'அறக்கட்டளை சான்றுகள்'}
           </h2>
         </div>
@@ -248,7 +268,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
                 <p className="text-[11px] font-bold uppercase tracking-wider text-brand-blue-700">
                   {item.label[lang]}
                 </p>
-                <p className="font-display text-lg font-bold text-gray-900 mt-1 font-mono">
+                <p className="font-display text-lg font-bold text-gray-900 mt-1">
                   {item.value}
                 </p>
               </div>
@@ -257,7 +277,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
 
           {/* Legal explanation */}
           <div className="lg:col-span-7 rounded-2xl border border-brand-blue-100 bg-brand-blue-50/50 p-6 sm:p-8">
-            <h3 className="font-display text-lg font-bold text-gray-900 mb-3">
+            <h3 className="font-display text-base font-bold text-gray-900 mb-3">
               {lang === 'en' ? 'Legal Framework' : 'சட்டக் கட்டமைப்பு'}
             </h3>
             <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
@@ -267,10 +287,12 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
         </div>
       </section>
 
-      {/* ── Ethical Guiding Values ───────────────────────────── */}
+      {/*
+        ── Ethical Guiding Values ─────────────────────────────
+        Hidden from the About page by request. Kept here for future restoration.
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
+          <h2 className="h2-section">
             {lang === 'en' ? 'Our Ethical Guiding Values' : 'நமது தார்மீக வழிகாட்டி நெறிமுறைகள்'}
           </h2>
           <p className="text-sm sm:text-base text-gray-900 max-w-xl mx-auto">
@@ -282,7 +304,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
           {values.map((val, idx) => (
             <div
               key={idx}
-              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:border-emerald-100 hover:shadow-md transition-all flex flex-col space-y-3"
+              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] hover:border-emerald-100 hover:shadow-md transition-all flex flex-col space-y-3"
             >
               <div className="flex items-center gap-3">
                 <div className={`p-2.5 rounded-xl w-fit shrink-0 ${val.tile}`}>
@@ -299,8 +321,46 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
           ))}
         </div>
       </section>
+      */}
 
       {/* ── Follow Our Daily Work (end of story) ─────────────── */}
+
+      {/*
+        Core Activities Quick Links
+        Hidden from the About page by request. Kept here for future restoration.
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-6">
+        <h2 className="h2-section">
+          {lang === 'en' ? 'Our Direct Support Programs' : '?????????????? ????? ??????????'}
+        </h2>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {[
+            { label: { en: 'Daily Food', ta: '?????????' }, tab: 'services', icon: <FaUtensils className="h-5 w-5" />, accent: 'bg-brand-orange-50 text-brand-orange-700 group-hover:bg-brand-orange-100' },
+            { label: { en: 'Free Ambulance', ta: '???? ??????????' }, tab: 'services', icon: <FaTruckMedical className="h-5 w-5" />, accent: 'bg-brand-blue-50 text-brand-blue-700 group-hover:bg-brand-blue-100' },
+            { label: { en: 'Last Rites', ta: '????? ???????' }, tab: 'services', icon: <FaHeart className="h-5 w-5" />, accent: 'bg-brand-violet-50 text-brand-violet-700 group-hover:bg-brand-violet-100' },
+            { label: { en: 'Elder Rescue', ta: '???????? ??????' }, tab: 'services', icon: <FaAward className="h-5 w-5" />, accent: 'bg-emerald-50 text-emerald-700 group-hover:bg-emerald-100' },
+            { label: { en: 'Education Support', ta: '????? ????' }, tab: 'services', icon: <FaFileLines className="h-5 w-5" />, accent: 'bg-brand-gold-50 text-brand-gold-700 group-hover:bg-brand-gold-100' },
+            { label: { en: 'Emergency Help', ta: '???? ????' }, tab: 'help', icon: <FaHeartPulse className="h-5 w-5" />, accent: 'bg-brand-blue-50 text-brand-blue-700 group-hover:bg-brand-blue-100' },
+            { label: { en: 'Blood Donation', ta: '????? ???????' }, tab: 'donate', icon: <FaDroplet className="h-5 w-5" />, accent: 'bg-rose-50 text-rose-600 group-hover:bg-rose-100' },
+            { label: { en: 'Dress Donation', ta: '??? ???????' }, tab: 'donate', icon: <FaShirt className="h-5 w-5" />, accent: 'bg-emerald-50 text-brand-leaf group-hover:bg-emerald-100' }
+          ].map((prog, idx) => (
+            <button
+              key={idx}
+              id={`about-quick-link-${idx}`}
+              onClick={() => setActiveTab(prog.tab)}
+              className="rounded-xl border border-gray-100 bg-white p-4 text-center shadow-sm hover:shadow-md hover:border-emerald-200 hover:bg-emerald-50/20 transition-all cursor-pointer flex flex-col items-center justify-center space-y-2 group"
+            >
+              <div className={`p-2 rounded-lg transition-colors ${prog.accent}`}>
+                {prog.icon}
+              </div>
+              <span className="text-xs sm:text-sm font-semibold text-gray-900 leading-tight">
+                {prog.label[lang]}
+              </span>
+            </button>
+          ))}
+        </div>
+      </section>
+      */}
+
       <SocialConnect lang={lang} />
 
     </div>
