@@ -12,8 +12,11 @@ import FormsView from './components/FormsView';
 import DonateView from './components/DonateView';
 import TransparencyView from './components/TransparencyView';
 import SpeakerView from './components/SpeakerView';
+import AdminPanel from './components/AdminPanel';
 
 export default function App() {
+  const isAdminRoute = window.location.pathname.startsWith('/admin');
+
   // Language preference is the only state intentionally persisted in-browser.
   const [lang, setLang] = useState<'en' | 'ta'>(() => {
     const saved = localStorage.getItem('nn_site_lang');
@@ -64,6 +67,10 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
+
+  if (isAdminRoute) {
+    return <AdminPanel lang={lang} />;
+  }
 
   return (
     <div className="site-shell min-h-screen bg-transparent flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">

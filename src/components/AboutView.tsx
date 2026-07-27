@@ -194,7 +194,12 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
                   </span>
                 </>
               ) : (
-                founder.name
+                <>
+                  <span>நா. கவின்ராஜ்</span>
+                  <span className="block text-[0.5em] font-semibold text-gray-700">
+                    B.Com., LLM., வழக்கறிஞர்
+                  </span>
+                </>
               )}
             </h3>
             <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-brand-blue-700 bg-brand-blue-50 px-3 py-1 rounded-full">
