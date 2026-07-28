@@ -280,3 +280,239 @@ html[lang="ta"] * {
   font-weight: 700;
   letter-spacing: 0.02em;
 }
+
+/* Imported legal/policy documents: preserve source structure, apply site theme. */
+.policy-document {
+  --policy-ink: #111827;
+  --policy-muted: #4b5563;
+  --policy-line: #e5e7eb;
+  --policy-accent: var(--color-emerald-700);
+  --policy-accent-soft: #ecfdf5;
+  --policy-warn-soft: #fffbeb;
+  --policy-warn-line: #d8a45a;
+  --policy-alert-soft: #fef2f2;
+  --policy-alert-line: #c0483c;
+  min-height: 100vh;
+}
+
+.policy-document :where(.p-hero, .t-hero, .r-hero, .pp-hero, .tc-hero, .rp-hero, .cp-hero) {
+  border-bottom: 1px solid var(--policy-line);
+  background: var(--policy-accent-soft);
+  padding: 3rem 1.5rem 2.25rem;
+  text-align: center;
+}
+
+.policy-document :where(.p-hero, .t-hero, .r-hero, .pp-hero, .tc-hero, .rp-hero, .cp-hero) h1 {
+  margin: 0 0 0.5rem;
+  color: var(--policy-ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+.policy-document :where(.p-hero, .t-hero, .r-hero, .pp-hero, .tc-hero, .rp-hero, .cp-hero) p {
+  margin: 0;
+  color: var(--policy-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.policy-document :where(.p-wrap, .t-wrap, .r-wrap, .pp-wrap, .tc-wrap, .rp-wrap, .cp-wrap) {
+  margin: 0 auto;
+  max-width: 52rem;
+  padding: 3rem 1.5rem 4.5rem;
+}
+
+.policy-document :where(h2, h3) {
+  color: var(--policy-ink);
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+
+.policy-document h2 {
+  margin: 2.5rem 0 0.75rem;
+  border-top: 1px solid var(--policy-line);
+  padding-top: 1.5rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.policy-document h2:first-of-type {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+.policy-document h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.policy-document :where(p, li, td, th) {
+  color: #334155;
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.policy-document :where(ul, ol) {
+  margin: 0.75rem 0;
+  padding-left: 1.25rem;
+}
+
+.policy-document li {
+  margin-bottom: 0.5rem;
+}
+
+.policy-document a {
+  color: var(--policy-accent);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(21, 128, 61, 0.28);
+}
+
+.policy-document a:hover {
+  border-bottom-color: var(--policy-accent);
+}
+
+.policy-document :where(.p-lead, .t-lead, .r-lead) {
+  margin-bottom: 1.75rem;
+  color: #1f2937;
+  font-size: 1.05rem;
+}
+
+.policy-document :where(.pp-toc, .tc-toc, .rp-toc, .cp-toc, .p-contact, .t-contact, .r-contact, .pp-contact, .tc-contact, .rp-contact, .cp-contact, .p-full, .t-full, .r-full) {
+  border: 1px solid var(--policy-line);
+  border-radius: 0.625rem;
+  background: #fff;
+  padding: 1.25rem 1.5rem;
+}
+
+.policy-document :where(.pp-toc, .tc-toc, .rp-toc, .cp-toc) {
+  margin-bottom: 2.5rem;
+  background: #f8fafc;
+}
+
+.policy-document :where(.pp-toc, .tc-toc, .rp-toc, .cp-toc) strong {
+  display: block;
+  margin-bottom: 0.625rem;
+  color: var(--policy-muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.policy-document :where(.pp-toc, .tc-toc, .rp-toc, .cp-toc) ol {
+  columns: 2;
+  column-gap: 2rem;
+  margin: 0;
+}
+
+.policy-document :where(.p-warn, .t-warn, .r-warn, .tc-warn, .rp-warn, .cp-warn) {
+  margin: 1.25rem 0;
+  border-left: 3px solid var(--policy-warn-line);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: var(--policy-warn-soft);
+  padding: 1rem 1.25rem;
+}
+
+.policy-document :where(.t-alert, .tc-alert, .cp-alert) {
+  margin: 1.25rem 0;
+  border-left: 3px solid var(--policy-alert-line);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: var(--policy-alert-soft);
+  padding: 1rem 1.25rem;
+}
+
+.policy-document :where(.r-callout, .pp-callout, .tc-callout, .rp-callout, .cp-callout) {
+  margin: 1.25rem 0;
+  border-left: 3px solid var(--policy-accent);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: var(--policy-accent-soft);
+  padding: 1rem 1.25rem;
+}
+
+.policy-document :where(.p-foot, .t-foot, .r-foot, .pp-foot, .tc-foot, .rp-foot, .cp-foot) {
+  margin-top: 3rem;
+  border-top: 1px solid var(--policy-line);
+  padding-top: 1.25rem;
+  color: var(--policy-muted);
+  font-size: 0.86rem;
+}
+
+.policy-document :where(.rp-table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.policy-document :where(.rp-table th, .rp-table td) {
+  border: 1px solid var(--policy-line);
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.policy-document :where(.rp-table th) {
+  background: #f8fafc;
+  color: var(--policy-ink);
+  font-weight: 800;
+}
+
+.policy-document .cp-help {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.policy-document .cp-help div {
+  border: 1px solid var(--policy-line);
+  border-radius: 0.5rem;
+  background: #fff;
+  padding: 0.875rem 1rem;
+}
+
+.policy-document .cp-help span {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--policy-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.policy-document .cp-help strong {
+  color: var(--policy-accent);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+
+.policy-document .cp-help em {
+  display: block;
+  color: var(--policy-muted);
+  font-size: 0.84rem;
+  font-style: normal;
+}
+
+@media (max-width: 640px) {
+  .policy-document :where(.p-hero, .t-hero, .r-hero, .pp-hero, .tc-hero, .rp-hero, .cp-hero) {
+    padding: 2.25rem 1.25rem 1.75rem;
+  }
+
+  .policy-document :where(.p-wrap, .t-wrap, .r-wrap, .pp-wrap, .tc-wrap, .rp-wrap, .cp-wrap) {
+    padding: 2.25rem 1.25rem 3.5rem;
+  }
+
+  .policy-document :where(.pp-toc, .tc-toc, .rp-toc, .cp-toc) ol {
+    columns: 1;
+  }
+
+  .policy-document :where(.rp-table) {
+    display: block;
+    overflow-x: auto;
+    white-space: normal;
+  }
+}

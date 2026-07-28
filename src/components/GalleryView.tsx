@@ -42,14 +42,15 @@ export default function GalleryView({ lang }: GalleryViewProps) {
       <section className="flex flex-col md:flex-row gap-4 items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-200/60">
         
         {/* Search */}
-        <div className="relative w-full md:max-w-xs">
-          <FaMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-900" />
+        <div className="flex min-h-[3.125rem] w-full items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 transition-colors focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500 md:max-w-xs">
+          <FaMagnifyingGlass className="h-4 w-4 shrink-0 text-gray-600" />
           <input
             type="text"
             placeholder={lang === 'en' ? 'Search activities...' : 'தேடவும்...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            className="min-w-0 flex-1 bg-transparent text-xs text-gray-900 placeholder:text-gray-400 focus:outline-hidden sm:text-sm"
+            style={{ border: 0, borderRadius: 0, boxShadow: 'none', minHeight: 'auto', padding: 0 }}
           />
         </div>
 

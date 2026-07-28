@@ -145,14 +145,14 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
               }
             }
           ].map((item, idx) => (
-            <div key={item.num} className={`relative grid grid-cols-[2.75rem_minmax(0,1fr)] gap-4 ${idx > 0 ? 'border-t border-gray-100 pt-6 mt-6' : ''}`}>
+            <div key={item.num} className={`relative grid grid-cols-[2.75rem_minmax(0,1fr)] gap-4 ${idx > 0 ? 'mt-6' : ''}`}>
               <div className="relative flex justify-center">
                 <span className="z-10 flex h-9 w-9 items-center justify-center rounded-full bg-brand-violet-50 text-[11px] font-bold text-brand-violet-700 ring-1 ring-brand-violet-100">
                   {item.num}
                 </span>
                 {idx === 0 && <span className="absolute top-9 h-[calc(100%+1.5rem)] w-px bg-brand-violet-100" />}
               </div>
-              <div className="space-y-2">
+              <div className={`space-y-2 ${idx > 0 ? 'border-t border-gray-100 pt-6' : ''}`}>
                 <h3 className="font-display text-base font-bold uppercase tracking-wider text-gray-900">
                   {item.title[lang]}
                 </h3>
@@ -189,7 +189,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
               {lang === 'en' ? (
                 <>
                   <span>N. Kavinraj</span>
-                  <span className="ml-2 align-middle text-[0.5em] font-semibold text-gray-700">
+                  <span className="ml-2 align-baseline text-[0.5em] font-semibold text-gray-700">
                     B.Com., LLM., Advocate
                   </span>
                 </>

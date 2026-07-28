@@ -141,7 +141,8 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
 
       </section>
 
-      {/* Official Registered Office Location & Map Section */}
+      {/* Official Registered Office Location & Map Section hidden by request; keep for future restoration. */}
+      {false && (
       <section className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-6 animate-fade-in">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-100 pb-5">
           <div className="space-y-1">
@@ -239,6 +240,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
 
         </div>
       </section>
+      )}
 
     </div>
   );

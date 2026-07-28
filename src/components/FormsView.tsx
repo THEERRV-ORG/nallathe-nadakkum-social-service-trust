@@ -453,25 +453,26 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Consent Checkbox */}
                 <div className="relative flex items-start py-2">
-                  <div className="flex h-5 items-center">
+                  <div className="relative flex h-5 w-5 shrink-0 items-center">
                     <input
                       id="consent-check"
                       type="checkbox"
                       required
                       checked={helpConsent}
                       onChange={(e) => setHelpConsent(e.target.checked)}
-                      className="peer sr-only"
+                      className="peer absolute inset-0 z-10 h-5 w-5 cursor-pointer opacity-0"
+                      aria-label={lang === 'en' ? 'Consent to physical verification' : 'நேரடி சரிபார்ப்புக்கு ஒப்புதல்'}
                     />
                     <span className="flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-white text-white transition-colors peer-checked:border-emerald-600 peer-checked:bg-emerald-600 peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-600/20">
                       <FaCheck className="h-3 w-3" />
                     </span>
                   </div>
                   <div className="ml-3 text-xs">
-                    <label htmlFor="consent-check" className="font-medium text-gray-900 cursor-pointer">
+                    <p className="font-medium text-gray-900">
                       {lang === 'en' 
                         ? 'I consent to the physical verification of these details by the trust volunteers.' 
                         : 'இந்த விவரங்கள் உண்மை என்றும், தன்னார்வலர்கள் நேரில் வந்து சரிபார்க்க முழு ஒப்புதல் அளிக்கிறேன்.'} *
-                    </label>
+                    </p>
                   </div>
                 </div>
 

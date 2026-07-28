@@ -5,12 +5,10 @@ import {
   OFFICIAL_CONTACT,
   buildWhatsAppUrl,
   createReference,
-  hasMeaningfulText,
   isValidIndianPhone,
   isValidPersonName,
   normalizeIndianPhone,
   sanitizeSingleLine,
-  sanitizeMultiLine,
 } from '../security';
 import PhotoPlaceholder from './PhotoPlaceholder';
 import AwardsShowcase from './AwardsShowcase';
@@ -22,7 +20,7 @@ interface SpeakerViewProps {
 
 /**
  * "Invite as Speaker" page. Collects invitation details (organisation, event
- * date, venue, topic) and hands them off to the trust's WhatsApp line — the
+ * date, venue) and hands them off to the trust's WhatsApp line — the
  * same privacy-preserving pattern used by the other intake forms.
  */
 export default function SpeakerView({ lang }: SpeakerViewProps) {
@@ -31,7 +29,6 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
   const [org, setOrg] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [venue, setVenue] = useState('');
-  const [details, setDetails] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState('');
@@ -44,20 +41,18 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
     const nPhone = normalizeIndianPhone(phone);
     const nOrg = sanitizeSingleLine(org, 120);
     const nVenue = sanitizeSingleLine(venue, 160);
-    const nDetails = sanitizeMultiLine(details, 500);
 
     if (
       !isValidPersonName(nName) ||
       !isValidIndianPhone(nPhone) ||
       nOrg.length < 2 ||
       !eventDate ||
-      nVenue.length < 3 ||
-      !hasMeaningfulText(nDetails, 5, 500)
+      nVenue.length < 3
     ) {
       setError(
         lang === 'en'
-          ? 'Enter a valid name, Indian phone number, organisation, event date, venue, and a short note about the event.'
-          : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண், அமைப்பின் பெயர், நிகழ்வுத் தேதி, இடம் மற்றும் நிகழ்வு பற்றிய குறிப்பை வழங்கவும்.'
+          ? 'Enter a valid name, Indian phone number, organisation, event date, and venue.'
+          : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண், அமைப்பின் பெயர், நிகழ்வுத் தேதி மற்றும் இடத்தை வழங்கவும்.'
       );
       return;
     }
@@ -74,7 +69,6 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
         `Organisation / Function: ${nOrg}`,
         `Event date: ${eventDate}`,
         `Venue: ${nVenue}`,
-        `Details: ${nDetails}`,
       ]);
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
       setLoading(false);
@@ -84,7 +78,6 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
       setOrg('');
       setEventDate('');
       setVenue('');
-      setDetails('');
     }, 500);
   };
 
@@ -218,11 +211,6 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
                 </label>
                 <input type="text" required value={venue} onChange={(e) => setVenue(e.target.value)} placeholder={lang === 'en' ? 'e.g. College Auditorium, Tiruchengode' : 'எ.கா. கல்லூரி அரங்கம், திருச்செங்கோடு'} className={inputCls} />
               </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className={labelCls}>{lang === 'en' ? 'Event Details / Requested Topic' : 'நிகழ்வு விவரம் / விரும்பும் தலைப்பு'} *</label>
-              <textarea required rows={4} value={details} onChange={(e) => setDetails(e.target.value)} placeholder={lang === 'en' ? 'Tell us about the occasion, expected audience, timing, and the topic you would like addressed...' : 'நிகழ்வு, எதிர்பார்க்கப்படும் பார்வையாளர்கள், நேரம் மற்றும் விரும்பும் தலைப்பு பற்றி எழுதவும்...'} className={inputCls} />
             </div>
 
             <button

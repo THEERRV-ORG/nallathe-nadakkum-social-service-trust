@@ -939,64 +939,69 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         </div>
       </section>
 
-      {/* Your money → outcome — concrete proof strip */}
-      <section className="rounded-2xl border border-emerald-100 bg-emerald-50/40 p-5 sm:p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-emerald-100 text-center">
-          {[
-            { amt: '₹2,000', out: { en: 'feeds one roadside meal session', ta: 'ஒரு வேளை சாலையோர அன்னதானம்' } },
-            { amt: '₹2,500', out: { en: 'fuels 10 emergency ambulance trips', ta: '10 அவசர ஆம்புலன்ஸ் பயணங்கள்' } },
-            { amt: '₹5,000', out: { en: 'covers one dignified last rite', ta: 'ஒரு கண்ணியமான இறுதிச் சடங்கு' } },
-          ].map((row, i) => (
-            <div key={i} className="px-4 py-3 sm:py-1 space-y-1">
-              <p className="font-display text-2xl font-extrabold text-emerald-700">{row.amt}</p>
-              <p className="text-xs sm:text-sm text-gray-900 leading-snug">{row.out[lang]}</p>
-            </div>
-          ))}
-        </div>
-        <p className="mt-3 text-center text-[11px] font-semibold text-emerald-800">
-          {lang === 'en' ? '0% administrative deductions · 100% reaches the field' : '0% நிர்வாகச் செலவு · 100% நேரடியாக மக்களுக்கு'}
-        </p>
-      </section>
-
-      {/* Donor confidence — key questions surfaced on the donate page itself */}
-      <section className="max-w-4xl mx-auto w-full space-y-6">
-        <div className="text-center space-y-1">
-          <h2 className="h2-section">
-            {lang === 'en' ? 'Before You Give — Common Questions' : 'நன்கொடை அளிக்கும் முன் — பொதுவான கேள்விகள்'}
-          </h2>
-          <p className="text-sm text-gray-900">
-            {lang === 'en' ? 'The essentials donors ask most. See the Transparency page for full legal details.' : 'நன்கொடையாளர்கள் அடிக்கடி கேட்கும் முக்கியக் கேள்விகள். முழு விபரங்களுக்கு வெளிப்படைத்தன்மை பக்கத்தைப் பார்க்கவும்.'}
-          </p>
-        </div>
-        <div className="divide-y divide-gray-100 border-y border-gray-100">
-          {faqData.slice(0, 3).map((faq, idx) => (
-            <div key={idx}>
-              <button
-                type="button"
-                onClick={() => setOpenDonorQuestion(openDonorQuestion === idx ? -1 : idx)}
-                className="flex min-h-[4.25rem] w-full items-center justify-between gap-4 py-4 text-left font-sans cursor-pointer"
-                aria-expanded={openDonorQuestion === idx}
-              >
-                <span className="font-display text-sm sm:text-base font-bold text-gray-900 leading-snug">
-                  {faq.question[lang]}
-                </span>
-                <FaChevronRight
-                  className={`h-4 w-4 shrink-0 text-emerald-700 transition-transform ${
-                    openDonorQuestion === idx ? 'rotate-90' : ''
-                  }`}
-                />
-              </button>
-              {openDonorQuestion === idx && (
-                <div className="pb-5 pr-8">
-                  <p className="text-sm sm:text-base text-gray-900 leading-relaxed">
-                    {faq.answer[lang]}
-                  </p>
+      {/* Uploaded screenshot sections hidden by request; keep for future restoration. */}
+      {false && (
+        <>
+          {/* Your money → outcome — concrete proof strip */}
+          <section className="rounded-2xl border border-emerald-100 bg-emerald-50/40 p-5 sm:p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-emerald-100 text-center">
+              {[
+                { amt: '₹2,000', out: { en: 'feeds one roadside meal session', ta: 'ஒரு வேளை சாலையோர அன்னதானம்' } },
+                { amt: '₹2,500', out: { en: 'fuels 10 emergency ambulance trips', ta: '10 அவசர ஆம்புலன்ஸ் பயணங்கள்' } },
+                { amt: '₹5,000', out: { en: 'covers one dignified last rite', ta: 'ஒரு கண்ணியமான இறுதிச் சடங்கு' } },
+              ].map((row, i) => (
+                <div key={i} className="px-4 py-3 sm:py-1 space-y-1">
+                  <p className="font-display text-2xl font-extrabold text-emerald-700">{row.amt}</p>
+                  <p className="text-xs sm:text-sm text-gray-900 leading-snug">{row.out[lang]}</p>
                 </div>
-              )}
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+            <p className="mt-3 text-center text-[11px] font-semibold text-emerald-800">
+              {lang === 'en' ? '0% administrative deductions · 100% reaches the field' : '0% நிர்வாகச் செலவு · 100% நேரடியாக மக்களுக்கு'}
+            </p>
+          </section>
+
+          {/* Donor confidence — key questions surfaced on the donate page itself */}
+          <section className="max-w-4xl mx-auto w-full space-y-6">
+            <div className="text-center space-y-1">
+              <h2 className="h2-section">
+                {lang === 'en' ? 'Before You Give — Common Questions' : 'நன்கொடை அளிக்கும் முன் — பொதுவான கேள்விகள்'}
+              </h2>
+              <p className="text-sm text-gray-900">
+                {lang === 'en' ? 'The essentials donors ask most. See the Transparency page for full legal details.' : 'நன்கொடையாளர்கள் அடிக்கடி கேட்கும் முக்கியக் கேள்விகள். முழு விபரங்களுக்கு வெளிப்படைத்தன்மை பக்கத்தைப் பார்க்கவும்.'}
+              </p>
+            </div>
+            <div className="divide-y divide-gray-100 border-y border-gray-100">
+              {faqData.slice(0, 3).map((faq, idx) => (
+                <div key={idx}>
+                  <button
+                    type="button"
+                    onClick={() => setOpenDonorQuestion(openDonorQuestion === idx ? -1 : idx)}
+                    className="flex min-h-[4.25rem] w-full items-center justify-between gap-4 py-4 text-left font-sans cursor-pointer"
+                    aria-expanded={openDonorQuestion === idx}
+                  >
+                    <span className="font-display text-sm sm:text-base font-bold text-gray-900 leading-snug">
+                      {faq.question[lang]}
+                    </span>
+                    <FaChevronRight
+                      className={`h-4 w-4 shrink-0 text-emerald-700 transition-transform ${
+                        openDonorQuestion === idx ? 'rotate-90' : ''
+                      }`}
+                    />
+                  </button>
+                  {openDonorQuestion === idx && (
+                    <div className="pb-5 pr-8">
+                      <p className="text-sm sm:text-base text-gray-900 leading-relaxed">
+                        {faq.answer[lang]}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        </>
+      )}
 
       <SocialConnect lang={lang} />
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FaPhone, FaLocationDot, FaInstagram, FaFacebookF, FaYoutube } from 'react-icons/fa6';
+import { Link, Route, Routes } from 'react-router-dom';
 import { OFFICIAL_SOCIAL } from './security';
 import { DonatePreset } from './data';
 import Navbar from './components/Navbar';
@@ -13,10 +14,35 @@ import DonateView from './components/DonateView';
 import TransparencyView from './components/TransparencyView';
 import SpeakerView from './components/SpeakerView';
 import AdminPanel from './components/AdminPanel';
+import LoginView from './components/LoginView';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import PolicyPage from './components/PolicyPage';
 
 export default function App() {
-  const isAdminRoute = window.location.pathname.startsWith('/admin');
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginView />} />
+      <Route path="/privacy-policy" element={<PolicyPage slug="privacy-policy" />} />
+      <Route path="/privacy-policy-full" element={<PolicyPage slug="privacy-policy-full" />} />
+      <Route path="/terms-and-conditions" element={<PolicyPage slug="terms-and-conditions" />} />
+      <Route path="/terms-and-conditions-full" element={<PolicyPage slug="terms-and-conditions-full" />} />
+      <Route path="/refund-policy" element={<PolicyPage slug="refund-policy" />} />
+      <Route path="/refund-policy-full" element={<PolicyPage slug="refund-policy-full" />} />
+      <Route path="/child-protection-policy" element={<PolicyPage slug="child-protection-policy" />} />
+      <Route
+        path="/admin/*"
+        element={(
+          <ProtectedAdminRoute>
+            <AdminPanel />
+          </ProtectedAdminRoute>
+        )}
+      />
+      <Route path="*" element={<PublicSite />} />
+    </Routes>
+  );
+}
 
+function PublicSite() {
   // Language preference is the only state intentionally persisted in-browser.
   const [lang, setLang] = useState<'en' | 'ta'>(() => {
     const saved = localStorage.getItem('nn_site_lang');
@@ -34,13 +60,11 @@ export default function App() {
     }, 80);
   };
 
-  const footerSitemap = [
-    { id: 'home', label: { en: 'Home', ta: 'முகப்பு' } },
-    { id: 'about', label: { en: 'About Us', ta: 'எங்களைப் பற்றி' } },
-    { id: 'services', label: { en: 'Services', ta: 'சேவைகள்' } },
-    { id: 'donate', label: { en: 'Donate', ta: 'நன்கொடை' } },
-    { id: 'help', label: { en: 'Request Help', ta: 'உதவி கோருங்கள்' } },
-    { id: 'volunteer', label: { en: 'Volunteer', ta: 'தன்னார்வலர்' } },
+
+  const footerPolicies = [
+    { href: '/privacy-policy', label: 'Privacy Policy' },
+    { href: '/terms-and-conditions', label: 'Terms & Conditions' },
+    { href: '/refund-policy', label: 'Refund Policy' },
   ];
 
   const footerServices = [
@@ -67,10 +91,6 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
-
-  if (isAdminRoute) {
-    return <AdminPanel lang={lang} />;
-  }
 
   return (
     <div className="site-shell min-h-screen bg-transparent flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
@@ -164,14 +184,14 @@ export default function App() {
 
             <div className="space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900">
-                {lang === 'en' ? 'Sitemap' : 'தள வரைபடம்'}
+                Policies
               </h4>
               <ul className="space-y-2 text-xs text-gray-900">
-                {footerSitemap.map((item) => (
-                  <li key={item.id}>
-                    <button onClick={() => setActiveTab(item.id)} className="hover:text-emerald-700 hover:underline cursor-pointer">
-                      {item.label[lang]}
-                    </button>
+                {footerPolicies.map((item) => (
+                  <li key={item.href}>
+                    <Link to={item.href} className="hover:text-emerald-700 hover:underline">
+                      {item.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -234,13 +254,6 @@ export default function App() {
             </p>
 
             <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setActiveTab('transparency')}
-                className="hover:text-emerald-700 transition-colors cursor-pointer underline"
-              >
-                {lang === 'en' ? 'Legals & Disclaimers' : 'சட்ட விபரங்கள் & மறுப்புரை'}
-              </button>
-
               <span className="offbit-credit text-gray-900">
                 Designed and Maintained by{' '}
                 <a

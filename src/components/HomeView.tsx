@@ -289,6 +289,8 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               </div>
             </div>
 
+            {/* Uploaded screenshot section hidden by request; keep for future restoration. */}
+            {false && (
             <div className="mt-8 grid grid-cols-1 divide-y divide-white/10 border-t border-white/10 pt-6 md:grid-cols-3 md:divide-x md:divide-y-0">
               <div className="flex gap-3 py-4 first:pt-0 last:pb-0 md:px-5 md:py-0 md:first:pl-0 md:last:pr-0">
                 <div className="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-brand-gold ring-1 ring-white/15">
@@ -338,6 +340,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                 </div>
               </div>
             </div>
+            )}
           </div>
         </StarsBackground>
       </section>
