@@ -1,5 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { OFFICIAL_CONTACT, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
+import { saveSubmission } from '../lib/submissions';
 import { motion, AnimatePresence } from 'motion/react';
 import { FaLocationDot, FaEnvelope, FaPhone, FaChevronDown, FaChevronRight, FaShieldHalved, FaUserCheck, FaClock, FaCircleInfo, FaHandsHoldingCircle, FaCheck } from 'react-icons/fa6';
 import { faqData } from '../data';
@@ -121,7 +122,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
   // Help requests are prepared for WhatsApp handoff so distress data is not
   // left behind in browser storage on a shared device.
-  const handleHelpSubmit = (e: React.FormEvent) => {
+  const handleHelpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalizedName = sanitizeSingleLine(helpName, 80);
     const normalizedPhone = normalizeIndianPhone(helpPhone);
@@ -136,32 +137,46 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     setHelpError('');
     setHelpLoading(true);
 
-    setTimeout(() => {
-      const trackingId = createReference('NN-REQ');
-      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
-        `Form: Request Help`,
-        `Reference: ${trackingId}`,
-        `Name: ${normalizedName}`,
-        `Phone: ${normalizedPhone}`,
-        `Address: ${normalizedAddress}`,
-        `Need: ${helpType}`,
-        `Urgency: ${helpUrgency}`,
-        `Situation: ${normalizedDesc}`,
-      ]);
+    const trackingId = createReference('NN-REQ');
+    const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+      `Form: Request Help`,
+      `Reference: ${trackingId}`,
+      `Name: ${normalizedName}`,
+      `Phone: ${normalizedPhone}`,
+      `Address: ${normalizedAddress}`,
+      `Need: ${helpType}`,
+      `Urgency: ${helpUrgency}`,
+      `Situation: ${normalizedDesc}`,
+    ]);
+
+    try {
+      await saveSubmission('assistanceRequests', {
+        reference: trackingId,
+        beneficiaryName: normalizedName,
+        phone: normalizedPhone,
+        assistanceCategory: helpType,
+        urgencyLevel: helpUrgency,
+        address: normalizedAddress,
+        situation: normalizedDesc,
+        consent: helpConsent,
+      });
 
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      setHelpLoading(false);
       setHelpSuccess(trackingId);
       setHelpName('');
       setHelpPhone('');
       setHelpAddress('');
       setHelpDesc('');
       setHelpConsent(false);
-    }, 500);
+    } catch {
+      setHelpError(lang === 'en' ? 'Could not save your request. Please try again.' : 'உங்கள் கோரிக்கையை சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.');
+    } finally {
+      setHelpLoading(false);
+    }
   };
 
   // Volunteer details are routed to a mail draft for staff follow-up.
-  const handleVolSubmit = (e: React.FormEvent) => {
+  const handleVolSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalizedName = sanitizeSingleLine(volName, 80);
     const normalizedPhone = normalizeIndianPhone(volPhone);
@@ -176,33 +191,46 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     setVolError('');
     setVolLoading(true);
 
-    setTimeout(() => {
-      const trackingId = createReference('NN-VOL');
-      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
-        `Form: Volunteer Registration`,
-        `Reference: ${trackingId}`,
-        `Name: ${normalizedName}`,
-        `Phone: ${normalizedPhone}`,
-        `Location: ${normalizedLocation}`,
-        `Availability: ${volAvailability}`,
-        `Interests: ${volInterests.join(', ')}`,
-        `Skills: ${normalizedSkills || 'Not provided'}`,
-      ]);
+    const trackingId = createReference('NN-VOL');
+    const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+      `Form: Volunteer Registration`,
+      `Reference: ${trackingId}`,
+      `Name: ${normalizedName}`,
+      `Phone: ${normalizedPhone}`,
+      `Location: ${normalizedLocation}`,
+      `Availability: ${volAvailability}`,
+      `Interests: ${volInterests.join(', ')}`,
+      `Skills: ${normalizedSkills || 'Not provided'}`,
+    ]);
+
+    try {
+      await saveSubmission('volunteerApplications', {
+        reference: trackingId,
+        name: normalizedName,
+        phone: normalizedPhone,
+        location: normalizedLocation,
+        availability: volAvailability,
+        interests: volInterests,
+        skillsMessage: normalizedSkills,
+      });
 
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      setVolLoading(false);
       setVolSuccess(trackingId);
       setVolName('');
       setVolPhone('');
       setVolLocation('');
       setVolInterests([]);
       setVolSkills('');
-    }, 500);
+    } catch {
+      setVolError(lang === 'en' ? 'Could not save your volunteer application. Please try again.' : 'தன்னார்வ விண்ணப்பத்தை சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.');
+    } finally {
+      setVolLoading(false);
+    }
   };
 
   // General enquiries follow the same pattern: validate first, then hand off
   // to a mail draft rather than creating local-only pseudo-submissions.
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalizedName = sanitizeSingleLine(contactName, 80);
     const normalizedPhone = normalizeIndianPhone(contactPhone);
@@ -216,21 +244,30 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     setContactError('');
     setContactLoading(true);
 
-    setTimeout(() => {
-      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
-        `Form: Contact / Enquiry`,
-        `Name: ${normalizedName}`,
-        `Phone: ${normalizedPhone}`,
-        `Message: ${normalizedMessage}`,
-      ]);
+    const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+      `Form: Contact / Enquiry`,
+      `Name: ${normalizedName}`,
+      `Phone: ${normalizedPhone}`,
+      `Message: ${normalizedMessage}`,
+    ]);
+
+    try {
+      await saveSubmission('contactMessages', {
+        name: normalizedName,
+        phone: normalizedPhone,
+        message: normalizedMessage,
+      });
 
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      setContactLoading(false);
       setContactSuccess(true);
       setContactName('');
       setContactPhone('');
       setContactMsg('');
-    }, 500);
+    } catch {
+      setContactError(lang === 'en' ? 'Could not save your message. Please try again.' : 'உங்கள் செய்தியை சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.');
+    } finally {
+      setContactLoading(false);
+    }
   };
 
   return (

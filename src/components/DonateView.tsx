@@ -7,6 +7,7 @@ import {
   FaCopy, FaCheck, FaWhatsapp, FaPhone, FaChevronRight
 } from 'react-icons/fa6';
 import { DonatePreset, faqData } from '../data';
+import { saveSubmission } from '../lib/submissions';
 import SocialConnect from './SocialConnect';
 import { CustomSelect, SelectOption } from './ui/FormControls';
 
@@ -239,7 +240,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
 
   // Create a normalized acknowledgement draft for staff review. No payment is
   // accepted or verified in this client-only flow.
-  const handleSponsorSubmit = (e: React.FormEvent) => {
+  const handleSponsorSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalizedName = sanitizeSingleLine(donorName, 80);
     const normalizedPhone = normalizeIndianPhone(donorPhone);
@@ -269,38 +270,48 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
     setDonorError('');
     setDonorLoading(true);
 
-    setTimeout(() => {
-      const bloodLabel = bloodType === 'Other' ? (sanitizeSingleLine(bloodOther, 40) || 'Other') : bloodType;
-      const itemDetail = donationType === 'Money'
-        ? `Rs. ${Number(donationAmt).toLocaleString('en-IN')}`
-        : donationType === 'Blood'
-        ? `${bloodLabel} (${lang === 'en' ? 'Blood Type' : 'இரத்த வகை'})`
-        : normalizedItem;
+    const bloodLabel = bloodType === 'Other' ? (sanitizeSingleLine(bloodOther, 40) || 'Other') : bloodType;
+    const itemDetail = donationType === 'Money'
+      ? `Rs. ${Number(donationAmt).toLocaleString('en-IN')}`
+      : donationType === 'Blood'
+      ? `${bloodLabel} (${lang === 'en' ? 'Blood Type' : 'இரத்த வகை'})`
+      : normalizedItem;
 
-      const donationTypeLabel = {
-        'Money': lang === 'en' ? 'Financial Remittance' : 'நிதிப் பங்களிப்பு',
-        'Groceries': lang === 'en' ? 'Groceries / Materials' : 'மளிகைப் பொருட்கள் / பொருளுதவி',
-        'Blood': lang === 'en' ? 'Blood Donation' : 'இரத்த நன்கொடை',
-        'Dress': lang === 'en' ? 'Clothes / Dress' : 'ஆடைகள் / உடை',
-      }[donationType] || donationType;
+    const donationTypeLabel = {
+      'Money': lang === 'en' ? 'Financial Remittance' : 'நிதிப் பங்களிப்பு',
+      'Groceries': lang === 'en' ? 'Groceries / Materials' : 'மளிகைப் பொருட்கள் / பொருளுதவி',
+      'Blood': lang === 'en' ? 'Blood Donation' : 'இரத்த நன்கொடை',
+      'Dress': lang === 'en' ? 'Clothes / Dress' : 'ஆடைகள் / உடை',
+    }[donationType] || donationType;
 
-      const programLine =
-        donationType === 'Money'
-          ? `Programme: ${financialProgram === 'other' ? (sanitizeSingleLine(programOther, 80) || 'Other') : (FINANCIAL_PROGRAMS[financialProgram]?.en ?? financialProgram)}`
-          : '';
+    const programme = donationType === 'Money'
+      ? financialProgram === 'other'
+        ? (sanitizeSingleLine(programOther, 80) || 'Other')
+        : (FINANCIAL_PROGRAMS[financialProgram]?.en ?? financialProgram)
+      : 'Not applicable';
+    const programLine = donationType === 'Money' ? `Programme: ${programme}` : '';
 
-      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
-        `Form: Donation Pledge`,
-        `Name: ${normalizedName}`,
-        `Phone: ${normalizedPhone}`,
-        `Support type: ${donationTypeLabel}`,
-        programLine,
-        `Support detail: ${itemDetail}`,
-        `Message: ${normalizedMessage || 'Blessed to support.'}`,
-      ]);
+    const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+      `Form: Donation Pledge`,
+      `Name: ${normalizedName}`,
+      `Phone: ${normalizedPhone}`,
+      `Support type: ${donationTypeLabel}`,
+      programLine,
+      `Support detail: ${itemDetail}`,
+      `Message: ${normalizedMessage || 'Blessed to support.'}`,
+    ]);
+
+    try {
+      await saveSubmission('donationPledges', {
+        donorName: normalizedName,
+        phone: normalizedPhone,
+        supportType: donationTypeLabel,
+        programme,
+        supportDetail: itemDetail,
+        message: normalizedMessage || 'Blessed to support.',
+      });
 
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      setDonorLoading(false);
       setDonorSuccess(true);
       setDonorName('');
       setDonorPhone('');
@@ -308,7 +319,11 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
       setDonationItem('');
       setBloodType('O+');
       setDonorMsg('');
-    }, 500);
+    } catch {
+      setDonorError(lang === 'en' ? 'Could not save your donation pledge. Please try again.' : 'உங்கள் நன்கொடை உறுதியை சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.');
+    } finally {
+      setDonorLoading(false);
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 import {
   FaBars,
@@ -13,6 +13,8 @@ import {
 } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { isFirebaseConfigured } from '../lib/firebase';
+import { listenToSubmissions, type SubmissionCollection, type SubmissionRecord } from '../lib/submissions';
 import BrandMark from './ui/BrandMark';
 
 type AdminRoute =
@@ -34,36 +36,6 @@ type AdminRow = {
   values: RowValue[];
 };
 
-const assistanceRows: AdminRow[] = [
-  { id: 'AR-9012', status: 'New', values: ['Arjun Kumar', '+91 98765 41021', 'Medical Assistance', 'High', 'Madurai', 'Emergency treatment support needed after admission.'] },
-  { id: 'AR-8994', status: 'New', values: ['Priya Mani', '+91 98412 55904', 'Education Support', 'Medium', 'Chennai', 'College fee assistance requested with documents.'] },
-  { id: 'AR-8950', status: 'Approved', values: ['Latha S.', '+91 94431 22567', 'Elderly Care', 'Low', 'Coimbatore', 'Elderly shelter referral and local verification.'] },
-  { id: 'AR-8910', status: 'Completed', values: ['Ram Kumar', '+91 75400 17625', 'Food Support', 'Medium', 'Namakkal', 'Annadhanam request for roadside family cluster.'] },
-];
-
-const volunteerRows: AdminRow[] = [
-  { id: 'VA-3021', status: 'New', values: ['Meera Jasmine', '+91 98765 00981', 'Madurai', 'Weekends', 'Food cooking & meal packing', 'Can help with packing and distribution.'] },
-  { id: 'VA-3018', status: 'Approved', values: ['Arun Karthik', '+91 94444 11880', 'Chennai', 'Evenings', 'Ambulance operations logs', 'Comfortable with call coordination.'] },
-  { id: 'VA-2999', status: 'Completed', values: ['Nivetha R.', '+91 90031 44220', 'Tiruchengode', 'Weekdays', 'Street elder rescue', 'Available for field verification visits.'] },
-];
-
-const speakerRows: AdminRow[] = [
-  { id: 'SI-118', status: 'New', values: ['S. Kumar', '+91 98765 43210', 'Tiruchengode Arts College', '12 Aug 2026', 'College Auditorium, Tiruchengode'] },
-  { id: 'SI-117', status: 'Approved', values: ['Deepak Raj', '+91 90033 12000', 'Rotary Club Namakkal', '28 Aug 2026', 'Namakkal'] },
-];
-
-const messageRows: AdminRow[] = [
-  { id: 'CM-544', status: 'New', values: ['Deepak Raj', '+91 90033 12000', 'I would like to know about the upcoming blood donation camp.'] },
-  { id: 'CM-543', status: 'Approved', values: ['Sarah Williams', 'sarah@example.com', 'Inquiry regarding partnership opportunities.'] },
-  { id: 'CM-542', status: 'Completed', values: ['Vijay Sethu', '+91 98421 77880', 'Thank you for the support provided to my local community center.'] },
-];
-
-const donationRows: AdminRow[] = [
-  { id: 'DR-210', status: 'Completed', values: ['Local family sponsor', '+91 98765 43210', 'Financial Remittance', 'Daily Annadhanam', 'Rs. 2,000', 'Please use this for morning annadhanam.'] },
-  { id: 'DR-209', status: 'Approved', values: ['Community rice donor', '+91 94431 22567', 'Groceries / Materials', 'General Trust Support', 'Rice bags', 'Monthly rice bag contribution for food service.'] },
-  { id: 'DR-208', status: 'Completed', values: ['Student welfare sponsor', '+91 90031 44220', 'Financial Remittance', 'Education Support', 'Rs. 5,000', 'For school fee support.'] },
-];
-
 const navGroups: Array<{ title: string; items: Array<{ id: AdminRoute; label: string; icon: ReactElement }> }> = [
   {
     title: 'Form Submissions',
@@ -77,6 +49,64 @@ const navGroups: Array<{ title: string; items: Array<{ id: AdminRoute; label: st
   { title: 'Financial / Donor', items: [{ id: 'donations', label: 'Donation Records', icon: <FaMoneyBillTransfer /> }] },
 ];
 
+const routeCollections: Record<AdminRoute, SubmissionCollection> = {
+  assistance: 'assistanceRequests',
+  volunteers: 'volunteerApplications',
+  'speaker-invitations': 'speakerInvitations',
+  messages: 'contactMessages',
+  donations: 'donationPledges',
+};
+
+function value(data: Record<string, unknown>, key: string) {
+  const raw = data[key];
+  if (Array.isArray(raw)) return raw.join(', ');
+  return typeof raw === 'string' || typeof raw === 'number' || typeof raw === 'boolean' ? String(raw) : '';
+}
+
+function rowFor(route: AdminRoute, record: SubmissionRecord): AdminRow {
+  const data = record.data;
+  const valuesByRoute: Record<AdminRoute, string[]> = {
+    assistance: [
+      value(data, 'beneficiaryName'),
+      value(data, 'phone'),
+      value(data, 'assistanceCategory'),
+      value(data, 'urgencyLevel'),
+      value(data, 'address'),
+      value(data, 'situation'),
+    ],
+    volunteers: [
+      value(data, 'name'),
+      value(data, 'phone'),
+      value(data, 'location'),
+      value(data, 'availability'),
+      value(data, 'interests'),
+      value(data, 'skillsMessage'),
+    ],
+    'speaker-invitations': [
+      value(data, 'name'),
+      value(data, 'phone'),
+      value(data, 'organisation'),
+      value(data, 'eventDate'),
+      value(data, 'venue'),
+    ],
+    messages: [
+      value(data, 'name'),
+      value(data, 'phone'),
+      value(data, 'message'),
+    ],
+    donations: [
+      value(data, 'donorName'),
+      value(data, 'phone'),
+      value(data, 'supportType'),
+      value(data, 'programme'),
+      value(data, 'supportDetail'),
+      value(data, 'message'),
+    ],
+  };
+
+  return { id: record.id, status: '', values: valuesByRoute[route] };
+}
+
 export default function AdminPanel({ onClose }: AdminPanelProps) {
   const routerNavigate = useNavigate();
   const { logout } = useAuth();
@@ -87,13 +117,51 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const rowsByRoute: Record<string, AdminRow[]> = {
-    assistance: assistanceRows,
-    volunteers: volunteerRows,
-    'speaker-invitations': speakerRows,
-    messages: messageRows,
-    donations: donationRows,
-  };
+  const [rowsByRoute, setRowsByRoute] = useState<Record<AdminRoute, AdminRow[]>>({
+    assistance: [],
+    volunteers: [],
+    'speaker-invitations': [],
+    messages: [],
+    donations: [],
+  });
+  const [loadingByRoute, setLoadingByRoute] = useState<Record<AdminRoute, boolean>>({
+    assistance: true,
+    volunteers: true,
+    'speaker-invitations': true,
+    messages: true,
+    donations: true,
+  });
+  const [tableError, setTableError] = useState('');
+
+  useEffect(() => {
+    if (!isFirebaseConfigured) {
+      setTableError('Firebase is not configured yet. Add your Firebase env values to load submissions.');
+      setLoadingByRoute({
+        assistance: false,
+        volunteers: false,
+        'speaker-invitations': false,
+        messages: false,
+        donations: false,
+      });
+      return undefined;
+    }
+
+    const unsubs = (Object.keys(routeCollections) as AdminRoute[]).map((routeKey) => (
+      listenToSubmissions(
+        routeCollections[routeKey],
+        (records) => {
+          setRowsByRoute((current) => ({ ...current, [routeKey]: records.map((record) => rowFor(routeKey, record)) }));
+          setLoadingByRoute((current) => ({ ...current, [routeKey]: false }));
+        },
+        () => {
+          setTableError('Could not load submissions from Firebase.');
+          setLoadingByRoute((current) => ({ ...current, [routeKey]: false }));
+        },
+      )
+    ));
+
+    return () => unsubs.forEach((unsubscribe) => unsubscribe());
+  }, []);
 
   const activeLabel = navGroups.flatMap((g) => g.items).find((item) => item.id === route)?.label ?? 'Assistance Requests';
 
@@ -191,6 +259,8 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
                 subtitle="Request Help form submissions."
                 headers={['Beneficiary Name', 'Contact Phone / WhatsApp', 'Assistance Category', 'Urgency Level', 'Address / Location Details', 'Distress / Medical Situation']}
                 rows={rowsByRoute.assistance}
+                loading={loadingByRoute.assistance}
+                error={tableError}
               />
             )}
             {route === 'volunteers' && (
@@ -199,6 +269,8 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
                 subtitle="Volunteer form submissions."
                 headers={['Your Name', 'WhatsApp Phone Number', 'Your Location / Town', 'Your Availability', 'Areas of Interest', 'Any specific skills / message']}
                 rows={rowsByRoute.volunteers}
+                loading={loadingByRoute.volunteers}
+                error={tableError}
               />
             )}
             {route === 'speaker-invitations' && (
@@ -207,6 +279,8 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
                 subtitle="Invite as Speaker form submissions."
                 headers={['Your Name', 'Phone / WhatsApp', 'Organisation / Function Name', 'Event Date', 'Venue / Location']}
                 rows={rowsByRoute['speaker-invitations']}
+                loading={loadingByRoute['speaker-invitations']}
+                error={tableError}
               />
             )}
             {route === 'messages' && (
@@ -215,6 +289,8 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
                 subtitle="Contact form submissions."
                 headers={['Your Name', 'Phone / WhatsApp', 'Message']}
                 rows={rowsByRoute.messages}
+                loading={loadingByRoute.messages}
+                error={tableError}
               />
             )}
             {route === 'donations' && (
@@ -223,6 +299,8 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
                 subtitle="Donation form and acknowledgement records."
                 headers={['Donor Name', 'Contact Phone', 'Support Type', 'Programme to Support', 'Amount / Material / Blood Type', 'Blessing / Message']}
                 rows={rowsByRoute.donations}
+                loading={loadingByRoute.donations}
+                error={tableError}
               />
             )}
           </main>
@@ -237,11 +315,15 @@ function FormTable({
   subtitle,
   headers,
   rows,
+  loading,
+  error,
 }: {
   title: string;
   subtitle: string;
   headers: string[];
   rows: AdminRow[];
+  loading: boolean;
+  error: string;
 }) {
   return (
     <section className="space-y-4">
@@ -255,7 +337,21 @@ function FormTable({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {rows.map((row) => (
+              {error && (
+                <tr>
+                  <td colSpan={headers.length} className="px-4 py-6 text-center text-sm font-semibold text-red-600">
+                    {error}
+                  </td>
+                </tr>
+              )}
+              {!error && loading && (
+                <tr>
+                  <td colSpan={headers.length} className="px-4 py-10 text-center text-sm font-semibold text-gray-500">
+                    Loading submissions...
+                  </td>
+                </tr>
+              )}
+              {!error && !loading && rows.map((row) => (
                 <tr key={row.id} className="hover:bg-emerald-50/40">
                   {row.values.map((value, idx) => (
                     <td key={`${row.id}-${idx}`} className="max-w-[18rem] px-4 py-3 align-top">
@@ -264,7 +360,7 @@ function FormTable({
                   ))}
                 </tr>
               ))}
-              {rows.length === 0 && (
+              {!error && !loading && rows.length === 0 && (
                 <tr>
                   <td colSpan={headers.length} className="px-4 py-10 text-center text-sm font-semibold text-gray-500">
                     No rows available.

@@ -13,6 +13,7 @@ import {
 import PhotoPlaceholder from './PhotoPlaceholder';
 import AwardsShowcase from './AwardsShowcase';
 import { DatePicker } from './ui/FormControls';
+import { saveSubmission } from '../lib/submissions';
 
 interface SpeakerViewProps {
   lang: 'en' | 'ta';
@@ -35,7 +36,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
 
   const today = new Date().toISOString().slice(0, 10);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const nName = sanitizeSingleLine(name, 80);
     const nPhone = normalizeIndianPhone(phone);
@@ -59,26 +60,39 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
 
     setError('');
     setLoading(true);
-    setTimeout(() => {
-      const trackingId = createReference('NN-SPK');
-      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
-        `Form: Invite as Speaker`,
-        `Reference: ${trackingId}`,
-        `Name: ${nName}`,
-        `Phone: ${nPhone}`,
-        `Organisation / Function: ${nOrg}`,
-        `Event date: ${eventDate}`,
-        `Venue: ${nVenue}`,
-      ]);
+    const trackingId = createReference('NN-SPK');
+    const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+      `Form: Invite as Speaker`,
+      `Reference: ${trackingId}`,
+      `Name: ${nName}`,
+      `Phone: ${nPhone}`,
+      `Organisation / Function: ${nOrg}`,
+      `Event date: ${eventDate}`,
+      `Venue: ${nVenue}`,
+    ]);
+
+    try {
+      await saveSubmission('speakerInvitations', {
+        reference: trackingId,
+        name: nName,
+        phone: nPhone,
+        organisation: nOrg,
+        eventDate,
+        venue: nVenue,
+      });
+
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      setLoading(false);
       setSuccess(trackingId);
       setName('');
       setPhone('');
       setOrg('');
       setEventDate('');
       setVenue('');
-    }, 500);
+    } catch {
+      setError(lang === 'en' ? 'Could not save your invitation. Please try again.' : 'உங்கள் அழைப்பை சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputCls =
