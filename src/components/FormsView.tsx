@@ -2,7 +2,7 @@
 import { OFFICIAL_CONTACT, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
 import { saveSubmission } from '../lib/submissions';
 import { motion, AnimatePresence } from 'motion/react';
-import { FaLocationDot, FaEnvelope, FaPhone, FaChevronDown, FaChevronRight, FaShieldHalved, FaUserCheck, FaClock, FaCircleInfo, FaHandsHoldingCircle, FaCheck } from 'react-icons/fa6';
+import { FaLocationDot, FaEnvelope, FaPhone, FaChevronDown, FaChevronRight, FaShieldHalved, FaUserCheck, FaClock, FaCircleInfo, FaHandsHoldingCircle, FaCheck, FaMap, FaArrowUpRightFromSquare } from 'react-icons/fa6';
 import { faqData } from '../data';
 import Monogram from './Monogram';
 import { CustomSelect } from './ui/FormControls';
@@ -894,6 +894,84 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               </form>
             )}
           </div>
+
+          {/* Registered Office Location */}
+          <section className="lg:col-span-12 rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] sm:p-8">
+            <div className="mb-6 space-y-2 border-b border-gray-100 pb-5">
+              <span className="section-eyebrow w-fit rounded-full bg-emerald-50 px-2.5 py-1 text-emerald-700">
+                {lang === 'en' ? 'Physical Presence' : 'நேரடி இருப்பிடம்'}
+              </span>
+              <h2 className="h2-section">
+                {lang === 'en' ? 'Official Registered Office & Location Pin' : 'அதிகாரப்பூர்வ பதிவு அலுவலகம் & வரைபடம்'}
+              </h2>
+              <p className="max-w-2xl text-sm leading-relaxed text-gray-900 sm:text-base sm:leading-[1.65]">
+                {lang === 'en'
+                  ? 'We operate in full transparency with a physical office in Tiruchengode. Click below to open GPS coordinates in Google Maps.'
+                  : 'நாங்கள் திருச்செங்கோட்டில் முறையான அலுவலகத்துடன் செயல்படுகிறோம். எங்களது இருப்பிடத்தை வரைபடம் மூலம் துல்லியமாக அறிந்து கொள்ள கீழே உள்ள இணைப்பை அழுத்தவும்.'}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
+              <div className="space-y-5 lg:col-span-5">
+                <div className="space-y-4 rounded-xl border border-gray-100 bg-gray-50 p-5">
+                  <div className="space-y-1">
+                    <span className="block text-[9px] font-bold uppercase tracking-widest text-gray-900">
+                      {lang === 'en' ? 'Registered Office Address' : 'அலுவலக முகவரி'}
+                    </span>
+                    <p className="font-display text-sm font-bold leading-snug text-gray-900">
+                      Nallathe Nadakkum Trust
+                    </p>
+                    <p className="text-sm font-medium leading-relaxed text-gray-900 sm:text-base sm:leading-[1.65]">
+                      38/5, Rajeev Nagar Cross Road,<br />
+                      Opp. SPM Hospital,<br />
+                      Tiruchengode - 637211,<br />
+                      Namakkal District, Tamil Nadu.
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5 border-t border-gray-200/60 pt-2 text-xs text-gray-900">
+                    <div className="flex items-center space-x-2">
+                      <FaLocationDot className="h-4 w-4 shrink-0 text-emerald-600" />
+                      <span><strong>{lang === 'en' ? 'Landmark:' : 'அடையாளம்:'}</strong> Opp. SPM Hospital</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <FaMap className="h-4 w-4 shrink-0 text-emerald-600" />
+                      <span><strong>{lang === 'en' ? 'Locality:' : 'பகுதி:'}</strong> Tiruchengode Town & Taluk</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=38%2F5%2C+Rajeev+Nagar+Cross+Road%2C+Opp.+SPM+Hospital%2C+Tiruchengode+-+637211"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center space-x-2 rounded-xl bg-emerald-600 px-5 py-3 text-xs font-bold text-white shadow-sm transition-all hover:scale-[1.01] hover:bg-emerald-700 active:scale-[0.99] sm:text-sm"
+                  >
+                    <FaArrowUpRightFromSquare className="h-4 w-4" />
+                    <span>{lang === 'en' ? 'Open in Google Maps App' : 'கூகுள் மேப்ஸில் திறக்கவும்'}</span>
+                  </a>
+                  <p className="text-center text-[11px] text-gray-900">
+                    {lang === 'en' ? 'Live Navigation Coordinates for Visitors & Donors' : 'வருகையாளர்கள் மற்றும் நன்கொடையாளர்களுக்கான நேரடி வழிகாட்டி'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="relative h-[300px] overflow-hidden rounded-2xl border border-gray-100 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] sm:h-[350px] lg:col-span-7">
+                <iframe
+                  src="https://maps.google.com/maps?q=SPM%20Hospital,%20Tiruchengode&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="h-full w-full grayscale-[15%] contrast-[105%]"
+                  title={lang === 'en' ? 'Registered office location map' : 'பதிவு அலுவலக வரைபடம்'}
+                />
+              </div>
+            </div>
+          </section>
 
           {/* Frequently Asked Questions */}
           <div className="lg:col-span-12 space-y-6 pt-6">

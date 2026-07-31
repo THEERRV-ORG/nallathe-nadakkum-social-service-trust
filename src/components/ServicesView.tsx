@@ -301,7 +301,9 @@ export default function ServicesView({ lang, setActiveTab, setDonatePreset }: Se
                       {lang === 'en' ? 'Sponsor a Meal' : 'ஒரு வேளை உணவை ஆதரிக்க'}
                     </p>
                     <p className="text-sm font-medium text-gray-900">
-                      {lang === 'en' ? 'Choose a meal session to support.' : 'ஆதரிக்க வேண்டிய உணவு நேரத்தைத் தேர்வு செய்யுங்கள்.'}
+                      {lang === 'en'
+                        ? 'Choose a meal session to support. Each listed session is planned for approximately 50 persons.'
+                        : 'ஆதரிக்க வேண்டிய உணவு நேரத்தைத் தேர்வு செய்யுங்கள். ஒவ்வொரு உணவு நேரமும் சுமார் 50 பேருக்காக திட்டமிடப்பட்டுள்ளது.'}
                     </p>
                   </div>
 
@@ -319,7 +321,7 @@ export default function ServicesView({ lang, setActiveTab, setDonatePreset }: Se
                         },
                         {
                           head: { en: 'Old-Age Home Meals', ta: 'முதியோர் இல்ல உணவு' },
-                          sub: { en: 'Mudhiyor Illam', ta: 'முதியோர் இல்லம்' },
+                          sub: { en: 'Food supplied to nearby old-age homes', ta: 'அருகிலுள்ள முதியோர் இல்லங்களுக்கு உணவு வழங்கல்' },
                           slots: [
                             { t: { en: 'Breakfast', ta: 'காலை உணவு' }, v: '4,500' },
                             { t: { en: 'Lunch', ta: 'மதிய உணவு' }, v: '6,000' },
@@ -371,10 +373,21 @@ export default function ServicesView({ lang, setActiveTab, setDonatePreset }: Se
                     </div>
                   </div>
 
-                  <p className="border-t border-brand-orange-200/70 pt-4 text-sm leading-relaxed text-gray-900">
-                    <span className="font-bold">{lang === 'en' ? 'Each amount sponsors one complete meal session. ' : 'ஒவ்வொரு தொகையும் ஒரு முழு உணவு நேரத்தை ஆதரிக்கும். '}</span>
-                    {lang === 'en' ? 'We never compromise on food quality.' : 'உணவின் தரத்தில் எப்போதும் சமரசம் இல்லை.'}
-                  </p>
+                  <div className="space-y-2 border-t border-brand-orange-200/70 pt-4 text-sm leading-relaxed text-gray-900">
+                    <p>
+                      <span className="font-bold">
+                        {lang === 'en'
+                          ? 'Each amount sponsors one complete meal session for approximately 50 persons. '
+                          : 'ஒவ்வொரு தொகையும் சுமார் 50 பேருக்கான ஒரு முழு உணவு நேரத்தை ஆதரிக்கும். '}
+                      </span>
+                      {lang === 'en' ? 'We never compromise on food quality.' : 'உணவின் தரத்தில் எப்போதும் சமரசம் இல்லை.'}
+                    </p>
+                    <p className="text-xs leading-relaxed text-gray-800">
+                      {lang === 'en'
+                        ? 'Old-age home meal support refers to food supplied to nearby old-age homes in the locality. Nallathe Nadakkum Trust does not own, operate, or maintain any old-age home.'
+                        : 'முதியோர் இல்ல உணவு உதவி என்பது அருகிலுள்ள முதியோர் இல்லங்களுக்கு உணவு வழங்குவதை குறிக்கும். நல்லதே நடக்கும் அறக்கட்டளை எந்த முதியோர் இல்லத்தையும் சொந்தமாக வைத்திருக்கவோ, இயக்கவோ, பராமரிக்கவோ இல்லை.'}
+                    </p>
+                  </div>
                 </motion.div>
               )}
 

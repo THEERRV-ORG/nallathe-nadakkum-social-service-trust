@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import privacyPolicy from '../policies/html/privacy-policy.html?raw';
 import privacyPolicyFull from '../policies/html/privacy-policy-full.html?raw';
 import termsAndConditions from '../policies/html/terms-and-conditions.html?raw';
@@ -24,6 +25,10 @@ function extractBody(html: string) {
 }
 
 export default function PolicyPage({ slug }: { slug: PolicySlug }) {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [slug]);
+
   return (
     <main className="policy-page site-shell min-h-screen bg-[#f8fbf8] font-sans text-gray-900">
       <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">

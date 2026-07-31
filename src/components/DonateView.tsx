@@ -36,22 +36,22 @@ type AmtGroup = { heading?: { en: string; ta: string }; options: AmtOption[] };
 const AMOUNT_PRESETS: Record<string, { allowOther: boolean; title: { en: string; ta: string }; groups: AmtGroup[] }> = {
   annadhanam: {
     allowOther: true,
-    title: { en: 'Sponsor a Meal — Daily Costs', ta: 'ஒரு வேளை உணவு வழங்க — தினசரி செலவு' },
+    title: { en: 'Sponsor a Meal — Approx. 50 Persons per Session', ta: 'ஒரு வேளை உணவு — ஒவ்வொரு நேரமும் சுமார் 50 பேர்' },
     groups: [
       {
-        heading: { en: 'Outdoor Food Distribution (Daily)', ta: 'வெளிப்புற உணவு வழங்கல் (தினசரி)' },
+        heading: { en: 'Outdoor Food Distribution (Approx. 50 Persons)', ta: 'வெளிப்புற உணவு வழங்கல் (சுமார் 50 பேர்)' },
         options: [
-          { id: 'out-morning', amount: '2000', label: { en: 'Morning — ₹2,000', ta: 'காலை — ₹2,000' } },
-          { id: 'out-afternoon', amount: '3000', label: { en: 'Afternoon — ₹3,000', ta: 'மதியம் — ₹3,000' } },
-          { id: 'out-night', amount: '2000', label: { en: 'Night — ₹2,000', ta: 'இரவு — ₹2,000' } },
+          { id: 'out-morning', amount: '2000', label: { en: 'Morning — ₹2,000 / 50-person session', ta: 'காலை — ₹2,000 / 50 பேர் உணவு நேரம்' } },
+          { id: 'out-afternoon', amount: '3000', label: { en: 'Afternoon — ₹3,000 / 50-person session', ta: 'மதியம் — ₹3,000 / 50 பேர் உணவு நேரம்' } },
+          { id: 'out-night', amount: '2000', label: { en: 'Night — ₹2,000 / 50-person session', ta: 'இரவு — ₹2,000 / 50 பேர் உணவு நேரம்' } },
         ],
       },
       {
-        heading: { en: 'Indoor Food — Mudhiyor Illam (Old-Age Home)', ta: 'உள்ளக உணவு — முதியோர் இல்லம்' },
+        heading: { en: 'Food Supplied to Nearby Old-Age Homes (Approx. 50 Persons)', ta: 'அருகிலுள்ள முதியோர் இல்லங்களுக்கு உணவு வழங்கல் (சுமார் 50 பேர்)' },
         options: [
-          { id: 'in-morning', amount: '4500', label: { en: 'Morning — ₹4,500', ta: 'காலை — ₹4,500' } },
-          { id: 'in-afternoon', amount: '6000', label: { en: 'Afternoon — ₹6,000', ta: 'மதியம் — ₹6,000' } },
-          { id: 'in-night', amount: '4500', label: { en: 'Night — ₹4,500', ta: 'இரவு — ₹4,500' } },
+          { id: 'in-morning', amount: '4500', label: { en: 'Morning — ₹4,500 / 50-person session', ta: 'காலை — ₹4,500 / 50 பேர் உணவு நேரம்' } },
+          { id: 'in-afternoon', amount: '6000', label: { en: 'Afternoon — ₹6,000 / 50-person session', ta: 'மதியம் — ₹6,000 / 50 பேர் உணவு நேரம்' } },
+          { id: 'in-night', amount: '4500', label: { en: 'Night — ₹4,500 / 50-person session', ta: 'இரவு — ₹4,500 / 50 பேர் உணவு நேரம்' } },
         ],
       },
     ],
@@ -424,15 +424,12 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                 {lang === 'en' ? 'Scan & Pay via UPI' : 'UPI மூலம் ஸ்கேன் செய்து செலுத்த'}
               </p>
 
-              {/* QR placeholder — replace this block's inner content with the real QR when available */}
-              <div className="mx-auto flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-gray-300 bg-white text-gray-400">
-                <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5zM13.5 13.5h1.5v1.5h-1.5zM16.5 13.5H18V15h-1.5zM19.5 15H21v1.5h-1.5zM13.5 16.5H15V18h-1.5zM16.5 16.5H18V18h-1.5zM19.5 18H21v1.5h-1.5zM13.5 19.5H15V21h-1.5zM16.5 19.5H18V21h-1.5z" />
-                </svg>
-                <span className="text-[11px] font-bold uppercase tracking-widest leading-tight">
-                  {lang === 'en' ? 'QR Code' : 'QR குறியீடு'}<br />
-                  {lang === 'en' ? 'Coming Soon' : 'விரைவில்'}
-                </span>
+              <div className="mx-auto rounded-2xl border border-gray-200 bg-white p-3 shadow-sm">
+                <img
+                  src="/upi-qr.png"
+                  alt={lang === 'en' ? 'BHIM UPI donation QR code' : 'BHIM UPI நன்கொடை QR குறியீடு'}
+                  className="h-44 w-44 object-contain"
+                />
               </div>
 
               <dl className="w-full divide-y divide-gray-200/70 border-y border-gray-200/70 text-left">
