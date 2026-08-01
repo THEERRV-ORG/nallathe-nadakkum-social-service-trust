@@ -25,7 +25,7 @@ const SERVICE_IMG: Record<string, string> = {
   food:      '/gallery/activity-food-indoor.jpeg',
   ambulance: '/gallery/activity-ambulance-banner.jpeg',
   lastrites: '/gallery/activity-last-rites-indoor.jpg',
-  elderly:   '/gallery/activity-elder-rescue.jpeg',
+  elderly:   '/gallery/activity-elder-rescue1.jpeg',
   education: '/gallery/activity-education-scholarship.png',
   medical:   '/gallery/activity-water-street.jpg',
 };

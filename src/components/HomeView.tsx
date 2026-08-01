@@ -21,11 +21,11 @@ const heroImages = [
   // 1. Food Donation / Annadhanam
   { src: '/gallery/activity-food-indoor.jpeg', alt: 'Elderly men eating a full meal at our shelter' },
   // 2. Last Rites
-  { src: '/gallery/activity-last-rites-indoor.jpg', alt: 'Dignified last rites conducted with the family' },
+  { src: '/gallery/student-questionaire.jpeg', alt: 'Student support questionnaire and review meeting' },
   // Supporting services
   { src: '/gallery/activity-water-street.jpg', alt: 'Street food and water distribution to elders' },
   { src: '/gallery/activity-ambulance-banner.jpeg', alt: 'Nallathae Nadakkum free ambulance service launch' },
-  { src: '/gallery/activity-elder-rescue.jpeg', alt: 'Destitute elderly rescued and cared for' },
+  { src: '/gallery/activity-elder-rescue1.jpeg', alt: 'Elder rescue field support by trust volunteers' },
 ];
 
 // Display priority for the "What Can You Donate" cards (highest need first).
