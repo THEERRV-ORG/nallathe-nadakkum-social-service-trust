@@ -69,11 +69,11 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="text-center max-w-3xl mx-auto space-y-3 px-4 pt-[clamp(1.25rem,3.5vh,2.5rem)]">
         <h1 className="h1-page">
-          {lang === 'en' ? 'About Our Trust' : 'அறக்கட்டளை வரலாறு & ஆளுமை'}
+          {lang === 'en' ? 'About Nallathae Nadakkum Social Service Trust' : 'அறக்கட்டளை வரலாறு & ஆளுமை'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65] max-w-2xl mx-auto">
           {lang === 'en'
-            ? 'A structured commitment born from daily personal encounters with poverty on the pavements of Tiruchengode Town.'
+            ? 'A trust built from compassion, responsibility, and direct service.'
             : 'திருச்செங்கோடு சாலைகளில் கண்ட எளிய மக்களின் வறுமையைப் போக்க உருவான ஒரு முறையான சேவை அமைப்பு.'}
         </p>
         {/* Credibility meta row */}
@@ -86,7 +86,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
         </div>
       </section>
 
-      {/* ── Why Nallathe Nadakkum — editorial identity ────────── */}
+      {/* ── Why Nallathae Nadakkum — editorial identity ────────── */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
         {/* Top: stacked heading (left) + logo as the main visual (right) */}
@@ -96,7 +96,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
           <div className="order-2 space-y-3 text-center lg:order-1 lg:text-left">
             <h2 className="font-display font-extrabold uppercase tracking-tight text-gray-900 text-4xl sm:text-5xl lg:text-6xl leading-[0.95]">
               {lang === 'en' ? (
-                <>Why<br />Nallathe<br />Nadakkum</>
+                <>Why<br />Nallathae<br />Nadakkum</>
               ) : (
                 <>ஏன்<br />நல்லதே<br />நடக்கும்</>
               )}
@@ -104,7 +104,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
 
             {/* Meaning — typographic emphasis, not a nested card */}
             <p className="text-center text-lg sm:text-xl text-gray-900 lg:text-left">
-              <span className="font-display font-bold">{lang === 'en' ? '“Nallathe Nadakkum”' : '“நல்லதே நடக்கும்”'}</span>
+              <span className="font-display font-bold">{lang === 'en' ? '“Nallathae Nadakkum”' : '“நல்லதே நடக்கும்”'}</span>
               <span className="text-gray-900"> — </span>
               <span className="font-serif font-bold italic text-emerald-700">
                 {lang === 'en' ? 'Good things will happen.' : 'நல்லது நடக்கும்.'}
@@ -116,7 +116,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
           <div className="order-1 flex justify-center lg:order-2">
             <img
               src="/logo.png"
-              alt="Nallathe Nadakkum Social Service Trust logo"
+              alt="Nallathae Nadakkum Social Service Trust logo"
               className="h-48 w-48 object-contain sm:h-64 sm:w-64 lg:h-72 lg:w-72"
             />
           </div>
@@ -132,7 +132,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
               num: '01',
               title: { en: 'Why This Name', ta: 'இந்தப் பெயர் ஏன்' },
               body: {
-                en: 'It is a foundational belief that consistent, small acts of daily compassion compound into real social security for those abandoned by society.',
+                en: 'The name “Nallathae Nadakkum” reflects a belief in hope, goodness, and meaningful human action. It expresses the conviction that sincere help, given at the right time, can restore dignity, relief, and hope.',
                 ta: 'மனிதநேயத்துடன் நாம் செய்யும் ஒவ்வொரு சிறிய செயலும் தொடர்ந்து நடக்கும் போது, அது சமூகத்தால் கைவிடப்பட்ட மனிதர்களின் வாழ்வில் பெரிய நல்ல மாற்றங்களை ஏற்படுத்தும் என்ற நம்பிக்கையில் உருவானது.'
               }
             },
@@ -140,7 +140,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
               num: '02',
               title: { en: 'Where It Began', ta: 'எங்கே தொடங்கியது' },
               body: {
-                en: 'Our Founder, Advocate N. Kavinraj, grew up witnessing extreme economic hardships in his local vicinity. While practicing law, he initiated an informal weekend food drive, preparing meals in his kitchen and seeking out destitute individuals living on bus stands. Over two years, the scale of requirements grew rapidly, necessitating a structured public trust to legally manage volunteers and donor funds.',
+                en: 'Nallathae Nadakkum Social Service Trust began in Tiruchengode, Tamil Nadu, from the lived experiences and social awareness of its founder, N. Kavinraj. Rather than remain a silent observer to poverty, neglect, hunger, abandonment, and helplessness, he began helping through small but steady acts, especially personally funded weekend food donations.',
                 ta: 'எங்கள் நிறுவனர், வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள், தனது வழக்கறிஞர் பணிக்கு இடையே சாலையோரங்களில் ஆதரவின்றித் தவித்த மக்களுக்கு வார இறுதியில் தனது சொந்தச் செலவில் சமைத்து வழங்கத் தொடங்கினார். நாளடைவில் தேவைகள் அதிகரித்ததால், அதனை மேலும் முறைப்படுத்தி, பலருக்கும் உதவிட 08.04.2025 அன்று அறக்கட்டளையாக நிறுவினார்.'
               }
             }
@@ -175,7 +175,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
           <h2 className="font-display text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            {lang === 'en' ? 'Meet Our Founder' : 'எங்கள் நிறுவனரை சந்திக்கவும்'}
+            {lang === 'en' ? 'The Founder’s Journey' : 'எங்கள் நிறுவனரை சந்திக்கவும்'}
           </h2>
         </div>
 

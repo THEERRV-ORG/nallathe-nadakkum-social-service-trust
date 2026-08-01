@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FaPhone, FaLocationDot, FaInstagram, FaFacebookF, FaYoutube } from 'react-icons/fa6';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { OFFICIAL_SOCIAL } from './security';
 import { DonatePreset } from './data';
 import Navbar from './components/Navbar';
@@ -17,6 +17,38 @@ import AdminPanel from './components/AdminPanel';
 import LoginView from './components/LoginView';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import PolicyPage from './components/PolicyPage';
+
+const TAB_PATHS: Record<string, string> = {
+  home: '/',
+  about: '/about',
+  services: '/services',
+  gallery: '/gallery',
+  help: '/request-help',
+  volunteer: '/volunteer',
+  contact: '/contact',
+  donate: '/donate',
+  transparency: '/transparency',
+  speaker: '/invite-speaker',
+};
+
+const PATH_TABS = Object.fromEntries(
+  Object.entries(TAB_PATHS).map(([tab, path]) => [path, tab]),
+) as Record<string, string>;
+
+const SEO_META: Record<string, { title: string; description: string }> = {
+  home: {
+    title: 'Nallathae Nadakkum Social Service Trust | Food, Ambulance & Humanitarian Support',
+    description: 'Nallathae Nadakkum Social Service Trust in Tiruchengode provides food support, free ambulance service, elderly rescue, educational aid, dignified last rites, and community welfare support.',
+  },
+  about: {
+    title: 'About Us | Nallathae Nadakkum Social Service Trust',
+    description: 'Learn about Nallathae Nadakkum Social Service Trust, its founder N. Kavinraj, the story behind the trust, its values, team structure, and humanitarian mission in Tiruchengode.',
+  },
+  services: {
+    title: 'Our Services | Nallathae Nadakkum Social Service Trust',
+    description: 'Explore the services of Nallathae Nadakkum Social Service Trust including annadhanam, free ambulance support, elderly rescue, last rites assistance, education support, and emergency medical fundraising.',
+  },
+};
 
 export default function App() {
   return (
@@ -43,6 +75,8 @@ export default function App() {
 }
 
 function PublicSite() {
+  const location = useLocation();
+  const navigate = useNavigate();
   // Language preference is the only state intentionally persisted in-browser.
   const [lang, setLang] = useState<'en' | 'ta'>(() => {
     const saved = localStorage.getItem('nn_site_lang');
@@ -50,8 +84,10 @@ function PublicSite() {
   return (saved === 'en' || saved === 'ta') ? saved : 'ta';
   });
 
-  // Top-level tab state keeps routing simple for this single-page brochure site.
-  const [activeTab, setActiveTab] = useState<string>('home');
+  const activeTab = PATH_TABS[location.pathname] ?? 'home';
+  const setActiveTab = (tab: string) => {
+    navigate(TAB_PATHS[tab] ?? '/');
+  };
 
   const openFooterService = (serviceId: string) => {
     setActiveTab('services');
@@ -83,6 +119,19 @@ function PublicSite() {
     localStorage.setItem('nn_site_lang', lang);
     document.documentElement.lang = lang;
   }, [lang]);
+
+  useEffect(() => {
+    const meta = SEO_META[activeTab] ?? SEO_META.home;
+    document.title = meta.title;
+
+    let descriptionTag = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!descriptionTag) {
+      descriptionTag = document.createElement('meta');
+      descriptionTag.name = 'description';
+      document.head.appendChild(descriptionTag);
+    }
+    descriptionTag.content = meta.description;
+  }, [activeTab]);
 
   useEffect(() => {
     // When a "What Can You Donate" card routes to the donate page, DonateView
@@ -128,7 +177,7 @@ function PublicSite() {
 
       <section className="bg-emerald-900 text-white py-4 px-4 text-center text-xs font-semibold">
         {lang === 'en'
-          ? 'Nallathe Nadakkum is a registered public trust.'
+          ? 'Nallathae Nadakkum is a registered public trust.'
           : 'நல்லதே நடக்கும் ஒரு பதிவு செய்யப்பட்ட அறக்கட்டளை ஆகும்.'}
       </section>
 
@@ -142,7 +191,7 @@ function PublicSite() {
                   {/* Trust name — top half */}
                   <div>
                     <h3 className="font-display text-base font-bold text-gray-900">
-                      {lang === 'en' ? 'Nallathe Nadakkum' : 'நல்லதே நடக்கும்'}
+                      {lang === 'en' ? 'Nallathae Nadakkum' : 'நல்லதே நடக்கும்'}
                     </h3>
                     <p className="text-[11px] font-semibold text-emerald-600">
                       {lang === 'en' ? 'Social Service Trust' : 'சமூக சேவை அறக்கட்டளை'}
@@ -154,7 +203,7 @@ function PublicSite() {
                     href={OFFICIAL_SOCIAL.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Follow Nallathe Nadakkum on Instagram"
+                    aria-label="Follow Nallathae Nadakkum on Instagram"
                     className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-900 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#E4405F] hover:bg-[#E4405F] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E4405F] focus-visible:ring-offset-2"
                   >
                     <FaInstagram className="h-4 w-4" />
@@ -163,7 +212,7 @@ function PublicSite() {
                     href={OFFICIAL_SOCIAL.facebook}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Follow Nallathe Nadakkum on Facebook"
+                    aria-label="Follow Nallathae Nadakkum on Facebook"
                     className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-900 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1877F2] hover:bg-[#1877F2] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1877F2] focus-visible:ring-offset-2"
                   >
                     <FaFacebookF className="h-4 w-4" />
@@ -172,7 +221,7 @@ function PublicSite() {
                     href={OFFICIAL_SOCIAL.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Follow Nallathe Nadakkum on YouTube"
+                    aria-label="Follow Nallathae Nadakkum on YouTube"
                     className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-900 transition-all duration-200 hover:-translate-y-0.5 hover:border-[#FF0000] hover:bg-[#FF0000] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF0000] focus-visible:ring-offset-2"
                   >
                     <FaYoutube className="h-4 w-4" />
@@ -230,10 +279,6 @@ function PublicSite() {
                 </li>
                 <li className="flex items-center space-x-2">
                   <FaPhone className="h-3.5 w-3.5 text-emerald-600" />
-                  <a href="tel:+919876543210" className="hover:text-emerald-700 hover:underline">+91 98765 43210</a>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <FaPhone className="h-3.5 w-3.5 text-emerald-600" />
                   <a
                     href="https://wa.me/917540017625"
                     target="_blank"
@@ -249,7 +294,7 @@ function PublicSite() {
           <div className="pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-900">
             <p>
               {lang === 'en'
-                ? `© ${new Date().getFullYear()} Nallathe Nadakkum Social Service Trust. All rights reserved.`
+                ? `© ${new Date().getFullYear()} Nallathae Nadakkum Social Service Trust. All rights reserved.`
                 : `© ${new Date().getFullYear()} நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.`}
             </p>
 

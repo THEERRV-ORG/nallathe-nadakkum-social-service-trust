@@ -383,7 +383,7 @@ export default function ServicesView({ lang, setActiveTab, setDonatePreset }: Se
                     </p>
                     <p className="text-xs leading-relaxed text-gray-800">
                       {lang === 'en'
-                        ? 'Old-age home meal support refers to food supplied to nearby old-age homes in the locality. Nallathe Nadakkum Trust does not own, operate, or maintain any old-age home.'
+                        ? 'Old-age home meal support refers to food supplied to nearby old-age homes in the locality. Nallathae Nadakkum Trust does not own, operate, or maintain any old-age home.'
                         : 'முதியோர் இல்ல உணவு உதவி என்பது அருகிலுள்ள முதியோர் இல்லங்களுக்கு உணவு வழங்குவதை குறிக்கும். நல்லதே நடக்கும் அறக்கட்டளை எந்த முதியோர் இல்லத்தையும் சொந்தமாக வைத்திருக்கவோ, இயக்கவோ, பராமரிக்கவோ இல்லை.'}
                     </p>
                   </div>

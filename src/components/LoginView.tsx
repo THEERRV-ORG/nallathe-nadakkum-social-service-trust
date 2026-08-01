@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { FaGoogle, FaLock, FaShieldHalved } from 'react-icons/fa6';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ADMIN_DEFAULT_PATH } from '../config/auth';
@@ -55,11 +55,11 @@ export default function LoginView() {
             <div>
               <img
                 src="/logo.png"
-                alt="Nallathe Nadakkum Social Service Trust logo"
+                alt="Nallathae Nadakkum Social Service Trust logo"
                 className="h-16 w-16 object-contain"
               />
               <div className="mt-5">
-                <h1 className="font-display text-2xl font-extrabold leading-tight">Nallathe Nadakkum</h1>
+                <h1 className="font-display text-2xl font-extrabold leading-tight">Nallathae Nadakkum</h1>
                 <p className="mt-1 text-[11px] font-bold uppercase tracking-wider text-emerald-200">Social Service Trust</p>
               </div>
               <div className="mt-10 h-px w-16 bg-emerald-300/30" />

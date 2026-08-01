@@ -24,7 +24,7 @@ const heroImages = [
   { src: '/gallery/activity-last-rites-indoor.jpg', alt: 'Dignified last rites conducted with the family' },
   // Supporting services
   { src: '/gallery/activity-water-street.jpg', alt: 'Street food and water distribution to elders' },
-  { src: '/gallery/activity-ambulance-banner.jpeg', alt: 'Nallathe Nadakkum free ambulance service launch' },
+  { src: '/gallery/activity-ambulance-banner.jpeg', alt: 'Nallathae Nadakkum free ambulance service launch' },
   { src: '/gallery/activity-elder-rescue.jpeg', alt: 'Destitute elderly rescued and cared for' },
 ];
 
@@ -105,11 +105,11 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl leading-snug"
             >
               <span className="text-[#34d399]">
-                {lang === 'en' ? 'Nallathe Nadakkum' : 'நல்லதே நடக்கும்'}
+                {lang === 'en' ? 'Nallathae Nadakkum' : 'நல்லதே நடக்கும்'}
               </span>
               <br />
               <span className="text-white">
-                {lang === 'en' ? 'Social Trust' : 'சமூக சேவை அறக்கட்டளை'}
+                {lang === 'en' ? 'Social Service Trust' : 'சமூக சேவை அறக்கட்டளை'}
               </span>
             </motion.h1>
             
@@ -169,7 +169,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               <FaAward className="h-4 w-4 text-[#34d399] flex-shrink-0 mt-0.5" />
               <p>
                 {lang === 'en' 
-                  ? 'Nallathe Nadakkum serves at the point where safety nets run thin — for people sleeping on pavements, elders with no family left, and the unclaimed dead.'
+                  ? 'A grassroots trust dedicated to dignity, service, and responsible community support.'
                   : 'சாலையோரங்கள், மருத்துவமனைகளில் யாருமின்றி தவிக்கும் ஏழைகள், ஆதரவற்ற முதியவர்கள் மற்றும் உரிமை கோரப்படாத உடல்களுக்கு கண்ணியமான முறையில் தொண்டு செய்கிறோம்.'}
               </p>
             </motion.div>
@@ -186,7 +186,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
             <div className="md:w-[36%] flex justify-center shrink-0">
               <img
                 src="/logo.png"
-                alt="Nallathe Nadakkum Social Service Trust logo"
+                alt="Nallathae Nadakkum Social Service Trust logo"
                 className="h-48 w-48 sm:h-64 sm:w-64 md:h-72 md:w-72 rounded-full object-cover"
               />
             </div>
@@ -204,7 +204,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                   onClick={() => setActiveTab('about')}
                   className="text-emerald-700 font-semibold text-sm hover:text-emerald-800 hover:underline inline-flex items-center space-x-1 cursor-pointer"
                 >
-                  <span>{lang === 'en' ? 'Read Our Full History & Trustees' : 'எங்கள் அறக்கட்டளையின் முழு வரலாறு & அறங்காவலர்கள் பற்றி படிக்க'}</span>
+                  <span>{lang === 'en' ? 'Learn More About Us' : 'எங்கள் அறக்கட்டளையின் முழு வரலாறு & அறங்காவலர்கள் பற்றி படிக்க'}</span>
                   <FaChevronRight className="h-4 w-4" />
                 </button>
               </div>
@@ -273,7 +273,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Nallathe Nadakkum on ${link.label}`}
+                    aria-label={`Nallathae Nadakkum on ${link.label}`}
                     className="inline-flex items-center gap-3 rounded-xl border border-white/15 bg-white/95 pl-2.5 pr-4 py-2.5 shadow-md backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 group"
                   >
                     <span className={`inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gray-50 transition-colors ${link.iconText} ${link.iconHover}`}>
@@ -365,7 +365,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               <div className="mx-auto h-1.5 w-24 rounded-full bg-brand-gold" />
               <p className="text-sm sm:text-base text-emerald-50 max-w-2xl mx-auto">
                 {lang === 'en'
-                  ? 'Choose a programme to support. Every contribution reaches the people who need it — 0% administrative deductions.'
+                  ? 'Every contribution, whether financial or in kind, can become meaningful support for someone in need. You may choose to support a specific cause that reflects your values.'
                   : 'ஆதரிக்க ஒரு திட்டத்தைத் தேர்ந்தெடுங்கள். ஒவ்வொரு பங்களிப்பும் தேவைப்படுவோரை நேரடியாகச் சென்றடைகிறது — நிர்வாகச் செலவு பிடித்தம் இல்லை.'}
               </p>
               {/* Trust line */}
@@ -388,12 +388,12 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               id: 'annadhanam',
               serviceId: 'food',
               preset: { type: 'Money', program: 'annadhanam', amount: '2000' },
-              title: { en: 'Daily Annadhanam', ta: 'தினசரி அன்னதானம்' },
+              title: { en: 'Daily Annadhanam – Food Donation', ta: 'தினசரி அன்னதானம்' },
               kicker: { en: 'Sponsorship Level', ta: 'உதவித் தொகை' },
               amt: { en: 'From ₹2,000', ta: 'From ₹2,000' },
               unit: { en: 'Per Meal Session', ta: 'ஒரு வேளை உணவு' },
               desc: {
-                en: 'Sponsor a roadside or care-home meal session — costs range by session and location — serving fresh hot meals to destitute pavement dwellers, homeless elders, and hospital patients.',
+                en: 'Help us provide fresh meals to people living in hardship, including those on the streets and residents in care homes. Your support can directly reduce hunger and bring daily relief to someone who may otherwise go without a meal.',
                 ta: 'சாலையோரம் அல்லது முதியோர் இல்லத்தில் ஒரு வேளை உணவை ஸ்பான்சர் செய்யலாம் — வேளை மற்றும் இடத்தைப் பொறுத்து செலவு மாறுபடும் — ஆதரவற்ற ஏழைகள், முதியோர் மற்றும் நோயாளிகளுக்கு சத்தான உணவு வழங்கப்படும்.'
               },
               note: null,
@@ -411,7 +411,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               amt: { en: '₹5,000', ta: '₹5,000' },
               unit: { en: 'Annual Tuition Fee', ta: 'ஓராண்டு கல்வி கட்டணம்' },
               desc: {
-                en: 'Directly remits full school tuition fees for a meritorious student from a daily-wage single-parent household to secure their classroom seat.',
+                en: 'Support tuition fees and academic needs for deserving students from financially struggling backgrounds. Your contribution can help a meritorious student continue education with hope and stability.',
                 ta: 'கல்வி தடைபடாமல் இருக்க வறிய நிலையில் உள்ள ஒரு பள்ளி/கல்லூரி மாணவரின் ஓராண்டு கல்வி கட்டணத்தை கல்வி நிலையத்திற்கு நேரடியாக செலுத்தும்.'
               },
               note: null,
@@ -429,7 +429,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               amt: { en: '₹2,500', ta: '₹2,500' },
               unit: { en: '10 Emergency Trips', ta: '10 அவசரப் பயணங்கள்' },
               desc: {
-                en: 'Covers diesel fuel logistics and patient transfer for 10 emergency runs carrying vulnerable patients to Salem Govt Hospital.',
+                en: 'Help keep the trust’s ambulance service moving for poor patients and emergency welfare needs. Fuel support ensures timely transportation without placing a financial burden on those who cannot afford it.',
                 ta: 'அவசர சிகிச்சை தேவைப்படும் ஏழைகளை அரசு மருத்துவமனைகளுக்கு அழைத்துச் செல்ல 10 இலவச பயணங்களுக்கான எரிபொருளை ஸ்பான்சர் செய்யும்.'
               },
               note: null,
@@ -447,7 +447,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               amt: { en: '₹5,000', ta: '₹5,000' },
               unit: { en: '1 Dignified Burial', ta: '1 தகனச் சடங்கு' },
               desc: {
-                en: 'Covers municipal cremation fees, shroud cloth, and ceremonial materials for performing police-coordinated burial with complete dignity.',
+                en: 'Support the final journey of destitute and unclaimed individuals with dignity and respect. Contributions in this category help us arrange essential funeral support for those who have no one to stand for them.',
                 ta: 'நாமக்கல்/சேலம் காவல்துறையின் முறைப்படியான அனுமதியுடன், உரிமை கோரப்படாத ஆதரவற்ற ஒரு உடலுக்கு இறுதிச் சடங்குகள் செய்யும்.'
               },
               note: null,
@@ -465,7 +465,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               amt: { en: 'Give Blood', ta: 'இரத்த தானம்' },
               unit: { en: '1 Unit · up to 3 Lives', ta: '1 யூனிட் · 3 உயிர் வரை' },
               desc: {
-                en: 'Register as a voluntary blood donor and respond to urgent requests for patients in need across Tiruchengode and nearby government hospitals.',
+                en: 'Join humanitarian support in its most life-saving form. Blood donors can become a vital part of emergency community response when patients and families urgently need help.',
                 ta: 'தன்னார்வ இரத்த தானம் செய்பவராகப் பதிவு செய்து, திருச்செங்கோடு மற்றும் அருகிலுள்ள அரசு மருத்துவமனைகளில் அவசரத் தேவையுள்ள நோயாளிகளுக்கு உதவுங்கள்.'
               },
               note: null,
@@ -483,7 +483,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               amt: { en: 'Material Aid', ta: 'பொருள் உதவி' },
               unit: { en: 'New / Gently-used', ta: 'புதிய / சிறிது பயன்பட்ட' },
               desc: {
-                en: 'Share dhotis, sarees, shirts, and school uniforms with roadside families and elders — restoring dignity through clean clothing.',
+                en: 'Contribute new clothes or support clothing drives for individuals and families in need. Seasonal and festival clothing support brings comfort, dignity, and inclusion.',
                 ta: 'வேட்டி, சேலை, சட்டைகள் மற்றும் பள்ளி சீருடைகளை சாலையோரக் குடும்பங்கள் மற்றும் முதியோருடன் பகிர்ந்து, ஆடை மூலம் கண்ணியத்தை மீட்டுத் தாருங்கள்.'
               },
               note: {
@@ -600,7 +600,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
 
           <div className="relative mb-6 text-center">
             <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-white">
-              {lang === 'en' ? 'Our Founder Message' : 'நிறுவனரின் செய்தி'}
+              {lang === 'en' ? 'A Message from the Founder' : 'நிறுவனரின் செய்தி'}
             </h2>
             <div className="mx-auto mt-3 h-1.5 w-20 rounded-full bg-brand-gold" />
           </div>
@@ -609,7 +609,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
             <div className="space-y-5">
               <blockquote className="font-serif italic text-white text-base sm:text-xl leading-relaxed sm:leading-[1.65]">
                 {lang === 'en'
-                  ? '"Nallathe Nadakkum translates to Good things will happen. It is our firm conviction that consistent, small acts of daily compassion compound into real social reform. We do not wait behind a desk; we identify people on pavements, coordinate burials at the mortuary, and drive patients to emergency beds ourselves. We welcome anyone of any background to join this effort."'
+                  ? '"I believe service should not be delayed until it becomes convenient. If someone is hungry today, they need food today. If someone is abandoned, they need human care today. If a person dies without support, they still deserve dignity. Nallathae Nadakkum Social Service Trust was created from this conviction: that humanity must be practical, responsible, and compassionate."'
                   : '"நல்லதே நடக்கும் என்பது வெறும் பெயர் அல்ல, அது எங்களின் நம்பிக்கை. ஒவ்வொரு நாளும் நாம் செய்யும் சிறிய நற்செயல்களும் உதவிகளும் மிகப்பெரிய சமூக மாற்றத்தை ஏற்படுத்தும். நாங்கள் அலுவலகக் கதவுகளுக்குப் பின்னால் அமர்ந்து கொண்டிருக்கவில்லை; நேரடியாகச் சாலைகளுக்குச் செல்கிறோம், முதியவர்களை மீட்கிறோம், காவல்துறை அனுமதியுடன் இறுதி மரியாதைகளைச் செய்கிறோம். சாதி, மதம், பின்னணி வேறுபாடின்றி அனைவரும் இதில் இணைய அழைக்கிறோம்."'}
               </blockquote>
               <div className="flex flex-col gap-4 text-left sm:flex-row sm:items-center sm:justify-between">

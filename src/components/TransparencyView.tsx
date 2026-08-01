@@ -19,11 +19,11 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
       {/* Title Header */}
       <section className="text-center max-w-3xl mx-auto space-y-4">
         <h1 className="h1-page">
-          {lang === 'en' ? 'Transparency, Legals & Audit Ledger' : 'வெளிப்படைத்தன்மை மற்றும் சட்டப்பூர்வ விபரங்கள்'}
+          {lang === 'en' ? 'Built on Trust, Guided by Responsibility' : 'வெளிப்படைத்தன்மை மற்றும் சட்டப்பூர்வ விபரங்கள்'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
           {lang === 'en' 
-            ? 'We maintain complete alignment with the laws of the Republic of India. Read our legal structure, registrations, and FAQs.' 
+            ? 'Our commitment to lawful operation, ethical service, financial accountability, and public trust.' 
             : 'நாங்கள் இந்திய சட்டங்களுக்கு முழுமையாக உட்பட்டு, தகுந்த தணிக்கை ஆவணங்களுடன் செயல்படுகிறோம். எங்களது சட்ட விபரங்கள் மற்றும் கேள்விகளை இங்கு காணலாம்.'}
         </p>
       </section>
@@ -36,7 +36,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             tile: 'bg-brand-blue-50 text-brand-blue-700',
             title: { en: 'Irrevocable Public Trust', ta: 'மாற்ற முடியாத பொது அறக்கட்டளை' },
             body: {
-              en: 'Nallathe Nadakkum is registered as an Irrevocable Public Charitable Trust governed under a Board of Trustees. The trust assets can never be redirected to any personal profit. In the event of dissolution, all assets can only be transferred to a similarly registered public trust.',
+              en: 'Nallathae Nadakkum Social Service Trust functions with respect for the laws of the Republic of India and upholds principles of public accountability, ethical conduct, and responsible charitable service. The trust operates as a public charitable trust established for social welfare purposes and governed through a board of trustees.',
               ta: 'எங்களது அறக்கட்டளை ஒரு மாற்ற முடியாத பொது தொண்டு அமைப்பாகும். இதன் சொத்துக்கள் அல்லது நிதி ஒருபோதும் தனிநபர் இலாபத்திற்காகப் பயன்படுத்தப்படாது. ஒருவேளை அறக்கட்டளை கலைக்கப்பட்டால், அதன் சொத்துக்கள் அனைத்தும் மற்றொரு பொது தொண்டு நிறுவனத்திடமே ஒப்படைக்கப்படும்.',
             },
             status: { en: 'Status: Active and Compliant', ta: 'நிலை: செயல்பாட்டில் உள்ளது' },
@@ -47,7 +47,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             tile: 'bg-brand-violet-50 text-brand-violet-700',
             title: { en: 'Dual Signatory Oversight', ta: 'இரட்டை கையொப்பக் கட்டுப்பாடு' },
             body: {
-              en: 'Financial transactions require joint signatures from both the Chairman (Advocate N. Kavinraj) and the Treasurer (Mrs. N. Kogila). No single trustee possesses the right to withdraw or dispense public donations without Board approval.',
+              en: 'To strengthen financial responsibility, key financial transactions are subject to joint signatory oversight by the Chairman and Treasurer. This supports disciplined use of funds and reduces the risk of unilateral financial handling.',
               ta: 'அறக்கட்டளையின் அனைத்து நிதி பரிவர்த்தனைகளும் தலைவர் (வழக்கறிஞர் நா. கவின்ராஜ்) மற்றும் பொருளாளர் (திருமதி. N. கோகிலா) ஆகியோரின் கூட்டு கையொப்பத்துடன் மட்டுமே நிகழும். அறங்காவலர் குழு ஒப்புதல் இன்றி தனிநபர் யாரும் பணத்தை எடுக்கவோ செலுத்தவோ முடியாது.',
             },
             status: { en: 'Process: Joint Bank Mandate', ta: 'வழிமுறை: கூட்டு வங்கிக் கணக்கு' },
@@ -116,11 +116,11 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
         {/* Right: Audited Ledger Books */}
         <div className="lg:col-span-5 bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-4">
           <h3 className="font-display text-base font-bold text-gray-900">
-            {lang === 'en' ? 'Audits & Filing Log' : 'தணிக்கை மற்றும் தாக்கல் விபரங்கள்'}
+            {lang === 'en' ? 'Donation Transparency & Accountability' : 'தணிக்கை மற்றும் தாக்கல் விபரங்கள்'}
           </h3>
           <p className="text-base text-gray-900 leading-relaxed">
             {lang === 'en'
-              ? 'Our deed mandates that accounting logs be audited annually by a certified Chartered Accountant. Summaries will be made available here.'
+              ? 'The trust values every contribution and believes donors deserve clarity on how support is used. Funds are directed toward genuine service-related needs such as food support, ambulance operations, last rites assistance, educational aid, elderly rescue, and humanitarian relief activities within the trust’s scope.'
               : 'அறக்கட்டளையின் கணக்கு வழக்குகள் தகுதிவாய்ந்த தணிக்கையாளரால் தணிக்கை செய்யப்பட்டு ஆண்டுதோறும் தாக்கல் செய்யப்பட வேண்டும் என்பது விதியாகும்.'}
           </p>
 
@@ -170,7 +170,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
                   {lang === 'en' ? 'Registered Office Address' : 'அலுவலக முகவரி'}
                 </span>
                 <p className="font-display text-sm font-bold text-gray-900 leading-snug">
-                  Nallathe Nadakkum Trust
+                  Nallathae Nadakkum Trust
                 </p>
                 <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] font-medium">
                   38/5, Rajeev Nagar Cross Road,<br />

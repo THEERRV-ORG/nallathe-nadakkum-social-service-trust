@@ -1,4 +1,4 @@
-/*
+﻿/*
   Unified logo component. One place controls how the trust mark is rendered so
   its size and treatment stay consistent everywhere (nav, hero, footer,
   inline). The logo is a full lockup, so the default treatment is `contain`
@@ -25,7 +25,7 @@ export default function BrandMark({
   size = 'inline',
   variant = 'contain',
   className = '',
-  alt = 'Nallathe Nadakkum Social Service Trust logo',
+  alt = 'Nallathae Nadakkum Social Service Trust logo',
 }: BrandMarkProps) {
   const shape = variant === 'round' ? 'rounded-full object-cover' : 'rounded-2xl object-contain';
   return (

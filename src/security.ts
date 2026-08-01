@@ -4,9 +4,8 @@
  * volunteer screens.
  */
 export const OFFICIAL_CONTACT = {
-  email: 'nallathanadakum@gmail.com',
-  emergencyPhone: '+919876543210',
-  whatsappPhone: '+919443567890',
+  emergencyPhone: '+917540017625',
+  whatsappPhone: '+917540017625',
   // Dedicated number that receives all website form submissions on WhatsApp.
   formsPhone: '+917540017625',
 };
@@ -18,7 +17,7 @@ export const OFFICIAL_CONTACT = {
 export const OFFICIAL_SOCIAL = {
   instagram: 'https://www.instagram.com/nn_socialservice_trust',
   facebook: 'https://www.facebook.com/share/1CvjtvcgLs/',
-  youtube: 'https://www.youtube.com/@nallathenadakumsocialtrust',
+  youtube: 'https://www.youtube.com/@Nallathaenadakumsocialtrust',
 };
 
 /**
@@ -114,15 +113,6 @@ export function isValidDonationAmount(value: string) {
 export function hasMeaningfulText(value: string, minLength = 5, maxLength = 600) {
   const normalized = sanitizeMultiLine(value, maxLength);
   return normalized.length >= minLength && normalized.length <= maxLength;
-}
-
-/**
- * Builds a safe mailto URL from already-normalized lines.
- */
-export function buildMailtoUrl(to: string, subject: string, lines: string[]) {
-  const encodedSubject = encodeURIComponent(sanitizeSingleLine(subject, 120));
-  const body = encodeURIComponent(lines.filter(Boolean).join('\n'));
-  return `mailto:${to}?subject=${encodedSubject}&body=${body}`;
 }
 
 /**

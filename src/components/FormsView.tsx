@@ -1,8 +1,8 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { OFFICIAL_CONTACT, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
 import { saveSubmission } from '../lib/submissions';
 import { motion, AnimatePresence } from 'motion/react';
-import { FaLocationDot, FaEnvelope, FaPhone, FaChevronDown, FaChevronRight, FaShieldHalved, FaUserCheck, FaClock, FaCircleInfo, FaHandsHoldingCircle, FaCheck, FaMap, FaArrowUpRightFromSquare } from 'react-icons/fa6';
+import { FaLocationDot, FaPhone, FaChevronDown, FaChevronRight, FaShieldHalved, FaUserCheck, FaClock, FaCircleInfo, FaHandsHoldingCircle, FaCheck, FaMap, FaArrowUpRightFromSquare } from 'react-icons/fa6';
 import { faqData } from '../data';
 import Monogram from './Monogram';
 import { CustomSelect } from './ui/FormControls';
@@ -129,8 +129,28 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     const normalizedAddress = sanitizeMultiLine(helpAddress, 220);
     const normalizedDesc = sanitizeMultiLine(helpDesc, 500);
 
-    if (!helpConsent || !isValidPersonName(normalizedName) || !isValidIndianPhone(normalizedPhone) || !hasMeaningfulText(normalizedAddress, 10, 220) || !hasMeaningfulText(normalizedDesc, 10, 500)) {
-      setHelpError(lang === 'en' ? 'Enter a valid name, Indian phone number, address, case details, and consent before sending.' : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண், முகவரி, விவரம் மற்றும் ஒப்புதலை வழங்கவும்.');
+    if (!isValidPersonName(normalizedName)) {
+      setHelpError(lang === 'en' ? 'Beneficiary / Contact Name is invalid. Enter a real name using letters, spaces, dots, apostrophes, or hyphens only.' : 'உதவி பெறுபவர் / தொடர்பு பெயர் செல்லுபடியாகவில்லை. சரியான பெயரை மட்டும் உள்ளிடவும்.');
+      return;
+    }
+
+    if (!isValidIndianPhone(normalizedPhone)) {
+      setHelpError(lang === 'en' ? 'Contact Phone / WhatsApp is invalid. Enter a valid 10-digit Indian mobile number.' : 'தொடர்பு எண் / WhatsApp செல்லுபடியாகவில்லை. சரியான 10 இலக்க இந்திய மொபைல் எண்ணை உள்ளிடவும்.');
+      return;
+    }
+
+    if (!hasMeaningfulText(normalizedAddress, 10, 220)) {
+      setHelpError(lang === 'en' ? 'Address / Location Details is too short. Add the door number, street, area, town, or nearby landmark.' : 'முகவரி / இருப்பிட விவரம் போதுமானதாக இல்லை. தெரு, பகுதி, ஊர் அல்லது அருகிலுள்ள அடையாளத்தை சேர்க்கவும்.');
+      return;
+    }
+
+    if (!hasMeaningfulText(normalizedDesc, 10, 500)) {
+      setHelpError(lang === 'en' ? 'Assistance Details is too short. Describe what happened and what help is needed.' : 'உதவி விவரம் போதுமானதாக இல்லை. என்ன நடந்தது மற்றும் என்ன உதவி தேவை என்பதை எழுதவும்.');
+      return;
+    }
+
+    if (!helpConsent) {
+      setHelpError(lang === 'en' ? 'Consent checkbox is required. Please agree to physical verification before submitting.' : 'ஒப்புதல் பெட்டி தேவை. அனுப்புவதற்கு முன் நேரடி சரிபார்ப்புக்கு ஒப்புதல் அளிக்கவும்.');
       return;
     }
 
@@ -175,7 +195,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     }
   };
 
-  // Volunteer details are routed to a mail draft for staff follow-up.
+  // Volunteer details are routed to a WhatsApp message for staff follow-up.
   const handleVolSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalizedName = sanitizeSingleLine(volName, 80);
@@ -183,8 +203,28 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
     const normalizedLocation = sanitizeSingleLine(volLocation, 120);
     const normalizedSkills = sanitizeMultiLine(volSkills, 300);
 
-    if (!isValidPersonName(normalizedName) || !isValidIndianPhone(normalizedPhone) || normalizedLocation.length < 3 || volInterests.length === 0 || volInterests.length > 6) {
-      setVolError(lang === 'en' ? 'Enter a valid name, Indian phone number, location, and at least one volunteer area.' : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண், இருப்பிடம் மற்றும் குறைந்தபட்சம் ஒரு தன்னார்வ பகுதியைத் தேர்ந்தெடுக்கவும்.');
+    if (!isValidPersonName(normalizedName)) {
+      setVolError(lang === 'en' ? 'Your Full Name is invalid. Enter a real name using letters, spaces, dots, apostrophes, or hyphens only.' : 'தன்னார்வலர் பெயர் செல்லுபடியாகவில்லை. சரியான பெயரை மட்டும் உள்ளிடவும்.');
+      return;
+    }
+
+    if (!isValidIndianPhone(normalizedPhone)) {
+      setVolError(lang === 'en' ? 'WhatsApp Phone Number is invalid. Enter a valid 10-digit Indian mobile number.' : 'WhatsApp எண் செல்லுபடியாகவில்லை. சரியான 10 இலக்க இந்திய மொபைல் எண்ணை உள்ளிடவும்.');
+      return;
+    }
+
+    if (normalizedLocation.length < 3) {
+      setVolError(lang === 'en' ? 'Your Location / Town is too short. Enter your area, town, or nearby landmark.' : 'வாழும் இடம் / இருப்பிடம் போதுமானதாக இல்லை. உங்கள் பகுதி அல்லது ஊரை உள்ளிடவும்.');
+      return;
+    }
+
+    if (volInterests.length === 0) {
+      setVolError(lang === 'en' ? 'Areas of Interest is required. Choose at least one volunteer area.' : 'பங்களிக்க விரும்பும் பகுதி தேவை. குறைந்தபட்சம் ஒன்றைத் தேர்வு செய்யவும்.');
+      return;
+    }
+
+    if (volInterests.length > 6) {
+      setVolError(lang === 'en' ? 'Areas of Interest has too many selections. Choose up to 6 volunteer areas.' : 'பங்களிக்க விரும்பும் பகுதிகள் அதிகமாக உள்ளன. அதிகபட்சம் 6 பகுதிகளைத் தேர்வு செய்யவும்.');
       return;
     }
 
@@ -229,15 +269,25 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
   };
 
   // General enquiries follow the same pattern: validate first, then hand off
-  // to a mail draft rather than creating local-only pseudo-submissions.
+  // to a WhatsApp message rather than creating local-only pseudo-submissions.
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalizedName = sanitizeSingleLine(contactName, 80);
     const normalizedPhone = normalizeIndianPhone(contactPhone);
     const normalizedMessage = sanitizeMultiLine(contactMsg, 500);
 
-    if (!isValidPersonName(normalizedName) || !isValidIndianPhone(normalizedPhone) || !hasMeaningfulText(normalizedMessage, 10, 500)) {
-      setContactError(lang === 'en' ? 'Enter a valid name, Indian phone number, and message before sending.' : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண் மற்றும் செய்தியை வழங்கவும்.');
+    if (!isValidPersonName(normalizedName)) {
+      setContactError(lang === 'en' ? 'Your Name is invalid. Enter a real name using letters, spaces, dots, apostrophes, or hyphens only.' : 'உங்கள் பெயர் செல்லுபடியாகவில்லை. சரியான பெயரை மட்டும் உள்ளிடவும்.');
+      return;
+    }
+
+    if (!isValidIndianPhone(normalizedPhone)) {
+      setContactError(lang === 'en' ? 'Your Phone Number is invalid. Enter a valid 10-digit Indian mobile number.' : 'உங்கள் தொடர்பு எண் செல்லுபடியாகவில்லை. சரியான 10 இலக்க இந்திய மொபைல் எண்ணை உள்ளிடவும்.');
+      return;
+    }
+
+    if (!hasMeaningfulText(normalizedMessage, 10, 500)) {
+      setContactError(lang === 'en' ? 'Your Message or Enquiry is too short. Enter at least a short, clear message.' : 'உங்கள் செய்தி / கேள்வி போதுமானதாக இல்லை. தெளிவான செய்தியை உள்ளிடவும்.');
       return;
     }
 
@@ -281,14 +331,14 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           <div className="lg:col-span-5 xl:col-span-4 space-y-5">
             <div className="space-y-3">
               <span className="section-eyebrow text-brand-orange-700">
-                {lang === 'en' ? 'Urgent Assistance Hub' : 'உதவி மையப்பகுதி'}
+                {lang === 'en' ? 'Community & Support' : 'உதவி மையப்பகுதி'}
               </span>
               <h1 className="h1-page">
-                {lang === 'en' ? 'Request Assistance' : 'உதவி கோருங்கள்'}
+                {lang === 'en' ? 'Request Help' : 'உதவி கோருங்கள்'}
               </h1>
               <p className="text-gray-900 form-copy">
                 {lang === 'en'
-                  ? 'Use this form when someone needs food support, elder rescue, last rites coordination, education support, ambulance help, or urgent medical assistance. Our local network reviews every request before action.'
+                  ? 'Use this form when you are facing genuine need related to food support, ambulance assistance, elderly rescue, educational support, emergency medical fundraising, or another humanitarian concern within the trust’s scope. Share location, type of need, urgency, and any documents if relevant.'
                   : 'உங்களுக்கோ அல்லது உங்கள் பகுதியில் வசிக்கும் யாராவது ஒருவருக்கு அவசரமாக உணவு, முதியோர் மீட்பு, மருத்துவ உதவி அல்லது கல்வி கட்டண உதவி தேவைப்பட்டால் கீழே உள்ள படிவத்தை நிரப்பவும். எங்களது தன்னார்வலர்கள் 24-48 மணி நேரத்திற்குள் நேரில் வந்து விசாரித்து உதவுவர்.'}
               </p>
             </div>
@@ -302,7 +352,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               </p>
               <a href={`tel:${OFFICIAL_CONTACT.formsPhone}`} className="mt-2 inline-flex items-center gap-2 text-base font-bold text-emerald-800 hover:text-emerald-900">
                 <FaPhone className="h-4 w-4" />
-                +91 98765 43210
+                +91 75400 17625
               </a>
             </div>
 
@@ -415,7 +465,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                       required
                       value={helpPhone}
                       onChange={(e) => setHelpPhone(e.target.value)}
-                      placeholder="e.g. 9876543210"
+                      placeholder="10-digit mobile number"
                       className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
@@ -541,11 +591,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 {lang === 'en' ? 'Volunteer With Us' : 'எங்களுடன் தன்னார்வமாக இணைக'}
               </span>
               <h1 className="h1-page">
-                {lang === 'en' ? 'Give Your Time. Create Real Impact.' : 'உங்கள் நேரத்தை வழங்கி நேரடி தாக்கத்தை உருவாக்குங்கள்'}
+                {lang === 'en' ? 'How You Can Reach Us, Join Us, or Invite Us' : 'உங்கள் நேரத்தை வழங்கி நேரடி தாக்கத்தை உருவாக்குங்கள்'}
               </h1>
               <p className="text-gray-900 form-copy">
                 {lang === 'en'
-                  ? 'We rely on people who can give a few honest hours to field work, food packing, case verification, ambulance coordination, or documentation. Share your availability and our team will contact you when there is a suitable need.'
+                  ? 'The trust’s work grows stronger when compassionate people contribute their time, energy, skills, and presence. Volunteers may help with food preparation and distribution, logistics and transport support, elderly support activities, documentation, social media support, campaign drives, and event or awareness coordination.'
                   : 'எங்கள் அறக்கட்டளையில் சம்பளம் பெறும் ஊழியர்கள் யாரும் இல்லை. வாரத்தில் ஒரு சில மணிநேரங்களை சமூகத்திற்காக வழங்கத் துடிக்கும் தன்னார்வலர்களை மட்டுமே நம்பியே எங்களது பணிகள் நடக்கின்றன. காலையில் உணவு பேக்கிங் செய்தல், முதியோர் மீட்பு, கள விசாரணை என ஏதேனும் ஒரு பணியில் உங்களை இணைத்துக் கொள்ளலாம்.'}
               </p>
             </div>
@@ -635,7 +685,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                       required
                       value={volPhone}
                       onChange={(e) => setVolPhone(e.target.value)}
-                      placeholder="e.g. 9876543210"
+                      placeholder="10-digit mobile number"
                       className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
@@ -754,11 +804,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 {lang === 'en' ? 'Direct Coordinates' : 'தொடர்பு விபரம்'}
               </span>
               <h1 className="h1-page">
-                {lang === 'en' ? 'Contact our Registered Office' : 'நேரடியாகத் தொடர்பு கொள்ள'}
+                {lang === 'en' ? 'We Are Here to Listen and Respond' : 'நேரடியாகத் தொடர்பு கொள்ள'}
               </h1>
               <p className="text-gray-900 form-copy">
                 {lang === 'en'
-                  ? 'Our registered administrative office is located on Rajeev Nagar crossroad, opp. SPM Hospital, Tiruchengode town. For emergency ambulance requirements or reporting abandoned elderly, call us immediately.'
+                  ? 'Whether you need support, want to volunteer, wish to donate, or would like to connect for community collaboration, we welcome your message. For emergency ambulance requirements or reporting abandoned elderly, call us immediately.'
                   : 'எங்கள் பதிவு அலுவலகம் திருச்செங்கோடு ராஜிவ் நகர் குறுக்கு சாலை, SPM மருத்துவமனைக்கு எதிரில் அமைந்துள்ளது. அவசர ஆம்புலன்ஸ் தேவை அல்லது முதியவர்கள் மீட்புத் தகவல்களுக்கு உடனடியாக அழைக்கவும்.'}
               </p>
             </div>
@@ -777,25 +827,13 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               </div>
 
               <div className="flex items-start space-x-3.5">
-                <div className="h-8 w-8 shrink-0 rounded-full bg-brand-blue-50 text-brand-blue-700 flex items-center justify-center">
-                  <FaEnvelope className="h-4 w-4" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">{lang === 'en' ? 'Email Address' : 'மின்னஞ்சல் முகவரி'}</h4>
-                  <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
-                    nallathanadakum@gmail.com
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-3.5">
                 <div className="h-8 w-8 shrink-0 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center">
                   <FaPhone className="h-4 w-4" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">{lang === 'en' ? 'Emergency Phone & WhatsApp' : 'அவசரத் தொடர்பு எண்கள்'}</h4>
                   <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1 font-semibold">
-                    +91 98765 43210 / +91 94435 67890
+                    +91 75400 17625
                   </p>
                   <p className="text-[10px] text-gray-900 mt-0.5">
                     {lang === 'en' ? 'Operated jointly by Chairman & Trustees' : 'தலைவர் மற்றும் அறங்காவலர்களால் இயக்கப்படும் எண்கள்'}
@@ -861,7 +899,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     required
                     value={contactPhone}
                     onChange={(e) => setContactPhone(e.target.value)}
-                    placeholder="e.g. 9876543210"
+                    placeholder="10-digit mobile number"
                     className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   />
                 </div>
@@ -919,7 +957,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                       {lang === 'en' ? 'Registered Office Address' : 'அலுவலக முகவரி'}
                     </span>
                     <p className="font-display text-sm font-bold leading-snug text-gray-900">
-                      Nallathe Nadakkum Trust
+                      Nallathae Nadakkum Trust
                     </p>
                     <p className="text-sm font-medium leading-relaxed text-gray-900 sm:text-base sm:leading-[1.65]">
                       38/5, Rajeev Nagar Cross Road,<br />

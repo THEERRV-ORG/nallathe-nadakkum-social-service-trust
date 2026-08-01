@@ -52,23 +52,23 @@ export const navigationLabels = [
 
 export const commonTranslations: TranslationSet = {
   heroTitle: {
-    en: 'Nallathe Nadakkum Social Trust',
+    en: 'Nallathae Nadakkum Social Trust',
     ta: 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை'
   },
   heroSlogan: {
-    en: 'Where no one is left to face life — or death — alone.',
+    en: 'Where Compassion Becomes Action',
     ta: 'வாழ்விலும், மறைவிலும் — யாரும் தனியே விடப்பட மாட்டார்கள்.'
   },
   heroSub: {
-    en: 'A registered community trust based in Tiruchengode, Tamil Nadu, serving people who have no one else to turn to.',
+    en: 'Serving Tiruchengode and surrounding communities through food support, free ambulance service, dignified last rites, elderly rescue, student assistance, and humanitarian care.',
     ta: 'திருச்செங்கோட்டை மையமாகக் கொண்ட பதிவு செய்யப்பட்ட சமூக சேவை அறக்கட்டளை. ஆதரவற்ற மக்களுக்காக தங்களை அர்ப்பணித்துக் கொள்கிறது.'
   },
   introText: {
-    en: 'Nallathe Nadakkum Samuga Sevai Arakkattalai is a registered public charitable trust founded by Advocate N. Kavinraj in Tiruchengode, Tamil Nadu. Two years before registration, he personally funded Saturday-only Annadhanam on the streets — cooking and distributing meals from his own resources. On 08.04.2025 it became an officially registered trust. Today, after 400+ consecutive days of daily service, the trust feeds 50–100 people daily and 3,000–5,000 people monthly, has conducted 30+ police-coordinated burials for unclaimed deceased, led 10 funeral ceremonies as a stand-in family, rescued 5 destitute elders into care homes, sponsored 7 students (3 in college, 4 in school), distributed festival clothes to 100+ during Diwali, fundraised for accident victims\' surgeries, and runs a free emergency ambulance service.',
+    en: 'Nallathae Nadakkum Social Service Trust is a public-serving humanitarian trust based in Tiruchengode, Tamil Nadu, founded by N. Kavinraj, Advocate. What began as a personal effort to feed those in need has grown into a dedicated service movement supporting vulnerable people through daily food distribution, free ambulance service, dignified final rites, elderly rescue, educational support, and emergency assistance.',
     ta: 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை, திருச்செங்கோடு வழக்கறிஞர் நா. கவின்ராஜ் அவர்களால் தொடங்கப்பட்டது. அறக்கட்டளை பதிவிற்கு இரண்டு ஆண்டுகள் முன்பிருந்தே, ஒவ்வொரு சனிக்கிழமையும் தனது சொந்தச் செலவில் சாலையோரத்தில் அன்னதானம் செய்து வந்தார். 08.04.2025 அன்று முறையாக அறக்கட்டளையாக பதிவு செய்யப்பட்டது. இன்று 400-க்கும் மேற்பட்ட தொடர் நாட்களாக தினமும் 50 முதல் 100 பேருக்கும், மாதந்தோறும் 3,000 முதல் 5,000 பேருக்கும் உணவு வழங்கி வருகிறோம். 30-க்கும் மேற்பட்ட ஆதரவற்று இறந்தோருக்கு போலீஸ் ஒத்துழைப்புடன் நல்லடக்கம் செய்துள்ளோம், 10 பேரின் இறுதிச் சடங்கை உறவினராய் முன் நின்று நடத்தியுள்ளோம். 5 ஆதரவற்ற முதியவர்களை மீட்டு முதியோர் இல்லத்தில் சேர்த்துள்ளோம், 7 மாணவர்களின் (3 கல்லூரி, 4 பள்ளி) கல்விக் கட்டணம் ஏற்றுள்ளோம், தீபாவளியில் 100-க்கும் மேற்பட்டோருக்கு புத்தாடை வழங்கியுள்ளோம், மேலும் விபத்தில் காயமடைந்தோரின் அறுவை சிகிச்சைக்கு நிதி திரட்டி உதவியுள்ளோம்.'
   },
   introShort: {
-    en: 'Nallathe Nadakkum Samuga Sevai Arakkattalai is a registered public charitable trust founded by Advocate N. Kavinraj in Tiruchengode, Tamil Nadu. Through daily Annadhanam, dignified last rites, free emergency ambulance and rescue, elder care and community assistance, the trust works directly with people who have nowhere else to turn.',
+    en: 'Nallathae Nadakkum Social Service Trust is a people-centered service organization working to support those who are often overlooked: destitute individuals, abandoned elderly persons, financially struggling students, and people facing urgent medical or humanitarian need. Our work is local, practical, transparent, and rooted in service without discrimination.',
     ta: 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை, திருச்செங்கோடு வழக்கறிஞர் நா. கவின்ராஜ் அவர்களால் தொடங்கப்பட்ட, பதிவு செய்யப்பட்ட பொது தொண்டு அறக்கட்டளை ஆகும். தினசரி அன்னதானம், கண்ணியமான இறுதி மரியாதை, இலவச அவசர ஆம்புலன்ஸ் மற்றும் மீட்பு, முதியோர் பராமரிப்பு மற்றும் சமூக உதவி மூலம், வேறு யாருடைய ஆதரவும் இல்லாத மக்களுக்கு நேரடியாக அறக்கட்டளை உதவுகிறது.'
   },
   missionTitle: {
@@ -76,7 +76,7 @@ export const commonTranslations: TranslationSet = {
     ta: 'நமது நோக்கம்'
   },
   missionText: {
-    en: 'To provide direct, dignified, and timely support to destitute, elderly, and economically vulnerable people in and around Tiruchengode — through daily food assistance, emergency medical and funeral support, education access, and a transparent, donor-connected system of community care.',
+    en: 'To serve vulnerable individuals and communities through compassionate, transparent, and direct humanitarian action, ensuring access to food, emergency support, dignity in death, care for the elderly, and educational opportunity for those in need.',
     ta: 'திருச்செங்கோடு மற்றும் சுற்றுவட்டாரப் பகுதிகளில் உள்ள ஆதரவற்ற, முதியோர், பொருளாதார ரீதியில் நலிந்தோருக்கு — தினசரி உணவு உதவி, அவசர மருத்துவ/இறுதி மரியாதை உதவி, கல்வி வாய்ப்பு, மற்றும் வெளிப்படையான நன்கொடையாளர் இணைப்பு அமைப்பு மூலம் — நேரடியான, கண்ணியமான, சரியான நேரத்தில் உதவி வழங்குதல்.'
   },
   visionTitle: {
@@ -84,7 +84,7 @@ export const commonTranslations: TranslationSet = {
     ta: 'நமது தொலைநோக்கு'
   },
   visionText: {
-    en: 'A society where people look out for one another as a matter of course, and no deserving person — regardless of their circumstances — is left without help or dignity.',
+    en: 'To build a caring and responsible society where no person is left hungry, abandoned, unsupported in crisis, or denied dignity because of poverty or neglect.',
     ta: 'மக்கள் ஒருவருக்கொருவர் இயல்பாகவே கைகொடுக்கும் ஒரு சமூகம் — தகுதியுள்ள எவரும் உதவியின்றி அல்லது கண்ணியமின்றி விடப்படாத ஒரு சமூகம்.'
   },
   registeredOffice: {
@@ -143,12 +143,12 @@ export const commonTranslations: TranslationSet = {
 };
 
 export const statsData = [
-  { label: { en: 'Consecutive Annadhanam Days', ta: 'தொடர் அன்னதான நாட்கள்' }, value: '400+' },
+  { label: { en: 'Consecutive Annadhanam Days', ta: 'தொடர் அன்னதான நாட்கள்' }, value: '500+' },
   { label: { en: 'People Fed Monthly', ta: 'மாதந்தோறும் உணவு பெறுவோர்' }, value: '5,000+' },
   { label: { en: 'Unclaimed Burials', ta: 'ஆதரவற்றோர் நல்லடக்கம்' }, value: '30+' },
   { label: { en: 'Conducted as Family', ta: 'உறவாய் நடத்திய இறுதிச் சடங்கு' }, value: '10' },
   { label: { en: 'Elders Rescued', ta: 'மீட்கப்பட்ட முதியவர்கள்' }, value: '5' },
-  { label: { en: 'Students Sponsored', ta: 'கல்வி கட்டண உதவி மாணவர்கள்' }, value: '7' }
+  { label: { en: 'Students Supported', ta: 'கல்வி கட்டண உதவி மாணவர்கள்' }, value: '15' }
 ];
 
 export const servicesData: ServiceItem[] = [
@@ -157,27 +157,27 @@ export const servicesData: ServiceItem[] = [
     iconName: 'Utensils',
     title: { en: 'Daily Food Distribution (Annadhanam)', ta: 'தினசரி அன்னதானம்' },
     description: {
-      en: 'Freshly cooked nutritious meals distributed daily to roadside families and homeless residents around Tiruchengode.',
+      en: 'Regular food support for people facing hunger, including destitute individuals on the streets, vulnerable persons in need, and residents of care spaces.',
       ta: 'திருச்செங்கோடு மற்றும் சுற்றுவட்டாரப் பகுதிகளில் வசிக்கும் சாலையோர ஏழைக் குடும்பங்களுக்கும் ஆதரவற்றோருக்கும் தினமும் சமைத்த உணவு வழங்கப்படுகிறது.'
     },
     detailedDescription: {
-      en: 'What started as a personal Saturday habit two years before registration has expanded into an unbroken daily service — 400+ consecutive days and counting. We deliver fresh, hot meals directly to where people sleep on pavements, bus stands, and hospital premises, reaching 50–100 individuals each day and 3,000–5,000 monthly. We also supply groceries and cooked meals to the local old-age home. Beyond food, we extend our care to seasonal events: during Diwali 2025 the trust distributed new dhotis, sarees, and shirts to approximately 100 destitute individuals so everyone could celebrate with dignity.',
+      en: 'We provide regular food support to people facing hunger, including destitute individuals on the streets, vulnerable persons in need, and residents of care spaces. This service is built on the belief that no one should be left hungry when timely support is possible.',
       ta: 'அறக்கட்டளை பதிவிற்கு இரண்டு ஆண்டுகள் முன்பிருந்தே ஒவ்வொரு சனிக்கிழமையும் நிறுவனர் தனிப்பட்ட முயற்சியாக செய்து வந்த அன்னதானம், இன்று 400-க்கும் மேற்பட்ட தொடர் நாட்களாக தடையின்றி நடைபெறுகிறது. தினமும் 50 முதல் 100 பேருக்கும், மாதந்தோறும் 3,000 முதல் 5,000 பேருக்கும் உணவு வழங்கப்படுகிறது. சாலையோரங்கள், பேருந்து நிலையங்கள், அரசு மருத்துவமனை வளாகங்கள் மற்றும் முதியோர் இல்லங்களுக்கு நேரில் சென்று உணவு வழங்குகிறோம். தீபாவளி 2025 அன்று 100-க்கும் மேற்பட்ட ஆதரவற்றோருக்கு வேட்டி, சேலை, சட்டைகளை வழங்கி அனைவரும் கண்ணியத்துடன் பண்டிகை கொண்டாட உதவினோம்.'
     },
     benefits: {
-      en: 'Ensures homeless, sick, and vulnerable individuals do not go hungry. Reaches 50 to 100 roadside individuals daily.',
+      en: 'Helps reduce hunger through direct, practical meal support and need-based food distribution.',
       ta: 'வீடற்ற, நோய்வாய்ப்பட்ட மற்றும் நலிந்த மக்கள் பசியின்றி இருப்பதை உறுதி செய்கிறது. தினசரி 50 முதல் 100 பேர் வரை பசியாறுகின்றனர்.'
     },
     howToRequest: {
-      en: 'Referrals for roadside residents or elderly clusters in need can be made by calling or messaging our WhatsApp line.',
+      en: 'If you or someone you know is in urgent need of food support, contact the trust with clear location details, the number of people in need, whether support is one-time or recurring, and a contact person where possible.',
       ta: 'சாலை ஓரங்களில் உணவுத் தேவையில் உள்ள மக்கள் இருந்தால் எங்கள் வாட்ஸ்அப் அல்லது தொலைபேசி எண்ணிற்கு தகவல் தெரிவிக்கலாம்.'
     },
     howToDonate: {
-      en: 'Sponsor a day\'s meals for roadside residents, or contribute rice bags, oil, and groceries directly to our distribution center.',
+      en: 'Support annadhanam through one-time or recurring donations toward groceries, meal preparation, packing, transport, full-day sponsorship, packaging materials, or special occasion feeding drives.',
       ta: 'ஒரு நாள் அன்னதானத்தை நீங்கள் முழுமையாக ஸ்பான்சர் செய்யலாம், அல்லது அரிசி மூட்டைகள், சமையல் எண்ணெய், மளிகைப் பொருட்களை நேரடியாக வழங்கலாம்.'
     },
     volunteerRole: {
-      en: 'Assist with morning vegetable chopping, meal packing, and transport/distribution along designated roadside routes.',
+      en: 'Assist with preparation, packing, distribution, route support, beneficiary coordination, and event-day meal sponsorship support.',
       ta: 'காலை காய்கறி நறுக்குதல், உணவு பேக்கிங் செய்தல், மற்றும் வாகனங்கள் மூலம் குறிப்பிட்ட இடங்களுக்குச் சென்று உணவு விநியோகம் செய்ய உதவலாம்.'
     }
   },
@@ -186,27 +186,27 @@ export const servicesData: ServiceItem[] = [
     iconName: 'Ambulance',
     title: { en: 'Free Ambulance Service', ta: 'இலவச ஆம்புலன்ஸ் சேவை' },
     description: {
-      en: 'Emergency medical transport and last-mile patient transfer, free of charge, exclusively for families living below the poverty line.',
+      en: 'A 100% free ambulance service for poor and vulnerable individuals who cannot afford emergency transport.',
       ta: 'வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டும், அவசர மருத்துவக் காலங்களில் மருத்துவமனைக்குச் செல்ல இலவச ஆம்புலன்ஸ் போக்குவரத்து.'
     },
     detailedDescription: {
-      en: 'Launched on March 21, 2026, our dedicated trust ambulance is equipped with life support essentials and GPS tracking. This service is reserved strictly for individuals and families below the poverty line (BPL) who cannot afford standard private ambulance charges — it is not a general-purpose or paid ambulance service. Eligibility is verified at the time of dispatch, and transfers focus on Government Hospitals.',
+      en: 'The trust operates a 100% free ambulance service for poor and vulnerable individuals who cannot afford emergency transport. This service is intended to reduce delay during medical need and support compassionate emergency response.',
       ta: 'மார்ச் 21, 2026 அன்று தொடங்கப்பட்ட இந்த ஆம்புலன்ஸ் சேவை, வறுமைக்கோட்டிற்குக் கீழே உள்ளவர்களுக்கு (BPL) மட்டுமே ஒதுக்கப்பட்டது — இது அனைவருக்குமான அல்லது கட்டணம் செலுத்தும் சேவை அல்ல. அழைப்பு நேரத்தில் தகுதி உறுதி செய்யப்பட்ட பின்னரே அரசு மருத்துவமனைக்கு இலவசமாக அழைத்துச் செல்லப்படுவார்கள்.'
     },
     benefits: {
-      en: 'Immediate transit during accidents or critical illness for below-poverty-line individuals in Tiruchengode town and taluk. GPS-tracked transparent usage.',
+      en: 'Reduces delay for vulnerable patients and supports emergency movement when paid transport is unaffordable.',
       ta: 'திருச்செங்கோடு மற்றும் சுற்றுவட்டாரப் பகுதிகளில் வறுமைக்கோட்டிற்குக் கீழே உள்ளோருக்கு விபத்துகள் அல்லது அவசர மருத்துவத் தேவைகளின்போது உடனடி போக்குவரத்து.'
     },
     howToRequest: {
-      en: 'Dial our emergency response line directly. This service is available only to families below the poverty line; eligibility is verified over the call, and support is subject to vehicle availability at the time of the call.',
+      en: 'Families, caregivers, or concerned individuals may contact the trust with the patient name and location, urgency, destination hospital, patient condition if possible, and one available family contact.',
       ta: 'எங்கள் அவசர தொலைபேசி எண்ணை நேரடியாக அழைக்கவும். இச்சேவை வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டுமே கிடைக்கும்; அழைப்பின்போது தகுதி உறுதி செய்யப்படும், மேலும் வாகனத்தின் இருப்பைப் பொறுத்து சேவை வழங்கப்படும்.'
     },
     howToDonate: {
-      en: 'Fuel sponsorship (monthly log published to sponsors), tyre replacement, or medical equipment additions.',
+      en: 'Support this program through ambulance fuel sponsorship, maintenance support, essential medical readiness, emergency service sponsorship, or ongoing ambulance sustainability support.',
       ta: 'மாதாந்திர எரிபொருள் செலவை ஸ்பான்சர் செய்யலாம். ஆம்புலன்ஸ் டயர்கள் மற்றும் மருத்துவ உபகரணங்கள் வாங்க உதவலாம்.'
     },
     volunteerRole: {
-      en: 'Help coordinate calls, assist non-critical patients during transport, and coordinate logistics with government hospitals.',
+      en: 'Assist in field coordination, call support, public awareness, emergency response networking, documentation, and donor communication support.',
       ta: 'தொலைபேசி அழைப்புகளை ஒருங்கிணைத்தல், நோயாளிகளுக்குத் தேவையான உதவிகளைச் செய்தல், மற்றும் அரசு மருத்துவமனைகளுடன் தொடர்புகொள்ளுதல்.'
     }
   },
@@ -219,23 +219,23 @@ export const servicesData: ServiceItem[] = [
       ta: 'உரிமை கோர யாரும் இல்லாத ஆதரவற்ற உடல்களுக்கு காவல்துறையின் அனுமதியுடன் கண்ணியமான முறையில் இறுதிச் சடங்குகள் செய்தல்.'
     },
     detailedDescription: {
-      en: 'Every human being deserves a dignified departure. In coordination with Namakkal and Salem district police, our trust takes custody of unclaimed bodies and arranges full traditional last rites. Beyond unclaimed burials, we also stand alongside families of the poor who have no one to lead the ceremonies — in the past year we have conducted 10 such funerals as a stand-in family, ensuring every person departs with prayers, flowers, and dignity regardless of who they were in life.',
+      en: 'We undertake dignified final rites for destitute and unclaimed persons who pass away without family support. This service is carried out with humanity, procedural care, and respect, often in coordination with relevant authorities.',
       ta: 'ஒவ்வொரு மனிதனும் கண்ணியமான முறையில் விடைபெற தகுதியானவர். நாமக்கல் மற்றும் சேலம் மாவட்ட காவல்துறையினருடன் இணைந்து, ஆதரவற்று இறந்தோர் உடல்களை ஏற்று முழு இறுதிச் சடங்குகளை செய்கிறோம். அதோடு, சடங்கு நடத்த உறவினர்கள் இல்லாத ஏழைக் குடும்பங்களுக்கும் நாங்களே முன் நின்று உறவாய் நடத்துகிறோம் — கடந்த ஒரு வருடத்தில் 10 பேரின் இறுதிச் சடங்கை இவ்வாறு உறவாய் முன் நின்று நடத்தியுள்ளோம்.'
     },
     benefits: {
-      en: 'Dignified departure with respect. Over 30+ police-coordinated burials/cremations have been conducted in Namakkal/Salem district areas.',
+      en: 'Preserves human dignity for those who have no family or support at the end of life.',
       ta: 'மறைந்தோருக்குச் செய்யும் உன்னத கடமை. நாமக்கல் மற்றும் சேலம் பகுதிகளில் இதுவரை 30-க்கும் மேற்பட்ட உடல்களுக்கு போலீஸ் அனுமதியுடன் இறுதிச் சடங்குகள் செய்யப்பட்டுள்ளன.'
     },
     howToRequest: {
-      en: 'Normally triggered directly via official communication from the local police station or hospital authorities, rather than public request forms.',
+      en: 'If you encounter an abandoned, unclaimed, or unsupported deceased person, contact the trust with exact location, whether police have been informed, and any available identity details. Do not move the body without proper procedure.',
       ta: 'பொதுவாக, இந்த சேவை பொதுப் படிவங்கள் மூலமாக அல்லாமல், காவல்துறை அல்லது அரசு மருத்துவமனை மூலமாகவே எங்களை வந்தடையும்.'
     },
     howToDonate: {
-      en: 'Fund cremation and burial costs including shroud cloths, ritual items, and municipal cemetery/crematorium fees.',
+      en: 'Support transportation, materials, ceremonial essentials, burial or cremation-related expenses, emergency case contributions, and respectful final arrangements.',
       ta: 'இறுதிச் சடங்கிற்கான பொருட்கள், துணி, மாலைகள், மற்றும் தகன மையக் கட்டணங்களை ஸ்பான்சர் செய்யலாம்.'
     },
     volunteerRole: {
-      en: 'Due to legal and sensitive requirements, volunteers assist only with non-legal logistics, procurement of ceremonial items, and attending to pay respects.',
+      en: 'Volunteer roles are sensitive and assigned carefully. Support may include case coordination, ground assistance, material arrangement, and documentation assistance where appropriate.',
       ta: 'சட்டப்பூர்வ நடவடிக்கைகள் காரணமாக, தன்னார்வலர்கள் இறுதிச் சடங்கு உபகரணங்கள் வாங்குவதிலும், இறுதி அஞ்சலி செலுத்துவதிலும் மட்டுமே பங்கேற்க முடியும்.'
     }
   },
@@ -244,27 +244,27 @@ export const servicesData: ServiceItem[] = [
     iconName: 'UserCheck',
     title: { en: 'Elderly Rescue and Rehousing', ta: 'முதியோர் மீட்பும் மறுவாழ்வும்' },
     description: {
-      en: 'Identifying, rescuing, and rehousing abandoned, vulnerable, and destitute elderly people into safe care homes.',
+      en: 'Identifying and supporting elderly persons found wandering, abandoned, or living without proper care.',
       ta: 'சாலையோரம் தவித்து நிற்கும் ஆதரவற்ற முதியவர்களை மீட்டு, அவர்களுக்கு பாதுகாப்பான முதியோர் இல்லங்களில் அடைக்கலம் பெற்றுத் தருதல்.'
     },
     detailedDescription: {
-      en: 'We actively reach out to destitute senior citizens left abandoned on the streets or at temple precincts. After basic medical checkups, cleansing, and dressing in clean clothes, we liaise with registered elder-care institutions to secure safe, long-term shelter, medical care, and nutrition for them.',
+      en: 'We identify and support elderly persons found wandering, abandoned, or living without proper care. Our goal is to rescue them safely, understand their situation compassionately, and help connect them to suitable shelter or care facilities.',
       ta: 'கோவில்கள், பேருந்து நிலையங்களில் கைவிடப்பட்ட நிலையில் இருக்கும் முதியவர்களை மீட்கிறோம். அவர்களுக்கு அடிப்படை மருத்துவ சிகிச்சை வழங்கி, தலைமுடி திருத்தி, புத்தாடை அணிவித்து, அரசு பதிவு பெற்ற முதியோர் இல்லங்களில் சேர்த்து அவர்களின் வாழ்நாளைப் பாதுகாக்கிறோம்.'
     },
     benefits: {
-      en: 'Secures a safe living environment, medical attention, and three meals a day for elders who have no family left to look after them.',
+      en: 'Connects vulnerable elders to safer care, essentials, and humane follow-up support.',
       ta: 'ஆதரவற்ற முதியவர்களுக்கு பாதுகாப்பான தங்குமிடம், மருத்துவ வசதி, மற்றும் மூன்று வேளை சத்தான உணவு கிடைப்பதை உறுதி செய்கிறது.'
     },
     howToRequest: {
-      en: 'Report details of abandoned elderly individuals found in public places around Tiruchengode via phone or WhatsApp.',
+      en: 'If you know an elderly person living without support, in unsafe conditions, or in urgent need of intervention, contact the trust with location, visible details of need, approximate condition, and whether medical distress is involved.',
       ta: 'திருச்செங்கோடு சுற்றுவட்டாரப் பொது இடங்களில் ஆதரவின்றி தவிக்கும் முதியவர்களைக் கண்டால், எங்களது தொலைபேசி அல்லது வாட்ஸ்அப் மூலம் உடனடியாகத் தெரிவிக்கவும்.'
     },
     howToDonate: {
-      en: 'Sponsor the initial care-home admission deposit, clothing kits, medical diagnostics, or support a specific elder\'s monthly shelter contribution.',
+      en: 'Support transport, emergency medical care, clothing, essentials, temporary care, rescue support funds, and rehabilitation or rehousing needs.',
       ta: 'முதியோர் இல்ல சேர்க்கை வைப்பு நிதி, ஆடைகள், மருத்துவப் பரிசோதனைகள், அல்லது ஒரு முதியவரின் மாதாந்திர பராமரிப்புச் செலவை வழங்கலாம்.'
     },
     volunteerRole: {
-      en: 'Support local field verification, accompany elderly persons during rescue transit, and visit rehoused elders to spend quality time with them.',
+      en: 'Assist in welfare visits, field support, essentials distribution, senior care assistance, supply support, humane interaction, and follow-up coordination.',
       ta: 'முதியவர்களை நேரில் கண்டறிந்து மீட்பதில் உதவுதல், இல்லங்களுக்கு அழைத்துச் செல்லுதல், மற்றும் அவ்வப்போது முதியோர் இல்லங்களுக்குச் சென்று அவர்களுடன் நேரம் செலவிடுதல்.'
     }
   },
@@ -273,27 +273,27 @@ export const servicesData: ServiceItem[] = [
     iconName: 'GraduationCap',
     title: { en: 'Education Support', ta: 'கல்வி உதவித்தொகை' },
     description: {
-      en: 'Sponsoring school and college tuition fees for meritorious students from highly vulnerable economic backgrounds.',
+      en: 'Practical educational support for deserving students from economically challenged backgrounds.',
       ta: 'ஏழ்மை நிலையிலுள்ள, படிப்பில் ஆர்வம் கொண்ட பள்ளி மற்றும் கல்லூரி மாணவர்களின் கல்வி தடையின்றித் தொடர கட்டண உதவி வழங்குதல்.'
     },
     detailedDescription: {
-      en: 'No child should have their schooling stopped over financial hardship. We identify students from single-parent homes or daily-wage earner families who are in danger of dropping out. The trust directly remits pending tuition fees to schools and colleges to keep them in classrooms.',
+      en: 'The trust supports deserving students from economically challenged backgrounds so that financial hardship does not interrupt learning. The focus is on practical support that helps students continue their studies with dignity.',
       ta: 'வறுமையின் காரணமாக எந்தக் குழந்தையும் படிப்பை நிறுத்தக் கூடாது. ஒற்றைப் பெற்றோர் அல்லது கூலித் தொழிலாளர்களின் பிள்ளைகளைக் கண்டறிந்து, அவர்கள் பள்ளி/கல்லூரிப் படிப்பை தொடர கல்வி நிறுவனங்களுக்கு நேரடியாக கட்டணத்தை செலுத்துகிறோம்.'
     },
     benefits: {
-      en: 'Currently sponsoring 3 college students and 4 school students (7 total), paying tuition fees directly to institutions. No deserving student has dropped out due to financial hardship under our watch.',
+      en: 'Supports tuition, school essentials, college fees, books, study materials, and scholarship-style help for students in genuine need. Current impact: 15 students supported through school and college educational aid.',
       ta: 'தற்போது 3 கல்லூரி மாணவர்களும் 4 பள்ளி மாணவர்களும் (மொத்தம் 7 பேர்) அறக்கட்டளையின் உதவியால் படித்து வருகின்றனர். கட்டணங்களை நேரடியாக கல்வி நிறுவனங்களுக்கே செலுத்துகிறோம். நமது ஆதரவால் எந்த மாணவரும் படிப்பை பாதியிலேயே நிறுத்தவில்லை.'
     },
     howToRequest: {
-      en: 'Submit student details along with academic records and fee demand sheets through our Request Help page or contact us directly.',
+      en: 'Students, parents, guardians, or supporters may contact the trust with student details, school or college and course, clear financial need, and fee-related documents if available.',
       ta: 'மாணவர்களின் மதிப்பெண் சான்றிதழ்கள் மற்றும் கட்டண விவரங்களுடன் எங்கள் உதவி கோரும் பக்கத்தில் விண்ணப்பிக்கலாம்.'
     },
     howToDonate: {
-      en: 'Sponsor a student\'s annual school fee, college semester fees, or purchase notebooks and educational materials.',
+      en: 'Help a student through tuition sponsorship, school fees, college fees, educational materials, books, study materials, or scholarship-style support.',
       ta: 'ஒரு மாணவரின் ஓராண்டு பள்ளி கட்டணம் அல்லது கல்லூரி பருவக் கட்டணத்தை ஸ்பான்சர் செய்யலாம். புத்தகங்கள், உபகரணங்கள் வாங்கித் தரலாம்.'
     },
     volunteerRole: {
-      en: 'Verify the student\'s economic background via home/school visits and help organize stationary distribution drives.',
+      en: 'Support student screening, outreach, documentation, educational mentoring, educational campaign drives, and donor coordination.',
       ta: 'உதவி கோரும் மாணவர்களின் வீடுகளுக்குச் சென்று பொருளாதார நிலையை சரிபார்த்தல் மற்றும் கல்வி உபகரணங்கள் வழங்குதலை ஒருங்கிணைத்தல்.'
     }
   },
@@ -302,27 +302,27 @@ export const servicesData: ServiceItem[] = [
     iconName: 'Activity',
     title: { en: 'Emergency Medical Fundraising', ta: 'அவசர மருத்துவ நிதி திரட்டல்' },
     description: {
-      en: 'Crowdfunding support and direct aid for critical surgeries and accident victims with zero family resources.',
+      en: 'Urgent medical fundraising support for families who cannot manage life-saving expenses.',
       ta: 'விபத்தில் சிக்கிய ஏழைகளுக்கும், அறுவை சிகிச்சைக்கு பணமின்றித் தவிக்கும் நோயாளிகளுக்கும் மருத்துவ நிதி திரட்ட உதவுதல்.'
     },
     detailedDescription: {
-      en: 'When daily wage earners face sudden, catastrophic medical emergencies, they often lack any safety net. The trust assists in validating bills, negotiating with local hospitals, and mobilizing community crowdfunding to ensure immediate surgeries can go ahead without delay.',
+      en: 'In urgent medical situations, especially where families cannot manage life-saving expenses, the trust helps mobilize public support and coordinate fundraising efforts with urgency and accountability.',
       ta: 'திடீர் விபத்துகள் மற்றும் தீவிர நோய்களால் பாதிக்கப்படும் கூலித் தொழிலாளர்களின் மருத்துவச் செலவை ஏற்க உதவிக் கரம் நீட்டுகிறோம். மருத்துவமனைகளுடன் பேசி, சமூக வலைதளங்கள் மூலம் நிதி திரட்டி அவசர அறுவை சிகிச்சைகள் தடையின்றி நடக்க உதவுகிறோம்.'
     },
     benefits: {
-      en: 'Prevents treatment denial due to lack of immediate deposit money, providing a critical lifeline during the golden hour.',
+      en: 'Helps verified medical emergencies, surgery needs, urgent treatment support, and compassionate relief during crisis.',
       ta: 'பணமில்லாத காரணத்தினால் சிகிச்சை மறுக்கப்படுவதைத் தடுத்து, அவசரக் காலத்தில் மனித உயிர்களைக் காப்பாற்ற உதவுகிறது.'
     },
     howToRequest: {
-      en: 'Direct family referral with official hospital estimation sheets and diagnosis records. Emergency cases are prioritized.',
+      en: 'Families facing urgent treatment or surgery needs may approach the trust with hospital and doctor details, treatment estimate if available, genuine records, urgency level, and a clear explanation of financial hardship.',
       ta: 'மருத்துவமனையின் அதிகாரப்பூர்வ சிகிச்சை மதிப்பீட்டு ஆவணங்களுடன் எங்களை நேரடியாகத் தொடர்பு கொள்ளலாம்.'
     },
     howToDonate: {
-      en: 'Contribute directly toward active verified medical emergency cases highlighted on our transparency board or social channels.',
+      en: 'Contribute toward verified medical emergencies, surgery needs, urgent treatment support, critical care support, and medical relief contributions.',
       ta: 'அறக்கட்டளையால் சரிபார்க்கப்பட்டு வெளியிடப்படும் மருத்துவக் கேஸ்களுக்கு நேரடியாக நிதி வழங்கலாம்.'
     },
     volunteerRole: {
-      en: 'Verify case details with hospital staff and support social media campaign dissemination.',
+      en: 'Assist in case communication, case verification support, fundraising campaign communication, donor outreach, documentation assistance, logistics follow-up, and public awareness outreach.',
       ta: 'மருத்துவ ஆவணங்களை சரிபார்த்தல் மற்றும் சிகிச்சைக்கான சமூக ஊடகப் பிரச்சாரங்களை பரப்புதல்.'
     }
   }
@@ -516,7 +516,7 @@ export const galleryData: GalleryItem[] = [
 export const faqData: FAQItem[] = [
   {
     question: {
-      en: 'What exactly does the Nallathe Nadakkum trust do?',
+      en: 'What exactly does the Nallathae Nadakkum trust do?',
       ta: 'நல்லதே நடக்கும் அறக்கட்டளையின் முக்கிய செயல்பாடுகள் என்னென்ன?'
     },
     answer: {
@@ -590,8 +590,8 @@ export const faqData: FAQItem[] = [
       ta: 'அறக்கட்டளையின் பெயரில் தவறான அல்லது போலி நிதி திரட்டல்களைக் கண்டால் எங்கு புகார் அளிப்பது?'
     },
     answer: {
-      en: 'We maintain zero tolerance for financial discrepancies. We will never ask for transfers to unlisted personal bank accounts or private phone numbers. If you encounter any suspicious donation appeal under our name, please report it immediately to us via email at nallathanadakum@gmail.com so we can take immediate action.',
-      ta: 'அறக்கட்டளையின் பெயரில் யாராவது தனிநபர் கணக்கிற்குப் பணம் கேட்டால் அனுப்ப வேண்டாம். இது போன்ற ஏமாற்று வேலைகளைக் கண்டால் உடனடியாக எங்களது nallathanadakum@gmail.com மின்னஞ்சலுக்குத் தெரிவிக்குமாறு கேட்டுக் கொள்கிறோம்.'
+      en: 'We maintain zero tolerance for financial discrepancies. We will never ask for transfers to unlisted personal bank accounts or private phone numbers. If you encounter any suspicious donation appeal under our name, please report it immediately by phone or WhatsApp at +91 75400 17625 so we can take immediate action.',
+      ta: 'அறக்கட்டளையின் பெயரில் யாராவது தனிநபர் கணக்கிற்குப் பணம் கேட்டால் அனுப்ப வேண்டாம். இது போன்ற ஏமாற்று வேலைகளைக் கண்டால் உடனடியாக +91 75400 17625 என்ற எண்ணில் அழைக்கவும் அல்லது வாட்ஸ்அப் மூலம் தெரிவிக்கவும்.'
     }
   }
 ];

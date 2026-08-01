@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { FaMicrophoneLines, FaCalendarDays, FaLocationDot, FaCheck } from 'react-icons/fa6';
 import {
@@ -43,18 +43,28 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
     const nOrg = sanitizeSingleLine(org, 120);
     const nVenue = sanitizeSingleLine(venue, 160);
 
-    if (
-      !isValidPersonName(nName) ||
-      !isValidIndianPhone(nPhone) ||
-      nOrg.length < 2 ||
-      !eventDate ||
-      nVenue.length < 3
-    ) {
-      setError(
-        lang === 'en'
-          ? 'Enter a valid name, Indian phone number, organisation, event date, and venue.'
-          : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண், அமைப்பின் பெயர், நிகழ்வுத் தேதி மற்றும் இடத்தை வழங்கவும்.'
-      );
+    if (!isValidPersonName(nName)) {
+      setError(lang === 'en' ? 'Contact Name is invalid. Enter a real name using letters, spaces, dots, apostrophes, or hyphens only.' : 'தொடர்பு பெயர் செல்லுபடியாகவில்லை. சரியான பெயரை மட்டும் உள்ளிடவும்.');
+      return;
+    }
+
+    if (!isValidIndianPhone(nPhone)) {
+      setError(lang === 'en' ? 'Phone / WhatsApp is invalid. Enter a valid 10-digit Indian mobile number.' : 'தொலைபேசி / WhatsApp எண் செல்லுபடியாகவில்லை. சரியான 10 இலக்க இந்திய மொபைல் எண்ணை உள்ளிடவும்.');
+      return;
+    }
+
+    if (nOrg.length < 2) {
+      setError(lang === 'en' ? 'Organisation / Function Name is too short. Enter the school, college, group, or event name.' : 'அமைப்பு / நிகழ்வு பெயர் போதுமானதாக இல்லை. பள்ளி, கல்லூரி, குழு அல்லது நிகழ்வு பெயரை உள்ளிடவும்.');
+      return;
+    }
+
+    if (!eventDate) {
+      setError(lang === 'en' ? 'Event Date is required. Choose the date of the speaking event.' : 'நிகழ்வு தேதி தேவை. சொற்பொழிவு நிகழ்வின் தேதியைத் தேர்வு செய்யவும்.');
+      return;
+    }
+
+    if (nVenue.length < 3) {
+      setError(lang === 'en' ? 'Venue / Location is too short. Enter the hall, address, town, or nearby landmark.' : 'இடம் / முகவரி போதுமானதாக இல்லை. அரங்கு, முகவரி, ஊர் அல்லது அருகிலுள்ள அடையாளத்தை உள்ளிடவும்.');
       return;
     }
 
@@ -109,7 +119,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
           {lang === 'en'
-            ? 'Our founder speaks on compassion, social service, and community action at schools, colleges, temples, and public functions. Send us your event details and we will get back to you.'
+            ? 'N. Kavinraj is available to speak at schools, colleges, institutions, public events, and social awareness programs on service, social responsibility, youth leadership, humanity, legal awareness in welfare work, and community participation.'
             : 'எங்கள் நிறுவனர் பள்ளிகள், கல்லூரிகள், கோயில்கள் மற்றும் பொது நிகழ்வுகளில் மனிதநேயம், சமூக சேவை மற்றும் மக்கள் பணி குறித்து உரையாற்றுகிறார். உங்கள் நிகழ்வு விவரங்களை அனுப்புங்கள், நாங்கள் உங்களைத் தொடர்பு கொள்கிறோம்.'}
         </p>
       </section>
@@ -198,7 +208,7 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
               </div>
               <div className="space-y-1.5">
                 <label className={labelCls}>{lang === 'en' ? 'Phone / WhatsApp' : 'தொலைபேசி / வாட்ஸ்அப்'} *</label>
-                <input type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="e.g. 9876543210" className={inputCls} />
+                <input type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="10-digit mobile number" className={inputCls} />
               </div>
             </div>
 

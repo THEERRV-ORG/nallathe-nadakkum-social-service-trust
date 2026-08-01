@@ -66,7 +66,7 @@ export default function SocialConnect({ lang }: SocialConnectProps) {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Nallathe Nadakkum on ${link.label}`}
+                aria-label={`Nallathae Nadakkum on ${link.label}`}
                 className="inline-flex items-center gap-3 rounded-xl border border-white/15 bg-white/95 pl-2.5 pr-4 py-2.5 shadow-md backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 group"
               >
                 <span className={`inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gray-50 transition-colors ${link.iconText} ${link.iconHover}`}>

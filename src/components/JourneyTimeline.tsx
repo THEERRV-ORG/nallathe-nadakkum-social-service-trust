@@ -18,53 +18,53 @@ const milestones: Milestone[] = [
     year: '2023',
     node: 'bg-emerald-300',
     badge: 'bg-emerald-50 text-emerald-700',
-    title: { en: 'It Begins on Saturdays', ta: 'சனிக்கிழமை தொடக்கம்' },
+    title: { en: 'The Beginning of Consistent Personal Service', ta: 'தொடர்ச்சியான தனிப்பட்ட சேவையின் தொடக்கம்' },
     desc: {
-      en: 'Advocate N. Kavinraj begins cooking and distributing meals to roadside families every Saturday.',
-      ta: 'வழக்கறிஞர் நா. கவின்ராஜ் ஒவ்வொரு சனிக்கிழமையும் சாலையோர மக்களுக்கு சமைத்து வழங்கத் தொடங்கினார்.'
-    }
+      en: 'A phase of personal and small-scale humanitarian action, especially food support, carried out with direct individual commitment and growing community awareness.',
+      ta: 'உணவு உதவி உள்ளிட்ட சிறிய அளவிலான மனிதநேய பணிகள் தனிப்பட்ட அர்ப்பணிப்புடன் தொடங்கிய காலம்.',
+    },
   },
   {
     year: '08 Apr 2025',
     node: 'bg-emerald-600',
     badge: 'bg-emerald-600 text-white',
     registration: true,
-    title: { en: 'Official Trust Registration', ta: 'அறக்கட்டளை பதிவு' },
+    title: { en: 'Formal Registration and Organized Service', ta: 'முறையான பதிவு மற்றும் ஒழுங்கமைந்த சேவை' },
     desc: {
-      en: 'Registered as a public charitable trust at the Sub-Registrar Office, Tiruchengode.',
-      ta: 'திருச்செங்கோடு சார்பதிவாளர் அலுவலகத்தில் பொது தொண்டு அறக்கட்டளையாக பதிவு செய்யப்பட்டது.'
-    }
+      en: 'On 08.04.2025, the work was officially registered as Nallathae Nadakkum Social Service Trust, creating clearer systems, public accountability, and a growing volunteer structure.',
+      ta: '08.04.2025 அன்று நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளையாக பதிவு செய்யப்பட்டு, பொது பொறுப்புணர்வு மற்றும் தன்னார்வ அமைப்பு வலுவடைந்தது.',
+    },
   },
   {
-    year: 'Oct 2025',
+    year: '2025-2026',
     node: 'bg-brand-gold',
     badge: 'bg-brand-gold-100 text-brand-gold-700',
-    title: { en: 'Diwali Clothes Distribution', ta: 'தீபாவளி ஆடை விநியோகம்' },
+    title: { en: 'Multi-Service Expansion', ta: 'பல சேவைகளாக விரிவு' },
     desc: {
-      en: 'New clothes given to around 100 destitute individuals so they could celebrate with dignity.',
-      ta: 'சுமார் 100 ஆதரவற்றோருக்கு பண்டிகையை கண்ணியத்துடன் கொண்டாட ஆடைகள் வழங்கப்பட்டது.'
-    }
+      en: 'The trust strengthened daily annadhanam, dignified last rites, elderly rescue, educational support, emergency medical response, volunteer mobilization, and public documentation.',
+      ta: 'தினசரி அன்னதானம், இறுதி மரியாதை, முதியோர் மீட்பு, கல்வி உதவி, அவசர மருத்துவ உதவி, தன்னார்வ இயக்கம் ஆகியவை வலுவடைந்தன.',
+    },
   },
   {
     year: '21 Mar 2026',
     node: 'bg-brand-blue',
     badge: 'bg-brand-blue-50 text-brand-blue-700',
-    title: { en: 'Free Ambulance Launched', ta: 'இலவச ஆம்புலன்ஸ் தொடக்கம்' },
+    title: { en: 'Ambulance Service Milestone', ta: 'இலவச ஆம்புலன்ஸ் சேவை தொடக்கம்' },
     desc: {
-      en: 'Trust ambulance flagged off for zero-cost emergency transport to government hospitals.',
-      ta: 'அரசு மருத்துவமனைகளுக்கான இலவச அவசர போக்குவரத்துக்கு அறக்கட்டளை ஆம்புலன்ஸ் தொடங்கப்பட்டது.'
-    }
+      en: 'A dedicated ambulance was arranged for the trust, strengthening emergency transport support for poor and vulnerable patients.',
+      ta: 'ஏழை மற்றும் அவசர நோயாளிகளுக்கான முக்கிய உதவியாக இலவச ஆம்புலன்ஸ் அறிமுகப்படுத்தப்பட்டது.',
+    },
   },
   {
     year: 'Jul 2026',
     node: 'bg-brand-violet',
     badge: 'bg-brand-violet-50 text-brand-violet-700',
-    title: { en: '400+ Days & Growing', ta: '400+ நாட்கள் தொடர்ச்சி' },
+    title: { en: '500+ Days & Growing', ta: '500+ நாட்கள் தொடர்ச்சி' },
     desc: {
-      en: 'Over 400 consecutive days of Annadhanam, with rescues, last rites, and scholarships continuing.',
-      ta: '400-க்கும் மேற்பட்ட தொடர் நாட்கள் அன்னதானம், மீட்பு, இறுதிச் சடங்கு, கல்வி உதவி தொடர்கிறது.'
-    }
-  }
+      en: 'By July 2026, the organization had become a multi-service grassroots trust with measurable impact, visible field involvement, public trust, and a growing support network.',
+      ta: 'ஜூலை 2026க்குள் நேரடி திடல் பணிகள், வெளிப்படைத்தன்மை, சமூக நம்பிக்கை மற்றும் பலரின் பங்களிப்புடன் வளர்ந்த மனிதநேய முயற்சியாக அமைந்தது.',
+    },
+  },
 ];
 
 const desktopSteps = [
@@ -121,12 +121,12 @@ export default function JourneyTimeline({ lang }: JourneyTimelineProps) {
     <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="text-center space-y-2">
         <h2 className="h2-section">
-          {lang === 'en' ? 'From a Saturday Habit to a Registered Trust' : 'சனிக்கிழமைப் பழக்கம் முதல் அறக்கட்டளை வரை'}
+          {lang === 'en' ? 'Our Growth Journey: 2023 to July 2026' : 'எங்கள் வளர்ச்சி பயணம்: 2023 முதல் ஜூலை 2026 வரை'}
         </h2>
         <p className="mx-auto max-w-xl text-sm text-gray-900 sm:text-base">
           {lang === 'en'
-            ? "One person's weekend meal drive now serves thousands every month."
-            : 'ஒரு நபரின் வார இறுதி அன்னதானம் இன்று மாதந்தோறும் ஆயிரக்கணக்கானோருக்கு சேவை செய்கிறது.'}
+            ? 'The trust journey is a gradual and sincere expansion of service rather than a sudden institutional beginning.'
+            : 'அறக்கட்டளையின் பயணம் திடீர் தொடக்கம் அல்ல; அது சேவையின் மெதுவான, உண்மையான விரிவாக்கம்.'}
         </p>
       </div>
 

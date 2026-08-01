@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 import {
   FaBars,
@@ -181,7 +181,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
       <div className="flex items-center gap-3 px-5 py-5">
         <BrandMark size="inline" variant="round" className="bg-white/95" />
         <div>
-          <p className="font-display text-sm font-bold leading-tight">Nallathe Nadakkum</p>
+          <p className="font-display text-sm font-bold leading-tight">Nallathae Nadakkum</p>
           <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-200">Administration</p>
         </div>
       </div>

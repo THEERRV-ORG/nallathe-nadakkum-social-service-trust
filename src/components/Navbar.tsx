@@ -43,7 +43,7 @@ export default function Navbar({ lang, setLang, activeTab, setActiveTab }: Navba
           <BrandMark size="nav" variant="round" className="ring-2 ring-emerald-100 shrink-0" />
           <div className="min-w-0 leading-tight">
             <span className="block truncate font-display text-sm font-bold tracking-tight text-gray-900 sm:text-[15px]">
-              {lang === 'en' ? 'Nallathe Nadakkum' : 'நல்லதே நடக்கும்'}
+              {lang === 'en' ? 'Nallathae Nadakkum' : 'நல்லதே நடக்கும்'}
             </span>
             <span className="block truncate text-[10px] font-semibold text-emerald-600 sm:text-[11px]">
               {lang === 'en' ? 'Social Service Trust' : 'சமூக சேவை அறக்கட்டளை'}

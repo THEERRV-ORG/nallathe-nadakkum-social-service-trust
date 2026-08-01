@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { OFFICIAL_CONTACT, SAMPLE_SPONSORS, buildWhatsAppUrl, hasMeaningfulText, isValidDonationAmount, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeSingleLine } from '../security';
 import { motion } from 'motion/react';
 import {
@@ -102,7 +102,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
     {
       id: 'mUZS8A5twvE',
       title: { 
-        en: 'Future Goals & Vision of Nallathe Nadakkum Trust (Interview)', 
+        en: 'Future Goals & Vision of Nallathae Nadakkum Trust (Interview)', 
         ta: 'நல்லதே நடக்கும் அறக்கட்டளையின் எதிர்கால இலக்குகள் பற்றிய நேர்காணல்' 
       },
       duration: '11:42',
@@ -122,7 +122,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
   ];
 
   // Acknowledgement draft state. Inputs are validated, normalized, and handed
-  // off to the user's email client rather than being stored in-browser.
+  // off through WhatsApp rather than being stored in-browser.
   const [donorName, setDonorName] = useState('');
   const [donorPhone, setDonorPhone] = useState('');
   const [donationAmt, setDonationAmt] = useState('1000');
@@ -248,22 +248,22 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
     const normalizedItem = sanitizeSingleLine(donationItem, 120);
 
     if (!isValidPersonName(normalizedName)) {
-      setDonorError(lang === 'en' ? 'Enter a valid donor name before preparing the acknowledgement draft.' : 'பங்களிப்பை உறுதிப்படுத்த செல்லுபடியாகும் பெயரை வழங்கவும்.');
+      setDonorError(lang === 'en' ? 'Donor Name is invalid. Enter a real name using letters, spaces, dots, apostrophes, or hyphens only.' : 'நன்கொடையாளர் பெயர் செல்லுபடியாகவில்லை. சரியான பெயரை மட்டும் உள்ளிடவும்.');
       return;
     }
 
     if (!isValidIndianPhone(normalizedPhone)) {
-      setDonorError(lang === 'en' ? 'Enter a valid Indian phone number so we can follow up with you.' : 'தொடர்பு கொள்ள செல்லுபடியாகும் இந்திய தொலைபேசி எண்ணை வழங்கவும்.');
+      setDonorError(lang === 'en' ? 'Donor Phone / WhatsApp is invalid. Enter a valid 10-digit Indian mobile number.' : 'நன்கொடையாளர் தொலைபேசி / WhatsApp எண் செல்லுபடியாகவில்லை. சரியான 10 இலக்க இந்திய மொபைல் எண்ணை உள்ளிடவும்.');
       return;
     }
 
     if (donationType === 'Money' && !isValidDonationAmount(donationAmt)) {
-      setDonorError(lang === 'en' ? 'Donation amounts must be between Rs. 10 and Rs. 10,00,000.' : 'நன்கொடை தொகை ரூ.10 முதல் ரூ.10,00,000 வரை இருக்க வேண்டும்.');
+      setDonorError(lang === 'en' ? 'Donation Amount is invalid. Enter a whole rupee amount between Rs. 10 and Rs. 10,00,000.' : 'நன்கொடை தொகை செல்லுபடியாகவில்லை. ரூ.10 முதல் ரூ.10,00,000 வரை முழு ரூபாய் தொகையை உள்ளிடவும்.');
       return;
     }
 
     if (donationType !== 'Money' && donationType !== 'Blood' && !hasMeaningfulText(normalizedItem, 3, 120)) {
-      setDonorError(lang === 'en' ? 'Please describe what you are donating.' : 'நீங்கள் வழங்கும் நன்கொடையின் விவரத்தை குறிப்பிடவும்.');
+      setDonorError(lang === 'en' ? 'Donation Description is required. Describe the item or material you are donating.' : 'நன்கொடை விவரம் தேவை. நீங்கள் வழங்கும் பொருளை விவரிக்கவும்.');
       return;
     }
 
@@ -332,11 +332,11 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
       {/* Title Header */}
       <section className="text-center max-w-3xl mx-auto space-y-4">
         <h1 className="h1-page">
-          {lang === 'en' ? 'Sponsor & Direct Support Page' : 'மக்களுக்கு நேரடியாக உதவ நன்கொடைகள்'}
+          {lang === 'en' ? 'Your Donation Becomes Direct Help' : 'மக்களுக்கு நேரடியாக உதவ நன்கொடைகள்'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
           {lang === 'en' 
-            ? 'We maintain absolute transparency. We do not use third-party collectors. Support our programs directly.' 
+            ? 'Support food, emergency care, dignity, education, and humanitarian service for people who need timely help the most. Every donation supports real, local, and practical service.' 
             : 'நாங்கள் எவ்வித தனிப்பட்ட கமிஷன்களும் இல்லாமல், பெற்ற முழு நிதியையும் மக்களுக்கே பயன்படுத்துகிறோம். எங்களது பணிகளுக்கு நேரடியாக உதவலாம்.'}
         </p>
       </section>
@@ -348,10 +348,10 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         {/* Shared header spanning both columns */}
         <div className="relative max-w-2xl mx-auto text-center space-y-2">
           <h3 className="font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-            {lang === 'en' ? 'Official Banking Credentials' : 'அதிகாரப்பூர்வ வங்கிக் கணக்கு விபரங்கள்'}
+            {lang === 'en' ? 'Donation Details' : 'அதிகாரப்பூர்வ வங்கிக் கணக்கு விபரங்கள்'}
           </h3>
           <p className="text-sm sm:text-base text-emerald-50">
-            {lang === 'en' ? 'Operated jointly by Chairman and Treasurer. Strictly audited.' : 'தலைவர் மற்றும் பொருளாளரால் மட்டுமே இயக்கப்படும் பாதுகாப்பான கணக்கு.'}
+            {lang === 'en' ? 'Give with purpose. Official bank and UPI details are shown below after verification.' : 'தலைவர் மற்றும் பொருளாளரால் மட்டுமே இயக்கப்படும் பாதுகாப்பான கணக்கு.'}
           </p>
           <p className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-100">
             <FaCheck className="h-3 w-3" />
@@ -385,7 +385,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                 <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
                   {lang === 'en' ? 'Account Name' : 'கணக்கின் பெயர்'}
                 </dt>
-                <dd className="mt-0.5 text-sm sm:text-base font-bold text-emerald-800">Nallathe Nadakkum Trust</dd>
+                <dd className="mt-0.5 text-sm sm:text-base font-bold text-emerald-800">Nallathae Nadakkum Trust</dd>
               </div>
               <div className="py-3">
                 <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
@@ -438,7 +438,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                     {lang === 'en' ? 'Account Holder' : 'கணக்கு வைத்திருப்பவர்'}
                   </dt>
                   <dd className="mt-0.5 text-sm sm:text-base font-bold text-emerald-800">
-                    Nallathe Nadakkum Trust
+                    Nallathae Nadakkum Trust
                   </dd>
                 </div>
                 <div className="py-3">
@@ -495,7 +495,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
             <a
               href={buildWhatsAppUrl(OFFICIAL_CONTACT.whatsappPhone, [
                 lang === 'en'
-                  ? 'Hello, I have made a donation to Nallathe Nadakkum Trust and would like to share my payment receipt.'
+                  ? 'Hello, I have made a donation to Nallathae Nadakkum Trust and would like to share my payment receipt.'
                   : 'வணக்கம், நல்லதே நடக்கும் அறக்கட்டளைக்கு நான் நன்கொடை அளித்துள்ளேன், எனது ரசீதைப் பகிர விரும்புகிறேன்.',
               ])}
               target="_blank"
@@ -611,7 +611,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                   required
                   value={donorPhone}
                   onChange={(e) => setDonorPhone(e.target.value)}
-                  placeholder="e.g. 9876543210"
+                  placeholder="10-digit mobile number"
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
