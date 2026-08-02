@@ -329,15 +329,20 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
   return (
     <div className="space-y-12 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       
-      {/* Title Header */}
-      <section className="text-center max-w-3xl mx-auto space-y-4">
+      {/* Title Header */}      <section className="text-center max-w-3xl mx-auto space-y-4">
         <h1 className="h1-page">
-          {lang === 'en' ? 'Your Donation Becomes Direct Help' : 'மக்களுக்கு நேரடியாக உதவ நன்கொடைகள்'}
+          {lang === 'en' ? 'Your Donation Becomes Direct Help' : 'நன்கொடை வழங்குங்கள்'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
-          {lang === 'en' 
-            ? 'Support food, emergency care, dignity, education, and humanitarian service for people who need timely help the most. Every donation supports real, local, and practical service.' 
-            : 'நாங்கள் எவ்வித தனிப்பட்ட கமிஷன்களும் இல்லாமல், பெற்ற முழு நிதியையும் மக்களுக்கே பயன்படுத்துகிறோம். எங்களது பணிகளுக்கு நேரடியாக உதவலாம்.'}
+          {lang === 'en' ? (
+            'Support food, emergency care, dignity, education, and humanitarian service for people who need timely help the most. Every donation supports real, local, and practical service.'
+          ) : (
+            <>
+              <strong>உங்கள் உதவி, ஒருவரின் வாழ்க்கையில் நேரடி நிம்மதியாக மாறும்</strong>
+              <br />
+              பசியானவருக்கு உணவு, நோயாளிக்கு பயண உதவி, மாணவருக்கு கல்வி, முதியவருக்கு பாதுகாப்பு, ஆதரவற்றோருக்கு மரியாதை—இதற்கெல்லாம் உங்கள் பங்களிப்பு உதவலாம்.
+            </>
+          )}
         </p>
       </section>
 

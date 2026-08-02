@@ -68,18 +68,6 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
           </AnimatePresence>
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-black/90 sm:bg-gradient-to-r sm:from-black/95 sm:via-black/80 sm:to-emerald-950/30"></div>
-          {/* Slide dot indicators */}
-          <div className="absolute bottom-6 right-6 sm:right-8 flex space-x-2 z-10">
-            {heroImages.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setHeroIndex(idx)}
-                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  idx === heroIndex ? 'w-6 bg-[#34d399]' : 'w-1.5 bg-white/40 hover:bg-white/70'
-                }`}
-              />
-            ))}
-          </div>
         </div>
 
         {/* Hero Content Overlay */}
@@ -170,9 +158,23 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               <p>
                 {lang === 'en' 
                   ? 'A grassroots trust dedicated to dignity, service, and responsible community support.'
-                  : 'அன்பை செயலாக்கும் மனிதநேயப் பாதை'}
+                : 'அன்பை செயலாக்கும் மனிதநேயப் பாதை'}
               </p>
             </motion.div>
+
+            {/* Slide dot indicators */}
+            <div className="flex justify-end gap-2 max-w-2xl pt-1" aria-label="Hero photo selector">
+              {heroImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setHeroIndex(idx)}
+                  aria-label={`Show hero photo ${idx + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    idx === heroIndex ? 'w-6 bg-[#34d399]' : 'w-1.5 bg-white/40 hover:bg-white/70'
+                  }`}
+                />
+              ))}
+            </div>
 
           </div>
         </div>
@@ -484,7 +486,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               serviceId: 'medical',
               preset: { type: 'Blood', program: undefined, amount: undefined },
               title: { en: 'Blood Donation', ta: 'இரத்த தானம்' },
-              kicker: { en: 'Life-Saving Gift', ta: 'உயிர் காக்கும் கொடை' },
+              kicker: { en: 'Life-Saving Gift', ta: 'உயிர் காக்கும் தானம்' },
               amt: { en: 'Give Blood', ta: 'இரத்த தானம்' },
               unit: { en: '1 Unit · up to 3 Lives', ta: '1 யூனிட் · 3 உயிர் வரை' },
               desc: {
@@ -506,7 +508,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               serviceId: 'elderly',
               preset: { type: 'Dress', program: undefined, amount: undefined },
               title: { en: 'Dress Donation', ta: 'ஆடை நன்கொடை' },
-              kicker: { en: 'Material Gift', ta: 'பொருள் கொடை' },
+              kicker: { en: 'Material Gift', ta: 'பொருள் தானம்' },
               amt: { en: 'Material Aid', ta: 'பொருள் உதவி' },
               unit: { en: 'New / Gently-used', ta: 'புதிய / சிறிது பயன்பட்ட' },
               desc: {
