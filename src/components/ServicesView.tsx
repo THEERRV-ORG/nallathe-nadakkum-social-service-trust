@@ -114,12 +114,18 @@ export default function ServicesView({ lang, setActiveTab, setDonatePreset }: Se
       {/* ── Page Hero ── */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-14 text-center space-y-4">
         <h1 className="h1-page">
-          {lang === 'en' ? 'Our Services & Social Activities' : 'நமது சேவைகள் மற்றும் மக்கள் பணிகள்'}
+          {lang === 'en' ? 'Practical Support. Compassionate Action. Dignified Care.' : 'எங்கள் சேவைகள்'}
         </h1>
         <p className="text-base sm:text-lg text-gray-900 leading-relaxed max-w-2xl mx-auto">
-          {lang === 'en'
-            ? 'Six direct humanitarian programs reaching people who fall outside traditional social safety nets in Tiruchengode, Tamil Nadu.'
-            : 'திருச்செங்கோட்டில் முறையான அரசு உதவிகள் எட்டாத நலிந்த மக்களுக்கு உதவிட செயல்படுகின்ற ஆறு மக்கள் நலத் திட்டங்கள்.'}
+          {lang === 'en' ? (
+            'Our services are designed to respond to urgent human needs with respect, responsibility, and local community involvement.'
+          ) : (
+            <>
+              <strong>தேவைக்கான உதவி மட்டும் அல்ல, இதயத்திலிருந்து வரும் பொறுப்பு</strong>
+              <br />
+              ஒவ்வொரு சேவையும் ஒருவரின் துயரத்தை குறைக்க, அவரின் மரியாதையை காக்க, அவரின் வாழ்வில் நம்பிக்கையை மீட்டெடுக்க உருவாக்கப்பட்டது.
+            </>
+          )}
         </p>
       </section>
 

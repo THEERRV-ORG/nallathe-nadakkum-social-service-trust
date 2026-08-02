@@ -57,11 +57,11 @@ export const commonTranslations: TranslationSet = {
   },
   heroSlogan: {
     en: 'Where Compassion Becomes Action',
-    ta: 'வாழ்விலும், மறைவிலும் — யாரும் தனியே விடப்பட மாட்டார்கள்.'
+    ta: 'ஒரு கை நீட்டினால், ஒரு வாழ்க்கை நிமிரும்'
   },
   heroSub: {
     en: 'Serving Tiruchengode and surrounding communities through food support, free ambulance service, dignified last rites, elderly rescue, student assistance, and humanitarian care.',
-    ta: 'திருச்செங்கோட்டை மையமாகக் கொண்ட பதிவு செய்யப்பட்ட சமூக சேவை அறக்கட்டளை. ஆதரவற்ற மக்களுக்காக தங்களை அர்ப்பணித்துக் கொள்கிறது.'
+    ta: 'பசி, ஆதரவின்மை, அவசரம், தனிமை—எந்த நிலையிலும் மனிதனின் மரியாதை காக்கப்பட வேண்டும் என்ற நம்பிக்கையுடன் செயல்படும் திருச்செங்கோட்டின் மனிதநேய அறக்கட்டளை.'
   },
   introText: {
     en: 'Nallathae Nadakkum Social Service Trust is a public-serving humanitarian trust based in Tiruchengode, Tamil Nadu, founded by N. Kavinraj, Advocate. What began as a personal effort to feed those in need has grown into a dedicated service movement supporting vulnerable people through daily food distribution, free ambulance service, dignified final rites, elderly rescue, educational support, and emergency assistance.',
@@ -69,7 +69,7 @@ export const commonTranslations: TranslationSet = {
   },
   introShort: {
     en: 'Nallathae Nadakkum Social Service Trust is a people-centered service organization working to support those who are often overlooked: destitute individuals, abandoned elderly persons, financially struggling students, and people facing urgent medical or humanitarian need. Our work is local, practical, transparent, and rooted in service without discrimination.',
-    ta: 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை, திருச்செங்கோடு வழக்கறிஞர் நா. கவின்ராஜ் அவர்களால் தொடங்கப்பட்ட, பதிவு செய்யப்பட்ட பொது தொண்டு அறக்கட்டளை ஆகும். தினசரி அன்னதானம், கண்ணியமான இறுதி மரியாதை, இலவச அவசர ஆம்புலன்ஸ் மற்றும் மீட்பு, முதியோர் பராமரிப்பு மற்றும் சமூக உதவி மூலம், வேறு யாருடைய ஆதரவும் இல்லாத மக்களுக்கு நேரடியாக அறக்கட்டளை உதவுகிறது.'
+    ta: 'சமூகத்தின் ஒதுக்கப்பட்ட விளிம்புகளில் வாழும் மனிதர்களை மரியாதையுடனும் கருணையுடனும் அணுகி, அவர்களுக்கு உடனடி உதவி அளிப்பதே எங்கள் பணி. பசியால் தவிக்கும் ஒருவர், தெருவில் ஆதரவின்றி இருக்கும் முதியவர், மருத்துவ அவசரத்தில் தவிக்கும் குடும்பம், கல்விக்காக போராடும் மாணவர், இறுதி மரியாதை கூட இல்லாமல் விடப்படும் ஒருவர்—இவர்களுக்காக நாம் இருப்பதுதான் எங்கள் அடையாளம்.'
   },
   missionTitle: {
     en: 'Our Mission',
@@ -77,7 +77,7 @@ export const commonTranslations: TranslationSet = {
   },
   missionText: {
     en: 'To serve vulnerable individuals and communities through compassionate, transparent, and direct humanitarian action, ensuring access to food, emergency support, dignity in death, care for the elderly, and educational opportunity for those in need.',
-    ta: 'திருச்செங்கோடு மற்றும் சுற்றுவட்டாரப் பகுதிகளில் உள்ள ஆதரவற்ற, முதியோர், பொருளாதார ரீதியில் நலிந்தோருக்கு — தினசரி உணவு உதவி, அவசர மருத்துவ/இறுதி மரியாதை உதவி, கல்வி வாய்ப்பு, மற்றும் வெளிப்படையான நன்கொடையாளர் இணைப்பு அமைப்பு மூலம் — நேரடியான, கண்ணியமான, சரியான நேரத்தில் உதவி வழங்குதல்.'
+    ta: 'பசி, வறுமை, ஆதரவின்மை, அவசர மருத்துவத் தேவை, கல்வி தடைகள், சமூக புறக்கணிப்பு—இவற்றால் துன்பப்படும் மக்களுக்கு உடனடியும், பொறுப்புடனும், மரியாதையுடனும் மனிதநேய உதவி எட்டச் செய்வதே எங்கள் பணிக்கூற்று.'
   },
   visionTitle: {
     en: 'Our Vision',
@@ -85,7 +85,7 @@ export const commonTranslations: TranslationSet = {
   },
   visionText: {
     en: 'To build a caring and responsible society where no person is left hungry, abandoned, unsupported in crisis, or denied dignity because of poverty or neglect.',
-    ta: 'மக்கள் ஒருவருக்கொருவர் இயல்பாகவே கைகொடுக்கும் ஒரு சமூகம் — தகுதியுள்ள எவரும் உதவியின்றி அல்லது கண்ணியமின்றி விடப்படாத ஒரு சமூகம்.'
+    ta: 'யாரும் பசியோடு உறங்காத, யாரும் ஆதரவின்றி தெருவில் தவிக்காத, யாரும் மரியாதையின்றி பிரிய வேண்டாத, கருணை நிறைந்த சமூகத்தை உருவாக்குவது எங்கள் நோக்கம்.'
   },
   registeredOffice: {
     en: 'Registered Office',

@@ -26,15 +26,20 @@ export default function GalleryView({ lang }: GalleryViewProps) {
   return (
     <div className="space-y-12 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       
-      {/* Title Header */}
-      <section className="text-center max-w-3xl mx-auto space-y-4">
+      {/* Title Header */}      <section className="text-center max-w-3xl mx-auto space-y-4">
         <h1 className="h1-page">
-          {lang === 'en' ? 'Our Activities & Gallery' : 'கடந்தகால பணிகள் மற்றும் புகைப்படத் தொகுப்பு'}
+          {lang === 'en' ? 'Moments of Service, Stories of Dignity' : 'செயற்பாடுகள் & புகைப்படங்கள்'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
-          {lang === 'en' 
-            ? 'A visual ledger of our daily presence in the streets, mortuaries, and classrooms of Namakkal and Salem districts.' 
-            : 'நாமக்கல் மற்றும் சேலம் மாவட்டங்களில் நாங்கள் மேற்கொண்ட அவசரப் பணிகள், மீட்புகள் மற்றும் தினசரி அன்னதான நிகழ்வுகளின் நேரடிப் பதிவுகள்.'}
+          {lang === 'en' ? (
+            'A glimpse into the trust’s field work, community activities, service milestones, and humanitarian outreach.'
+          ) : (
+            <>
+              <strong>ஒவ்வொரு புகைப்படமும் ஒரு செயலை மட்டும் அல்ல, ஒரு மனித வாழ்க்கையின் கதையையும் சொல்கிறது</strong>
+              <br />
+              நாங்கள் சென்ற இடங்கள், உதவிய தருணங்கள், மீட்ட நம்பிக்கைகள், பகிர்ந்த மனிதநேயம்—அனைத்தும் இங்கே
+            </>
+          )}
         </p>
       </section>
 

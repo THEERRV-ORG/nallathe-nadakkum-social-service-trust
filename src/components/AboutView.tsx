@@ -55,8 +55,20 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
     name: commonTranslations.founderName[lang],
     image: '/founder.jpeg',
     desc: {
-      en: 'N. Kavinraj is a practicing Advocate in Tiruchengode Town with a deep passion for social justice and human rights. Having personally funded and coordinated street food distribution for two years before formal trust registration, he continues to lead rescue operations and police coordinations on the ground.',
-      ta: 'வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள் திருச்செங்கோட்டில் வழக்கறிஞராகப் பணியாற்றி வருகிறார். அறக்கட்டளையை முறையாகப் பதிவு செய்வதற்கு முன்பு இரண்டு ஆண்டுகளாகத் தனது சொந்தச் செலவில் ஏழைகளுக்கு உணவு வழங்கியவர். தற்போது களப்பணிகள், மீட்பு நடவடிக்கைகள் மற்றும் போலீஸ் தொடர்புகளை நேரில் நின்று வழிநடத்துகிறார்.'
+      en: (
+        <>
+          <p><strong>N. Kavinraj, B.Com., LL.M., Advocate</strong>, is the founder of the trust and the driving force behind its daily operations. Though professionally engaged in law, his deeper commitment has always been humanitarian service. His legal background has proved especially valuable in areas requiring sensitivity and procedure, including police coordination, documentation, rescue intervention, and dignified final rites for unclaimed persons.</p>
+          <p>For him, the trust is not a side initiative. It is a life mission shaped by empathy, responsibility, and direct involvement. He personally leads service decisions, supports fundraising efforts, coordinates teams, and remains closely connected to field work.</p>
+        </>
+      ),
+      ta: (
+        <>
+          <p><strong>நா. கவின்ராஜ், B.Com., LL.M., வழக்கறிஞர்</strong></p>
+          <p>தொழிலில் வழக்கறிஞர்; உள்ளத்தில் மனிதநேய சேவகர்.</p>
+          <p>சமூகத்தின் வலியைக் கண்டு மௌனமாக நிற்க முடியாத மனநிலையிலிருந்து இந்தப் பயணம் தொடங்கியது. சட்ட அறிவு, நிர்வாக பொறுப்பு, சமூக அக்கறை, திடல் அனுபவம்—இவற்றை ஒன்றிணைத்து, அவர் இந்த அறக்கட்டளையை ஒரு உயிரோட்டமான சேவை இயக்கமாக உருவாக்கியுள்ளார்.</p>
+          <p>உணவு வழங்குதல் முதல் இறுதி மரியாதை வரை, முதியோர் மீட்பு முதல் ஆம்புலன்ஸ் சேவை வரை, அறக்கட்டளையின் ஒவ்வொரு முக்கிய பணியிலும் அவர் நேரடியாக ஈடுபட்டு வருகிறார்.</p>
+        </>
+      )
     }
   };
 
@@ -69,12 +81,12 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="text-center max-w-3xl mx-auto space-y-3 px-4 pt-[clamp(1.25rem,3.5vh,2.5rem)]">
         <h1 className="h1-page">
-          {lang === 'en' ? 'About Nallathae Nadakkum Social Service Trust' : 'அறக்கட்டளை வரலாறு & ஆளுமை'}
+          {lang === 'en' ? 'About Nallathae Nadakkum Social Service Trust' : 'எங்களை பற்றி'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65] max-w-2xl mx-auto">
           {lang === 'en'
             ? 'A trust built from compassion, responsibility, and direct service.'
-            : 'திருச்செங்கோடு சாலைகளில் கண்ட எளிய மக்களின் வறுமையைப் போக்க உருவான ஒரு முறையான சேவை அமைப்பு.'}
+            : 'ஒரு மனிதனின் மனவேதனை, ஆயிரம் பேரின் நம்பிக்கையாக மாறிய கதை'}
         </p>
         {/* Credibility meta row */}
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 pt-0.5 text-xs font-semibold text-gray-900">
@@ -130,18 +142,30 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
           {[
             {
               num: '01',
-              title: { en: 'Why This Name', ta: 'இந்தப் பெயர் ஏன்' },
+              title: { en: 'Why This Name', ta: 'Why the Name “Nallathe Nadakkum”' },
               body: {
                 en: 'The name “Nallathae Nadakkum” reflects a belief in hope, goodness, and meaningful human action. It expresses the conviction that sincere help, given at the right time, can restore dignity, relief, and hope.',
-                ta: 'மனிதநேயத்துடன் நாம் செய்யும் ஒவ்வொரு சிறிய செயலும் தொடர்ந்து நடக்கும் போது, அது சமூகத்தால் கைவிடப்பட்ட மனிதர்களின் வாழ்வில் பெரிய நல்ல மாற்றங்களை ஏற்படுத்தும் என்ற நம்பிக்கையில் உருவானது.'
+                ta: (
+                  <>
+                    <strong>“நல்லதே நடக்கும்”</strong> என்பது ஒரு பெயர் அல்ல; அது ஒரு நம்பிக்கை.
+                    <br />
+                    இருள் நிறைந்த சூழலிலும் நல்லது நிகழலாம். உதவி இல்லை என்று தோன்றும் நேரத்திலும் ஒரு நல்ல மனம் வந்து நிற்கலாம். கைவிடப்பட்ட இடத்திலும் மனிதநேயம் இன்னும் உயிரோடு இருக்கிறது என்பதை உணர்த்தும் நம்பிக்கையின் பெயர்தான் <strong>நல்லதே நடக்கும்</strong>.
+                    <br />
+                    எங்கள் ஒவ்வொரு செயலும் இந்த நம்பிக்கையை வாழ்வாக்கும் ஒரு சிறிய ஒளியாகும்.
+                  </>
+                )
               }
             },
             {
               num: '02',
-              title: { en: 'Where It Began', ta: 'எங்கே தொடங்கியது' },
+              title: { en: 'Where It Began', ta: 'Why and Where It Started' },
               body: {
-                en: 'Nallathae Nadakkum Social Service Trust began in Tiruchengode, Tamil Nadu, from the lived experiences and social awareness of its founder, N. Kavinraj. Rather than remain a silent observer to poverty, neglect, hunger, abandonment, and helplessness, he began helping through small but steady acts, especially personally funded weekend food donations.',
-                ta: 'எங்கள் நிறுவனர், வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள், தனது வழக்கறிஞர் பணிக்கு இடையே சாலையோரங்களில் ஆதரவின்றித் தவித்த மக்களுக்கு வார இறுதியில் தனது சொந்தச் செலவில் சமைத்து வழங்கத் தொடங்கினார். நாளடைவில் தேவைகள் அதிகரித்ததால், அதனை மேலும் முறைப்படுத்தி, பலருக்கும் உதவிட 08.04.2025 அன்று அறக்கட்டளையாக நிறுவினார்.'
+                en: (
+                  <>
+                    Nallathae Nadakkum Social Service Trust began in <strong>Tiruchengode, Tamil Nadu</strong>, from the lived experiences and social awareness of its founder, <strong>N. Kavinraj</strong>. As a young advocate, he witnessed the pain of poverty, neglect, hunger, abandonment, and helplessness faced by many people in society. Rather than remain a silent observer, he began helping through small but steady acts-especially weekend food donations funded personally. Over time, the work expanded in both scale and responsibility, leading to the formal registration of the trust on <strong>08.04.2025</strong>.
+                  </>
+                ),
+                ta: 'திருச்செங்கோட்டில் இருந்து ஆரம்பமான இந்தப் பயணத்தின் பின்னால் ஒரு ஆழமான மன அனுபவம் உள்ளது. சமூகத்தில் பசியால் தவிப்பவர்கள், தெருவோர முதியவர்கள், கவனிக்கப்படாத உயிர்கள், பணமின்றி சிகிச்சைக்காக போராடும் குடும்பங்கள்—இவற்றை நேரில் கண்ட அனுபவம், “யாராவது செய்ய வேண்டும்” என்ற எண்ணத்தை “நான் செய்வேன்” என்ற முடிவாக மாற்றியது. தொடக்கத்தில் வார இறுதிகளில் தனிப்பட்ட செலவில் உணவு வழங்கிய முயற்சி, பின்னர் பலரின் நம்பிக்கையுடனும் பங்களிப்புடனும் வளர்ந்து, 08.04.2025 அன்று அதிகாரப்பூர்வமாக அறக்கட்டளையாகப் பதிவு செய்யப்பட்டது.'
               }
             }
           ].map((item, idx) => (
@@ -156,7 +180,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
                 <h3 className="font-display text-base font-bold uppercase tracking-wider text-gray-900">
                   {item.title[lang]}
                 </h3>
-                <p className="text-base text-gray-900 leading-relaxed">
+                <p className="text-base text-gray-900 leading-relaxed [&_strong]:font-bold">
                   {item.body[lang]}
                 </p>
               </div>
@@ -224,9 +248,9 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
 
           {/* Story + CTA (mobile: after image; desktop: right column, below heading) */}
           <div className="order-3 lg:col-span-7 lg:col-start-6 space-y-5 lg:-mt-1">
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
+            <div className="space-y-4 text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] [&_strong]:font-bold">
               {founder.desc[lang]}
-            </p>
+            </div>
             <blockquote className="border-l-4 border-emerald-500 pl-4 text-base sm:text-lg italic text-gray-900 leading-relaxed font-serif">
               {lang === 'en'
                 ? '“We seek those who have nobody left, and we stand beside them in life, in sickness, and in death.”'
@@ -345,7 +369,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
             { label: { en: 'Elder Rescue', ta: '???????? ??????' }, tab: 'services', icon: <FaAward className="h-5 w-5" />, accent: 'bg-emerald-50 text-emerald-700 group-hover:bg-emerald-100' },
             { label: { en: 'Education Support', ta: '????? ????' }, tab: 'services', icon: <FaFileLines className="h-5 w-5" />, accent: 'bg-brand-gold-50 text-brand-gold-700 group-hover:bg-brand-gold-100' },
             { label: { en: 'Emergency Help', ta: '???? ????' }, tab: 'help', icon: <FaHeartPulse className="h-5 w-5" />, accent: 'bg-brand-blue-50 text-brand-blue-700 group-hover:bg-brand-blue-100' },
-            { label: { en: 'Blood Donation', ta: '????? ???????' }, tab: 'donate', icon: <FaDroplet className="h-5 w-5" />, accent: 'bg-rose-50 text-rose-600 group-hover:bg-rose-100' },
+            { label: { en: 'Blood Donation', ta: 'இரத்த தானம்' }, tab: 'donate', icon: <FaDroplet className="h-5 w-5" />, accent: 'bg-rose-50 text-rose-600 group-hover:bg-rose-100' },
             { label: { en: 'Dress Donation', ta: '??? ???????' }, tab: 'donate', icon: <FaShirt className="h-5 w-5" />, accent: 'bg-emerald-50 text-brand-leaf group-hover:bg-emerald-100' }
           ].map((prog, idx) => (
             <button

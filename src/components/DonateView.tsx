@@ -188,7 +188,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
   const donationTypeOptions: SelectOption[] = [
     { value: 'Money', label: lang === 'en' ? 'Financial Remittance' : 'நிதிப் பங்களிப்பு' },
     { value: 'Groceries', label: lang === 'en' ? 'Groceries / Materials' : 'மளிகைப் பொருட்கள் / பொருளுதவி' },
-    { value: 'Blood', label: lang === 'en' ? 'Blood Donation' : 'இரத்த நன்கொடை' },
+    { value: 'Blood', label: lang === 'en' ? 'Blood Donation' : 'இரத்த தானம்' },
     { value: 'Dress', label: lang === 'en' ? 'Clothes / Dress' : 'ஆடைகள் / உடை' },
     { value: 'Other', label: lang === 'en' ? 'Other' : 'மற்றவை' },
   ];
@@ -280,7 +280,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
     const donationTypeLabel = {
       'Money': lang === 'en' ? 'Financial Remittance' : 'நிதிப் பங்களிப்பு',
       'Groceries': lang === 'en' ? 'Groceries / Materials' : 'மளிகைப் பொருட்கள் / பொருளுதவி',
-      'Blood': lang === 'en' ? 'Blood Donation' : 'இரத்த நன்கொடை',
+      'Blood': lang === 'en' ? 'Blood Donation' : 'இரத்த தானம்',
       'Dress': lang === 'en' ? 'Clothes / Dress' : 'ஆடைகள் / உடை',
     }[donationType] || donationType;
 
@@ -516,8 +516,8 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
         </div>
       </section>
 
-      {/* Safety & Tax Warnings */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Safety Warning */}
+      <section>
         
         {/* Safety Warning */}
         <div className="rounded-2xl border border-red-200 bg-red-50/50 p-5 flex items-start space-x-3">
@@ -534,20 +534,6 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
           </div>
         </div>
 
-        {/* Tax Exemption Status */}
-        <div className="rounded-2xl border border-amber-200 bg-amber-50/50 p-5 flex items-start space-x-3">
-          <FaCircleExclamation className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
-          <div className="space-y-1">
-            <h3 className="text-xs font-bold text-amber-950 uppercase tracking-wider">
-              {lang === 'en' ? 'Tax Deduction & Exemption Status' : 'வரி விலக்கு நிலைப்பாடு'}
-            </h3>
-            <p className="text-sm sm:text-base text-amber-900 leading-relaxed sm:leading-[1.65]">
-              {lang === 'en'
-                ? 'The trust is registered under deed Doc No. 16/2025. Applications for 12A and 80G tax-exempt registrations are pending. Donations are NOT currently eligible for tax deduction. We will update our notices once granted.'
-                : 'எங்களது அறக்கட்டளை 2025-ல் பதிவு செய்யப்பட்டுள்ளது. 12A / 80G வருமான வரி விலக்கிற்கான விண்ணப்பம் தற்போது நிலுவையில் உள்ளது. எனவே தற்போதைய நிலையில் வரி விலக்கு கோர இயலாது என்பதை வெளிப்படையாகத் தெரிவித்துக் கொள்கிறோம்.'}
-            </p>
-          </div>
-        </div>
 
       </section>
 
@@ -938,7 +924,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
 
             {/* Quick Action Link to Subscribe / Watch More */}
             <a 
-              href="https://www.youtube.com"
+              href="https://www.youtube.com/@NallatheNadakumSocialTrust"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center space-x-2 py-3 px-4 rounded-xl bg-red-50 text-red-700 hover:bg-red-100 transition-colors text-xs font-bold w-full cursor-pointer border border-red-100"

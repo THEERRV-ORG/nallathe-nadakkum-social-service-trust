@@ -17,7 +17,7 @@ export const OFFICIAL_CONTACT = {
 export const OFFICIAL_SOCIAL = {
   instagram: 'https://www.instagram.com/nn_socialservice_trust',
   facebook: 'https://www.facebook.com/share/1CvjtvcgLs/',
-  youtube: 'https://www.youtube.com/@Nallathaenadakumsocialtrust',
+  youtube: 'https://www.youtube.com/@NallatheNadakumSocialTrust',
 };
 
 /**

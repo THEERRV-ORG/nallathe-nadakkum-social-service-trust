@@ -19,12 +19,18 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
       {/* Title Header */}
       <section className="text-center max-w-3xl mx-auto space-y-4">
         <h1 className="h1-page">
-          {lang === 'en' ? 'Built on Trust, Guided by Responsibility' : 'வெளிப்படைத்தன்மை மற்றும் சட்டப்பூர்வ விபரங்கள்'}
+          {lang === 'en' ? 'Built on Trust, Guided by Responsibility' : 'வெளிப்படைத் தன்மையும் சட்ட அடிப்படையும்'}
         </h1>
         <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
-          {lang === 'en' 
-            ? 'Our commitment to lawful operation, ethical service, financial accountability, and public trust.' 
-            : 'நாங்கள் இந்திய சட்டங்களுக்கு முழுமையாக உட்பட்டு, தகுந்த தணிக்கை ஆவணங்களுடன் செயல்படுகிறோம். எங்களது சட்ட விபரங்கள் மற்றும் கேள்விகளை இங்கு காணலாம்.'}
+          {lang === 'en' ? (
+            'Our commitment to lawful operation, ethical service, financial accountability, and public trust.'
+          ) : (
+            <>
+              <strong>நம்பிக்கையைப் பெறுவதற்கும் காக்குவதற்கும் நாம் பொறுப்புடன் செயல்படுகிறோம்</strong>
+              <br />
+              சேவையில் கருணை, நிர்வாகத்தில் பொறுப்பு, நிதியில் வெளிப்படைத் தன்மை—இதுவே எங்கள் அடிப்படை.
+            </>
+          )}
         </p>
       </section>
 
@@ -36,11 +42,13 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             tile: 'bg-brand-blue-50 text-brand-blue-700',
             title: { en: 'Irrevocable Public Trust', ta: 'மாற்ற முடியாத பொது அறக்கட்டளை' },
             body: {
-              en: 'Nallathae Nadakkum Social Service Trust functions with respect for the laws of the Republic of India and upholds principles of public accountability, ethical conduct, and responsible charitable service. The trust operates as a public charitable trust established for social welfare purposes and governed through a board of trustees.',
+              en: (
+                <>
+                  The trust operates as a <strong>public charitable trust</strong> established for social welfare purposes and governed through a <strong>board of trustees</strong>. Its charitable intent is public in nature and service-oriented in purpose.
+                </>
+              ),
               ta: 'எங்களது அறக்கட்டளை ஒரு மாற்ற முடியாத பொது தொண்டு அமைப்பாகும். இதன் சொத்துக்கள் அல்லது நிதி ஒருபோதும் தனிநபர் இலாபத்திற்காகப் பயன்படுத்தப்படாது. ஒருவேளை அறக்கட்டளை கலைக்கப்பட்டால், அதன் சொத்துக்கள் அனைத்தும் மற்றொரு பொது தொண்டு நிறுவனத்திடமே ஒப்படைக்கப்படும்.',
-            },
-            status: { en: 'Status: Active and Compliant', ta: 'நிலை: செயல்பாட்டில் உள்ளது' },
-            statusCls: 'text-gray-900 bg-gray-50',
+            }
           },
           {
             icon: <FaLock className="h-5 w-5" />,
@@ -49,9 +57,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             body: {
               en: 'To strengthen financial responsibility, key financial transactions are subject to joint signatory oversight by the Chairman and Treasurer. This supports disciplined use of funds and reduces the risk of unilateral financial handling.',
               ta: 'அறக்கட்டளையின் அனைத்து நிதி பரிவர்த்தனைகளும் தலைவர் (வழக்கறிஞர் நா. கவின்ராஜ்) மற்றும் பொருளாளர் (திருமதி. N. கோகிலா) ஆகியோரின் கூட்டு கையொப்பத்துடன் மட்டுமே நிகழும். அறங்காவலர் குழு ஒப்புதல் இன்றி தனிநபர் யாரும் பணத்தை எடுக்கவோ செலுத்தவோ முடியாது.',
-            },
-            status: { en: 'Process: Joint Bank Mandate', ta: 'வழிமுறை: கூட்டு வங்கிக் கணக்கு' },
-            statusCls: 'text-gray-900 bg-gray-50',
+            }
           },
         ].map((item, idx) => (
           <div key={idx} className="flex flex-col sm:flex-row gap-4 sm:gap-8 p-6 sm:p-8">
@@ -64,12 +70,9 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
               </h3>
             </div>
             <div className="sm:flex-1 space-y-3">
-              <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65]">
+              <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] [&_strong]:font-bold">
                 {item.body[lang]}
               </p>
-              <span className={`inline-block text-[10px] font-sans font-semibold px-2 py-0.5 rounded w-fit ${item.statusCls}`}>
-                {item.status[lang]}
-              </span>
             </div>
           </div>
         ))}

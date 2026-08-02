@@ -1,6 +1,6 @@
 # UI/UX Audit — Nallathe Nadakkum Social Service Trust
 
-**Auditor:** Senior UI/UX Designer & Design Auditor
+**Auditor:** Sri Harsha
 **Scope:** Full site — Home, About, Services, Gallery, Donate, Transparency, Speaker, and the three Forms views (Help, Volunteer, Contact), plus Navbar, Footer, shared components.
 **Method:** Direct source inspection of every component + live browser inspection at desktop (1280) and mobile (375) in both English and Tamil.
 **Nature:** Report only. No code changed.

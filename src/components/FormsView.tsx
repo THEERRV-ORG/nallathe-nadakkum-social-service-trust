@@ -588,10 +588,10 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           <div className="lg:col-span-5 xl:col-span-4 space-y-5">
             <div className="space-y-3">
               <span className="section-eyebrow text-brand-blue-700">
-                {lang === 'en' ? 'Volunteer With Us' : 'எங்களுடன் தன்னார்வமாக இணைக'}
+                {lang === 'en' ? 'Community & Support' : 'எங்களுடன் தன்னார்வமாக இணைக'}
               </span>
               <h1 className="h1-page">
-                {lang === 'en' ? 'How You Can Reach Us, Join Us, or Invite Us' : 'உங்கள் நேரத்தை வழங்கி நேரடி தாக்கத்தை உருவாக்குங்கள்'}
+                {lang === 'en' ? 'Volunteer With Us' : 'உங்கள் நேரத்தை வழங்கி நேரடி தாக்கத்தை உருவாக்குங்கள்'}
               </h1>
               <p className="text-gray-900 form-copy">
                 {lang === 'en'
@@ -809,7 +809,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               <p className="text-gray-900 form-copy">
                 {lang === 'en'
                   ? 'Whether you need support, want to volunteer, wish to donate, or would like to connect for community collaboration, we welcome your message. For emergency ambulance requirements or reporting abandoned elderly, call us immediately.'
-                  : 'எங்கள் பதிவு அலுவலகம் திருச்செங்கோடு ராஜிவ் நகர் குறுக்கு சாலை, SPM மருத்துவமனைக்கு எதிரில் அமைந்துள்ளது. அவசர ஆம்புலன்ஸ் தேவை அல்லது முதியவர்கள் மீட்புத் தகவல்களுக்கு உடனடியாக அழைக்கவும்.'}
+                  : 'உங்கள் ஒவ்வொரு தொடர்பும் எங்களுக்கு முக்கியம். உதவி கோர, நன்கொடை வழங்க, தன்னார்வலராக இணைய, அல்லது கூட்டாண்மை பற்றி பேச—எங்களை எப்போதும் அணுகலாம்.'}
               </p>
             </div>
 

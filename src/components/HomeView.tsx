@@ -170,7 +170,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               <p>
                 {lang === 'en' 
                   ? 'A grassroots trust dedicated to dignity, service, and responsible community support.'
-                  : 'சாலையோரங்கள், மருத்துவமனைகளில் யாருமின்றி தவிக்கும் ஏழைகள், ஆதரவற்ற முதியவர்கள் மற்றும் உரிமை கோரப்படாத உடல்களுக்கு கண்ணியமான முறையில் தொண்டு செய்கிறோம்.'}
+                  : 'அன்பை செயலாக்கும் மனிதநேயப் பாதை'}
               </p>
             </motion.div>
 
@@ -197,14 +197,21 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                 {lang === 'en' ? 'Who We Are' : 'எங்களை பற்றி'}
               </h2>
               <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl mx-auto md:mx-0">
-                {commonTranslations.introShort[lang]}
+                {lang === 'en' ? (
+                  commonTranslations.introShort[lang]
+                ) : (
+                  <>
+                    <strong>நாங்கள் ஒரு அமைப்பு மட்டும் அல்ல; தேவையுள்ள நேரத்தில் மனிதராக வந்து நிற்கும் நம்பிக்கை.</strong>{' '}
+                    {commonTranslations.introShort[lang]}
+                  </>
+                )}
               </p>
               <div>
                 <button
                   onClick={() => setActiveTab('about')}
                   className="text-emerald-700 font-semibold text-sm hover:text-emerald-800 hover:underline inline-flex items-center space-x-1 cursor-pointer"
                 >
-                  <span>{lang === 'en' ? 'Learn More About Us' : 'எங்கள் அறக்கட்டளையின் முழு வரலாறு & அறங்காவலர்கள் பற்றி படிக்க'}</span>
+                  <span>{lang === 'en' ? 'Learn More About Us' : 'எங்கள் பயணத்தை அறிய'}</span>
                   <FaChevronRight className="h-4 w-4" />
                 </button>
               </div>
@@ -366,7 +373,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               <p className="text-sm sm:text-base text-emerald-50 max-w-2xl mx-auto">
                 {lang === 'en'
                   ? 'Every contribution, whether financial or in kind, can become meaningful support for someone in need. You may choose to support a specific cause that reflects your values.'
-                  : 'ஆதரிக்க ஒரு திட்டத்தைத் தேர்ந்தெடுங்கள். ஒவ்வொரு பங்களிப்பும் தேவைப்படுவோரை நேரடியாகச் சென்றடைகிறது — நிர்வாகச் செலவு பிடித்தம் இல்லை.'}
+                  : 'நீங்கள் அளிப்பது ஒரு நன்கொடை மட்டுமல்ல; அது ஒருவரின் வாழ்வில் நேரடி மாற்றமாக மாறும் ஒரு கருணைச் செயல்.'}
               </p>
               {/* Trust line */}
               <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-1 text-xs font-semibold text-white">
@@ -394,7 +401,11 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               unit: { en: 'Per Meal Session', ta: 'ஒரு வேளை உணவு' },
               desc: {
                 en: 'Help us provide fresh meals to people living in hardship, including those on the streets and residents in care homes. Your support can directly reduce hunger and bring daily relief to someone who may otherwise go without a meal.',
-                ta: 'சாலையோரம் அல்லது முதியோர் இல்லத்தில் ஒரு வேளை உணவை ஸ்பான்சர் செய்யலாம் — வேளை மற்றும் இடத்தைப் பொறுத்து செலவு மாறுபடும் — ஆதரவற்ற ஏழைகள், முதியோர் மற்றும் நோயாளிகளுக்கு சத்தான உணவு வழங்கப்படும்.'
+                ta: 'தினசரி அன்னதானத்திற்கான உங்கள் பங்களிப்பு, பசியால் தவிக்கும் ஒருவரின் வயிற்றை மட்டும் அல்ல, அவரின் மனதையும் நிம்மதிப்படுத்தும்.'
+              },
+              lead: {
+                en: null,
+                ta: 'ஒரு உணவு பலருக்கு ஒரு நாளின் நிம்மதி.'
               },
               note: null,
               icon: <FaUtensils className="h-5 w-5" />,
@@ -412,7 +423,11 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               unit: { en: 'Annual Tuition Fee', ta: 'ஓராண்டு கல்வி கட்டணம்' },
               desc: {
                 en: 'Support tuition fees and academic needs for deserving students from financially struggling backgrounds. Your contribution can help a meritorious student continue education with hope and stability.',
-                ta: 'கல்வி தடைபடாமல் இருக்க வறிய நிலையில் உள்ள ஒரு பள்ளி/கல்லூரி மாணவரின் ஓராண்டு கல்வி கட்டணத்தை கல்வி நிலையத்திற்கு நேரடியாக செலுத்தும்.'
+                ta: 'கல்விக் கட்டணம், படிப்பு செலவு, கல்வி உதவிகள் மூலம் திறமையான ஏழை மாணவர்களின் எதிர்காலத்தை காக்க உதவலாம்.'
+              },
+              lead: {
+                en: null,
+                ta: 'ஒரு மாணவனின் கனவு, பணமின்மையால் நின்றுவிடக் கூடாது.'
               },
               note: null,
               icon: <FaGraduationCap className="h-5 w-5" />,
@@ -430,7 +445,11 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               unit: { en: '10 Emergency Trips', ta: '10 அவசரப் பயணங்கள்' },
               desc: {
                 en: 'Help keep the trust’s ambulance service moving for poor patients and emergency welfare needs. Fuel support ensures timely transportation without placing a financial burden on those who cannot afford it.',
-                ta: 'அவசர சிகிச்சை தேவைப்படும் ஏழைகளை அரசு மருத்துவமனைகளுக்கு அழைத்துச் செல்ல 10 இலவச பயணங்களுக்கான எரிபொருளை ஸ்பான்சர் செய்யும்.'
+                ta: 'ஆம்புலன்ஸ் எரிபொருள் உதவி, பணம் இல்லாத காரணத்தால் மருத்துவ உதவி தாமதமாகாமல் இருக்க துணை புரியும்.'
+              },
+              lead: {
+                en: null,
+                ta: 'அவசர நேரத்தில் தாமதமில்லா உதவி உயிரைக் காக்கும்.'
               },
               note: null,
               icon: <FaTruckMedical className="h-5 w-5" />,
@@ -448,7 +467,11 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               unit: { en: '1 Dignified Burial', ta: '1 தகனச் சடங்கு' },
               desc: {
                 en: 'Support the final journey of destitute and unclaimed individuals with dignity and respect. Contributions in this category help us arrange essential funeral support for those who have no one to stand for them.',
-                ta: 'நாமக்கல்/சேலம் காவல்துறையின் முறைப்படியான அனுமதியுடன், உரிமை கோரப்படாத ஆதரவற்ற ஒரு உடலுக்கு இறுதிச் சடங்குகள் செய்யும்.'
+                ta: 'யாரும் இல்லாமல் விடப்பட்ட உயிர்களுக்கு மனித மரியாதையுடன் இறுதி சடங்கு செய்ய உதவுங்கள்.'
+              },
+              lead: {
+                en: null,
+                ta: 'இறப்பிற்குப் பிறகும் மரியாதை மறுக்கப்படக் கூடாது.'
               },
               note: null,
               icon: <FaHeart className="h-5 w-5" />,
@@ -460,13 +483,17 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               id: 'blood',
               serviceId: 'medical',
               preset: { type: 'Blood', program: undefined, amount: undefined },
-              title: { en: 'Blood Donation', ta: 'இரத்த நன்கொடை' },
+              title: { en: 'Blood Donation', ta: 'இரத்த தானம்' },
               kicker: { en: 'Life-Saving Gift', ta: 'உயிர் காக்கும் கொடை' },
               amt: { en: 'Give Blood', ta: 'இரத்த தானம்' },
               unit: { en: '1 Unit · up to 3 Lives', ta: '1 யூனிட் · 3 உயிர் வரை' },
               desc: {
                 en: 'Join humanitarian support in its most life-saving form. Blood donors can become a vital part of emergency community response when patients and families urgently need help.',
-                ta: 'தன்னார்வ இரத்த தானம் செய்பவராகப் பதிவு செய்து, திருச்செங்கோடு மற்றும் அருகிலுள்ள அரசு மருத்துவமனைகளில் அவசரத் தேவையுள்ள நோயாளிகளுக்கு உதவுங்கள்.'
+                ta: 'அவசர சிகிச்சையில் இருக்கும் நோயாளிகளுக்கு உயிர் காக்கும் கருணையான பங்களிப்பாக இரத்த தானத்தில் இணைந்திடலாம்.'
+              },
+              lead: {
+                en: null,
+                ta: 'ஒரு துளி இரத்தம், ஒரு உயிரின் நம்பிக்கை.'
               },
               note: null,
               icon: <FaDroplet className="h-5 w-5" />,
@@ -484,7 +511,11 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               unit: { en: 'New / Gently-used', ta: 'புதிய / சிறிது பயன்பட்ட' },
               desc: {
                 en: 'Contribute new clothes or support clothing drives for individuals and families in need. Seasonal and festival clothing support brings comfort, dignity, and inclusion.',
-                ta: 'வேட்டி, சேலை, சட்டைகள் மற்றும் பள்ளி சீருடைகளை சாலையோரக் குடும்பங்கள் மற்றும் முதியோருடன் பகிர்ந்து, ஆடை மூலம் கண்ணியத்தை மீட்டுத் தாருங்கள்.'
+                ta: 'உங்கள் உடைத் தானம், விழாக்காலங்களிலும் தேவைக்காலங்களிலும் பலருக்கு நம்பிக்கையாக இருக்கும்.'
+              },
+              lead: {
+                en: null,
+                ta: 'புதிய உடை என்பது உடை மட்டும் அல்ல; மரியாதையும் மகிழ்ச்சியும்.'
               },
               note: {
                 en: 'Please donate only new or gently-used clothes — not heavily worn — so they can be given with dignity.',
@@ -531,9 +562,16 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-900 leading-relaxed">
-                  {card.desc[lang]}
-                </p>
+                <div className="space-y-1.5">
+                  {card.lead[lang] && (
+                    <p className="text-sm font-bold text-gray-900 leading-snug">
+                      {card.lead[lang]}
+                    </p>
+                  )}
+                  <p className="text-sm text-gray-900 leading-relaxed">
+                    {card.desc[lang]}
+                  </p>
+                </div>
 
                 {card.note && (
                   <p className="text-xs text-amber-700 leading-snug">
