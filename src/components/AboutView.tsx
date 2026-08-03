@@ -106,7 +106,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
 
           {/* Heading block */}
           <div className="order-2 space-y-3 text-center lg:order-1 lg:text-left">
-            <h2 className="font-display font-extrabold uppercase tracking-tight text-gray-900 text-4xl sm:text-5xl lg:text-6xl leading-[0.95]">
+            <h2 className="font-display font-extrabold uppercase tracking-tight text-gray-900 text-4xl sm:text-5xl lg:text-6xl leading-[0.95] tamil-match-english">
               {lang === 'en' ? (
                 <>Why<br />Nallathae<br />Nadakkum</>
               ) : (

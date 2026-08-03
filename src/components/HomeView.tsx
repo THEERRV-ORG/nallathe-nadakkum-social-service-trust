@@ -90,7 +90,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl leading-snug"
+              className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl leading-snug tamil-match-english"
             >
               <span className="text-[#34d399]">
                 {lang === 'en' ? 'Nallathae Nadakkum' : 'நல்லதே நடக்கும்'}

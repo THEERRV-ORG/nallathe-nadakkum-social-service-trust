@@ -84,6 +84,27 @@ body {
   background: transparent;
 }
 
+/* Tamil glyphs read visually larger in this font stack, so Tamil mode uses a
+   slightly smaller scale while keeping English unchanged. */
+.tamil-type {
+  font-size: 0.97rem;
+}
+
+.tamil-type :where(.text-xs) { font-size: 0.7275rem; }
+.tamil-type :where(.text-sm) { font-size: 0.84875rem; }
+.tamil-type :where(.text-base) { font-size: 0.97rem; }
+.tamil-type :where(.text-lg) { font-size: 1.09125rem; }
+.tamil-type :where(.text-xl) { font-size: 1.2125rem; }
+.tamil-type :where(.text-2xl) { font-size: 1.455rem; }
+.tamil-type :where(.text-3xl) { font-size: 1.81875rem; }
+.tamil-type :where(.text-4xl) { font-size: 2.1825rem; }
+.tamil-type :where(.text-5xl) { font-size: 2.91rem; }
+.tamil-type :where(.text-6xl) { font-size: 3.6375rem; }
+.tamil-type .tamil-match-english:is(.text-3xl) { font-size: 1.875rem; }
+.tamil-type .tamil-match-english:is(.text-4xl) { font-size: 2.25rem; }
+.tamil-type .tamil-match-english:is(.text-5xl) { font-size: 3rem; }
+.tamil-type .tamil-match-english:is(.text-6xl) { font-size: 3.75rem; }
+
 .site-shell :where(input, textarea)::placeholder {
   color: #9ca3af;
   font-weight: 500;
@@ -187,6 +208,28 @@ nav button, nav [role="button"], header button:not(.cta-btn) {
 
 .form-field {
   font-size: 0.9375rem;
+}
+
+.tamil-type .h1-page { font-size: 1.8375rem; }
+.tamil-type .h2-section { font-size: 1.47rem; }
+.tamil-type .display-hero { font-size: 2.205rem; }
+.tamil-type .section-eyebrow { font-size: 0.84875rem; }
+.tamil-type .form-copy,
+.tamil-type .info-list,
+.tamil-type .form-field,
+.tamil-type .form-control,
+.tamil-type :where(input:not([type="checkbox"]):not([type="radio"]), textarea) {
+  font-size: 0.909375rem;
+}
+.tamil-type .form-label {
+  font-size: 0.7275rem;
+}
+
+@media (min-width: 640px) {
+  .tamil-type .h1-page { font-size: 2.205rem; }
+  .tamil-type .h2-section { font-size: 1.8375rem; }
+  .tamil-type .display-hero { font-size: 2.94rem; }
+  .tamil-type .section-eyebrow { font-size: 0.909375rem; }
 }
 
 .form-label {

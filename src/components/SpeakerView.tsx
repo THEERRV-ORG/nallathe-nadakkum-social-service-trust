@@ -10,8 +10,6 @@ import {
   normalizeIndianPhone,
   sanitizeSingleLine,
 } from '../security';
-import PhotoPlaceholder from './PhotoPlaceholder';
-import AwardsShowcase from './AwardsShowcase';
 import { DatePicker } from './ui/FormControls';
 import { saveSubmission } from '../lib/submissions';
 
@@ -124,31 +122,11 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
         </p>
       </section>
 
-      {/* Past speeches placeholder (content to be added later) */}
-      <section className="space-y-4">
-        <div className="text-center space-y-1">
-          <h2 className="h2-section">
-            {lang === 'en' ? 'Past Talks & Speeches' : 'முன்னைய உரைகள் & சொற்பொழிவுகள்'}
-          </h2>
-          <p className="text-sm sm:text-base text-gray-900">
-            {lang === 'en' ? 'A selection of recent speaking engagements — coming soon.' : 'சமீபத்திய சொற்பொழிவு நிகழ்வுகள் விரைவில் இணைக்கப்படும்.'}
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {[1, 2, 3].map((n) => (
-            <PhotoPlaceholder
-              key={n}
-              lang={lang}
-              aspectRatio="4 / 3"
-              label={lang === 'en' ? 'Speech / Event Photo' : 'சொற்பொழிவு புகைப்படம்'}
-              className="rounded-2xl"
-            />
-          ))}
-        </div>
-      </section>
-
       {/* Invitation card — highlighted no-fee quote + form together */}
-      <section id="speaker-invite-form" className="scroll-mt-24 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] max-w-4xl mx-auto w-full space-y-6">
+      <section id="speaker-invite-form" className="scroll-mt-24 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] max-w-6xl mx-auto w-full">
+
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-8 lg:gap-10 items-start">
+          <div className="space-y-6">
 
         {/* Highlighted no-fee / donate quote */}
         <div className="rounded-xl bg-emerald-50 border-l-4 border-brand-gold px-5 py-4 sm:px-6 sm:py-5">
@@ -246,10 +224,18 @@ export default function SpeakerView({ lang }: SpeakerViewProps) {
             </button>
           </form>
         )}
-      </section>
+          </div>
 
-      {/* ── Awards & Recognition (founder) — below the form ──── */}
-      <AwardsShowcase lang={lang} compact />
+          <figure className="overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-sm lg:sticky lg:top-28">
+            <img
+              src="/gallery/past-speech-podium-close.jpeg"
+              alt={lang === 'en' ? 'Adv. N. Kavinraj speaking at a public event' : 'பொது நிகழ்வில் உரையாற்றும் வழக்கறிஞர் நா. கவின்ராஜ்'}
+              className="aspect-[3/4] w-full object-cover object-top"
+              loading="lazy"
+            />
+          </figure>
+        </div>
+      </section>
     </div>
   );
 }

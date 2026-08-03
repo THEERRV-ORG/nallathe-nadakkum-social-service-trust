@@ -5,6 +5,7 @@
  */
 export const OFFICIAL_CONTACT = {
   emergencyPhone: '+917540017625',
+  secondaryPhone: '+919360462890',
   whatsappPhone: '+917540017625',
   // Dedicated number that receives all website form submissions on WhatsApp.
   formsPhone: '+917540017625',

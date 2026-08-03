@@ -350,10 +350,16 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               <p className="mt-1 text-sm text-gray-900">
                 {lang === 'en' ? 'Call us directly for immediate help.' : 'உடனடி உதவிக்கு எங்களை நேரடியாக அழைக்கவும்.'}
               </p>
-              <a href={`tel:${OFFICIAL_CONTACT.formsPhone}`} className="mt-2 inline-flex items-center gap-2 text-base font-bold text-emerald-800 hover:text-emerald-900">
-                <FaPhone className="h-4 w-4" />
-                +91 75400 17625
-              </a>
+              <div className="mt-2 flex flex-col gap-1">
+                <a href={`tel:${OFFICIAL_CONTACT.formsPhone}`} className="inline-flex items-center gap-2 text-base font-bold text-emerald-800 hover:text-emerald-900">
+                  <FaPhone className="h-4 w-4" />
+                  +91 75400 17625
+                </a>
+                <a href={`tel:${OFFICIAL_CONTACT.secondaryPhone}`} className="inline-flex items-center gap-2 text-sm font-bold text-emerald-800 hover:text-emerald-900">
+                  <FaPhone className="h-4 w-4" />
+                  +91 93604 62890
+                </a>
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -821,7 +827,9 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 <div>
                   <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">{lang === 'en' ? 'Office address' : 'அலுவலக முகவரி'}</h4>
                   <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
-                    Door No. 38/5, Rajeev Nagar Cross Road, Opp. SPM Hospital, Sanga Kiri Main Road, Tiruchengode – 637211
+                    {lang === 'en'
+                      ? 'Door No. 38/5, Rajeev Nagar Cross Road, Opp. SPM Hospital, Sanga Kiri Main Road, Tiruchengode – 637211'
+                      : 'கதவு எண். 38/5, ராஜீவ் நகர் குறுக்கு சாலை, SPM மருத்துவமனை எதிரில், சங்ககிரி மெயின் ரோடு, திருச்செங்கோடு – 637211'}
                   </p>
                 </div>
               </div>
@@ -832,9 +840,14 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">{lang === 'en' ? 'Emergency Phone & WhatsApp' : 'அவசரத் தொடர்பு எண்கள்'}</h4>
-                  <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1 font-semibold">
-                    +91 75400 17625
-                  </p>
+                  <div className="mt-1 space-y-0.5">
+                    <a href={`tel:${OFFICIAL_CONTACT.formsPhone}`} className="block text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] font-semibold hover:text-emerald-800">
+                      +91 75400 17625
+                    </a>
+                    <a href={`tel:${OFFICIAL_CONTACT.secondaryPhone}`} className="block text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] font-semibold hover:text-emerald-800">
+                      +91 93604 62890
+                    </a>
+                  </div>
                   <p className="text-[10px] text-gray-900 mt-0.5">
                     {lang === 'en' ? 'Operated jointly by Chairman & Trustees' : 'தலைவர் மற்றும் அறங்காவலர்களால் இயக்கப்படும் எண்கள்'}
                   </p>
@@ -949,39 +962,50 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
-              <div className="space-y-5 lg:col-span-5">
+            <div className="grid grid-cols-1 items-center gap-8">
+              <div className="space-y-5">
                 <div className="space-y-4 rounded-xl border border-gray-100 bg-gray-50 p-5">
                   <div className="space-y-1">
                     <span className="block text-[9px] font-bold uppercase tracking-widest text-gray-900">
                       {lang === 'en' ? 'Registered Office Address' : 'அலுவலக முகவரி'}
                     </span>
                     <p className="font-display text-sm font-bold leading-snug text-gray-900">
-                      Nallathae Nadakkum Trust
+                      {lang === 'en' ? 'Nallathae Nadakkum Trust' : 'நல்லதே நடக்கும் அறக்கட்டளை'}
                     </p>
                     <p className="text-sm font-medium leading-relaxed text-gray-900 sm:text-base sm:leading-[1.65]">
-                      38/5, Rajeev Nagar Cross Road,<br />
-                      Opp. SPM Hospital,<br />
-                      Tiruchengode - 637211,<br />
-                      Namakkal District, Tamil Nadu.
+                      {lang === 'en' ? (
+                        <>
+                          38/5, Rajeev Nagar Cross Road,<br />
+                          Opp. SPM Hospital,<br />
+                          Tiruchengode - 637211,<br />
+                          Namakkal District, Tamil Nadu.
+                        </>
+                      ) : (
+                        <>
+                          38/5, ராஜீவ் நகர் குறுக்கு சாலை,<br />
+                          SPM மருத்துவமனை எதிரில்,<br />
+                          திருச்செங்கோடு - 637211,<br />
+                          நாமக்கல் மாவட்டம், தமிழ்நாடு.
+                        </>
+                      )}
                     </p>
                   </div>
 
                   <div className="space-y-1.5 border-t border-gray-200/60 pt-2 text-xs text-gray-900">
                     <div className="flex items-center space-x-2">
                       <FaLocationDot className="h-4 w-4 shrink-0 text-emerald-600" />
-                      <span><strong>{lang === 'en' ? 'Landmark:' : 'அடையாளம்:'}</strong> Opp. SPM Hospital</span>
+                      <span><strong>{lang === 'en' ? 'Landmark:' : 'அடையாளம்:'}</strong> {lang === 'en' ? 'Opp. SPM Hospital' : 'SPM மருத்துவமனை எதிரில்'}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <FaMap className="h-4 w-4 shrink-0 text-emerald-600" />
-                      <span><strong>{lang === 'en' ? 'Locality:' : 'பகுதி:'}</strong> Tiruchengode Town & Taluk</span>
+                      <span><strong>{lang === 'en' ? 'Locality:' : 'பகுதி:'}</strong> {lang === 'en' ? 'Tiruchengode Town & Taluk' : 'திருச்செங்கோடு நகரம் & வட்டம்'}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-3">
                   <a
-                    href="https://www.google.com/maps/search/?api=1&query=38%2F5%2C+Rajeev+Nagar+Cross+Road%2C+Opp.+SPM+Hospital%2C+Tiruchengode+-+637211"
+                    href="https://www.google.com/maps/search/?api=1&query=11.388999%2C77.894306"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex w-full items-center justify-center space-x-2 rounded-xl bg-emerald-600 px-5 py-3 text-xs font-bold text-white shadow-sm transition-all hover:scale-[1.01] hover:bg-emerald-700 active:scale-[0.99] sm:text-sm"
@@ -993,20 +1017,6 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     {lang === 'en' ? 'Live Navigation Coordinates for Visitors & Donors' : 'வருகையாளர்கள் மற்றும் நன்கொடையாளர்களுக்கான நேரடி வழிகாட்டி'}
                   </p>
                 </div>
-              </div>
-
-              <div className="relative h-[300px] overflow-hidden rounded-2xl border border-gray-100 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] sm:h-[350px] lg:col-span-7">
-                <iframe
-                  src="https://maps.google.com/maps?q=SPM%20Hospital,%20Tiruchengode&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen={false}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="h-full w-full grayscale-[15%] contrast-[105%]"
-                  title={lang === 'en' ? 'Registered office location map' : 'பதிவு அலுவலக வரைபடம்'}
-                />
               </div>
             </div>
           </section>

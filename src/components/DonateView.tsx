@@ -390,15 +390,17 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                 <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
                   {lang === 'en' ? 'Account Name' : 'கணக்கின் பெயர்'}
                 </dt>
-                <dd className="mt-0.5 text-sm sm:text-base font-bold text-emerald-800">Nallathae Nadakkum Trust</dd>
+                <dd className="mt-0.5 text-sm sm:text-base font-bold text-emerald-800">
+                  Nallathe Nadakum Samuga Sevai Arakkattalai
+                </dd>
               </div>
               <div className="py-3">
                 <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
                   {lang === 'en' ? 'Account Number' : 'கணக்கு எண்'}
                 </dt>
                 <dd className="mt-1 flex items-center justify-between gap-2">
-                  <span className="font-display text-base sm:text-lg font-bold text-gray-950 tracking-wider">20000300375</span>
-                  {copyBtn('20000300375', 'acct')}
+                  <span className="font-display text-base sm:text-lg font-bold text-gray-950 tracking-wider">200003003756</span>
+                  {copyBtn('200003003756', 'acct')}
                 </dd>
               </div>
               <div className="py-3">
@@ -443,24 +445,22 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                     {lang === 'en' ? 'Account Holder' : 'கணக்கு வைத்திருப்பவர்'}
                   </dt>
                   <dd className="mt-0.5 text-sm sm:text-base font-bold text-emerald-800">
-                    Nallathae Nadakkum Trust
+                    Nallatha Nadakum Samuga Sevai Arakkattalai
                   </dd>
                 </div>
                 <div className="py-3">
                   <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
-                    {lang === 'en' ? 'Mobile / UPI Number' : 'மொபைல் / UPI எண்'}
+                    {lang === 'en' ? 'UPI IDs' : 'UPI IDs'}
                   </dt>
-                  <dd className="mt-1 flex items-center justify-between gap-2">
-                    <span className="font-display text-base sm:text-lg font-bold text-gray-950 tracking-wide">+91 75400 17625</span>
-                    {copyBtn('+917540017625', 'upi')}
-                  </dd>
-                </div>
-                <div className="py-3">
-                  <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-900">
-                    {lang === 'en' ? 'UPI ID' : 'UPI ஐடி'}
-                  </dt>
-                  <dd className="mt-0.5 font-sans text-xs font-semibold text-gray-500">
-                    upi-id-coming-soon
+                  <dd className="mt-1 space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-sans text-sm sm:text-base font-bold text-gray-950">Q075306606@ybl</span>
+                      {copyBtn('Q075306606@ybl', 'upi-1')}
+                    </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-sans text-sm sm:text-base font-bold text-gray-950">Q325880934@ybl</span>
+                      {copyBtn('Q325880934@ybl', 'upi-2')}
+                    </div>
                   </dd>
                 </div>
               </dl>

@@ -98,9 +98,9 @@ function PublicSite() {
 
 
   const footerPolicies = [
-    { href: '/privacy-policy', label: 'Privacy Policy' },
-    { href: '/terms-and-conditions', label: 'Terms & Conditions' },
-    { href: '/refund-policy', label: 'Refund Policy' },
+    { href: '/privacy-policy', label: { en: 'Privacy Policy', ta: 'தனியுரிமைக் கொள்கை' } },
+    { href: '/terms-and-conditions', label: { en: 'Terms & Conditions', ta: 'விதிமுறைகள் & நிபந்தனைகள்' } },
+    { href: '/refund-policy', label: { en: 'Refund Policy', ta: 'பணம் திருப்பிக் கொடுக்கும் கொள்கை' } },
   ];
 
   const footerServices = [
@@ -142,7 +142,7 @@ function PublicSite() {
   }, [activeTab]);
 
   return (
-    <div className="site-shell min-h-screen bg-transparent flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
+    <div className={`site-shell min-h-screen bg-transparent flex flex-col font-sans text-gray-900 antialiased selection:bg-emerald-100 selection:text-emerald-900 ${lang === 'ta' ? 'tamil-type' : ''}`}>
       {/* Decorative brand watermark layer — fixed, faint, non-interactive.
           Oversized mission glyphs anchored to the corners plus the grayscale
           logo, so every section that scrolls past carries a subtle brand mark. */}
@@ -233,13 +233,13 @@ function PublicSite() {
 
             <div className="space-y-4">
               <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900">
-                Policies
+                {lang === 'en' ? 'Policies' : 'கொள்கைகள்'}
               </h4>
               <ul className="space-y-2 text-xs text-gray-900">
                 {footerPolicies.map((item) => (
                   <li key={item.href}>
                     <Link to={item.href} className="hover:text-emerald-700 hover:underline">
-                      {item.label}
+                      {item.label[lang]}
                     </Link>
                   </li>
                 ))}
@@ -269,12 +269,12 @@ function PublicSite() {
                 <li className="flex items-start space-x-2">
                   <FaLocationDot className="h-3.5 w-3.5 text-emerald-600 flex-shrink-0 mt-0.5" />
                   <a
-                    href="https://www.google.com/maps/search/?api=1&query=38%2F5%2C%20Rajeev%20Nagar%20Cross%20Road%2C%20Opp.%20SPM%20Hospital%2C%20Tiruchengode%20637211"
+                    href="https://www.google.com/maps/search/?api=1&query=11.388999%2C77.894306"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="leading-normal hover:text-emerald-700 hover:underline"
                   >
-                    38/5, Rajeev Nagar Cross Road, Opp. SPM Hospital, Tiruchengode - 637211
+                    {lang === 'en' ? '38/5, Rajeev Nagar Cross Road, Opp. SPM Hospital, Tiruchengode - 637211' : '38/5, ராஜீவ் நகர் குறுக்கு சாலை, SPM மருத்துவமனை எதிரில், திருச்செங்கோடு - 637211'}
                   </a>
                 </li>
                 <li className="flex items-center space-x-2">
@@ -286,6 +286,15 @@ function PublicSite() {
                     className="hover:text-emerald-700 hover:underline"
                   >
                     +91 75400 17625
+                  </a>
+                </li>
+                <li className="flex items-center space-x-2">
+                  <FaPhone className="h-3.5 w-3.5 text-emerald-600" />
+                  <a
+                    href="tel:+919360462890"
+                    className="hover:text-emerald-700 hover:underline"
+                  >
+                    +91 93604 62890
                   </a>
                 </li>
               </ul>

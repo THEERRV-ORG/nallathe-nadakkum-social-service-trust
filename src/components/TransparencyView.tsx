@@ -1,4 +1,4 @@
-﻿import {
+import {
   FaShieldHalved, FaLock,
   FaLocationDot, FaMap, FaArrowUpRightFromSquare
 } from 'react-icons/fa6';
@@ -93,11 +93,15 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             </div>
             <div className="py-3 flex justify-between">
               <span className="font-semibold text-gray-900">{lang === 'en' ? 'Registration Deed Number' : 'அறக்கட்டளை பதிவு எண்'}</span>
-              <span className="font-display font-semibold text-gray-900 text-right">Doc No. 16/2025</span>
+              <span className="font-display font-semibold text-gray-900 text-right">
+                {lang === 'en' ? 'Doc No. 16/2025' : 'ஆவண எண். 16/2025'}
+              </span>
             </div>
             <div className="py-3 flex justify-between">
               <span className="font-semibold text-gray-900">{lang === 'en' ? 'Sub-Registrar Office' : 'சார்பதிவாளர் அலுவலகம்'}</span>
-              <span className="font-medium text-gray-900 text-right">Tiruchengode Town & Taluk, Namakkal</span>
+              <span className="font-medium text-gray-900 text-right">
+                {lang === 'en' ? 'Tiruchengode Town & Taluk, Namakkal' : 'திருச்செங்கோடு நகரம் & வட்டம், நாமக்கல்'}
+              </span>
             </div>
             <div className="py-3 flex justify-between">
               <span className="font-semibold text-gray-900">{lang === 'en' ? 'Date of Registry' : 'பதிவு செய்யப்பட்ட தேதி'}</span>
@@ -105,7 +109,9 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             </div>
             <div className="py-3 flex justify-between">
               <span className="font-semibold text-gray-900">{lang === 'en' ? 'Drafting Advocate' : 'ஆவணத்தை வடிவமைத்த வழக்கறிஞர்'}</span>
-              <span className="font-medium text-gray-900 text-right">Advocate Sathiskumar, Tiruchengode</span>
+              <span className="font-medium text-gray-900 text-right">
+                {lang === 'en' ? 'Advocate Sathiskumar, Tiruchengode' : 'வழக்கறிஞர் சதீஷ்குமார், திருச்செங்கோடு'}
+              </span>
             </div>
             <div className="py-3 flex justify-between">
               <span className="font-semibold text-gray-900">{lang === 'en' ? '12A & 80G Tax Exemption Status' : '12A மற்றும் 80G வரி விலக்கு நிலை'}</span>
@@ -173,31 +179,42 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
                   {lang === 'en' ? 'Registered Office Address' : 'அலுவலக முகவரி'}
                 </span>
                 <p className="font-display text-sm font-bold text-gray-900 leading-snug">
-                  Nallathae Nadakkum Trust
+                  {lang === 'en' ? 'Nallathae Nadakkum Trust' : 'நல்லதே நடக்கும் அறக்கட்டளை'}
                 </p>
                 <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] font-medium">
-                  38/5, Rajeev Nagar Cross Road,<br />
-                  Opp. SPM Hospital,<br />
-                  Tiruchengode - 637211,<br />
-                  Namakkal District, Tamil Nadu.
+                  {lang === 'en' ? (
+                    <>
+                      38/5, Rajeev Nagar Cross Road,<br />
+                      Opp. SPM Hospital,<br />
+                      Tiruchengode - 637211,<br />
+                      Namakkal District, Tamil Nadu.
+                    </>
+                  ) : (
+                    <>
+                      38/5, ராஜீவ் நகர் குறுக்கு சாலை,<br />
+                      SPM மருத்துவமனை எதிரில்,<br />
+                      திருச்செங்கோடு - 637211,<br />
+                      நாமக்கல் மாவட்டம், தமிழ்நாடு.
+                    </>
+                  )}
                 </p>
               </div>
 
               <div className="space-y-1.5 pt-2 border-t border-gray-200/60 text-xs text-gray-900">
                 <div className="flex items-center space-x-2">
                   <FaLocationDot className="h-4 w-4 text-emerald-600 flex-shrink-0" />
-                  <span><strong>{lang === 'en' ? 'Landmark:' : 'அடையாளம்:'}</strong> Opp. SPM Hospital</span>
+                  <span><strong>{lang === 'en' ? 'Landmark:' : 'அடையாளம்:'}</strong> {lang === 'en' ? 'Opp. SPM Hospital' : 'SPM மருத்துவமனை எதிரில்'}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <FaMap className="h-4 w-4 text-emerald-600 flex-shrink-0" />
-                  <span><strong>{lang === 'en' ? 'Locality:' : 'பகுதி:'}</strong> Tiruchengode Town & Taluk</span>
+                  <span><strong>{lang === 'en' ? 'Locality:' : 'பகுதி:'}</strong> {lang === 'en' ? 'Tiruchengode Town & Taluk' : 'திருச்செங்கோடு நகரம் & வட்டம்'}</span>
                 </div>
               </div>
             </div>
 
             <div className="space-y-3">
               <a 
-                href="https://www.google.com/maps/search/?api=1&query=38%2F5%2C+Rajeev+Nagar+Cross+Road%2C+Opp.+SPM+Hospital%2C+Tiruchengode+-+637211"
+                href="https://www.google.com/maps/search/?api=1&query=11.388999%2C77.894306"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center space-x-2 w-full py-3 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
@@ -214,7 +231,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
           {/* Right Column: Google Map Iframe with hover action overlay */}
           <div className="lg:col-span-7 h-[300px] sm:h-[350px] rounded-2xl overflow-hidden border border-gray-100 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] relative group cursor-pointer">
             <a
-              href="https://www.google.com/maps/search/?api=1&query=38%2F5%2C+Rajeev+Nagar+Cross+Road%2C+Opp.+SPM+Hospital%2C+Tiruchengode+-+637211"
+              href="https://www.google.com/maps/search/?api=1&query=11.388999%2C77.894306"
               target="_blank"
               rel="noopener noreferrer"
               className="absolute inset-0 z-10 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center"
@@ -230,7 +247,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             </a>
             
             <iframe
-              src="https://maps.google.com/maps?q=SPM%20Hospital,%20Tiruchengode&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              src="https://maps.google.com/maps?q=11.388999%2C77.894306&t=&z=16&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
