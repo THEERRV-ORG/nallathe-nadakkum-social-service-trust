@@ -14,18 +14,12 @@ interface HomeViewProps {
   setActiveTab: (tab: string) => void;
 }
 
-// Hero slides are ordered by programme priority so Food Donation and Last Rites
-// lead. When Kavin supplies dedicated Food / Last Rites photos or videos, replace
-// the first two entries in place — the slideshow architecture stays unchanged.
 const heroImages = [
-  // 1. Food Donation / Annadhanam
-  { src: '/gallery/activity-food-indoor.jpeg', alt: 'Elderly men eating a full meal at our shelter' },
-  // 2. Last Rites
-  { src: '/gallery/student-questionaire.jpeg', alt: 'Student support questionnaire and review meeting' },
-  // Supporting services
-  { src: '/gallery/activity-water-street.jpg', alt: 'Street food and water distribution to elders' },
-  { src: '/gallery/activity-ambulance-banner.jpeg', alt: 'Nallathae Nadakkum free ambulance service launch' },
-  { src: '/gallery/activity-elder-rescue1.jpeg', alt: 'Elder rescue field support by trust volunteers' },
+  { src: '/gallery/hero-founder-elder-smile.jpeg', alt: 'Founder with an elderly beneficiary during field service' },
+  { src: '/gallery/hero-last-rites-flowers.jpeg', alt: 'Dignified last rites support by the trust' },
+  { src: '/gallery/hero-elder-group-ambulance.jpeg', alt: 'Founder and elderly beneficiaries with the trust ambulance' },
+  { src: '/gallery/hero-wheelchair-community.jpeg', alt: 'Community support group photo with wheelchair beneficiary' },
+  { src: '/gallery/hero-annadhanam-trust-box.jpeg', alt: 'Annadhanam service trust donation box with founder and volunteer' },
 ];
 
 // Display priority for the "What Can You Donate" cards (highest need first).
