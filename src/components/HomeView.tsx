@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   FaHeart, FaHeartPulse, FaTruckMedical, FaUtensils, FaAward, FaFileLines, FaChevronRight,
@@ -57,7 +57,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.2, ease: 'easeInOut' }}
-              className="absolute inset-0 w-full h-full object-cover object-center"
+              className={`absolute inset-0 w-full h-full object-cover object-center${heroImages[heroIndex].src === '/gallery/hero-founder-elder-smile.jpeg' ? ' scale-x-[-1]' : ''}`}
             />
           </AnimatePresence>
           {/* Gradient overlay */}
