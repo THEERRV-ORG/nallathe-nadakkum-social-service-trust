@@ -337,17 +337,29 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 {lang === 'en' ? 'Request Help' : 'உதவி கோருங்கள்'}
               </h1>
               <p className="text-gray-900 form-copy">
-                {lang === 'en'
-                  ? 'Use this form when you are facing genuine need related to food support, ambulance assistance, elderly rescue, educational support, emergency medical fundraising, or another humanitarian concern within the trust’s scope. Share location, type of need, urgency, and any documents if relevant.'
-                  : 'உங்களுக்கோ அல்லது உங்கள் பகுதியில் வசிக்கும் யாராவது ஒருவருக்கு அவசரமாக உணவு, முதியோர் மீட்பு, மருத்துவ உதவி அல்லது கல்வி கட்டண உதவி தேவைப்பட்டால் கீழே உள்ள படிவத்தை நிரப்பவும். எங்களது தன்னார்வலர்கள் 24-48 மணி நேரத்திற்குள் நேரில் வந்து விசாரித்து உதவுவர்.'}
+                {lang === 'en' ? (
+                  <>
+                    Please use this form if someone you know needs humanitarian assistance within the trust's scope, such as food support, ambulance services, elderly rescue, educational assistance, emergency medical fundraising, or other essential aid.
+                    <br />
+                    <br />
+                    Please provide the location, type of assistance required, urgency, and any relevant supporting documents, if available.
+                  </>
+                ) : (
+                  <>
+                    <strong>அறக்கட்டளையின் சேவை வரம்பிற்குள் வரும் மனிதநேய உதவிகள்</strong> (உணவு உதவி, ஆம்புலன்ஸ் சேவை, முதியோர் மீட்பு, கல்வி உதவி, அவசர மருத்துவ நிதி திரட்டல் அல்லது பிற அத்தியாவசிய உதவிகள்) தேவைப்படும் உங்களுக்குத் தெரிந்த ஒருவருக்காக இந்தப் படிவத்தைப் பயன்படுத்தவும்.
+                    <br />
+                    <br />
+                    தயவுசெய்து <strong>இடம், தேவையான உதவியின் வகை, அவசரத் தன்மை</strong> மற்றும் <strong>கிடைத்தால் தொடர்புடைய ஆதார ஆவணங்களை</strong> வழங்கவும்.
+                  </>
+                )}
               </p>
             </div>
 
-            <div className="border-y border-brand-orange-100 py-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-gray-900">
+            <div className="border-2 border-red-600 rounded-md bg-red-50 p-4">
+              <p className="text-lg font-semibold uppercase tracking-wider text-gray-900">
                 {lang === 'en' ? 'Life-threatening emergency?' : 'உயிருக்கு ஆபத்தான அவசரநிலையா?'}
               </p>
-              <p className="mt-1 text-sm text-gray-900">
+              <p className="mt-1 text-base font-medium text-gray-900">
                 {lang === 'en' ? 'Call us directly for immediate help.' : 'உடனடி உதவிக்கு எங்களை நேரடியாக அழைக்கவும்.'}
               </p>
               <div className="mt-2 flex flex-col gap-1">
@@ -355,7 +367,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   <FaPhone className="h-4 w-4" />
                   +91 75400 17625
                 </a>
-                <a href={`tel:${OFFICIAL_CONTACT.secondaryPhone}`} className="inline-flex items-center gap-2 text-sm font-bold text-emerald-800 hover:text-emerald-900">
+                <a href={`tel:${OFFICIAL_CONTACT.secondaryPhone}`} className="inline-flex items-center gap-2 text-base font-bold text-emerald-800 hover:text-emerald-900">
                   <FaPhone className="h-4 w-4" />
                   +91 93604 62890
                 </a>

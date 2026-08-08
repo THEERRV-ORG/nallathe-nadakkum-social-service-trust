@@ -142,7 +142,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
           {[
             {
               num: '01',
-              title: { en: 'Why This Name', ta: 'Why the Name “Nallathe Nadakkum”' },
+              title: { en: 'Why This Name', ta: '“நல்லதே நடக்கும்” என்ற பெயரின் பின்னால்' },
               body: {
                 en: 'The name “Nallathae Nadakkum” reflects a belief in hope, goodness, and meaningful human action. It expresses the conviction that sincere help, given at the right time, can restore dignity, relief, and hope.',
                 ta: (
@@ -158,7 +158,7 @@ export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
             },
             {
               num: '02',
-              title: { en: 'Where It Began', ta: 'Why and Where It Started' },
+              title: { en: 'Where It Began', ta: 'எங்கிருந்து, ஏன் தொடங்கியது' },
               body: {
                 en: (
                   <>

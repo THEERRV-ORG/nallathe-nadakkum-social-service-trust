@@ -121,12 +121,12 @@ export default function JourneyTimeline({ lang }: JourneyTimelineProps) {
     <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="text-center space-y-2">
         <h2 className="h2-section">
-          {lang === 'en' ? 'Our Growth Journey: 2023 to July 2026' : 'எங்கள் வளர்ச்சி பயணம்: 2023 முதல் ஜூலை 2026 வரை'}
+          {lang === 'en' ? 'Our Growth Journey: 2023 to July 2026' : 'எங்கள் வளர்ச்சிப் பயணம் (2023 – ஜூலை 2026)'}
         </h2>
         <p className="mx-auto max-w-xl text-sm text-gray-900 sm:text-base">
           {lang === 'en'
             ? 'The trust journey is a gradual and sincere expansion of service rather than a sudden institutional beginning.'
-            : 'அறக்கட்டளையின் பயணம் திடீர் தொடக்கம் அல்ல; அது சேவையின் மெதுவான, உண்மையான விரிவாக்கம்.'}
+            : 'அறக்கட்டளையின் பயணம் திடீரென ஆரம்பமானது அல்ல; அது சேவையின் மெதுவான, உண்மையான விரிவாக்கமாகும்.'}
         </p>
       </div>
 

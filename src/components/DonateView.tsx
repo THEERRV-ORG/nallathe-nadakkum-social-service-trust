@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { OFFICIAL_CONTACT, SAMPLE_SPONSORS, buildWhatsAppUrl, hasMeaningfulText, isValidDonationAmount, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeSingleLine } from '../security';
 import { motion } from 'motion/react';
 import {
@@ -338,9 +338,9 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
             'Support food, emergency care, dignity, education, and humanitarian service for people who need timely help the most. Every donation supports real, local, and practical service.'
           ) : (
             <>
-              <strong>உங்கள் உதவி, ஒருவரின் வாழ்க்கையில் நேரடி நிம்மதியாக மாறும்</strong>
+              <strong>உங்கள் உதவி, ஒருவரின் வாழ்க்கையில் நம்பிக்கையையும் நிம்மதியையும் விதைக்கும்.</strong>
               <br />
-              பசியானவருக்கு உணவு, நோயாளிக்கு பயண உதவி, மாணவருக்கு கல்வி, முதியவருக்கு பாதுகாப்பு, ஆதரவற்றோருக்கு மரியாதை—இதற்கெல்லாம் உங்கள் பங்களிப்பு உதவலாம்.
+              பசியால் வாடுபவருக்கு ஒரு வேளை உணவு, நோயாளிக்கு அவசரப் பயண உதவி, மாணவருக்கு கல்விக்கான வாய்ப்பு, முதியவருக்கு பாதுகாப்பான ஆதரவு, ஆதரவற்றோருக்கு மரியாதையுடன் வாழ ஒரு கரம்—இவை அனைத்தையும் உங்கள் பங்களிப்பு சாத்தியமாக்கும்.
             </>
           )}
         </p>
@@ -391,7 +391,7 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                   {lang === 'en' ? 'Account Name' : 'கணக்கின் பெயர்'}
                 </dt>
                 <dd className="mt-0.5 text-sm sm:text-base font-bold text-emerald-800">
-                  Nallathe Nadakum Samuga Sevai Arakkattalai
+                  Nallatha Nadakum Samuga Sevai Arakkattalai
                 </dd>
               </div>
               <div className="py-3">
@@ -454,12 +454,12 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
                   </dt>
                   <dd className="mt-1 space-y-2">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-sans text-sm sm:text-base font-bold text-gray-950">Q075306606@ybl</span>
-                      {copyBtn('Q075306606@ybl', 'upi-1')}
+                      <span className="font-sans text-sm sm:text-base font-bold text-gray-950">q075306606@ybl</span>
+                      {copyBtn('q075306606@ybl', 'upi-1')}
                     </div>
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-sans text-sm sm:text-base font-bold text-gray-950">Q325880934@ybl</span>
-                      {copyBtn('Q325880934@ybl', 'upi-2')}
+                      <span className="font-sans text-sm sm:text-base font-bold text-gray-950">q325880934@ybl</span>
+                      {copyBtn('q325880934@ybl', 'upi-2')}
                     </div>
                   </dd>
                 </div>

@@ -1,32 +1,114 @@
-import { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { FaMagnifyingGlass, FaFilter, FaCalendarDays, FaLocationDot, FaXmark, FaChevronRight } from 'react-icons/fa6';
+import { FaMagnifyingGlass, FaCalendarDays, FaLocationDot, FaXmark, FaChevronRight } from 'react-icons/fa6';
 import { galleryData, GalleryItem } from '../data';
 
 interface GalleryViewProps {
   lang: 'en' | 'ta';
 }
 
+const GalleryCard = React.memo(({ item, lang, onOpen }: { item: GalleryItem; lang: 'en' | 'ta'; onOpen: (item: GalleryItem) => void }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.3 }}
+      className="rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] hover:shadow-md transition-all flex flex-col group"
+    >
+      {/* Image Frame with lazy load and placeholder fade-in */}
+      <div className={`relative overflow-hidden h-48 ${isLoaded ? 'bg-gray-100' : 'bg-gray-200 animate-pulse'}`}>
+        <img
+          src={item.image}
+          alt={item.title[lang]}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setIsLoaded(true)}
+          className={`absolute inset-0 h-full w-full object-cover transition-all duration-700 ${
+            isLoaded ? 'opacity-100 group-hover:scale-105' : 'opacity-0'
+          }`}
+          referrerPolicy="no-referrer"
+        />
+        <span className="absolute top-3 left-3 bg-emerald-700/90 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded z-10">
+          {item.category}
+        </span>
+      </div>
+
+      {/* Content Frame */}
+      <div className="p-5 flex-grow flex flex-col justify-between space-y-4 bg-white z-10">
+        <div className="space-y-2">
+          <div className="flex items-center space-x-3 text-[10px] font-sans font-semibold text-gray-900">
+            <span className="flex items-center space-x-1">
+              <FaCalendarDays className="h-3 w-3" />
+              <span>{item.date}</span>
+            </span>
+            <span className="flex items-center space-x-1">
+              <FaLocationDot className="h-3 w-3" />
+              <span>{item.location[lang]}</span>
+            </span>
+          </div>
+          <h3 className="font-display text-sm sm:text-base font-bold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-1">
+            {item.title[lang]}
+          </h3>
+        </div>
+
+        <div className="flex items-center justify-between pt-2 border-t border-gray-50">
+          <button
+            id={`btn-open-gallery-${item.id}`}
+            onClick={() => onOpen(item)}
+            className="text-xs font-semibold text-emerald-600 hover:text-emerald-800 cursor-pointer flex items-center space-x-1"
+          >
+            <span>{lang === 'en' ? 'View Details' : 'விபரம் பார்க்க'}</span>
+            <FaChevronRight className="h-3 w-3" />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+});
+GalleryCard.displayName = 'GalleryCard';
+
 export default function GalleryView({ lang }: GalleryViewProps) {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('All');
+  const [modalImageLoaded, setModalImageLoaded] = useState(false);
 
-  const categories = ['All', 'Food', 'Ambulance', 'Last Rites', 'Rescue', 'Education', 'Essentials', 'Events'];
+  const categories = ['All', 'Food', 'Ambulance', 'Last Rites', 'Rescue', 'Education', 'Essentials'];
 
-  const filteredItems = galleryData.filter(item => {
-    const matchesCategory = activeFilter === 'All' || item.category === activeFilter;
-    const matchesSearch = 
-      item.title[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.location[lang].toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  // Memoize the filtered gallery data to avoid recalculating on every render
+  const filteredItems = useMemo(() => {
+    return galleryData.filter(item => {
+      const matchesCategory = activeFilter === 'All' || item.category === activeFilter;
+      if (!matchesCategory) return false;
+
+      if (!searchQuery.trim()) return true;
+      const query = searchQuery.toLowerCase();
+      return (
+        item.title[lang].toLowerCase().includes(query) ||
+        item.description[lang].toLowerCase().includes(query) ||
+        item.location[lang].toLowerCase().includes(query)
+      );
+    });
+  }, [searchQuery, activeFilter, lang]);
+
+  const handleOpenModal = (item: GalleryItem) => {
+    setModalImageLoaded(false);
+    setSelectedItem(item);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedItem(null);
+  };
 
   return (
     <div className="space-y-12 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       
-      {/* Title Header */}      <section className="text-center max-w-3xl mx-auto space-y-4">
+      {/* Title Header */}
+      <section className="text-center max-w-3xl mx-auto space-y-4">
         <h1 className="h1-page">
           {lang === 'en' ? 'Moments of Service, Stories of Dignity' : 'செயற்பாடுகள் & புகைப்படங்கள்'}
         </h1>
@@ -78,7 +160,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
                 cat === 'Last Rites' ? 'இறுதிச் சடங்கு' :
                 cat === 'Rescue' ? 'முதியோர் மீட்பு' :
                 cat === 'Education' ? 'கல்வி' :
-                cat === 'Events' ? 'நிகழ்வுகள்' : 'அத்தியாவசியம்'
+                'அத்தியாவசியம்'
               )}
             </button>
           ))}
@@ -89,60 +171,8 @@ export default function GalleryView({ lang }: GalleryViewProps) {
       {/* Grid of Photo Cards */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <AnimatePresence mode="popLayout">
-          {filteredItems.map((item, idx) => (
-            <motion.div
-              key={item.id}
-              layout
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3 }}
-              className="rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] hover:shadow-md transition-all flex flex-col group"
-            >
-              {/* Image Frame */}
-              <div className="relative overflow-hidden h-48 bg-gray-100">
-                <img
-                  src={item.image}
-                  alt={item.title[lang]}
-                  className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
-                <span className="absolute top-3 left-3 bg-emerald-700/90 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">
-                  {item.category}
-                </span>
-              </div>
-
-              {/* Content Frame */}
-              <div className="p-5 flex-grow flex flex-col justify-between space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-3 text-[10px] font-sans font-semibold text-gray-900">
-                    <span className="flex items-center space-x-1">
-                      <FaCalendarDays className="h-3 w-3" />
-                      <span>{item.date}</span>
-                    </span>
-                    <span className="flex items-center space-x-1">
-                      <FaLocationDot className="h-3 w-3" />
-                      <span>{item.location[lang]}</span>
-                    </span>
-                  </div>
-                  <h3 className="font-display text-sm sm:text-base font-bold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-1">
-                    {item.title[lang]}
-                  </h3>
-                </div>
-
-                <div className="flex items-center justify-between pt-2 border-t border-gray-50">
-                  <button
-                    id={`btn-open-gallery-${item.id}`}
-                    onClick={() => setSelectedItem(item)}
-                    className="text-xs font-semibold text-emerald-600 hover:text-emerald-800 cursor-pointer flex items-center space-x-1"
-                  >
-                    <span>{lang === 'en' ? 'View Details' : 'விபரம் பார்க்க'}</span>
-                    <FaChevronRight className="h-3 w-3" />
-                  </button>
-                </div>
-              </div>
-
-            </motion.div>
+          {filteredItems.map((item) => (
+            <GalleryCard key={item.id} item={item} lang={lang} onOpen={handleOpenModal} />
           ))}
         </AnimatePresence>
       </section>
@@ -157,17 +187,20 @@ export default function GalleryView({ lang }: GalleryViewProps) {
               exit={{ opacity: 0, scale: 0.95 }}
               className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl overflow-hidden border border-gray-100 flex flex-col max-h-[85vh]"
             >
-              <div className="relative overflow-hidden bg-gray-100">
+              <div className={`relative overflow-hidden flex items-center justify-center ${modalImageLoaded ? 'bg-gray-100' : 'bg-gray-200 animate-pulse min-h-[40vh]'}`}>
                 <img
                   src={selectedItem.image}
                   alt={selectedItem.title[lang]}
-                  className="max-h-[68vh] w-full object-contain"
+                  loading="lazy"
+                  decoding="async"
+                  onLoad={() => setModalImageLoaded(true)}
+                  className={`max-h-[68vh] w-full object-contain transition-opacity duration-500 ${modalImageLoaded ? 'opacity-100' : 'opacity-0'}`}
                   referrerPolicy="no-referrer"
                 />
                 <button
                   id="close-gallery-modal"
-                  onClick={() => setSelectedItem(null)}
-                  className="absolute top-4 right-4 rounded-full bg-black/60 p-1.5 text-white hover:bg-black/80 transition-colors cursor-pointer"
+                  onClick={handleCloseModal}
+                  className="absolute top-4 right-4 rounded-full bg-black/60 p-1.5 text-white hover:bg-black/80 transition-colors cursor-pointer z-20"
                 >
                   <FaXmark className="h-4 w-4" />
                 </button>
@@ -204,7 +237,7 @@ export default function GalleryView({ lang }: GalleryViewProps) {
               <div className="p-4 bg-gray-50 border-t border-gray-100 flex justify-end">
                 <button
                   id="btn-close-gallery-modal-footer"
-                  onClick={() => setSelectedItem(null)}
+                  onClick={handleCloseModal}
                   className="rounded-lg bg-white border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-900 hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   {lang === 'en' ? 'Close' : 'மூடவும்'}

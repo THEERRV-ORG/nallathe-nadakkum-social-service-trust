@@ -85,7 +85,7 @@ export const commonTranslations: TranslationSet = {
   },
   visionText: {
     en: 'To build a caring and responsible society where no person is left hungry, abandoned, unsupported in crisis, or denied dignity because of poverty or neglect.',
-    ta: 'யாரும் பசியோடு உறங்காத, யாரும் ஆதரவின்றி தெருவில் தவிக்காத, யாரும் மரியாதையின்றி பிரிய வேண்டாத, கருணை நிறைந்த சமூகத்தை உருவாக்குவது எங்கள் நோக்கம்.'
+    ta: 'வறுமையாலோ, புறக்கணிப்பாலோ யாரும் பசியுடன் வாழவோ, கைவிடப்படவோ, அவசரக் காலங்களில் ஆதரவின்றி தவிக்கவோ, மனித மரியாதையை இழக்கவோ நேராத, அன்பும் பொறுப்புணர்வும் நிறைந்த சமூகத்தை உருவாக்குவதே எங்கள் இலட்சியம்.'
   },
   registeredOffice: {
     en: 'Registered Office',
@@ -116,7 +116,7 @@ export const commonTranslations: TranslationSet = {
     ta: 'பொருளாளர்'
   },
   treasurerName: {
-    en: 'Mrs. N. Kogila',
+    en: 'Mrs. S. Kokila',
     ta: 'திருமதி. N. கோகிலா'
   },
   trusteeTitle: {
@@ -306,8 +306,8 @@ export const servicesData: ServiceItem[] = [
       ta: 'விபத்தில் சிக்கிய ஏழைகளுக்கும், அறுவை சிகிச்சைக்கு பணமின்றித் தவிக்கும் நோயாளிகளுக்கும் மருத்துவ நிதி திரட்ட உதவுதல்.'
     },
     detailedDescription: {
-      en: 'In urgent medical situations, especially where families cannot manage life-saving expenses, the trust helps mobilize public support and coordinate fundraising efforts with urgency and accountability.',
-      ta: 'திடீர் விபத்துகள் மற்றும் தீவிர நோய்களால் பாதிக்கப்படும் கூலித் தொழிலாளர்களின் மருத்துவச் செலவை ஏற்க உதவிக் கரம் நீட்டுகிறோம். மருத்துவமனைகளுடன் பேசி, சமூக வலைதளங்கள் மூலம் நிதி திரட்டி அவசர அறுவை சிகிச்சைகள் தடையின்றி நடக்க உதவுகிறோம்.'
+      en: 'In urgent medical situations, especially where families cannot manage life-saving expenses, the trust helps mobilize public support and coordinate fundraising efforts with urgency and accountability. As per our registered Trust Deed (Doc No. 16/2025), all financial operations are routed strictly through our official bank account and require joint signatures from both our Founder & Chairman (Advocate N. Kavinraj) and our Treasurer (Mrs. S. Kokila). We maintain a complete ledger, and accounts are audited annually by a certified accountant.',
+      ta: 'திடீர் விபத்துகள் மற்றும் தீவிர நோய்களால் பாதிக்கப்படும் கூலித் தொழிலாளர்களின் மருத்துவச் செலவை ஏற்க உதவிக் கரம் நீட்டுகிறோம். மருத்துவமனைகளுடன் பேசி, சமூக வலைதளங்கள் மூலம் நிதி திரட்டி அவசர அறுவை சிகிச்சைகள் தடையின்றி நடக்க உதவுகிறோம். நமது அறக்கட்டளை ஆவணப்படி (Doc No. 16/2025), அனைத்து நிதி பரிவர்த்தனைகளும் அதிகாரப்பூர்வ வங்கி கணக்கு மூலமே மேற்கொள்ளப்படுகின்றன. நிறுவனர் மற்றும் தலைவர் (வழக்கறிஞர் நா. கவின்ராஜ்) மற்றும் பொருளாளர் (திருமதி. S. கோகிலா) ஆகியோரின் கூட்டு கையொப்பத்துடன் மட்டுமே நிதி இயக்கப்படும். கணக்குகள் அனைத்தும் ஆண்டுதோறும் தணிக்கை செய்யப்படுகின்றன.'
     },
     benefits: {
       en: 'Helps verified medical emergencies, surgery needs, urgent treatment support, and compassionate relief during crisis.',

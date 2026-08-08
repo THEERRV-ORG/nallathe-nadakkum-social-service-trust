@@ -116,7 +116,7 @@ export default function TransparencyView({ lang }: TransparencyViewProps) {
             <div className="py-3 flex justify-between">
               <span className="font-semibold text-gray-900">{lang === 'en' ? '12A & 80G Tax Exemption Status' : '12A மற்றும் 80G வரி விலக்கு நிலை'}</span>
               <span className="font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded text-[10px] uppercase text-right">
-                {lang === 'en' ? 'Pending (In Process)' : 'நிலுவையில் உள்ளது'}
+                {lang === 'en' ? 'Registered' : 'பதிவு செய்யப்பட்டது'}
               </span>
             </div>
           </div>

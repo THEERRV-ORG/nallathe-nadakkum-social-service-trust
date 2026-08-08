@@ -397,7 +397,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               unit: { en: 'Per Meal Session', ta: 'ஒரு வேளை உணவு' },
               desc: {
                 en: 'Help us provide fresh meals to people living in hardship, including those on the streets and residents in care homes. Your support can directly reduce hunger and bring daily relief to someone who may otherwise go without a meal.',
-                ta: 'தினசரி அன்னதானத்திற்கான உங்கள் பங்களிப்பு, பசியால் தவிக்கும் ஒருவரின் வயிற்றை மட்டும் அல்ல, அவரின் மனதையும் நிம்மதிப்படுத்தும்.'
+                ta: 'தெருக்களில் வாழும் மக்களுக்கும் முதியோர் இல்லங்களில் வசிக்கும் நபர்களுக்கும் புதிதாகச் சமைக்கப்பட்ட உணவை வழங்க எங்களுடன் இணைந்திடுங்கள். உங்கள் ஒவ்வொரு நன்கொடையும், பசியைத் தணித்து, ஒரு வேளை உணவிற்காக காத்திருக்கும் ஒருவரின் வாழ்வில் உண்மையான மாற்றத்தை ஏற்படுத்தும்.'
               },
               lead: {
                 en: null,
@@ -463,7 +463,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               unit: { en: '1 Dignified Burial', ta: '1 தகனச் சடங்கு' },
               desc: {
                 en: 'Support the final journey of destitute and unclaimed individuals with dignity and respect. Contributions in this category help us arrange essential funeral support for those who have no one to stand for them.',
-                ta: 'யாரும் இல்லாமல் விடப்பட்ட உயிர்களுக்கு மனித மரியாதையுடன் இறுதி சடங்கு செய்ய உதவுங்கள்.'
+                ta: 'ஆதரவற்ற மற்றும் உறவினர் இல்லாதவர்களின் இறுதிச் சடங்குகள் கண்ணியத்துடனும் மரியாதையுடனும் நடைபெற உங்கள் ஆதரவை வழங்குங்கள். உங்கள் நன்கொடை, அவர்களின் இறுதி மரியாதையை மனிதநேயத்துடன் நிறைவேற்ற உதவுகிறது.'
               },
               lead: {
                 en: null,
@@ -503,7 +503,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               preset: { type: 'Dress', program: undefined, amount: undefined },
               title: { en: 'Dress Donation', ta: 'ஆடை நன்கொடை' },
               kicker: { en: 'Material Gift', ta: 'பொருள் தானம்' },
-              amt: { en: 'Material Aid', ta: 'பொருள் உதவி' },
+              amt: { en: 'Material Aid', ta: 'அத்தியாவசியப் பொருட்கள்' },
               unit: { en: 'New / Gently-used', ta: 'புதிய / சிறிது பயன்பட்ட' },
               desc: {
                 en: 'Contribute new clothes or support clothing drives for individuals and families in need. Seasonal and festival clothing support brings comfort, dignity, and inclusion.',
