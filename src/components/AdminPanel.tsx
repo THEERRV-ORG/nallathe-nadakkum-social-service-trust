@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import type { ReactElement } from 'react';
 import {
   FaBars,
@@ -117,6 +117,28 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  // Close the profile dropdown on any outside interaction or Escape.
+  useEffect(() => {
+    if (!profileOpen) return undefined;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setProfileOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setProfileOpen(false);
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [profileOpen]);
   const [rowsByRoute, setRowsByRoute] = useState<Record<AdminRoute, AdminRow[]>>({
     assistance: [],
     volunteers: [],
@@ -236,8 +258,13 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
               </button>
               <h1 className="font-display text-lg font-bold text-emerald-950">{activeLabel}</h1>
             </div>
-            <div className="relative">
-              <button onClick={() => setProfileOpen((open) => !open)} className="flex items-center gap-3 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-bold text-gray-900 hover:border-emerald-200">
+            <div className="relative" ref={profileRef}>
+              <button
+                onClick={() => setProfileOpen((open) => !open)}
+                aria-haspopup="menu"
+                aria-expanded={profileOpen}
+                className="flex items-center gap-3 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-bold text-gray-900 hover:border-emerald-200"
+              >
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-emerald-800"><FaUser /></span>
                 <span className="hidden sm:inline">Admin User</span>
                 <FaChevronDown className="h-3 w-3 text-gray-500" />
@@ -310,6 +337,8 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
   );
 }
 
+const ROWS_PER_PAGE = 10;
+
 function FormTable({
   title,
   subtitle,
@@ -325,6 +354,21 @@ function FormTable({
   loading: boolean;
   error: string;
 }) {
+  const [page, setPage] = useState(1);
+
+  const totalPages = Math.max(1, Math.ceil(rows.length / ROWS_PER_PAGE));
+  const safePage = Math.min(page, totalPages);
+  const pageRows = rows.slice((safePage - 1) * ROWS_PER_PAGE, safePage * ROWS_PER_PAGE);
+
+  // Keep the page in range when the underlying data shrinks (e.g. live updates).
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [page, totalPages]);
+
+  const showPagination = !error && !loading && rows.length > ROWS_PER_PAGE;
+  const firstRow = rows.length === 0 ? 0 : (safePage - 1) * ROWS_PER_PAGE + 1;
+  const lastRow = Math.min(safePage * ROWS_PER_PAGE, rows.length);
+
   return (
     <section className="space-y-4">
       <PageIntro title={title} subtitle={subtitle} />
@@ -351,7 +395,7 @@ function FormTable({
                   </td>
                 </tr>
               )}
-              {!error && !loading && rows.map((row) => (
+              {!error && !loading && pageRows.map((row) => (
                 <tr key={row.id} className="hover:bg-emerald-50/40">
                   {row.values.map((value, idx) => (
                     <td key={`${row.id}-${idx}`} className="max-w-[18rem] px-4 py-3 align-top">
@@ -370,6 +414,45 @@ function FormTable({
             </tbody>
           </table>
         </div>
+
+        {showPagination && (
+          <div className="flex flex-col gap-3 border-t border-gray-100 bg-gray-50/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-[11px] font-semibold text-gray-600">
+              Showing {firstRow}–{lastRow} of {rows.length}
+            </p>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={safePage === 1}
+                className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Previous
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setPage(n)}
+                  aria-current={n === safePage ? 'page' : undefined}
+                  className={`min-w-[2rem] rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors ${
+                    n === safePage ? 'bg-emerald-600 text-white' : 'border border-gray-200 bg-white text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {n}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={safePage === totalPages}
+                className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

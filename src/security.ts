@@ -54,11 +54,26 @@ const SINGLE_LINE_CONTROL_CHARS = /[\u0000-\u001F\u007F]+/g;
 const MULTI_LINE_CONTROL_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]+/g;
 
 /**
+ * Injection-risky characters that are never needed in a name, address, or
+ * message: angle brackets (HTML/script), braces/brackets, backtick, backslash,
+ * pipe, caret, and tilde. Stripping them keeps input safe in HTML, URL, and
+ * spreadsheet contexts while leaving ordinary punctuation (. , ' " - / ( ) : ;
+ * ! ? & @ # + %) and ALL letters, marks, and digits untouched. Unicode marks
+ * (\p{M}) are preserved so Tamil vowel signs are never removed.
+ */
+const UNSAFE_SPECIAL_CHARS = /[<>{}[\]\\|^~`]/g;
+
+/** Leading characters that spreadsheet apps treat as formula triggers. */
+const FORMULA_TRIGGER = /^[=+@]+/;
+
+/**
  * Normalizes compact input fields such as names and short labels.
  */
 export function sanitizeSingleLine(value: string, maxLength = 120) {
   return value
     .replace(SINGLE_LINE_CONTROL_CHARS, ' ')
+    .replace(UNSAFE_SPECIAL_CHARS, '')
+    .replace(FORMULA_TRIGGER, '')
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, maxLength);
@@ -71,6 +86,8 @@ export function sanitizeMultiLine(value: string, maxLength = 600) {
   return value
     .replace(/\r\n?/g, '\n')
     .replace(MULTI_LINE_CONTROL_CHARS, ' ')
+    .replace(UNSAFE_SPECIAL_CHARS, '')
+    .replace(FORMULA_TRIGGER, '')
     .replace(/[ \t]+/g, ' ')
     .replace(/\n{3,}/g, '\n\n')
     .trim()
@@ -91,7 +108,9 @@ export function normalizeIndianPhone(value: string) {
  */
 export function isValidPersonName(value: string) {
   const normalized = sanitizeSingleLine(value, 80);
-  return normalized.length >= 2 && normalized.length <= 80 && /^[\p{L} .'-]+$/u.test(normalized);
+  // \p{L} = letters (incl. Tamil consonants/vowels), \p{M} = combining marks
+  // (Tamil vowel signs & pulli) — required so Tamil names validate correctly.
+  return normalized.length >= 2 && normalized.length <= 80 && /^[\p{L}\p{M} .'-]+$/u.test(normalized);
 }
 
 export function isValidIndianPhone(value: string) {

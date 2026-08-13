@@ -620,61 +620,24 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
               </div>
 
               {donationType === 'Money' ? (
-                (() => {
-                  const cfg = AMOUNT_PRESETS[financialProgram];
-                  const label = (
-                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
-                      {cfg ? cfg.title[lang] : (lang === 'en' ? 'Simulated Amount (₹)' : 'பங்களிப்புத் தொகை (₹)')}
-                    </label>
-                  );
-                  // Programmes without preset costs keep the free amount entry.
-                  if (!cfg) {
-                    return (
-                      <div className="space-y-1">
-                        {label}
-                        <input
-                          type="number"
-                          value={donationAmt}
-                          onChange={(e) => setDonationAmt(e.target.value)}
-                          className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                        />
-                      </div>
-                    );
-                  }
-                  const amountOptions: SelectOption[] = [
-                    ...cfg.groups.flatMap((g, gi) => [
-                      ...(g.heading ? [{ value: `heading-${gi}`, label: g.heading[lang], disabled: true }] : []),
-                      ...g.options.map((o) => ({ value: o.id, label: o.label[lang] })),
-                    ]),
-                    ...(cfg.allowOther ? [{ value: 'other', label: lang === 'en' ? 'Other (enter amount)' : 'மற்றவை (தொகையை உள்ளிடவும்)' }] : []),
-                  ];
-                  return (
-                    <div className="space-y-1">
-                      {label}
-                      <CustomSelect
-                        value={amountPresetId}
-                        onChange={(id) => {
-                          setAmountPresetId(id);
-                          if (id !== 'other') {
-                            const opt = cfg.groups.flatMap((g) => g.options).find((o) => o.id === id);
-                            if (opt) setDonationAmt(opt.amount);
-                          }
-                        }}
-                        options={amountOptions}
-                        ariaLabel={cfg.title[lang]}
-                      />
-                      {amountPresetId === 'other' && (
-                        <input
-                          type="number"
-                          value={donationAmt}
-                          onChange={(e) => setDonationAmt(e.target.value)}
-                          placeholder={lang === 'en' ? 'Enter amount (₹)' : 'தொகையை உள்ளிடவும் (₹)'}
-                          className="mt-2 w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                        />
-                      )}
-                    </div>
-                  );
-                })()
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Programme to Support' : 'ஆதரிக்க விரும்பும் திட்டம்'}</label>
+                  <CustomSelect
+                    value={financialProgram}
+                    onChange={setFinancialProgram}
+                    options={financialProgramOptions}
+                    ariaLabel={lang === 'en' ? 'Programme to Support' : 'ஆதரிக்க விரும்பும் திட்டம்'}
+                  />
+                  {financialProgram === 'other' && (
+                    <input
+                      type="text"
+                      value={programOther}
+                      onChange={(e) => setProgramOther(e.target.value)}
+                      placeholder={lang === 'en' ? 'Specify the programme you wish to support' : 'நீங்கள் ஆதரிக்க விரும்பும் திட்டத்தைக் குறிப்பிடவும்'}
+                      className="mt-2 w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    />
+                  )}
+                </div>
               ) : donationType === 'Blood' ? (
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Blood Type' : 'இரத்த வகை'} *</label>
@@ -722,26 +685,63 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
               )}
             </div>
 
-            {/* Programme selector — only under Financial Remittance */}
+            {/* Amount selector — full width, under Financial Remittance */}
             {donationType === 'Money' && (
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Programme to Support' : 'ஆதரிக்க விரும்பும் திட்டம்'}</label>
-                <CustomSelect
-                  value={financialProgram}
-                  onChange={setFinancialProgram}
-                  options={financialProgramOptions}
-                  ariaLabel={lang === 'en' ? 'Programme to Support' : 'ஆதரிக்க விரும்பும் திட்டம்'}
-                />
-                {financialProgram === 'other' && (
-                  <input
-                    type="text"
-                    value={programOther}
-                    onChange={(e) => setProgramOther(e.target.value)}
-                    placeholder={lang === 'en' ? 'Specify the programme you wish to support' : 'நீங்கள் ஆதரிக்க விரும்பும் திட்டத்தைக் குறிப்பிடவும்'}
-                    className="mt-2 w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                  />
-                )}
-              </div>
+              (() => {
+                const cfg = AMOUNT_PRESETS[financialProgram];
+                const label = (
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    {cfg ? cfg.title[lang] : (lang === 'en' ? 'Simulated Amount (₹)' : 'பங்களிப்புத் தொகை (₹)')}
+                  </label>
+                );
+                // Programmes without preset costs keep the free amount entry.
+                if (!cfg) {
+                  return (
+                    <div className="space-y-1">
+                      {label}
+                      <input
+                        type="number"
+                        value={donationAmt}
+                        onChange={(e) => setDonationAmt(e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                      />
+                    </div>
+                  );
+                }
+                const amountOptions: SelectOption[] = [
+                  ...cfg.groups.flatMap((g, gi) => [
+                    ...(g.heading ? [{ value: `heading-${gi}`, label: g.heading[lang], disabled: true }] : []),
+                    ...g.options.map((o) => ({ value: o.id, label: o.label[lang] })),
+                  ]),
+                  ...(cfg.allowOther ? [{ value: 'other', label: lang === 'en' ? 'Other (enter amount)' : 'மற்றவை (தொகையை உள்ளிடவும்)' }] : []),
+                ];
+                return (
+                  <div className="space-y-1">
+                    {label}
+                    <CustomSelect
+                      value={amountPresetId}
+                      onChange={(id) => {
+                        setAmountPresetId(id);
+                        if (id !== 'other') {
+                          const opt = cfg.groups.flatMap((g) => g.options).find((o) => o.id === id);
+                          if (opt) setDonationAmt(opt.amount);
+                        }
+                      }}
+                      options={amountOptions}
+                      ariaLabel={cfg.title[lang]}
+                    />
+                    {amountPresetId === 'other' && (
+                      <input
+                        type="number"
+                        value={donationAmt}
+                        onChange={(e) => setDonationAmt(e.target.value)}
+                        placeholder={lang === 'en' ? 'Enter amount (₹)' : 'தொகையை உள்ளிடவும் (₹)'}
+                        className="mt-2 w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                      />
+                    )}
+                  </div>
+                );
+              })()
             )}
 
             <div className="space-y-1">
