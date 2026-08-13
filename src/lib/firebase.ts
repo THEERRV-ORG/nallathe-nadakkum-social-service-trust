@@ -11,14 +11,26 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-export const allowedAdminEmail = (import.meta.env.VITE_ADMIN_EMAIL ?? '').trim().toLowerCase();
+// Authorized admin accounts. Prefer VITE_ADMIN_EMAILS (comma-separated list);
+// fall back to the legacy single VITE_ADMIN_EMAIL for backward compatibility.
+export const allowedAdminEmails = (
+  import.meta.env.VITE_ADMIN_EMAILS ?? import.meta.env.VITE_ADMIN_EMAIL ?? ''
+)
+  .split(',')
+  .map((email: string) => email.trim().toLowerCase())
+  .filter(Boolean);
+
+/** True if the given email is on the admin allowlist. */
+export function isAdminEmail(email: string | null | undefined) {
+  return allowedAdminEmails.includes((email ?? '').trim().toLowerCase());
+}
 
 export const isFirebaseConfigured = Boolean(
   firebaseConfig.apiKey &&
   firebaseConfig.authDomain &&
   firebaseConfig.projectId &&
   firebaseConfig.appId &&
-  allowedAdminEmail,
+  allowedAdminEmails.length > 0,
 );
 
 const app = isFirebaseConfigured

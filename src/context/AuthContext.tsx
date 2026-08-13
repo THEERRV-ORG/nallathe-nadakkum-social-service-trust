@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { AuthError, User } from 'firebase/auth';
 import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
-import { auth, allowedAdminEmail, googleProvider, isFirebaseConfigured } from '../lib/firebase';
+import { auth, isAdminEmail, googleProvider, isFirebaseConfigured } from '../lib/firebase';
 
 interface AuthContextValue {
   isAuthenticated: boolean;
@@ -54,8 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      const email = firebaseUser.email?.toLowerCase() ?? '';
-      if (email !== allowedAdminEmail) {
+      if (!isAdminEmail(firebaseUser.email)) {
         await signOut(auth);
         setUser(null);
         setAuthError('This Google account is not authorized for the admin portal.');
@@ -89,9 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return false;
       }
 
-      const email = result.user.email?.toLowerCase() ?? '';
-
-      if (email !== allowedAdminEmail) {
+      if (!isAdminEmail(result.user.email)) {
         await signOut(auth);
         setUser(null);
         setAuthError('This Google account is not authorized for the admin portal.');
