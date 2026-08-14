@@ -1,4 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
@@ -36,6 +37,22 @@ export const isFirebaseConfigured = Boolean(
 const app = isFirebaseConfigured
   ? getApps()[0] ?? initializeApp(firebaseConfig)
   : null;
+
+// App Check (reCAPTCHA v3) — protects Firestore from bots/abuse. Activates only
+// when a site key is supplied via VITE_RECAPTCHA_SITE_KEY, so local dev without
+// a key is unaffected. Register the key in the Firebase console against the live
+// domain (nallathanadakum.org) first. Guarded so a failure never breaks the app.
+const recaptchaSiteKey = (import.meta.env.VITE_RECAPTCHA_SITE_KEY ?? '').trim();
+if (app && recaptchaSiteKey) {
+  try {
+    initializeAppCheck(app, {
+      provider: new ReCaptchaV3Provider(recaptchaSiteKey),
+      isTokenAutoRefreshEnabled: true,
+    });
+  } catch (error) {
+    console.error('App Check initialization failed:', error);
+  }
+}
 
 export const auth = app ? getAuth(app) : null;
 export const db = app ? getFirestore(app) : null;

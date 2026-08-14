@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { FaPhone, FaLocationDot, FaInstagram, FaFacebookF, FaYoutube } from 'react-icons/fa6';
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { OFFICIAL_SOCIAL } from './security';
@@ -13,8 +13,11 @@ import FormsView from './components/FormsView';
 import DonateView from './components/DonateView';
 import TransparencyView from './components/TransparencyView';
 import SpeakerView from './components/SpeakerView';
-import AdminPanel from './components/AdminPanel';
-import LoginView from './components/LoginView';
+// Admin + login are lazy-loaded so their bundle (Firebase, tables, drawer) is
+// only fetched when a visitor actually navigates to /admin or /login — keeping
+// the public site's initial download light.
+const AdminPanel = lazy(() => import('./components/AdminPanel'));
+const LoginView = lazy(() => import('./components/LoginView'));
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import PolicyPage from './components/PolicyPage';
 
@@ -52,25 +55,33 @@ const SEO_META: Record<string, { title: string; description: string }> = {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginView />} />
-      <Route path="/privacy-policy" element={<PolicyPage slug="privacy-policy" />} />
-      <Route path="/privacy-policy-full" element={<PolicyPage slug="privacy-policy-full" />} />
-      <Route path="/terms-and-conditions" element={<PolicyPage slug="terms-and-conditions" />} />
-      <Route path="/terms-and-conditions-full" element={<PolicyPage slug="terms-and-conditions-full" />} />
-      <Route path="/refund-policy" element={<PolicyPage slug="refund-policy" />} />
-      <Route path="/refund-policy-full" element={<PolicyPage slug="refund-policy-full" />} />
-      <Route path="/child-protection-policy" element={<PolicyPage slug="child-protection-policy" />} />
-      <Route
-        path="/admin/*"
-        element={(
-          <ProtectedAdminRoute>
-            <AdminPanel />
-          </ProtectedAdminRoute>
-        )}
-      />
-      <Route path="*" element={<PublicSite />} />
-    </Routes>
+    <Suspense
+      fallback={(
+        <div className="flex min-h-screen items-center justify-center bg-[#f8fbf8] font-sans text-sm font-bold text-emerald-900">
+          Loading…
+        </div>
+      )}
+    >
+      <Routes>
+        <Route path="/login" element={<LoginView />} />
+        <Route path="/privacy-policy" element={<PolicyPage slug="privacy-policy" />} />
+        <Route path="/privacy-policy-full" element={<PolicyPage slug="privacy-policy-full" />} />
+        <Route path="/terms-and-conditions" element={<PolicyPage slug="terms-and-conditions" />} />
+        <Route path="/terms-and-conditions-full" element={<PolicyPage slug="terms-and-conditions-full" />} />
+        <Route path="/refund-policy" element={<PolicyPage slug="refund-policy" />} />
+        <Route path="/refund-policy-full" element={<PolicyPage slug="refund-policy-full" />} />
+        <Route path="/child-protection-policy" element={<PolicyPage slug="child-protection-policy" />} />
+        <Route
+          path="/admin/*"
+          element={(
+            <ProtectedAdminRoute>
+              <AdminPanel />
+            </ProtectedAdminRoute>
+          )}
+        />
+        <Route path="*" element={<PublicSite />} />
+      </Routes>
+    </Suspense>
   );
 }
 

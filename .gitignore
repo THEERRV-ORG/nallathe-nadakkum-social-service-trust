@@ -7,3 +7,5 @@ coverage/
 .env*
 !.env.example
 .claude/
+# Backup of original (uncompressed) images — kept locally, not shipped
+public-original-backup/
