@@ -10,6 +10,7 @@ import {
   FaUser,
   FaUserCheck,
   FaUsers,
+  FaXmark,
 } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -355,6 +356,7 @@ function FormTable({
   error: string;
 }) {
   const [page, setPage] = useState(1);
+  const [selectedRow, setSelectedRow] = useState<AdminRow | null>(null);
 
   const totalPages = Math.max(1, Math.ceil(rows.length / ROWS_PER_PAGE));
   const safePage = Math.min(page, totalPages);
@@ -364,6 +366,16 @@ function FormTable({
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
   }, [page, totalPages]);
+
+  // Close the detail drawer on Escape.
+  useEffect(() => {
+    if (!selectedRow) return undefined;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedRow(null);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [selectedRow]);
 
   const showPagination = !error && !loading && rows.length > ROWS_PER_PAGE;
   const firstRow = rows.length === 0 ? 0 : (safePage - 1) * ROWS_PER_PAGE + 1;
@@ -396,10 +408,14 @@ function FormTable({
                 </tr>
               )}
               {!error && !loading && pageRows.map((row) => (
-                <tr key={row.id} className="hover:bg-emerald-50/40">
+                <tr
+                  key={row.id}
+                  onClick={() => setSelectedRow(row)}
+                  className="cursor-pointer transition-colors hover:bg-emerald-50/40"
+                >
                   {row.values.map((value, idx) => (
                     <td key={`${row.id}-${idx}`} className="max-w-[18rem] px-4 py-3 align-top">
-                      <p className={idx === 0 ? 'font-bold text-gray-950' : 'line-clamp-2 text-gray-800'}>{value}</p>
+                      <p className={`line-clamp-2 break-words ${idx === 0 ? 'font-bold text-gray-950' : 'text-gray-800'}`}>{value}</p>
                     </td>
                   ))}
                 </tr>
@@ -454,6 +470,66 @@ function FormTable({
           </div>
         )}
       </div>
+
+      {/* Detail drawer — full, labelled view of a single submission */}
+      {selectedRow && (
+        <div
+          className="fixed inset-0 z-50 flex justify-end"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${title} — record detail`}
+        >
+          {/* Backdrop */}
+          <button
+            type="button"
+            aria-label="Close detail"
+            onClick={() => setSelectedRow(null)}
+            className="flex-1 bg-black/40"
+          />
+          {/* Panel */}
+          <div className="flex h-full w-full max-w-md flex-col bg-white shadow-xl">
+            <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4">
+              <div className="min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-700">{title}</p>
+                <h3 className="truncate font-display text-base font-bold text-gray-950">
+                  {selectedRow.values[0] || 'Record detail'}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedRow(null)}
+                aria-label="Close"
+                className="ml-3 shrink-0 rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+              >
+                <FaXmark />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto px-5 py-4">
+              <dl className="space-y-4">
+                {headers.map((header, idx) => (
+                  <div key={header} className="space-y-1">
+                    <dt className="text-[10px] font-bold uppercase tracking-wider text-gray-500">{header}</dt>
+                    <dd className="whitespace-pre-wrap break-words text-sm text-gray-900">
+                      {selectedRow.values[idx]?.trim() ? selectedRow.values[idx] : <span className="text-gray-400">—</span>}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+
+            <div className="border-t border-gray-200 px-5 py-3">
+              <button
+                type="button"
+                onClick={() => setSelectedRow(null)}
+                className="w-full rounded-lg bg-emerald-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
