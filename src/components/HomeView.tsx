@@ -1,39 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { SAMPLE_SPONSORS } from '../security';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   FaHeart, FaHeartPulse, FaTruckMedical, FaUtensils, FaAward, FaFileLines, FaChevronRight,
-  FaGraduationCap, FaCircleExclamation, FaLock, FaWandMagicSparkles, FaGift, FaCoins, FaCircleCheck, FaCircleQuestion,
-  FaCamera, FaVideo, FaDroplet, FaShirt
+  FaGraduationCap, FaCircleCheck, FaCamera, FaVideo, FaDroplet, FaShirt, FaInstagram, FaFacebookF, FaYoutube
 } from 'react-icons/fa6';
 import { commonTranslations, statsData } from '../data';
-import SocialConnect from './SocialConnect';
-import Monogram from './Monogram';
+import { OFFICIAL_SOCIAL } from '../security';
 import CountUpStat from './CountUpStat';
+import { StarsBackground } from './ui/stars';
 
 interface HomeViewProps {
   lang: 'en' | 'ta';
   setActiveTab: (tab: string) => void;
 }
 
-// Hero slides are ordered by programme priority so Food Donation and Last Rites
-// lead. When Kavin supplies dedicated Food / Last Rites photos or videos, replace
-// the first two entries in place — the slideshow architecture stays unchanged.
 const heroImages = [
-  // 1. Food Donation / Annadhanam
-  { src: '/gallery/activity-food-indoor.jpeg', alt: 'Elderly men eating a full meal at our shelter' },
-  // 2. Last Rites
-  { src: '/gallery/activity-last-rites-indoor.jpg', alt: 'Dignified last rites conducted with the family' },
-  // Supporting services
-  { src: '/gallery/activity-water-street.jpg', alt: 'Street food and water distribution to elders' },
-  { src: '/gallery/activity-ambulance-banner.jpeg', alt: 'Nallathe Nadakkum free ambulance service launch' },
-  { src: '/gallery/activity-elder-rescue.jpeg', alt: 'Destitute elderly rescued and cared for' },
+  { src: '/gallery/hero-founder-elder-smile.jpeg', alt: 'Founder with an elderly beneficiary during field service' },
+  { src: '/gallery/hero-last-rites-flowers.jpeg', alt: 'Dignified last rites support by the trust' },
+  { src: '/gallery/hero-elder-group-ambulance.jpeg', alt: 'Founder and elderly beneficiaries with the trust ambulance' },
+  { src: '/gallery/hero-wheelchair-community.jpeg', alt: 'Community support group photo with wheelchair beneficiary' },
+  { src: '/gallery/hero-annadhanam-trust-box.jpeg', alt: 'Annadhanam service trust donation box with founder and volunteer' },
 ];
 
+// Display priority for the "What Can You Donate" cards (highest need first).
+const DONATE_PRIORITY = ['annadhanam', 'cremation', 'blood', 'ambulance', 'student', 'dress'];
+
 export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
-  const [activeHubTab, setActiveHubTab] = useState<'impact' | 'pledges' | 'disclosures'>('impact');
-  const [recentPledges, setRecentPledges] = useState<any[]>([]);
   const [heroIndex, setHeroIndex] = useState(0);
+
+  const openServiceDetail = (serviceId: string) => {
+    setActiveTab('services');
+    window.setTimeout(() => {
+      document.getElementById(`service-${serviceId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -42,11 +42,8 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    setRecentPledges([...SAMPLE_SPONSORS].slice(0, 3));
-  }, []);
   return (
-    <div className="space-y-16 pb-8">
+    <div className="space-y-12 pb-8">
       {/* Hero Section */}
       <section className="relative w-full h-[620px] sm:h-[650px] md:h-[700px] flex items-center overflow-hidden">
         {/* Hero Slideshow Background */}
@@ -60,25 +57,11 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.2, ease: 'easeInOut' }}
-              className="absolute inset-0 w-full h-full object-cover object-center"
+              className={`absolute inset-0 w-full h-full object-cover object-center${heroImages[heroIndex].src === '/gallery/hero-founder-elder-smile.jpeg' ? ' scale-x-[-1]' : ''}`}
             />
           </AnimatePresence>
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-black/90 sm:bg-gradient-to-r sm:from-black/95 sm:via-black/80 sm:to-emerald-950/30"></div>
-          {/* Bottom fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-50 via-slate-50/10 to-transparent"></div>
-          {/* Slide dot indicators */}
-          <div className="absolute bottom-36 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
-            {heroImages.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setHeroIndex(idx)}
-                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  idx === heroIndex ? 'w-6 bg-emerald-400' : 'w-1.5 bg-white/40 hover:bg-white/70'
-                }`}
-              />
-            ))}
-          </div>
         </div>
 
         {/* Hero Content Overlay */}
@@ -90,9 +73,9 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center space-x-2 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 px-3 py-1 text-xs font-semibold text-emerald-300"
+              className="inline-flex items-center space-x-2 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 px-3 py-1 text-xs font-semibold text-[#6ee7b7]"
             >
-              <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="flex h-2 w-2 rounded-full bg-[#34d399] animate-pulse"></span>
               <span>{lang === 'en' ? 'Registered Trust: 16/2025' : 'பதிவு செய்யப்பட்ட அறக்கட்டளை: 16/2025'}</span>
             </motion.div>
             
@@ -101,14 +84,14 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl leading-snug"
+              className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl leading-snug tamil-match-english"
             >
-              <span className="text-emerald-400">
-                {lang === 'en' ? 'Nallathe Nadakkum' : 'நல்லதே நடக்கும்'}
+              <span className="text-[#34d399]">
+                {lang === 'en' ? 'Nallathae Nadakkum' : 'நல்லதே நடக்கும்'}
               </span>
               <br />
               <span className="text-white">
-                {lang === 'en' ? 'Social Trust' : 'சமூக சேவை அறக்கட்டளை'}
+                {lang === 'en' ? 'Social Service Trust' : 'சமூக சேவை அறக்கட்டளை'}
               </span>
             </motion.h1>
             
@@ -117,7 +100,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-sans text-base sm:text-lg font-medium text-emerald-300 italic border-l-4 border-emerald-500 pl-4"
+              className="font-serif text-base sm:text-lg font-medium text-[#6ee7b7] italic border-l-4 border-[#10b981] pl-4"
             >
               "{commonTranslations.heroSlogan[lang]}"
             </motion.p>
@@ -127,7 +110,7 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed sm:leading-[1.65] text-justify sm:text-left max-w-2xl"
+              className="text-sm sm:text-base md:text-lg text-white leading-relaxed sm:leading-[1.65] max-w-2xl"
             >
               {commonTranslations.heroSub[lang]}
             </motion.p>
@@ -154,81 +137,96 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
                 className="rounded-lg bg-white/10 backdrop-blur-md border border-white/20 px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-white/20 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer flex items-center space-x-2"
               >
                 <span>{commonTranslations.requestHelp[lang]}</span>
-                <FaChevronRight className="h-4 w-4 text-emerald-300" />
+                <FaChevronRight className="h-4 w-4 text-[#6ee7b7]" />
               </button>
             </motion.div>
 
             {/* Quick trust guarantee detail overlay badge */}
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.9 }}
+              animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="pt-4 flex items-start space-x-2.5 text-[10px] sm:text-xs text-emerald-300/90 leading-normal border-t border-white/10 mt-4 max-w-xl"
+              className="pt-4 flex items-start space-x-2.5 text-xs sm:text-sm text-[#6ee7b7] leading-relaxed border-t border-white/10 mt-4 max-w-2xl"
             >
-              <FaAward className="h-4 w-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+              <FaAward className="h-4 w-4 text-[#34d399] flex-shrink-0 mt-0.5" />
               <p>
                 {lang === 'en' 
-                  ? 'Nallathe Nadakkum serves at the point where safety nets run thin—for people sleeping on pavements, elders with no family left, and the unclaimed dead.' 
-                  : 'சாலையோரங்கள், மருத்துவமனைகளில் யாருமின்றி தவிக்கும் ஏழைகள், ஆதரவற்ற முதியவர்கள் மற்றும் உரிமை கோரப்படாத உடல்களுக்கு கண்ணியமான முறையில் தொண்டு செய்கிறோம்.'}
+                  ? 'A grassroots trust dedicated to dignity, service, and responsible community support.'
+                : 'அன்பை செயலாக்கும் மனிதநேயப் பாதை'}
               </p>
             </motion.div>
+
+            {/* Slide dot indicators */}
+            <div className="flex justify-end gap-2 max-w-2xl pt-1" aria-label="Hero photo selector">
+              {heroImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setHeroIndex(idx)}
+                  aria-label={`Show hero photo ${idx + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    idx === heroIndex ? 'w-6 bg-[#34d399]' : 'w-1.5 bg-white/40 hover:bg-white/70'
+                  }`}
+                />
+              ))}
+            </div>
 
           </div>
         </div>
       </section>
 
-      {/* Trust Introduction */}
+      {/* Trust Introduction + Quick Stats — one unified "Who We Are" box */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-white border border-gray-100 p-6 sm:p-10 shadow-sm">
-          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+        <div className="rounded-2xl bg-white border border-gray-100 p-6 sm:p-10 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04]">
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-10">
             {/* Logo — left on desktop, top on mobile */}
-            <div className="md:w-[28%] flex justify-center shrink-0">
+            <div className="md:w-[36%] flex justify-center shrink-0">
               <img
                 src="/logo.png"
-                alt="Nallathe Nadakkum Social Service Trust logo"
-                className="h-32 w-32 sm:h-40 sm:w-40 rounded-full object-cover"
+                alt="Nallathae Nadakkum Social Service Trust logo"
+                className="h-48 w-48 sm:h-64 sm:w-64 md:h-72 md:w-72 rounded-full object-cover"
               />
             </div>
 
             {/* Content — right on desktop, left-aligned text */}
-            <div className="md:w-[72%] space-y-5 text-center md:text-left">
-              <h2 className="font-display text-2xl font-bold text-gray-900 sm:text-3xl">
+            <div className="md:w-[64%] space-y-5 text-center md:text-left">
+              <h2 className="h2-section">
                 {lang === 'en' ? 'Who We Are' : 'எங்களை பற்றி'}
               </h2>
               <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl mx-auto md:mx-0">
-                {commonTranslations.introShort[lang]}
+                {lang === 'en' ? (
+                  commonTranslations.introShort[lang]
+                ) : (
+                  <>
+                    <strong>நாங்கள் ஒரு அமைப்பு மட்டும் அல்ல; தேவையுள்ள நேரத்தில் மனிதராக வந்து நிற்கும் நம்பிக்கை.</strong>{' '}
+                    {commonTranslations.introShort[lang]}
+                  </>
+                )}
               </p>
               <div>
                 <button
                   onClick={() => setActiveTab('about')}
                   className="text-emerald-700 font-semibold text-sm hover:text-emerald-800 hover:underline inline-flex items-center space-x-1 cursor-pointer"
                 >
-                  <span>{lang === 'en' ? 'Read Our Full History & Trustees' : 'எங்கள் அறக்கட்டளையின் முழு வரலாறு & அறங்காவலர்கள் பற்றி படிக்க'}</span>
+                  <span>{lang === 'en' ? 'Learn More About Us' : 'எங்கள் பயணத்தை அறிய'}</span>
                   <FaChevronRight className="h-4 w-4" />
                 </button>
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Quick Stats Grid */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-emerald-800 text-white p-8 sm:p-12 shadow-md relative overflow-hidden">
-          <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-emerald-700/50 blur-xl"></div>
-          
-          <div className="mb-10 text-center space-y-2">
-            <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+          {/* Divider between intro and stats */}
+          <hr className="my-8 sm:my-10 border-t border-gray-100" />
+
+          {/* Quick Stats — inside the same white box */}
+          <div className="mb-8 text-center space-y-1.5">
+            <h3 className="h2-section">
               {commonTranslations.quickStatsTitle[lang]}
-            </h2>
-            <p className="text-emerald-200 text-xs sm:text-sm">
-              {commonTranslations.quickStatsNote[lang]}
-            </p>
+            </h3>
           </div>
 
           <div className="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-6 text-center">
             {statsData.map((stat, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -238,9 +236,9 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
               >
                 <CountUpStat
                   value={stat.value}
-                  className="font-display text-3xl font-extrabold text-emerald-100 sm:text-4xl"
+                  className="font-display text-3xl font-extrabold text-emerald-700 sm:text-4xl"
                 />
-                <div className="text-[11px] sm:text-xs font-medium text-emerald-100/80 leading-snug">
+                <div className="text-[11px] sm:text-xs font-medium text-gray-900 leading-snug">
                   {stat.label[lang]}
                 </div>
               </motion.div>
@@ -249,437 +247,378 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
         </div>
       </section>
 
-      {/* Social Follow CTA */}
-      <SocialConnect lang={lang} />
-
-      {/* Contribution, Photo & Video Evidence Transparency Highlights */}
+      {/* Social Follow CTA + Evidence Transparency Highlights */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
-          {/* Card 1: Contribution Recognition */}
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
-          >
-            <div className="flex items-center gap-3">
-              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-                <FaCircleCheck className="h-6 w-6" />
+        <StarsBackground
+          starColor="#ffffff"
+          className="rounded-3xl border border-emerald-900/40 shadow-lg"
+        >
+          <div className="relative z-10 px-6 py-8 sm:px-10 sm:py-10">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 text-center md:text-left">
+              <div className="space-y-2 max-w-xl">
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">
+                  {lang === 'en' ? 'Follow Our Daily Work' : 'எங்கள் தினசரி பணிகளைப் பின்தொடருங்கள்'}
+                </h2>
+                <p className="text-sm sm:text-base text-emerald-50/80 leading-relaxed sm:leading-[1.65]">
+                  {lang === 'en'
+                    ? 'See real-time photos and videos of our annadhanam, rescues, and last rites on our official social channels.'
+                    : 'எங்கள் அன்னதானம், மீட்பு மற்றும் இறுதி மரியாதை பணிகளின் புகைப்படங்கள் மற்றும் வீடியோக்களை எங்கள் அதிகாரப்பூர்வ சமூக ஊடகங்களில் நேரடியாகக் காணுங்கள்.'}
+                </p>
               </div>
-              <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
-                {lang === 'en' ? 'Contribution Recognition' : 'பங்களிப்பு அங்கீகாரம்'}
-              </h3>
-            </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify sm:text-left">
-              {lang === 'en'
-                ? 'Every donation is recorded and acknowledged with gratitude, ensuring transparency and appreciation for each supporter.'
-                : 'ஒவ்வொரு நன்கொடையும் நன்றியுடன் பதிவு செய்து அங்கீகரிக்கப்படுகிறது. இதன் மூலம் ஒவ்வொரு ஆதரவாளரின் பங்களிப்பும் வெளிப்படையாக மதிப்பளிக்கப்படுகிறது.'}
-            </p>
-          </motion.div>
-
-          {/* Card 2: Photo Impact Evidence */}
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
-          >
-            <div className="flex items-center gap-3">
-              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-                <FaCamera className="h-6 w-6" />
+              <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
+                {[
+                  { key: 'instagram', href: OFFICIAL_SOCIAL.instagram, label: 'Instagram', icon: <FaInstagram className="h-6 w-6" />, iconText: 'text-[#E4405F]', iconHover: 'group-hover:bg-[#E4405F] group-hover:text-white' },
+                  { key: 'facebook', href: OFFICIAL_SOCIAL.facebook, label: 'Facebook', icon: <FaFacebookF className="h-6 w-6" />, iconText: 'text-[#1877F2]', iconHover: 'group-hover:bg-[#1877F2] group-hover:text-white' },
+                  { key: 'youtube', href: OFFICIAL_SOCIAL.youtube, label: 'YouTube', icon: <FaYoutube className="h-6 w-6" />, iconText: 'text-[#FF0000]', iconHover: 'group-hover:bg-[#FF0000] group-hover:text-white' },
+                ].map((link) => (
+                  <a
+                    key={link.key}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Nallathae Nadakkum on ${link.label}`}
+                    className="inline-flex items-center gap-3 rounded-xl border border-white/15 bg-white/95 pl-2.5 pr-4 py-2.5 shadow-md backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-emerald-950 group"
+                  >
+                    <span className={`inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gray-50 transition-colors ${link.iconText} ${link.iconHover}`}>
+                      {link.icon}
+                    </span>
+                    <span className="flex min-h-12 items-center text-left leading-tight">
+                      <span className="block text-sm font-bold text-gray-900">
+                        {link.label}
+                      </span>
+                    </span>
+                  </a>
+                ))}
               </div>
-              <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
-                {lang === 'en' ? 'Photo Impact Updates' : 'புகைப்பட தாக்கப் பதிவுகள்'}
-              </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify sm:text-left">
-              {lang === 'en'
-                ? 'Photo updates help donors understand how their contributions are used and the difference they create in the community.'
-                : 'நன்கொடைகள் எவ்வாறு பயன்படுத்தப்படுகின்றன மற்றும் சமூகத்தில் அவை ஏற்படுத்தும் மாற்றத்தை புகைப்படப் பதிவுகள் மூலம் நன்கொடையாளர்கள் அறிந்துகொள்ளலாம்.'}
-            </p>
-          </motion.div>
 
-          {/* Card 3: Video Impact Stories */}
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs flex flex-col space-y-4 hover:border-emerald-200 hover:shadow-md transition-all duration-300"
-          >
-            <div className="flex items-center gap-3">
-              <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-                <FaVideo className="h-6 w-6" />
+            {/* Uploaded screenshot section hidden by request; keep for future restoration. */}
+            {false && (
+            <div className="mt-8 grid grid-cols-1 divide-y divide-white/10 border-t border-white/10 pt-6 md:grid-cols-3 md:divide-x md:divide-y-0">
+              <div className="flex gap-3 py-4 first:pt-0 last:pb-0 md:px-5 md:py-0 md:first:pl-0 md:last:pr-0">
+                <div className="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-brand-gold ring-1 ring-white/15">
+                  <FaCircleCheck className="h-5 w-5" />
+                </div>
+                <div className="space-y-1.5">
+                  <h3 className="font-display text-base font-bold text-white">
+                    {lang === 'en' ? 'Contribution Recognition' : 'பங்களிப்பு அங்கீகாரம்'}
+                  </h3>
+                  <p className="text-sm text-emerald-50/80 leading-relaxed">
+                    {lang === 'en'
+                      ? 'Every donation is recorded and acknowledged with gratitude, ensuring transparency and appreciation for each supporter.'
+                      : 'ஒவ்வொரு நன்கொடையும் நன்றியுடன் பதிவு செய்து அங்கீகரிக்கப்படுகிறது. இதன் மூலம் ஒவ்வொரு ஆதரவாளரின் பங்களிப்பும் வெளிப்படையாக மதிப்பளிக்கப்படுகிறது.'}
+                  </p>
+                </div>
               </div>
-              <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
-                {lang === 'en' ? 'Video Impact Stories' : 'காணொளி தாக்கக் கதைகள்'}
-              </h3>
-            </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify sm:text-left">
-              {lang === 'en'
-                ? 'Video updates showcase the real outcomes of each initiative and highlight the meaningful impact made possible by donor support.'
-                : 'ஒவ்வொரு சேவை முயற்சியின் உண்மையான விளைவுகளையும், நன்கொடையாளர்களின் ஆதரவால் உருவாகும் நல்ல மாற்றங்களையும் காணொளிப் பதிவுகள் வெளிப்படுத்துகின்றன.'}
-            </p>
-          </motion.div>
 
-        </div>
+              <div className="flex gap-3 py-4 first:pt-0 last:pb-0 md:px-5 md:py-0 md:first:pl-0 md:last:pr-0">
+                <div className="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-brand-blue-100 ring-1 ring-white/15">
+                  <FaCamera className="h-5 w-5" />
+                </div>
+                <div className="space-y-1.5">
+                  <h3 className="font-display text-base font-bold text-white">
+                    {lang === 'en' ? 'Photo Impact Updates' : 'புகைப்பட தாக்கப் பதிவுகள்'}
+                  </h3>
+                  <p className="text-sm text-emerald-50/80 leading-relaxed">
+                    {lang === 'en'
+                      ? 'Photo updates help donors understand how their contributions are used and the difference they create in the community.'
+                      : 'நன்கொடைகள் எவ்வாறு பயன்படுத்தப்படுகின்றன மற்றும் சமூகத்தில் அவை ஏற்படுத்தும் மாற்றத்தை புகைப்படப் பதிவுகள் மூலம் நன்கொடையாளர்கள் அறிந்துகொள்ளலாம்.'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-3 py-4 first:pt-0 last:pb-0 md:px-5 md:py-0 md:first:pl-0 md:last:pr-0">
+                <div className="mt-0.5 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-brand-orange-100 ring-1 ring-white/15">
+                  <FaVideo className="h-5 w-5" />
+                </div>
+                <div className="space-y-1.5">
+                  <h3 className="font-display text-base font-bold text-white">
+                    {lang === 'en' ? 'Video Impact Stories' : 'காணொளி தாக்கக் கதைகள்'}
+                  </h3>
+                  <p className="text-sm text-emerald-50/80 leading-relaxed">
+                    {lang === 'en'
+                      ? 'Video updates showcase the real outcomes of each initiative and highlight the meaningful impact made possible by donor support.'
+                      : 'ஒவ்வொரு சேவை முயற்சியின் உண்மையான விளைவுகளையும், நன்கொடையாளர்களின் ஆதரவால் உருவாகும் நல்ல மாற்றங்களையும் காணொளிப் பதிவுகள் வெளிப்படுத்துகின்றன.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+            )}
+          </div>
+        </StarsBackground>
       </section>
 
-      {/* Donation Impact & Live Transparency Hub */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 animate-fade-in">
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 sm:p-8 shadow-xs space-y-8">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-gray-100 pb-6">
-            <div className="space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full w-fit block">
-                {lang === 'en' ? 'Live Trust Activity' : 'நேரடி அறக்கட்டளை தகவல்கள்'}
+      {/* What Can You Donate — bold spotlight panel (key conversion area) */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-700 via-emerald-600 to-emerald-800 p-6 sm:p-10 lg:p-14 shadow-[0_30px_80px_-30px_rgba(15,61,38,0.75)] ring-1 ring-emerald-900/20">
+          {/* Brand glow accents */}
+          <div className="pointer-events-none absolute -left-20 -top-16 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 -bottom-16 h-72 w-72 rounded-full bg-brand-gold/15 blur-3xl" />
+
+          <div className="relative">
+            <div className="text-center space-y-4 mb-10">
+              <span className="section-eyebrow inline-flex items-center gap-1.5 rounded-full bg-white/15 backdrop-blur px-3.5 py-1.5 text-white ring-1 ring-white/25">
+                <FaHeart className="h-3 w-3 fill-white" />
+                {lang === 'en' ? 'Ways to Give' : 'உதவும் வழிகள்'}
               </span>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
-                <Monogram label="GT" size="sm" />
-                <span>{lang === 'en' ? 'Generosity & Transparency Hub' : 'தாராள மனப்பான்மை & வெளிப்படைத்தன்மை மையம்'}</span>
+              <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
+                {lang === 'en' ? 'What Can You Donate' : 'நீங்கள் எதை நன்கொடையாக வழங்கலாம்'}
               </h2>
-              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] max-w-2xl">
-                {lang === 'en' 
-                  ? 'Explore where your contributions go, view real-time pledged donations, and read critical safety notices.' 
-                  : 'உங்கள் பங்களிப்புகள் எங்கு செல்கின்றன என்பதை ஆராயுங்கள், சமீபத்திய நன்கொடைகளைக் காணுங்கள் மற்றும் முக்கிய பாதுகாப்பு அறிவிப்புகளைப் படியுங்கள்.'}
+              {/* Accent underline */}
+              <div className="mx-auto h-1.5 w-24 rounded-full bg-brand-gold" />
+              <p className="text-sm sm:text-base text-emerald-50 max-w-2xl mx-auto">
+                {lang === 'en'
+                  ? 'Every contribution, whether financial or in kind, can become meaningful support for someone in need. You may choose to support a specific cause that reflects your values.'
+                  : 'நீங்கள் அளிப்பது ஒரு நன்கொடை மட்டுமல்ல; அது ஒருவரின் வாழ்வில் நேரடி மாற்றமாக மாறும் ஒரு கருணைச் செயல்.'}
               </p>
-            </div>
-
-            {/* Quick Efficiency Badge */}
-            <div className="bg-emerald-50/50 rounded-xl p-3 border border-emerald-100/60 flex items-center space-x-2 w-fit">
-              <FaWandMagicSparkles className="h-4 w-4 text-emerald-600 flex-shrink-0 animate-pulse" />
-              <div className="text-[10px] leading-tight">
-                <p className="font-bold text-emerald-900">{lang === 'en' ? '100% Direct Delivery' : '100% நேரடி உதவி'}</p>
-                <p className="text-emerald-700">{lang === 'en' ? '0% Administrative Deductions' : 'நிர்வாக செலவு பிடித்தங்கள் இல்லை'}</p>
+              {/* Trust line */}
+              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 pt-1 text-xs font-semibold text-white">
+                <span className="inline-flex items-center gap-1.5">
+                  <FaCircleCheck className="h-3.5 w-3.5 text-brand-gold" />
+                  {lang === 'en' ? '0% administrative deductions' : '0% நிர்வாகச் செலவு'}
+                </span>
+                <span className="text-white/70">•</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <FaCircleCheck className="h-3.5 w-3.5 text-brand-gold" />
+                  {lang === 'en' ? '100% reaches the field' : '100% நேரடியாக மக்களுக்கு'}
+                </span>
               </div>
             </div>
-          </div>
 
-          {/* Interactive Navigation Tabs */}
-          <div className="flex border-b border-gray-100 p-1 bg-gray-50/50 rounded-xl max-w-md">
-            {[
-              { id: 'impact', label: { en: 'How It Helps (Impact)', ta: 'உதவிகள் எவ்வாறு பயனாகின்றன' }, icon: <FaHeartPulse className="h-3.5 w-3.5" /> },
-              { id: 'pledges', label: { en: 'Recent Kindness', ta: 'சமீபத்திய பங்களிப்புகள்' }, icon: <FaGift className="h-3.5 w-3.5" /> },
-              { id: 'disclosures', label: { en: 'Trust Notices', ta: 'பாதுகாப்பு அறிவிப்புகள்' }, icon: <FaCircleExclamation className="h-3.5 w-3.5" /> }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveHubTab(tab.id as any)}
-                className={`flex items-center justify-center space-x-1.5 py-2 px-3 text-xs font-bold rounded-lg flex-1 transition-all cursor-pointer ${
-                  activeHubTab === tab.id
-                    ? 'bg-white text-emerald-800 shadow-xs border border-gray-100'
-                    : 'text-gray-900/70 hover:text-gray-900'
-                }`}
-              >
-                {tab.icon}
-                <span>{tab.label[lang]}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Tab Contents */}
-          <div className="pt-2">
-            <AnimatePresence mode="wait">
-              
-              {/* TAB 1: HOW IT HELPS (IMPACT MAP) */}
-              {activeHubTab === 'impact' && (
-                <motion.div
-                  key="impact"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                >
-                  {[
-                    {
-                      id: 'annadhanam',
-                      title: { en: 'Daily Annadhanam', ta: 'தினசரி அன்னதானம்' },
-                      amt: 'From ₹2,000',
-                      unit: { en: 'Per Meal Session', ta: 'ஒரு வேளை உணவு' },
-                      desc: {
-                        en: 'Sponsor a roadside or care-home meal session — costs range by session and location — serving fresh hot meals to destitute pavement dwellers, homeless elders, and hospital patients.',
-                        ta: 'சாலையோரம் அல்லது முதியோர் இல்லத்தில் ஒரு வேளை உணவை ஸ்பான்சர் செய்யலாம் — வேளை மற்றும் இடத்தைப் பொறுத்து செலவு மாறுபடும் — ஆதரவற்ற ஏழைகள், முதியோர் மற்றும் நோயாளிகளுக்கு சத்தான உணவு வழங்கப்படும்.'
-                      },
-                      icon: <FaUtensils className="h-4 w-4" />,
-                      color: 'bg-emerald-50 text-emerald-700 border-emerald-100',
-                      badge: 'bg-emerald-100 text-emerald-800'
-                    },
-                    {
-                      id: 'student',
-                      title: { en: 'Student Support', ta: 'மாணவர்கள் கல்வி' },
-                      amt: '₹5,000',
-                      unit: { en: 'Annual Tuition Fee', ta: 'ஓராண்டு கல்வி கட்டணம்' },
-                      desc: {
-                        en: 'Directly remits full school tuition fees for a meritorious student from a daily-wage single-parent household to secure their classroom seat.',
-                        ta: 'கல்வி தடைபடாமல் இருக்க வறிய நிலையில் உள்ள ஒரு பள்ளி/கல்லூரி மாணவரின் ஓராண்டு கல்வி கட்டணத்தை கல்வி நிலையத்திற்கு நேரடியாக செலுத்தும்.'
-                      },
-                      icon: <FaGraduationCap className="h-4 w-4" />,
-                      color: 'bg-sky-50 text-sky-700 border-sky-100',
-                      badge: 'bg-sky-100 text-sky-800'
-                    },
-                    {
-                      id: 'ambulance',
-                      title: { en: 'Ambulance Fuel', ta: 'ஆம்புலன்ஸ் எரிபொருள்' },
-                      amt: '₹2,500',
-                      unit: { en: '10 Emergency Trips', ta: '10 அவசரப் பயணங்கள்' },
-                      desc: {
-                        en: 'Covers diesel fuel logistics and patient transfer for 10 emergency runs carrying vulnerable patients to Salem Govt Hospital.',
-                        ta: 'அவசர சிகிச்சை தேவைப்படும் ஏழைகளை அரசு மருத்துவமனைகளுக்கு அழைத்துச் செல்ல 10 இலவச பயணங்களுக்கான எரிபொருளை ஸ்பான்சர் செய்யும்.'
-                      },
-                      icon: <FaTruckMedical className="h-4 w-4" />,
-                      color: 'bg-amber-50 text-amber-700 border-amber-100',
-                      badge: 'bg-amber-100 text-amber-800'
-                    },
-                    {
-                      id: 'cremation',
-                      title: { en: 'Dignified Last Rites', ta: 'ஆதரவற்றோர் இறுதி மரியாதை' },
-                      amt: '₹5,000',
-                      unit: { en: '1 Dignified Burial', ta: '1 தகனச் சடங்கு' },
-                      desc: {
-                        en: 'Covers municipal cremation fees, shroud cloth, and ceremonial materials for performing police-coordinated burial with complete dignity.',
-                        ta: 'நாமக்கல்/சேலம் காவல்துறையின் முறைப்படியான அனுமதியுடன், உரிமை கோரப்படாத ஆதரவற்ற ஒரு உடலுக்கு இறுதிச் சடங்குகள் செய்யும்.'
-                      },
-                      icon: <FaHeart className="h-4 w-4" />,
-                      color: 'bg-rose-50 text-rose-700 border-rose-100',
-                      badge: 'bg-rose-100 text-rose-800'
-                    }
-                  ].map((scenario) => (
-                    <div 
-                      key={scenario.id} 
-                      className="rounded-xl border border-gray-100 p-5 bg-white shadow-xs flex flex-col justify-between space-y-4 hover:border-gray-200 transition-all group"
-                    >
-                      <div className="space-y-3">
-                        {/* Title and Icon */}
-                        <div className="flex items-center space-x-2">
-                          <div className={`p-2 rounded-lg border ${scenario.color}`}>
-                            {scenario.icon}
-                          </div>
-                          <h4 className="font-display font-bold text-gray-900 text-xs sm:text-sm">
-                            {scenario.title[lang]}
-                          </h4>
-                        </div>
-
-                        {/* Amount Box */}
-                        <div className="space-y-0.5">
-                          <p className="text-[10px] text-gray-900 uppercase font-bold tracking-wider">
-                            {lang === 'en' ? 'Sponsorship Level' : 'உதவித் தொகை'}
-                          </p>
-                          <div className="flex items-baseline flex-wrap gap-x-1.5 gap-y-1">
-                            <span className="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">
-                              {scenario.amt}
-                            </span>
-                            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${scenario.badge}`}>
-                              {scenario.unit[lang]}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Description */}
-                        <p className="text-xs sm:text-sm text-gray-900 leading-relaxed text-justify">
-                          {scenario.desc[lang]}
-                        </p>
-                      </div>
-
-                      {/* Sponsor Action CTA */}
-                      <button
-                        onClick={() => setActiveTab('donate')}
-                        className="w-full text-center py-2 rounded-lg bg-emerald-50 text-emerald-800 text-[10px] sm:text-xs font-bold hover:bg-emerald-600 hover:text-white transition-all cursor-pointer"
-                      >
-                        {lang === 'en' ? 'Sponsor Program →' : 'இந்த திட்டத்திற்கு உதவவும் →'}
-                      </button>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-
-              {/* TAB 2: RECENT KINDNESS (DONATIONS PLEDGED) */}
-              {activeHubTab === 'pledges' && (
-                <motion.div
-                  key="pledges"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="space-y-6"
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {recentPledges.length === 0 ? (
-                      <div className="col-span-3 text-center py-10 text-xs text-gray-900">
-                        {lang === 'en' ? 'No recent contributions logged yet.' : 'சமீபத்திய பங்களிப்புகள் இன்னும் பதிவாகவில்லை.'}
-                      </div>
-                    ) : (
-                      recentPledges.map((pledge, idx) => (
-                        <div 
-                          key={idx} 
-                          className="rounded-xl border border-emerald-100/60 p-4 bg-emerald-50/10 flex flex-col justify-between space-y-3 relative overflow-hidden"
-                        >
-                          <div className="absolute top-0 right-0 h-8 w-8 bg-emerald-50 text-emerald-600 rounded-bl-full flex items-center justify-center text-[10px] font-bold">
-                            NN
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex items-center space-x-2">
-                              <div className="h-6 w-6 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center justify-center">
-                                {pledge.name.charAt(0)}
-                              </div>
-                              <div>
-                                <h5 className="text-xs font-bold text-gray-900 leading-tight">{pledge.name}</h5>
-                                <p className="text-[9px] text-gray-900 font-mono">{pledge.date}</p>
-                              </div>
-                            </div>
-                            <p className="text-xs sm:text-sm text-gray-900 italic leading-relaxed">
-                              "{pledge.msg}"
-                            </p>
-                          </div>
-                          
-                          <div className="pt-2 border-t border-emerald-100/50 flex justify-between items-center text-[10px]">
-                            <span className="font-semibold text-gray-900 uppercase tracking-wider">
-                              {pledge.type === 'Money' || pledge.type === 'Sponsorship' ? (lang === 'en' ? 'Pledged' : 'நிதி உதவி') : (lang === 'en' ? 'Material' : 'பொருளுதவி')}
-                            </span>
-                            <span className="font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                              {pledge.item}
-                            </span>
-                          </div>
-                        </div>
-                      ))
-                    )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {([
+            {
+              id: 'annadhanam',
+              serviceId: 'food',
+              preset: { type: 'Money', program: 'annadhanam', amount: '2000' },
+              title: { en: 'Daily Annadhanam – Food Donation', ta: 'தினசரி அன்னதானம்' },
+              kicker: { en: 'Sponsorship Level', ta: 'உதவித் தொகை' },
+              amt: { en: 'From ₹2,000', ta: 'From ₹2,000' },
+              unit: { en: 'Per Meal Session', ta: 'ஒரு வேளை உணவு' },
+              desc: {
+                en: 'Help us provide fresh meals to people living in hardship, including those on the streets and residents in care homes. Your support can directly reduce hunger and bring daily relief to someone who may otherwise go without a meal.',
+                ta: 'தெருக்களில் வாழும் மக்களுக்கும் முதியோர் இல்லங்களில் வசிக்கும் நபர்களுக்கும் புதிதாகச் சமைக்கப்பட்ட உணவை வழங்க எங்களுடன் இணைந்திடுங்கள். உங்கள் ஒவ்வொரு நன்கொடையும், பசியைத் தணித்து, ஒரு வேளை உணவிற்காக காத்திருக்கும் ஒருவரின் வாழ்வில் உண்மையான மாற்றத்தை ஏற்படுத்தும்.'
+              },
+              lead: {
+                en: null,
+                ta: 'ஒரு உணவு பலருக்கு ஒரு நாளின் நிம்மதி.'
+              },
+              note: null,
+              icon: <FaUtensils className="h-5 w-5" />,
+              color: 'bg-brand-orange-50 text-brand-orange-700 border-brand-orange-100',
+              badge: 'bg-brand-orange-100 text-brand-orange-700',
+              cta: { en: 'View Details >', ta: 'விவரங்களை பார்க்க >' }
+            },
+            {
+              id: 'student',
+              serviceId: 'education',
+              preset: { type: 'Money', program: 'student', amount: '5000' },
+              title: { en: 'Student Support', ta: 'மாணவர்கள் கல்வி' },
+              kicker: { en: 'Sponsorship Level', ta: 'உதவித் தொகை' },
+              amt: { en: '₹5,000', ta: '₹5,000' },
+              unit: { en: 'Annual Tuition Fee', ta: 'ஓராண்டு கல்வி கட்டணம்' },
+              desc: {
+                en: 'Support tuition fees and academic needs for deserving students from financially struggling backgrounds. Your contribution can help a meritorious student continue education with hope and stability.',
+                ta: 'கல்விக் கட்டணம், படிப்பு செலவு, கல்வி உதவிகள் மூலம் திறமையான ஏழை மாணவர்களின் எதிர்காலத்தை காக்க உதவலாம்.'
+              },
+              lead: {
+                en: null,
+                ta: 'ஒரு மாணவனின் கனவு, பணமின்மையால் நின்றுவிடக் கூடாது.'
+              },
+              note: null,
+              icon: <FaGraduationCap className="h-5 w-5" />,
+              color: 'bg-brand-gold-50 text-brand-gold-700 border-brand-gold-100',
+              badge: 'bg-brand-gold-100 text-brand-gold-700',
+              cta: { en: 'View Details >', ta: 'விவரங்களை பார்க்க >' }
+            },
+            {
+              id: 'ambulance',
+              serviceId: 'ambulance',
+              preset: { type: 'Money', program: 'ambulance', amount: '2500' },
+              title: { en: 'Ambulance Fuel', ta: 'ஆம்புலன்ஸ் எரிபொருள்' },
+              kicker: { en: 'Sponsorship Level', ta: 'உதவித் தொகை' },
+              amt: { en: '₹2,500', ta: '₹2,500' },
+              unit: { en: '10 Emergency Trips', ta: '10 அவசரப் பயணங்கள்' },
+              desc: {
+                en: 'Help keep the trust’s ambulance service moving for poor patients and emergency welfare needs. Fuel support ensures timely transportation without placing a financial burden on those who cannot afford it.',
+                ta: 'ஆம்புலன்ஸ் எரிபொருள் உதவி, பணம் இல்லாத காரணத்தால் மருத்துவ உதவி தாமதமாகாமல் இருக்க துணை புரியும்.'
+              },
+              lead: {
+                en: null,
+                ta: 'அவசர நேரத்தில் தாமதமில்லா உதவி உயிரைக் காக்கும்.'
+              },
+              note: null,
+              icon: <FaTruckMedical className="h-5 w-5" />,
+              color: 'bg-brand-blue-50 text-brand-blue-700 border-brand-blue-100',
+              badge: 'bg-brand-blue-100 text-brand-blue-700',
+              cta: { en: 'View Details >', ta: 'விவரங்களை பார்க்க >' }
+            },
+            {
+              id: 'cremation',
+              serviceId: 'lastrites',
+              preset: { type: 'Money', program: 'cremation', amount: '5000' },
+              title: { en: 'Dignified Last Rites', ta: 'ஆதரவற்றோர் இறுதி மரியாதை' },
+              kicker: { en: 'Sponsorship Level', ta: 'உதவித் தொகை' },
+              amt: { en: '₹5,000', ta: '₹5,000' },
+              unit: { en: '1 Dignified Burial', ta: '1 தகனச் சடங்கு' },
+              desc: {
+                en: 'Support the final journey of destitute and unclaimed individuals with dignity and respect. Contributions in this category help us arrange essential funeral support for those who have no one to stand for them.',
+                ta: 'ஆதரவற்ற மற்றும் உறவினர் இல்லாதவர்களின் இறுதிச் சடங்குகள் கண்ணியத்துடனும் மரியாதையுடனும் நடைபெற உங்கள் ஆதரவை வழங்குங்கள். உங்கள் நன்கொடை, அவர்களின் இறுதி மரியாதையை மனிதநேயத்துடன் நிறைவேற்ற உதவுகிறது.'
+              },
+              lead: {
+                en: null,
+                ta: 'இறப்பிற்குப் பிறகும் மரியாதை மறுக்கப்படக் கூடாது.'
+              },
+              note: null,
+              icon: <FaHeart className="h-5 w-5" />,
+              color: 'bg-brand-violet-50 text-brand-violet-700 border-brand-violet-100',
+              badge: 'bg-brand-violet-100 text-brand-violet-700',
+              cta: { en: 'View Details >', ta: 'விவரங்களை பார்க்க >' }
+            },
+            {
+              id: 'blood',
+              serviceId: 'medical',
+              preset: { type: 'Blood', program: undefined, amount: undefined },
+              title: { en: 'Blood Donation', ta: 'இரத்த தானம்' },
+              kicker: { en: 'Life-Saving Gift', ta: 'உயிர் காக்கும் தானம்' },
+              amt: { en: 'Give Blood', ta: 'இரத்த தானம்' },
+              unit: { en: '1 Unit · up to 3 Lives', ta: '1 யூனிட் · 3 உயிர் வரை' },
+              desc: {
+                en: 'Join humanitarian support in its most life-saving form. Blood donors can become a vital part of emergency community response when patients and families urgently need help.',
+                ta: 'அவசர சிகிச்சையில் இருக்கும் நோயாளிகளுக்கு உயிர் காக்கும் கருணையான பங்களிப்பாக இரத்த தானத்தில் இணைந்திடலாம்.'
+              },
+              lead: {
+                en: null,
+                ta: 'ஒரு துளி இரத்தம், ஒரு உயிரின் நம்பிக்கை.'
+              },
+              note: null,
+              icon: <FaDroplet className="h-5 w-5" />,
+              color: 'bg-rose-50 text-rose-600 border-rose-100',
+              badge: 'bg-rose-100 text-rose-700',
+              cta: { en: 'View Details >', ta: 'விவரங்களை பார்க்க >' }
+            },
+            {
+              id: 'dress',
+              serviceId: 'elderly',
+              preset: { type: 'Dress', program: undefined, amount: undefined },
+              title: { en: 'Dress Donation', ta: 'ஆடை நன்கொடை' },
+              kicker: { en: 'Material Gift', ta: 'பொருள் தானம்' },
+              amt: { en: 'Material Aid', ta: 'அத்தியாவசியப் பொருட்கள்' },
+              unit: { en: 'New / Gently-used', ta: 'புதிய / சிறிது பயன்பட்ட' },
+              desc: {
+                en: 'Contribute new clothes or support clothing drives for individuals and families in need. Seasonal and festival clothing support brings comfort, dignity, and inclusion.',
+                ta: 'உங்கள் உடைத் தானம், விழாக்காலங்களிலும் தேவைக்காலங்களிலும் பலருக்கு நம்பிக்கையாக இருக்கும்.'
+              },
+              lead: {
+                en: null,
+                ta: 'புதிய உடை என்பது உடை மட்டும் அல்ல; மரியாதையும் மகிழ்ச்சியும்.'
+              },
+              note: {
+                en: 'Please donate only new or gently-used clothes — not heavily worn — so they can be given with dignity.',
+                ta: 'தயவுசெய்து புதிய அல்லது சிறிது பயன்படுத்திய ஆடைகளை மட்டும் வழங்கவும் — அதிகம் பயன்பட்டவை வேண்டாம் — கண்ணியத்துடன் வழங்க உதவும்.'
+              },
+              icon: <FaShirt className="h-5 w-5" />,
+              color: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+              badge: 'bg-emerald-100 text-emerald-700',
+              cta: { en: 'View Details >', ta: 'விவரங்களை பார்க்க >' }
+            }
+          ] as const)
+            .slice()
+            .sort((a, b) => DONATE_PRIORITY.indexOf(a.id) - DONATE_PRIORITY.indexOf(b.id))
+            .map((card, i) => (
+            <motion.div
+              key={card.id}
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.4, delay: i * 0.07 }}
+              className="rounded-2xl border border-gray-100 p-6 bg-white shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] flex flex-col justify-between space-y-4 hover:shadow-2xl hover:-translate-y-1 hover:border-gray-200 transition-all duration-300 group"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className={`p-2.5 rounded-xl border ${card.color}`}>
+                    {card.icon}
                   </div>
+                  <h3 className="font-display font-bold text-gray-900 text-lg">
+                    {card.title[lang]}
+                  </h3>
+                </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-gray-50 text-xs">
-                    <p className="text-gray-900">
-                      {lang === 'en' 
-                        ? 'Recent kindness logs demonstrating active community support on this device.' 
-                        : 'அறக்கட்டளையின் தாராள மனப்பான்மை நன்றிக்கூடம் தங்களின் தொடர் சமூக ஆதரவை மெய்ப்பிக்கின்றது.'}
+                <div className="space-y-0.5">
+                  <p className="text-[10px] text-gray-900 uppercase font-bold tracking-wider">
+                    {card.kicker[lang]}
+                  </p>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">
+                      {card.amt[lang]}
+                    </span>
+                    <span className={`shrink-0 text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded ${card.badge}`}>
+                      {card.unit[lang]}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  {card.lead[lang] && (
+                    <p className="text-sm font-bold text-gray-900 leading-snug">
+                      {card.lead[lang]}
                     </p>
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => setActiveTab('donate')}
-                        className="text-emerald-700 font-bold hover:underline cursor-pointer flex items-center space-x-1"
-                      >
-                        <span>{lang === 'en' ? 'Pledge Your Support Now' : 'நன்றிக் கூடத்தில் உங்களை இணைக்க'}</span>
-                        <FaChevronRight className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
+                  )}
+                  <p className="text-sm text-gray-900 leading-relaxed">
+                    {card.desc[lang]}
+                  </p>
+                </div>
 
-              {/* TAB 3: IMPORTANT TRUST DISCLOSURES & SAFETY */}
-              {activeHubTab === 'disclosures' && (
-                <motion.div
-                  key="disclosures"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
-                >
-                  
-                  {/* Warning 1: Official bank only */}
-                  <div className="rounded-xl border border-red-100 bg-red-50/30 p-5 flex flex-col justify-between space-y-3">
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2 text-red-700">
-                        <FaCircleExclamation className="h-4 w-4 flex-shrink-0" />
-                        <h4 className="text-xs font-bold uppercase tracking-wider">
-                          {lang === 'en' ? 'Official Account Only' : 'அதிகாரப்பூர்வ கணக்கு மட்டுமே'}
-                        </h4>
-                      </div>
-                      <p className="text-xs sm:text-sm text-red-900 leading-relaxed text-justify">
-                        {lang === 'en'
-                          ? 'Make payments only to the official Nallathe Nadakkum Trust bank account or official QR codes. Never send donations to any private personal bank accounts of members.'
-                          : 'நன்கொடைகளை அறக்கட்டளையின் பெயரில் உள்ள அதிகாரப்பூர்வ வங்கிக் கணக்கிற்கு மட்டுமே செலுத்துங்கள். தனிநபர்களின் சொந்தக் கணக்குகளுக்குப் பணம் அனுப்ப வேண்டாம்.'}
-                      </p>
-                    </div>
-                    <span className="text-[9px] font-mono font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded w-fit uppercase">
-                      {lang === 'en' ? 'Zero Commission Policy' : 'கமிஷன்கள் இல்லை'}
-                    </span>
-                  </div>
+                {card.note && (
+                  <p className="text-xs text-amber-700 leading-snug">
+                    {card.note[lang]}
+                  </p>
+                )}
+              </div>
 
-                  {/* Warning 2: Tax Exemption Status */}
-                  <div className="rounded-xl border border-amber-100 bg-amber-50/30 p-5 flex flex-col justify-between space-y-3">
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2 text-amber-800">
-                        <FaLock className="h-4 w-4 flex-shrink-0" />
-                        <h4 className="text-xs font-bold uppercase tracking-wider">
-                          {lang === 'en' ? 'Tax Status Disclosures' : 'வரி விலக்கு நிலைப்பாடு'}
-                        </h4>
-                      </div>
-                      <p className="text-xs sm:text-sm text-amber-900 leading-relaxed text-justify">
-                        {lang === 'en'
-                          ? 'Nallathe Nadakkum is registered as Doc No. 16/2025. Applications for 12A and 80G tax exemptions are in process with the IT Department and are currently NOT tax-exempt.'
-                          : 'எங்களது அறக்கட்டளை Doc 16/2025 ஆக பதிவு செய்யப்பட்டுள்ளது. 12A மற்றும் 80G வரி விலக்கு விண்ணப்பங்கள் வருமான வரித்துறையிடம் நிலுவையில் இருப்பதால் தற்போது வரி விலக்கு பெற இயலாது.'}
-                      </p>
-                    </div>
-                    <span className="text-[9px] font-mono font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded w-fit uppercase">
-                      {lang === 'en' ? 'Pending Approval' : 'விண்ணப்பம் பரிசீலனையில்'}
-                    </span>
-                  </div>
-
-                  {/* Warning 3: FCRA blocking */}
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 flex flex-col justify-between space-y-3">
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2 text-gray-900">
-                        <FaCoins className="h-4 w-4 flex-shrink-0" />
-                        <h4 className="text-xs font-bold uppercase tracking-wider">
-                          {lang === 'en' ? 'FCRA & Foreign Funds' : 'வெளிநாட்டு நிதி மறுப்பு'}
-                        </h4>
-                      </div>
-                      <p className="text-xs sm:text-sm text-gray-900 leading-relaxed text-justify">
-                        {lang === 'en'
-                          ? 'We strictly comply with Home Ministry FCRA regulations. Since we do not hold FCRA registration, we cannot accept foreign currency donations or non-Indian remittances.'
-                          : 'FCRA சட்ட விதிகளின்படி, வெளிநாட்டு வங்கிக் கணக்குகளில் இருந்தோ அல்லது வெளிநாட்டுப் பணமாகவோ எங்களால் நன்கொடைகளை ஏற்க முடியாது என்பதைத் தெளிவுபடுத்துகிறோம்.'}
-                      </p>
-                    </div>
-                    <span className="text-[9px] font-mono font-bold text-gray-900 bg-slate-200 px-2 py-0.5 rounded w-fit uppercase">
-                      {lang === 'en' ? 'Domestic Only' : 'உள்நாட்டு நிதி மட்டுமே'}
-                    </span>
-                  </div>
-
-                </motion.div>
-              )}
-
-            </AnimatePresence>
+              <button
+                onClick={() => openServiceDetail(card.serviceId)}
+                className="w-full text-center py-2.5 rounded-lg bg-emerald-50 text-emerald-800 text-sm font-bold hover:bg-emerald-600 hover:text-white transition-all cursor-pointer"
+              >
+                {card.cta[lang]}
+              </button>
+            </motion.div>
+          ))}
+            </div>
           </div>
-
         </div>
       </section>
 
-      {/* Mission & Vision Section */}
+      {/* Mission & Vision — card-less editorial pair with a center divider */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          
-          {/* Mission Card */}
-          <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm flex flex-col space-y-4 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-2 h-full bg-emerald-600"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          {/* Mission */}
+          <div className="rounded-2xl border border-brand-blue-100 bg-white p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-3">
             <div className="flex items-center gap-3">
-              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-blue-50 text-brand-blue-700">
                 <FaHeartPulse className="h-6 w-6" />
               </div>
-              <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
+              <h3 className="font-display text-lg font-bold text-gray-900">
                 {commonTranslations.missionTitle[lang]}
               </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] flex-grow text-justify">
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
               {commonTranslations.missionText[lang]}
             </p>
           </div>
 
-          {/* Vision Card */}
-          <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm flex flex-col space-y-4 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-2 h-full bg-emerald-600"></div>
+          {/* Vision */}
+          <div className="rounded-2xl border border-brand-gold-100 bg-white p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] space-y-3">
             <div className="flex items-center gap-3">
-              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+              <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-gold-50 text-brand-gold-700">
                 <FaAward className="h-6 w-6" />
               </div>
-              <h3 className="font-display text-lg sm:text-xl font-bold text-gray-900">
+              <h3 className="font-display text-lg font-bold text-gray-900">
                 {commonTranslations.visionTitle[lang]}
               </h3>
             </div>
-            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] flex-grow text-justify">
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
               {commonTranslations.visionText[lang]}
             </p>
           </div>
@@ -687,65 +626,52 @@ export default function HomeView({ lang, setActiveTab }: HomeViewProps) {
         </div>
       </section>
 
-      {/* Founder Message & Stated Claims Notice */}
+      {/* Founder Message — full-width editorial band (deliberately not a card) */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl bg-gray-50 border border-gray-200/60 p-8 flex flex-col md:flex-row gap-8 items-center">
-          <img
-            src="/founder.jpeg"
-            alt={commonTranslations.founderName[lang]}
-            className="h-28 w-28 rounded-full object-cover object-top flex-shrink-0 border border-emerald-200"
-          />
-          <div className="space-y-4 flex-grow">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
-              {lang === 'en' ? 'A Message from our Founder' : 'நிறுவனரின் செய்தி'}
-            </p>
-            <blockquote className="text-base sm:text-lg text-gray-900 italic leading-relaxed sm:leading-[1.65] font-sans">
-              {lang === 'en' 
-                ? '"Nallathe Nadakkum translates to Good things will happen. It is our firm conviction that consistent, small acts of daily compassion compound into real social reform. We do not wait behind a desk; we identify people on pavements, coordinate burials at the mortuary, and drive patients to emergency beds ourselves. We welcome anyone of any background to join this effort."' 
-                : '"நல்லதே நடக்கும் என்பது வெறும் பெயர் அல்ல, அது எங்களின் நம்பிக்கை. ஒவ்வொரு நாளும் நாம் செய்யும் சிறிய நற்செயல்களும் உதவிகளும் மிகப்பெரிய சமூக மாற்றத்தை ஏற்படுத்தும். நாங்கள் அலுவலகக் கதவுகளுக்குப் பின்னால் அமர்ந்து கொண்டிருக்கவில்லை; நேரடியாகச் சாலைகளுக்குச் செல்கிறோம், முதியவர்களை மீட்கிறோம், காவல்துறை அனுமதியுடன் இறுதி மரியாதைகளைச் செய்கிறோம். சாதி, மதம், பின்னணி வேறுபாடின்றி அனைவரும் இதில் இணைய அழைக்கிறோம்."'}
-            </blockquote>
-            <div>
-              <p className="font-display text-sm font-bold text-gray-900">{commonTranslations.founderName[lang]}</p>
-              <p className="text-xs text-gray-900">{lang === 'en' ? 'Founder & Chairman, Advocate' : 'நிறுவனர் மற்றும் தலைவர், வழக்கறிஞர்'}</p>
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-700 via-emerald-600 to-emerald-800 p-7 sm:p-9 lg:p-10 shadow-[0_30px_80px_-30px_rgba(15,61,38,0.75)]">
+          {/* Soft brand glow */}
+          <div className="pointer-events-none absolute -right-16 -bottom-16 h-64 w-64 rounded-full bg-brand-gold/10 blur-3xl" />
+
+          <div className="relative mb-6 text-center">
+            <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-white">
+              {lang === 'en' ? 'A Message from the Founder' : 'நிறுவனரின் செய்தி'}
+            </h2>
+            <div className="mx-auto mt-3 h-1.5 w-20 rounded-full bg-brand-gold" />
+          </div>
+
+          <div className="relative mx-auto max-w-5xl text-center">
+            <div className="space-y-5">
+              <blockquote className="font-serif italic text-white text-base sm:text-xl leading-relaxed sm:leading-[1.65]">
+                {lang === 'en'
+                  ? '"I believe service should not be delayed until it becomes convenient. If someone is hungry today, they need food today. If someone is abandoned, they need human care today. If a person dies without support, they still deserve dignity. Nallathae Nadakkum Social Service Trust was created from this conviction: that humanity must be practical, responsible, and compassionate."'
+                  : '"நல்லதே நடக்கும் என்பது வெறும் பெயர் அல்ல, அது எங்களின் நம்பிக்கை. ஒவ்வொரு நாளும் நாம் செய்யும் சிறிய நற்செயல்களும் உதவிகளும் மிகப்பெரிய சமூக மாற்றத்தை ஏற்படுத்தும். நாங்கள் அலுவலகக் கதவுகளுக்குப் பின்னால் அமர்ந்து கொண்டிருக்கவில்லை; நேரடியாகச் சாலைகளுக்குச் செல்கிறோம், முதியவர்களை மீட்கிறோம், காவல்துறை அனுமதியுடன் இறுதி மரியாதைகளைச் செய்கிறோம். சாதி, மதம், பின்னணி வேறுபாடின்றி அனைவரும் இதில் இணைய அழைக்கிறோம்."'}
+              </blockquote>
+              <div className="flex flex-col gap-4 text-left sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="font-display text-base font-bold text-white">{commonTranslations.founderName[lang]}</p>
+                  <p className="text-sm text-emerald-100">{lang === 'en' ? 'Founder & Chairman, Advocate' : 'நிறுவனர் மற்றும் தலைவர், வழக்கறிஞர்'}</p>
+                </div>
+                <button
+                  onClick={() => {
+                    setActiveTab('speaker');
+                    window.setTimeout(() => {
+                      document.getElementById('speaker-invite-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 80);
+                  }}
+                  className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 border border-white/25 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur hover:bg-white/20 transition-colors cursor-pointer sm:ml-auto"
+                >
+                  <span>{lang === 'en' ? 'Invite our Founder to Speak' : 'எங்கள் நிறுவனரை சொற்பொழிவாளராக அழைக்க'}</span>
+                  <FaChevronRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Core Activities Quick Links */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-6">
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-gray-900">
-          {lang === 'en' ? 'Our Direct Support Programs' : 'அறக்கட்டளையின் நேரடி திட்டங்கள்'}
-        </h2>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {[
-            { label: { en: 'Daily Food', ta: 'அன்னதானம்' }, tab: 'services', icon: <FaUtensils className="h-5 w-5" /> },
-            { label: { en: 'Free Ambulance', ta: 'இலவச ஆம்புலன்ஸ்' }, tab: 'services', icon: <FaTruckMedical className="h-5 w-5" /> },
-            { label: { en: 'Last Rites', ta: 'இறுதி மரியாதை' }, tab: 'services', icon: <FaHeart className="h-5 w-5" /> },
-            { label: { en: 'Elder Rescue', ta: 'முதியோர் மீட்பு' }, tab: 'services', icon: <FaAward className="h-5 w-5" /> },
-            { label: { en: 'Education Support', ta: 'கல்வி உதவி' }, tab: 'services', icon: <FaFileLines className="h-5 w-5" /> },
-            { label: { en: 'Emergency Help', ta: 'அவசர உதவி' }, tab: 'help', icon: <FaHeartPulse className="h-5 w-5" /> },
-            { label: { en: 'Blood Donation', ta: 'இரத்த நன்கொடை' }, tab: 'donate', icon: <FaDroplet className="h-5 w-5" /> },
-            { label: { en: 'Dress Donation', ta: 'ஆடை நன்கொடை' }, tab: 'donate', icon: <FaShirt className="h-5 w-5" /> }
-          ].map((prog, idx) => (
-            <button
-              key={idx}
-              id={`quick-link-${idx}`}
-              onClick={() => setActiveTab(prog.tab)}
-              className="rounded-xl border border-gray-100 bg-white p-4 text-center shadow-sm hover:shadow-md hover:border-emerald-200 hover:bg-emerald-50/20 transition-all cursor-pointer flex flex-col items-center justify-center space-y-2 group"
-            >
-              <div className="p-2 bg-emerald-50 text-emerald-700 rounded-lg group-hover:bg-emerald-100 transition-colors">
-                {prog.icon}
-              </div>
-              <span className="text-xs sm:text-sm font-semibold text-gray-900 leading-tight">
-                {prog.label[lang]}
-              </span>
-            </button>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
+
 
 

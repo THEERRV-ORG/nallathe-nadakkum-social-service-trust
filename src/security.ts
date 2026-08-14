@@ -4,20 +4,21 @@
  * volunteer screens.
  */
 export const OFFICIAL_CONTACT = {
-  email: 'nallathanadakum@gmail.com',
-  emergencyPhone: '+919876543210',
-  whatsappPhone: '+919443567890',
+  emergencyPhone: '+917540017625',
+  secondaryPhone: '+919360462890',
+  whatsappPhone: '+917540017625',
+  // Dedicated number that receives all website form submissions on WhatsApp.
+  formsPhone: '+917540017625',
 };
 
 /**
  * Centralized official social-media handles. Kept alongside the other public
  * contact details so links stay consistent wherever they are surfaced.
- * NOTE: `facebook` is still a placeholder pending the trust's real page URL.
  */
 export const OFFICIAL_SOCIAL = {
   instagram: 'https://www.instagram.com/nn_socialservice_trust',
-  facebook: 'https://facebook.com',
-  youtube: 'https://www.youtube.com/@nallathenadakumsocialtrust',
+  facebook: 'https://www.facebook.com/share/1CvjtvcgLs/',
+  youtube: 'https://www.youtube.com/@NallatheNadakumSocialTrust',
 };
 
 /**
@@ -53,11 +54,26 @@ const SINGLE_LINE_CONTROL_CHARS = /[\u0000-\u001F\u007F]+/g;
 const MULTI_LINE_CONTROL_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]+/g;
 
 /**
+ * Injection-risky characters that are never needed in a name, address, or
+ * message: angle brackets (HTML/script), braces/brackets, backtick, backslash,
+ * pipe, caret, and tilde. Stripping them keeps input safe in HTML, URL, and
+ * spreadsheet contexts while leaving ordinary punctuation (. , ' " - / ( ) : ;
+ * ! ? & @ # + %) and ALL letters, marks, and digits untouched. Unicode marks
+ * (\p{M}) are preserved so Tamil vowel signs are never removed.
+ */
+const UNSAFE_SPECIAL_CHARS = /[<>{}[\]\\|^~`]/g;
+
+/** Leading characters that spreadsheet apps treat as formula triggers. */
+const FORMULA_TRIGGER = /^[=+@]+/;
+
+/**
  * Normalizes compact input fields such as names and short labels.
  */
 export function sanitizeSingleLine(value: string, maxLength = 120) {
   return value
     .replace(SINGLE_LINE_CONTROL_CHARS, ' ')
+    .replace(UNSAFE_SPECIAL_CHARS, '')
+    .replace(FORMULA_TRIGGER, '')
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, maxLength);
@@ -70,6 +86,8 @@ export function sanitizeMultiLine(value: string, maxLength = 600) {
   return value
     .replace(/\r\n?/g, '\n')
     .replace(MULTI_LINE_CONTROL_CHARS, ' ')
+    .replace(UNSAFE_SPECIAL_CHARS, '')
+    .replace(FORMULA_TRIGGER, '')
     .replace(/[ \t]+/g, ' ')
     .replace(/\n{3,}/g, '\n\n')
     .trim()
@@ -90,7 +108,9 @@ export function normalizeIndianPhone(value: string) {
  */
 export function isValidPersonName(value: string) {
   const normalized = sanitizeSingleLine(value, 80);
-  return normalized.length >= 2 && normalized.length <= 80 && /^[\p{L} .'-]+$/u.test(normalized);
+  // \p{L} = letters (incl. Tamil consonants/vowels), \p{M} = combining marks
+  // (Tamil vowel signs & pulli) — required so Tamil names validate correctly.
+  return normalized.length >= 2 && normalized.length <= 80 && /^[\p{L}\p{M} .'-]+$/u.test(normalized);
 }
 
 export function isValidIndianPhone(value: string) {
@@ -113,15 +133,6 @@ export function isValidDonationAmount(value: string) {
 export function hasMeaningfulText(value: string, minLength = 5, maxLength = 600) {
   const normalized = sanitizeMultiLine(value, maxLength);
   return normalized.length >= minLength && normalized.length <= maxLength;
-}
-
-/**
- * Builds a safe mailto URL from already-normalized lines.
- */
-export function buildMailtoUrl(to: string, subject: string, lines: string[]) {
-  const encodedSubject = encodeURIComponent(sanitizeSingleLine(subject, 120));
-  const body = encodeURIComponent(lines.filter(Boolean).join('\n'));
-  return `mailto:${to}?subject=${encodedSubject}&body=${body}`;
 }
 
 /**

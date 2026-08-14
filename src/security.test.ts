@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  buildMailtoUrl,
   buildWhatsAppUrl,
   hasMeaningfulText,
   isValidDonationAmount,
@@ -22,11 +21,11 @@ test('sanitizeMultiLine preserves line breaks while removing unsafe control char
 });
 
 test('normalizeIndianPhone keeps the last 10 digits', () => {
-  assert.equal(normalizeIndianPhone('+91 98765-43210'), '9876543210');
+  assert.equal(normalizeIndianPhone('+91 75400 17625'), '7540017625');
 });
 
 test('isValidIndianPhone accepts mobile numbers and rejects malformed input', () => {
-  assert.equal(isValidIndianPhone('9876543210'), true);
+  assert.equal(isValidIndianPhone('7540017625'), true);
   assert.equal(isValidIndianPhone('1234567890'), false);
 });
 
@@ -46,12 +45,7 @@ test('hasMeaningfulText enforces minimum content length', () => {
   assert.equal(hasMeaningfulText('short', 10, 120), false);
 });
 
-test('buildMailtoUrl encodes the subject and body', () => {
-  const url = buildMailtoUrl('team@example.org', 'Volunteer registration', ['Name: Ravi', 'Phone: 9876543210']);
-  assert.match(url, /^mailto:team@example.org\?subject=Volunteer%20registration&body=Name%3A%20Ravi%0APhone%3A%209876543210$/);
-});
-
 test('buildWhatsAppUrl encodes the message body', () => {
-  const url = buildWhatsAppUrl('+91 98765 43210', ['Reference: NN-REQ-20260721-1234', 'Need: Ambulance']);
-  assert.match(url, /^https:\/\/wa\.me\/919876543210\?text=Reference%3A%20NN-REQ-20260721-1234%0ANeed%3A%20Ambulance$/);
+  const url = buildWhatsAppUrl('+91 75400 17625', ['Reference: NN-REQ-20260721-1234', 'Need: Ambulance']);
+  assert.match(url, /^https:\/\/wa\.me\/917540017625\?text=Reference%3A%20NN-REQ-20260721-1234%0ANeed%3A%20Ambulance$/);
 });

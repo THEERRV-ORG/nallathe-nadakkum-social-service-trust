@@ -1,45 +1,52 @@
-import { motion } from 'motion/react';
-import { FaAward, FaShieldHalved, FaHandHoldingHeart, FaFileLines, FaCircleCheck } from 'react-icons/fa6';
+﻿import { motion } from 'motion/react';
+import { FaAward, FaShieldHalved, FaHandHoldingHeart, FaFileLines, FaMicrophoneLines, FaChevronRight } from 'react-icons/fa6';
 import { commonTranslations } from '../data';
 import SocialConnect from './SocialConnect';
+import JourneyTimeline from './JourneyTimeline';
+import AwardsShowcase from './AwardsShowcase';
 
 interface AboutViewProps {
   lang: 'en' | 'ta';
+  setActiveTab: (tab: string) => void;
 }
 
-export default function AboutView({ lang }: AboutViewProps) {
+export default function AboutView({ lang, setActiveTab }: AboutViewProps) {
   const values = [
     {
       title: { en: 'Compassion First', ta: 'இரக்கம் முதன்மை' },
-      desc: { 
-        en: 'Treating every individual—whether living on a pavement or unclaimed in death—with the highest level of dignity and respect.', 
-        ta: 'சாலையோரம் வசிப்பவரோ அல்லது உரிமை கோரப்படாமல் மறைந்தவரோ — அனைவரையும் முழு மனிதக் கண்ணியத்துடனும் மரியாதையுடனும் நடத்துதல்.' 
+      desc: {
+        en: 'Treating every individual—whether living on a pavement or unclaimed in death—with the highest level of dignity and respect.',
+        ta: 'சாலையோரம் வசிப்பவரோ அல்லது உரிமை கோரப்படாமல் மறைந்தவரோ — அனைவரையும் முழு மனிதக் கண்ணியத்துடனும் மரியாதையுடனும் நடத்துதல்.'
       },
-      icon: <FaHandHoldingHeart className="h-6 w-6 text-emerald-600" />
+      tile: 'bg-brand-orange-50 text-brand-orange-700',
+      icon: <FaHandHoldingHeart className="h-6 w-6" />
     },
     {
       title: { en: 'Absolute Equality', ta: 'முழு சமத்துவம்' },
-      desc: { 
-        en: 'Providing services, food, and rescue operations without any regard to caste, religion, language, gender, or background.', 
-        ta: 'சாதி, மதம், மொழி, பாலினம் அல்லது சமூகப் பின்னணி என எந்தவொரு பாகுபாடுமின்றி அனைவருக்கும் பாரபட்சமில்லாமல் சேவையாற்றுதல்.' 
+      desc: {
+        en: 'Providing services, food, and rescue operations without any regard to caste, religion, language, gender, or background.',
+        ta: 'சாதி, மதம், மொழி, பாலினம் அல்லது சமூகப் பின்னணி என எந்தவொரு பாகுபாடுமின்றி அனைவருக்கும் பாரபட்சமில்லாமல் சேவையாற்றுதல்.'
       },
-      icon: <FaAward className="h-6 w-6 text-emerald-600" />
+      tile: 'bg-brand-gold-50 text-brand-gold-700',
+      icon: <FaAward className="h-6 w-6" />
     },
     {
       title: { en: 'Financial Transparency', ta: 'நிதி வெளிப்படைத்தன்மை' },
-      desc: { 
-        en: 'Accounting for every single rupee received. Displaying expenses openly, avoiding cash transactions where possible, and keeping ledgers audited.', 
-        ta: 'பெறப்படும் ஒவ்வொரு ரூபாய்க்கும் முறையான கணக்கு பராமரித்தல். வரவு செலவுகளை வெளிப்படையாக அறிவித்து, ஆண்டுதோறும் தணிக்கை செய்தல்.' 
+      desc: {
+        en: 'Accounting for every single rupee received. Displaying expenses openly, avoiding cash transactions where possible, and keeping ledgers audited.',
+        ta: 'பெறப்படும் ஒவ்வொரு ரூபாய்க்கும் முறையான கணக்கு பராமரித்தல். வரவு செலவுகளை வெளிப்படையாக அறிவித்து, ஆண்டுதோறும் தணிக்கை செய்தல்.'
       },
-      icon: <FaShieldHalved className="h-6 w-6 text-emerald-600" />
+      tile: 'bg-brand-blue-50 text-brand-blue-700',
+      icon: <FaShieldHalved className="h-6 w-6" />
     },
     {
       title: { en: 'Legal Integrity', ta: 'சட்டரீதியான நேர்மை' },
-      desc: { 
-        en: 'Running all activities in full compliance with the laws of the State. Coordinating with District Police departments, municipalities, and government health wings.', 
-        ta: 'அனைத்து செயல்பாடுகளையும் நாட்டின் சட்டங்களுக்கு உட்பட்டு நடத்துதல். காவல்துறை, நகராட்சி மற்றும் அரசு மருத்துவமனைகளுடன் முழுமையாக ஒருங்கிணைந்து பணிபுரிதல்.' 
+      desc: {
+        en: 'Running all activities in full compliance with the laws of the State. Coordinating with District Police departments, municipalities, and government health wings.',
+        ta: 'அனைத்து செயல்பாடுகளையும் நாட்டின் சட்டங்களுக்கு உட்பட்டு நடத்துதல். காவல்துறை, நகராட்சி மற்றும் அரசு மருத்துவமனைகளுடன் முழுமையாக ஒருங்கிணைந்து பணிபுரிதல்.'
       },
-      icon: <FaFileLines className="h-6 w-6 text-emerald-600" />
+      tile: 'bg-brand-violet-50 text-brand-violet-700',
+      icon: <FaFileLines className="h-6 w-6" />
     }
   ];
 
@@ -48,250 +55,344 @@ export default function AboutView({ lang }: AboutViewProps) {
     name: commonTranslations.founderName[lang],
     image: '/founder.jpeg',
     desc: {
-      en: 'N. Kavinraj is a practicing Advocate in Tiruchengode Town with a deep passion for social justice and human rights. Having personally funded and coordinated street food distribution for two years before formal trust registration, he continues to lead rescue operations and police coordinations on the ground.',
-      ta: 'வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள் திருச்செங்கோட்டில் வழக்கறிஞராகப் பணியாற்றி வருகிறார். அறக்கட்டளையை முறையாகப் பதிவு செய்வதற்கு முன்பு இரண்டு ஆண்டுகளாகத் தனது சொந்தச் செலவில் ஏழைகளுக்கு உணவு வழங்கியவர். தற்போது களப்பணிகள், மீட்பு நடவடிக்கைகள் மற்றும் போலீஸ் தொடர்புகளை நேரில் நின்று வழிநடத்துகிறார்.'
+      en: (
+        <>
+          <p><strong>N. Kavinraj, B.Com., LL.M., Advocate</strong>, is the founder of the trust and the driving force behind its daily operations. Though professionally engaged in law, his deeper commitment has always been humanitarian service. His legal background has proved especially valuable in areas requiring sensitivity and procedure, including police coordination, documentation, rescue intervention, and dignified final rites for unclaimed persons.</p>
+          <p>For him, the trust is not a side initiative. It is a life mission shaped by empathy, responsibility, and direct involvement. He personally leads service decisions, supports fundraising efforts, coordinates teams, and remains closely connected to field work.</p>
+        </>
+      ),
+      ta: (
+        <>
+          <p><strong>நா. கவின்ராஜ், B.Com., LL.M., வழக்கறிஞர்</strong></p>
+          <p>தொழிலில் வழக்கறிஞர்; உள்ளத்தில் மனிதநேய சேவகர்.</p>
+          <p>சமூகத்தின் வலியைக் கண்டு மௌனமாக நிற்க முடியாத மனநிலையிலிருந்து இந்தப் பயணம் தொடங்கியது. சட்ட அறிவு, நிர்வாக பொறுப்பு, சமூக அக்கறை, திடல் அனுபவம்—இவற்றை ஒன்றிணைத்து, அவர் இந்த அறக்கட்டளையை ஒரு உயிரோட்டமான சேவை இயக்கமாக உருவாக்கியுள்ளார்.</p>
+          <p>உணவு வழங்குதல் முதல் இறுதி மரியாதை வரை, முதியோர் மீட்பு முதல் ஆம்புலன்ஸ் சேவை வரை, அறக்கட்டளையின் ஒவ்வொரு முக்கிய பணியிலும் அவர் நேரடியாக ஈடுபட்டு வருகிறார்.</p>
+        </>
+      )
     }
   };
 
   return (
-    <div className="space-y-16 py-8">
-      
-      {/* Title Header */}
-      <section className="text-center max-w-3xl mx-auto space-y-4 px-4">
-        <h1 className="font-display text-3xl font-extrabold text-gray-900 sm:text-4xl">
-          {lang === 'en' ? 'About Our Trust' : 'அறக்கட்டளை வரலாறு & ஆளுமை'}
+    <div className="space-y-12 pb-8">
+
+      {/* Hero + Why grouped so they read together within one desktop screen. */}
+      <div className="space-y-[clamp(1.25rem,3.5vh,2.5rem)]">
+
+      {/* ── Hero ─────────────────────────────────────────────── */}
+      <section className="text-center max-w-3xl mx-auto space-y-3 px-4 pt-[clamp(1.25rem,3.5vh,2.5rem)]">
+        <h1 className="h1-page">
+          {lang === 'en' ? 'About Nallathae Nadakkum Social Service Trust' : 'எங்களை பற்றி'}
         </h1>
-        <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
-          {lang === 'en' 
-            ? 'A structured commitment born from daily personal encounters with poverty on the pavements of Tiruchengode Town.' 
-            : 'திருச்செங்கோடு சாலைகளில் கண்ட எளிய மக்களின் வறுமையைப் போக்க உருவான ஒரு முறையான சேவை அமைப்பு.'}
+        <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65] max-w-2xl mx-auto">
+          {lang === 'en'
+            ? 'A trust built from compassion, responsibility, and direct service.'
+            : 'ஒரு மனிதனின் மனவேதனை, ஆயிரம் பேரின் நம்பிக்கையாக மாறிய கதை'}
         </p>
-      </section>
-
-      {/* Origin Story */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
-          
-          <div className="space-y-6">
-            <h2 className="font-display text-2xl font-bold text-gray-900">
-              {lang === 'en' ? 'Our Origin & Name' : 'தோற்றம் மற்றும் பெயர்க்காரணம்'}
-            </h2>
-            <div className="text-base sm:text-lg text-gray-900 space-y-4 leading-relaxed sm:leading-[1.65] text-justify">
-              <p>
-                {lang === 'en'
-                  ? 'The phrase "Nallathe Nadakkum" translates to "Good things will happen." It is a foundational belief that consistent, small acts of daily compassion compound into real social security for those abandoned by society.'
-                  : '"நல்லதே நடக்கும்" என்பது ஒரு நேர்மறை நம்பிக்கை. மனிதநேயத்துடன் நாம் செய்யும் ஒவ்வொரு சிறிய செயலும் தொடர்ந்து நடக்கும் போது, அது சமூகத்தால் கைவிடப்பட்ட மனிதர்களின் வாழ்வில் பெரிய நல்ல மாற்றங்களை ஏற்படுத்தும் என்ற நம்பிக்கையில் உருவானது.'}
-              </p>
-              <p>
-                {lang === 'en'
-                  ? 'Our Founder, Advocate N. Kavinraj, grew up witnessing extreme economic hardships in his local vicinity. While practicing law, he initiated an informal weekend food drive, preparing meals in his kitchen and seeking out destitute individuals living on bus stands. Over two years, the scale of requirements grew rapidly, necessitating a structured public trust to legally manage volunteers and donor funds.'
-                  : 'எங்கள் நிறுவனர், வழக்கறிஞர் நா. கவின்ராஜ் அவர்கள், தனது வழக்கறிஞர் பணிக்கு இடையே சாலையோரங்களில் ஆதரவின்றித் தவித்த மக்களுக்கு வார இறுதியில் தனது சொந்தச் செலவில் சமைத்து வழங்கத் தொடங்கினார். நாளடைவில் தேவைகள் அதிகரித்ததால், அதனை மேலும் முறைப்படுத்தி, பலருக்கும் உதவிட 08.04.2025 அன்று அறக்கட்டளையாக நிறுவினார்.'}
-              </p>
-            </div>
-          </div>
-
-          <div className="relative rounded-3xl overflow-hidden shadow-lg bg-gray-100 border border-gray-100">
-            <img
-              src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop"
-              alt="Community group helping and holding hands"
-              className="h-[300px] sm:h-[350px] w-full object-cover"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent flex items-end p-6 text-white">
-              <p className="text-xs sm:text-sm font-medium italic">
-                {lang === 'en' 
-                  ? '"We seek those who have nobody left, and we stand beside them in life, in sickness, and in death."' 
-                  : '"யாருமற்ற நிலைக்குத் தள்ளப்பட்ட மக்களைக் கண்டறிந்து, அவர்கள் வாழ்விலும், மரணத்திலும் நாங்கள் உடனிருக்கிறோம்."'}
-              </p>
-            </div>
-          </div>
-
+        {/* Credibility meta row */}
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 pt-0.5 text-xs font-semibold text-gray-900">
+          <span>{lang === 'en' ? 'Registered 2025' : '2025-ல் பதிவு'}</span>
+          <span className="text-emerald-600/50">•</span>
+          <span>{lang === 'en' ? 'Tiruchengode, Tamil Nadu' : 'திருச்செங்கோடு, தமிழ்நாடு'}</span>
+          <span className="text-emerald-600/50">•</span>
+          <span>{lang === 'en' ? 'Community-led' : 'சமூக அடிப்படையிலானது'}</span>
         </div>
       </section>
 
-      {/* Journey Milestones Timeline */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="space-y-6">
-          <div className="text-center space-y-1">
-            <h2 className="font-display text-2xl font-bold text-gray-900">
-              {lang === 'en' ? 'Our Journey' : 'எங்கள் பயணம்'}
+      {/* ── Why Nallathae Nadakkum — editorial identity ────────── */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+
+        {/* Top: stacked heading (left) + logo as the main visual (right) */}
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+
+          {/* Heading block */}
+          <div className="order-2 space-y-3 text-center lg:order-1 lg:text-left">
+            <h2 className="font-display font-extrabold uppercase tracking-tight text-gray-900 text-4xl sm:text-5xl lg:text-6xl leading-[0.95] tamil-match-english">
+              {lang === 'en' ? (
+                <>Why<br />Nallathae<br />Nadakkum</>
+              ) : (
+                <>ஏன்<br />நல்லதே<br />நடக்கும்</>
+              )}
             </h2>
-            <p className="text-xs text-gray-900">
-              {lang === 'en' ? 'From one person\'s Saturday habit to a registered trust serving thousands.' : 'ஒரு நபரின் சனிக்கிழமை பழக்கம் இன்று ஆயிரங்களுக்கு சேவை செய்யும் அறக்கட்டளையாக மாறியது.'}
+
+            {/* Meaning — typographic emphasis, not a nested card */}
+            <p className="text-center text-lg sm:text-xl text-gray-900 lg:text-left">
+              <span className="font-display font-bold">{lang === 'en' ? '“Nallathae Nadakkum”' : '“நல்லதே நடக்கும்”'}</span>
+              <span className="text-gray-900"> — </span>
+              <span className="font-serif font-bold italic text-emerald-700">
+                {lang === 'en' ? 'Good things will happen.' : 'நல்லது நடக்கும்.'}
+              </span>
             </p>
           </div>
 
-          <div className="relative">
-            {/* Connecting line */}
-            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-emerald-100 hidden sm:block sm:left-1/2 sm:-translate-x-px"></div>
-
-            <div className="space-y-6">
-              {[
-                {
-                  year: '2023',
-                  dot: 'bg-gray-300',
-                  title: { en: 'It Begins on Saturdays', ta: 'சனிக்கிழமை தொடக்கம்' },
-                  desc: {
-                    en: 'Advocate N. Kavinraj begins cooking and distributing meals to roadside families every Saturday, entirely from personal funds — two years before any formal structure.',
-                    ta: 'வழக்கறிஞர் நா. கவின்ராஜ் தனது சொந்தச் செலவில் ஒவ்வொரு சனிக்கிழமையும் சாலையோர மக்களுக்கு சமைத்து வழங்கத் தொடங்கினார் — அறக்கட்டளை பதிவிற்கு இரண்டு ஆண்டுகள் முன்பே.'
-                  }
-                },
-                {
-                  year: '08 Apr 2025',
-                  dot: 'bg-emerald-500',
-                  title: { en: 'Official Trust Registration', ta: 'அதிகாரப்பூர்வ அறக்கட்டளை பதிவு' },
-                  desc: {
-                    en: 'Nallathe Nadakkum Samuga Sevai Arakkattalai formally registered as a public charitable trust (Doc No. 16/2025) at the Sub-Registrar Office, Tiruchengode. Daily Annadhanam launched immediately.',
-                    ta: 'நல்லதே நடக்கும் சமூக சேவை அறக்கட்டளை சார்பதிவாளர் அலுவலகம், திருச்செங்கோட்டில் பொது தொண்டு அறக்கட்டளையாக முறையாகப் பதிவு செய்யப்பட்டது (ஆவணம் 16/2025). தினசரி அன்னதானம் உடனடியாகத் தொடங்கியது.'
-                  }
-                },
-                {
-                  year: 'Oct 2025',
-                  dot: 'bg-amber-400',
-                  title: { en: 'Diwali Clothes Distribution', ta: 'தீபாவளி ஆடை விநியோகம்' },
-                  desc: {
-                    en: 'The trust distributed new dhotis, sarees, and shirts to approximately 100 destitute individuals and roadside families — ensuring all could celebrate the festival of lights with dignity.',
-                    ta: 'சுமார் 100 ஆதரவற்றோர் மற்றும் சாலையோரக் குடும்பங்களுக்கு வேட்டி, சேலை மற்றும் சட்டைகளை வழங்கியது. அனைவரும் கண்ணியத்துடன் தீபாவளியைக் கொண்டாட வாய்ப்பு கிட்டியது.'
-                  }
-                },
-                {
-                  year: '21 Mar 2026',
-                  dot: 'bg-blue-500',
-                  title: { en: 'Free Ambulance Launched', ta: 'இலவச ஆம்புலன்ஸ் சேவை தொடக்கம்' },
-                  desc: {
-                    en: 'Trust ambulance (TN.09.AE.9447) formally flagged off — providing zero-cost emergency transport to vulnerable patients transferring to government hospitals.',
-                    ta: 'அறக்கட்டளை ஆம்புலன்ஸ் (TN.09.AE.9447) அர்ப்பணிக்கப்பட்டது — ஏழை நோயாளிகளை அரசு மருத்துவமனைக்கு கட்டணமின்றி கொண்டு செல்லும் சேவை தொடங்கியது.'
-                  }
-                },
-                {
-                  year: 'Jul 2026',
-                  dot: 'bg-emerald-600',
-                  title: { en: '400+ Days & Growing', ta: '400+ நாட்கள் & தொடர்கிறோம்' },
-                  desc: {
-                    en: '400+ consecutive days of Annadhanam serving 3,000–5,000 people monthly. 30+ unclaimed burials, 10 family funerals conducted, 5 elders rescued, 7 students actively sponsored, accident victims supported through fundraising.',
-                    ta: '400-க்கும் மேற்பட்ட தொடர் நாட்களாக மாதந்தோறும் 3,000–5,000 பேருக்கு அன்னதானம். 30-க்கும் மேற்பட்ட நல்லடக்கங்கள், 10 உறவாய் நடத்திய இறுதிச் சடங்குகள், 5 முதியோர் மீட்பு, 7 மாணவர் கல்வி ஆதரவு, விபத்து பாதிக்கப்பட்டோருக்கு நிதி திரட்டல்.'
-                  }
-                }
-              ].map((milestone, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: idx * 0.07 }}
-                  className="relative flex gap-4 sm:gap-6"
-                >
-                  {/* Dot + year */}
-                  <div className="flex flex-col items-center gap-1 shrink-0 w-24 sm:w-28">
-                    <div className={`h-3 w-3 rounded-full ring-2 ring-white shadow ${milestone.dot} mt-1`} />
-                    <span className="text-[10px] font-bold text-gray-900 text-center leading-tight">{milestone.year}</span>
-                  </div>
-                  {/* Content */}
-                  <div className="pb-6 flex-1">
-                    <h4 className="font-display text-sm font-bold text-gray-900 mb-1">{milestone.title[lang]}</h4>
-                    <p className="text-base text-gray-900 leading-relaxed text-justify">{milestone.desc[lang]}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+          {/* Logo — main visual, no card, vertically centered */}
+          <div className="order-1 flex justify-center lg:order-2">
+            <img
+              src="/logo.png"
+              alt="Nallathae Nadakkum Social Service Trust logo"
+              className="h-48 w-48 object-contain sm:h-64 sm:w-64 lg:h-72 lg:w-72"
+            />
           </div>
         </div>
-      </section>
 
-      {/* Social Follow CTA */}
-      <SocialConnect lang={lang} />
+        {/* Thin divider */}
+        <hr className="my-8 border-t border-gray-200 sm:my-10" />
 
-      {/* Trust Registration Legalities Info */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl border border-dashed border-emerald-300 bg-emerald-50/50 p-6 sm:p-10">
-          <div className="flex flex-col md:flex-row gap-6 md:items-center">
-            <div className="h-12 w-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 text-base font-bold">
-              LF
+        {/* Bottom: unified origin timeline */}
+        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] sm:p-8">
+          {[
+            {
+              num: '01',
+              title: { en: 'Why This Name', ta: '“நல்லதே நடக்கும்” என்ற பெயரின் பின்னால்' },
+              body: {
+                en: 'The name “Nallathae Nadakkum” reflects a belief in hope, goodness, and meaningful human action. It expresses the conviction that sincere help, given at the right time, can restore dignity, relief, and hope.',
+                ta: (
+                  <>
+                    <strong>“நல்லதே நடக்கும்”</strong> என்பது ஒரு பெயர் அல்ல; அது ஒரு நம்பிக்கை.
+                    <br />
+                    இருள் நிறைந்த சூழலிலும் நல்லது நிகழலாம். உதவி இல்லை என்று தோன்றும் நேரத்திலும் ஒரு நல்ல மனம் வந்து நிற்கலாம். கைவிடப்பட்ட இடத்திலும் மனிதநேயம் இன்னும் உயிரோடு இருக்கிறது என்பதை உணர்த்தும் நம்பிக்கையின் பெயர்தான் <strong>நல்லதே நடக்கும்</strong>.
+                    <br />
+                    எங்கள் ஒவ்வொரு செயலும் இந்த நம்பிக்கையை வாழ்வாக்கும் ஒரு சிறிய ஒளியாகும்.
+                  </>
+                )
+              }
+            },
+            {
+              num: '02',
+              title: { en: 'Where It Began', ta: 'எங்கிருந்து, ஏன் தொடங்கியது' },
+              body: {
+                en: (
+                  <>
+                    Nallathae Nadakkum Social Service Trust began in <strong>Tiruchengode, Tamil Nadu</strong>, from the lived experiences and social awareness of its founder, <strong>N. Kavinraj</strong>. As a young advocate, he witnessed the pain of poverty, neglect, hunger, abandonment, and helplessness faced by many people in society. Rather than remain a silent observer, he began helping through small but steady acts-especially weekend food donations funded personally. Over time, the work expanded in both scale and responsibility, leading to the formal registration of the trust on <strong>08.04.2025</strong>.
+                  </>
+                ),
+                ta: 'திருச்செங்கோட்டில் இருந்து ஆரம்பமான இந்தப் பயணத்தின் பின்னால் ஒரு ஆழமான மன அனுபவம் உள்ளது. சமூகத்தில் பசியால் தவிப்பவர்கள், தெருவோர முதியவர்கள், கவனிக்கப்படாத உயிர்கள், பணமின்றி சிகிச்சைக்காக போராடும் குடும்பங்கள்—இவற்றை நேரில் கண்ட அனுபவம், “யாராவது செய்ய வேண்டும்” என்ற எண்ணத்தை “நான் செய்வேன்” என்ற முடிவாக மாற்றியது. தொடக்கத்தில் வார இறுதிகளில் தனிப்பட்ட செலவில் உணவு வழங்கிய முயற்சி, பின்னர் பலரின் நம்பிக்கையுடனும் பங்களிப்புடனும் வளர்ந்து, 08.04.2025 அன்று அதிகாரப்பூர்வமாக அறக்கட்டளையாகப் பதிவு செய்யப்பட்டது.'
+              }
+            }
+          ].map((item, idx) => (
+            <div key={item.num} className={`relative grid grid-cols-[2.75rem_minmax(0,1fr)] gap-4 ${idx > 0 ? 'mt-6' : ''}`}>
+              <div className="relative flex justify-center">
+                <span className="z-10 flex h-9 w-9 items-center justify-center rounded-full bg-brand-violet-50 text-[11px] font-bold text-brand-violet-700 ring-1 ring-brand-violet-100">
+                  {item.num}
+                </span>
+                {idx === 0 && <span className="absolute top-9 h-[calc(100%+1.5rem)] w-px bg-brand-violet-100" />}
+              </div>
+              <div className={`space-y-2 ${idx > 0 ? 'border-t border-gray-100 pt-6' : ''}`}>
+                <h3 className="font-display text-base font-bold uppercase tracking-wider text-gray-900">
+                  {item.title[lang]}
+                </h3>
+                <p className="text-base text-gray-900 leading-relaxed [&_strong]:font-bold">
+                  {item.body[lang]}
+                </p>
+              </div>
             </div>
-            <div className="space-y-2 flex-grow">
-              <h3 className="font-display text-lg font-bold text-gray-900">
-                {lang === 'en' ? 'Official Legal Framework' : 'அதிகாரப்பூர்வ சட்டக் கட்டமைப்பு'}
-              </h3>
-              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify">
-                {commonTranslations.deedDetails[lang]}
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
+      </div>{/* end hero + why group */}
 
-      {/* Trustees Directory */}
+      {/* ── Our Journey — chronological timeline ── */}
+      <div id="our-journey" className="scroll-mt-20">
+        <JourneyTimeline lang={lang} />
+      </div>
+
+      {/* ── Meet Our Founder ─────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="font-display text-2xl font-bold text-gray-900">
-            {commonTranslations.trusteeTitle[lang]}
+          <h2 className="font-display text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            {lang === 'en' ? 'The Founder’s Journey' : 'எங்கள் நிறுவனரை சந்திக்கவும்'}
           </h2>
-          <p className="text-xs sm:text-sm text-gray-900">
-            {lang === 'en' ? 'The legally registered governing body of our charitable trust.' : 'அறக்கட்டளையின் சட்டப்பூர்வ நிர்வாகப் பொறுப்பாளர்கள்.'}
-          </p>
         </div>
 
-        <div className="max-w-sm mx-auto">
+        {/* Editorial split: image occupies the left column across both rows;
+            the right column carries the heading above and the story below.
+            On mobile it stacks role → name → image → description → CTA. */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-14 gap-y-4 items-start">
+          {/* Heading — name + role (mobile: first; desktop: right column, top) */}
+          <div className="order-1 lg:order-2 lg:col-span-7 lg:col-start-6 space-y-2">
+              <h3 className="font-display text-5xl font-extrabold leading-[0.98] tracking-tight text-gray-900 sm:text-6xl">
+              {lang === 'en' ? (
+                <>
+                  <span>N. Kavinraj</span>
+                  <span className="ml-2 align-baseline text-[0.5em] font-semibold text-gray-700">
+                    B.Com., LLM., Advocate
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span>நா. கவின்ராஜ்</span>
+                  <span className="block text-[0.5em] font-semibold text-gray-700">
+                    B.Com., LLM., வழக்கறிஞர்
+                  </span>
+                </>
+              )}
+            </h3>
+            <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-brand-blue-700 bg-brand-blue-50 px-3 py-1 rounded-full">
+              {founder.role}
+            </span>
+          </div>
+
+          {/* Photo — larger editorial presence, natural aspect ratio */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4 }}
-            className="rounded-2xl border border-gray-100 bg-white shadow-sm flex flex-col hover:shadow-md transition-all overflow-hidden"
+            className="order-2 lg:order-1 lg:col-span-5 lg:col-start-1 lg:row-span-2 lg:row-start-1"
           >
             <img
               src={founder.image}
               alt={founder.name}
-              className="w-full h-64 object-cover object-top"
+              className="w-full h-auto object-cover object-top rounded-3xl shadow-md border border-gray-100"
             />
-            <div className="p-5 flex flex-col space-y-3 flex-grow">
-              <div className="space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-                  {founder.role}
-                </span>
-                <h3 className="font-display text-base font-bold text-gray-900 pt-2">{founder.name}</h3>
-              </div>
-              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] flex-grow text-justify">
-                {founder.desc[lang]}
-              </p>
-            </div>
           </motion.div>
+
+          {/* Story + CTA (mobile: after image; desktop: right column, below heading) */}
+          <div className="order-3 lg:col-span-7 lg:col-start-6 space-y-5 lg:-mt-1">
+            <div className="space-y-4 text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] [&_strong]:font-bold">
+              {founder.desc[lang]}
+            </div>
+            <blockquote className="border-l-4 border-emerald-500 pl-4 text-base sm:text-lg italic text-gray-900 leading-relaxed font-serif">
+              {lang === 'en'
+                ? '“We seek those who have nobody left, and we stand beside them in life, in sickness, and in death.”'
+                : '“யாருமற்ற நிலைக்குத் தள்ளப்பட்ட மக்களைக் கண்டறிந்து, அவர்கள் வாழ்விலும், மரணத்திலும் நாங்கள் உடனிருக்கிறோம்.”'}
+            </blockquote>
+
+            {/* Invite as Speaker CTA — concludes the section */}
+            <div className="pt-2">
+              <button
+                onClick={() => setActiveTab('speaker')}
+                className="inline-flex items-center gap-2 rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-blue-700 transition-colors cursor-pointer"
+              >
+                <FaMicrophoneLines className="h-4 w-4" />
+                {lang === 'en' ? 'Invite the Founder as Speaker' : 'நிறுவனரை சொற்பொழிவாளராக அழைக்க'}
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Core Values Bento Grid */}
+      {/* ── Awards & Recognition (founder) ───────────────────── */}
+      <AwardsShowcase lang={lang} />
+
+      {/* ── Trust Credentials ────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="font-display text-2xl font-bold text-gray-900">
+          <h2 className="h2-section">
+            {lang === 'en' ? 'Trust Credentials' : 'அறக்கட்டளை சான்றுகள்'}
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:items-stretch">
+          {/* Credential items — stack on lg so the three together match the right box height */}
+          <div className="lg:col-span-5 flex flex-col gap-4 sm:grid sm:grid-cols-3 sm:gap-4 lg:flex lg:flex-col">
+            {[
+              { label: { en: 'Trust Deed', ta: 'அறக்கட்டளை ஆவணம்' }, value: 'Doc No. 16/2025' },
+              { label: { en: 'Registered', ta: 'பதிவு தேதி' }, value: '08.04.2025' },
+              { label: { en: 'Registry Office', ta: 'பதிவு அலுவலகம்' }, value: 'Tiruchengode' },
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className="rounded-xl border border-gray-100 bg-white p-5 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] border-l-4 border-l-brand-blue flex flex-col justify-center lg:flex-1"
+              >
+                <p className="text-[11px] font-bold uppercase tracking-wider text-brand-blue-700">
+                  {item.label[lang]}
+                </p>
+                <p className="font-display text-lg font-bold text-gray-900 mt-1">
+                  {item.value}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Legal explanation */}
+          <div className="lg:col-span-7 rounded-2xl border border-brand-blue-100 bg-brand-blue-50/50 p-6 sm:p-8">
+            <h3 className="font-display text-base font-bold text-gray-900 mb-3">
+              {lang === 'en' ? 'Legal Framework' : 'சட்டக் கட்டமைப்பு'}
+            </h3>
+            <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65]">
+              {commonTranslations.deedDetails[lang]}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/*
+        ── Ethical Guiding Values ─────────────────────────────
+        Hidden from the About page by request. Kept here for future restoration.
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="text-center space-y-2">
+          <h2 className="h2-section">
             {lang === 'en' ? 'Our Ethical Guiding Values' : 'நமது தார்மீக வழிகாட்டி நெறிமுறைகள்'}
           </h2>
-          <p className="text-xs sm:text-sm text-gray-900">
-            {lang === 'en' ? 'These five codes direct our daily street programs and financial stewardship.' : 'இவை ஒவ்வொன்றும் எங்கள் அன்றாடக் களப்பணி மற்றும் நிதி நிர்வாகத்தை வழிநடத்துகின்றன.'}
+          <p className="text-sm sm:text-base text-gray-900 max-w-xl mx-auto">
+            {lang === 'en' ? 'These four principles guide our daily street programs and financial stewardship.' : 'இந்த நான்கு நெறிமுறைகள் எங்கள் அன்றாடக் களப்பணி மற்றும் நிதி நிர்வாகத்தை வழிநடத்துகின்றன.'}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((val, idx) => (
-            <div 
+            <div
               key={idx}
-              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:border-emerald-100 hover:shadow-sm transition-all flex flex-col space-y-3"
+              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] hover:border-emerald-100 hover:shadow-md transition-all flex flex-col space-y-3"
             >
               <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-emerald-50 text-emerald-700 rounded-xl w-fit shrink-0">
+                <div className={`p-2.5 rounded-xl w-fit shrink-0 ${val.tile}`}>
                   {val.icon}
                 </div>
-                <h3 className="font-display text-sm font-bold text-gray-900">
+                <h3 className="font-display text-base font-bold text-gray-900">
                   {val.title[lang]}
                 </h3>
               </div>
-              <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] text-justify">
+              <p className="text-sm sm:text-base text-gray-900 leading-relaxed">
                 {val.desc[lang]}
               </p>
             </div>
           ))}
         </div>
       </section>
+      */}
+
+      {/* ── Follow Our Daily Work (end of story) ─────────────── */}
+
+      {/*
+        Core Activities Quick Links
+        Hidden from the About page by request. Kept here for future restoration.
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-6">
+        <h2 className="h2-section">
+          {lang === 'en' ? 'Our Direct Support Programs' : '?????????????? ????? ??????????'}
+        </h2>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {[
+            { label: { en: 'Daily Food', ta: '?????????' }, tab: 'services', icon: <FaUtensils className="h-5 w-5" />, accent: 'bg-brand-orange-50 text-brand-orange-700 group-hover:bg-brand-orange-100' },
+            { label: { en: 'Free Ambulance', ta: '???? ??????????' }, tab: 'services', icon: <FaTruckMedical className="h-5 w-5" />, accent: 'bg-brand-blue-50 text-brand-blue-700 group-hover:bg-brand-blue-100' },
+            { label: { en: 'Last Rites', ta: '????? ???????' }, tab: 'services', icon: <FaHeart className="h-5 w-5" />, accent: 'bg-brand-violet-50 text-brand-violet-700 group-hover:bg-brand-violet-100' },
+            { label: { en: 'Elder Rescue', ta: '???????? ??????' }, tab: 'services', icon: <FaAward className="h-5 w-5" />, accent: 'bg-emerald-50 text-emerald-700 group-hover:bg-emerald-100' },
+            { label: { en: 'Education Support', ta: '????? ????' }, tab: 'services', icon: <FaFileLines className="h-5 w-5" />, accent: 'bg-brand-gold-50 text-brand-gold-700 group-hover:bg-brand-gold-100' },
+            { label: { en: 'Emergency Help', ta: '???? ????' }, tab: 'help', icon: <FaHeartPulse className="h-5 w-5" />, accent: 'bg-brand-blue-50 text-brand-blue-700 group-hover:bg-brand-blue-100' },
+            { label: { en: 'Blood Donation', ta: 'இரத்த தானம்' }, tab: 'donate', icon: <FaDroplet className="h-5 w-5" />, accent: 'bg-rose-50 text-rose-600 group-hover:bg-rose-100' },
+            { label: { en: 'Dress Donation', ta: '??? ???????' }, tab: 'donate', icon: <FaShirt className="h-5 w-5" />, accent: 'bg-emerald-50 text-brand-leaf group-hover:bg-emerald-100' }
+          ].map((prog, idx) => (
+            <button
+              key={idx}
+              id={`about-quick-link-${idx}`}
+              onClick={() => setActiveTab(prog.tab)}
+              className="rounded-xl border border-gray-100 bg-white p-4 text-center shadow-sm hover:shadow-md hover:border-emerald-200 hover:bg-emerald-50/20 transition-all cursor-pointer flex flex-col items-center justify-center space-y-2 group"
+            >
+              <div className={`p-2 rounded-lg transition-colors ${prog.accent}`}>
+                {prog.icon}
+              </div>
+              <span className="text-xs sm:text-sm font-semibold text-gray-900 leading-tight">
+                {prog.label[lang]}
+              </span>
+            </button>
+          ))}
+        </div>
+      </section>
+      */}
+
+      <SocialConnect lang={lang} />
 
     </div>
   );
 }
+

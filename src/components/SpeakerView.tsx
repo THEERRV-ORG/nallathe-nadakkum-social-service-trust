@@ -1,0 +1,244 @@
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
+import { FaMicrophoneLines, FaCalendarDays, FaLocationDot, FaCheck } from 'react-icons/fa6';
+import {
+  OFFICIAL_CONTACT,
+  buildWhatsAppUrl,
+  createReference,
+  isValidIndianPhone,
+  isValidPersonName,
+  normalizeIndianPhone,
+  sanitizeSingleLine,
+} from '../security';
+import { DatePicker } from './ui/FormControls';
+import { saveSubmission } from '../lib/submissions';
+
+interface SpeakerViewProps {
+  lang: 'en' | 'ta';
+}
+
+/**
+ * "Invite as Speaker" page. Collects invitation details (organisation, event
+ * date, venue) and hands them off to the trust's WhatsApp line — the
+ * same privacy-preserving pattern used by the other intake forms.
+ */
+export default function SpeakerView({ lang }: SpeakerViewProps) {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [org, setOrg] = useState('');
+  const [eventDate, setEventDate] = useState('');
+  const [venue, setVenue] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState('');
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const nName = sanitizeSingleLine(name, 80);
+    const nPhone = normalizeIndianPhone(phone);
+    const nOrg = sanitizeSingleLine(org, 120);
+    const nVenue = sanitizeSingleLine(venue, 160);
+
+    if (!isValidPersonName(nName)) {
+      setError(lang === 'en' ? 'Contact Name is invalid. Enter a real name using letters, spaces, dots, apostrophes, or hyphens only.' : 'தொடர்பு பெயர் செல்லுபடியாகவில்லை. சரியான பெயரை மட்டும் உள்ளிடவும்.');
+      return;
+    }
+
+    if (!isValidIndianPhone(nPhone)) {
+      setError(lang === 'en' ? 'Phone / WhatsApp is invalid. Enter a valid 10-digit Indian mobile number.' : 'தொலைபேசி / WhatsApp எண் செல்லுபடியாகவில்லை. சரியான 10 இலக்க இந்திய மொபைல் எண்ணை உள்ளிடவும்.');
+      return;
+    }
+
+    if (nOrg.length < 2) {
+      setError(lang === 'en' ? 'Organisation / Function Name is too short. Enter the school, college, group, or event name.' : 'அமைப்பு / நிகழ்வு பெயர் போதுமானதாக இல்லை. பள்ளி, கல்லூரி, குழு அல்லது நிகழ்வு பெயரை உள்ளிடவும்.');
+      return;
+    }
+
+    if (!eventDate) {
+      setError(lang === 'en' ? 'Event Date is required. Choose the date of the speaking event.' : 'நிகழ்வு தேதி தேவை. சொற்பொழிவு நிகழ்வின் தேதியைத் தேர்வு செய்யவும்.');
+      return;
+    }
+
+    if (nVenue.length < 3) {
+      setError(lang === 'en' ? 'Venue / Location is too short. Enter the hall, address, town, or nearby landmark.' : 'இடம் / முகவரி போதுமானதாக இல்லை. அரங்கு, முகவரி, ஊர் அல்லது அருகிலுள்ள அடையாளத்தை உள்ளிடவும்.');
+      return;
+    }
+
+    setError('');
+    setLoading(true);
+    const trackingId = createReference('NN-SPK');
+    const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+      `Form: Invite as Speaker`,
+      `Reference: ${trackingId}`,
+      `Name: ${nName}`,
+      `Phone: ${nPhone}`,
+      `Organisation / Function: ${nOrg}`,
+      `Event date: ${eventDate}`,
+      `Venue: ${nVenue}`,
+    ]);
+
+    try {
+      await saveSubmission('speakerInvitations', {
+        reference: trackingId,
+        name: nName,
+        phone: nPhone,
+        organisation: nOrg,
+        eventDate,
+        venue: nVenue,
+      });
+
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      setSuccess(trackingId);
+      setName('');
+      setPhone('');
+      setOrg('');
+      setEventDate('');
+      setVenue('');
+    } catch {
+      setError(lang === 'en' ? 'Could not save your invitation. Please try again.' : 'உங்கள் அழைப்பை சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const inputCls =
+    'w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500';
+  const labelCls = 'text-xs font-bold text-gray-900 tracking-wide block';
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-12">
+
+      {/* Header */}
+      <section className="text-center max-w-3xl mx-auto space-y-4 pt-6">
+        <h1 className="h1-page">
+          {lang === 'en' ? 'Invite Advocate N. Kavinraj as a Speaker' : 'வழக்கறிஞர் நா. கவின்ராஜை சொற்பொழிவாளராக அழையுங்கள்'}
+        </h1>
+        <p className="text-gray-900 text-base sm:text-lg leading-relaxed sm:leading-[1.65]">
+          {lang === 'en'
+            ? 'N. Kavinraj is available to speak at schools, colleges, institutions, public events, and social awareness programs on service, social responsibility, youth leadership, humanity, legal awareness in welfare work, and community participation.'
+            : 'எங்கள் நிறுவனர் பள்ளிகள், கல்லூரிகள், கோயில்கள் மற்றும் பொது நிகழ்வுகளில் மனிதநேயம், சமூக சேவை மற்றும் மக்கள் பணி குறித்து உரையாற்றுகிறார். உங்கள் நிகழ்வு விவரங்களை அனுப்புங்கள், நாங்கள் உங்களைத் தொடர்பு கொள்கிறோம்.'}
+        </p>
+      </section>
+
+      {/* Invitation card — highlighted no-fee quote + form together */}
+      <section id="speaker-invite-form" className="scroll-mt-24 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] max-w-6xl mx-auto w-full">
+
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] gap-8 lg:gap-10 items-start">
+          <div className="space-y-6">
+
+        {/* Highlighted no-fee / donate quote */}
+        <div className="rounded-xl bg-emerald-50 border-l-4 border-brand-gold px-5 py-4 sm:px-6 sm:py-5">
+          <blockquote className="font-serif italic text-emerald-900 text-base sm:text-xl leading-relaxed sm:leading-[1.7]">
+            {lang === 'en'
+              ? '“We charge no fee for speaking engagements. If our words move you, we simply ask that you donate to the trust — whatever your heart is willing to give — as a token of love.”'
+              : '“சொற்பொழிவுக்கு நாங்கள் எந்தக் கட்டணமும் வாங்குவதில்லை. எங்கள் வார்த்தைகள் உங்கள் மனதைத் தொட்டால், அன்பின் அடையாளமாக, உங்கள் மனம் விரும்பும் அளவு அறக்கட்டளைக்கு நன்கொடை அளியுங்கள் — அவ்வளவே.”'}
+          </blockquote>
+        </div>
+
+        <div className="space-y-1 text-center border-b border-gray-100 pb-4">
+          <h3 className="font-display text-lg font-bold text-gray-900 flex items-center justify-center gap-2">
+            <FaMicrophoneLines className="h-6 w-6 text-emerald-600" />
+            <span>{lang === 'en' ? 'Send a Speaker Invitation' : 'சொற்பொழிவு அழைப்பை அனுப்பவும்'}</span>
+          </h3>
+          <p className="text-xs sm:text-sm text-gray-900">
+            {lang === 'en' ? 'Your request is sent securely via WhatsApp — nothing is stored in this browser.' : 'உங்கள் கோரிக்கை வாட்ஸ்அப் மூலம் பாதுகாப்பாக அனுப்பப்படும் — உலாவியில் எதுவும் சேமிக்கப்படாது.'}
+          </p>
+        </div>
+
+        {success ? (
+          <div className="text-center py-8 space-y-4">
+            <div className="h-14 w-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-2xl mx-auto">
+              <FaCheck className="h-6 w-6" />
+            </div>
+            <div className="space-y-2">
+              <h4 className="font-display text-lg font-bold text-gray-900">
+                {lang === 'en' ? 'Invitation Prepared' : 'அழைப்பு தயாராகிவிட்டது'}
+              </h4>
+              <p className="text-sm text-gray-900 max-w-sm mx-auto">
+                {lang === 'en'
+                  ? 'A WhatsApp message with your event details is ready to send. Our team will confirm availability shortly.'
+                  : 'உங்கள் நிகழ்வு விவரங்களுடன் வாட்ஸ்அப் செய்தி அனுப்பத் தயாராக உள்ளது. எங்கள் குழு விரைவில் உறுதிப்படுத்தும்.'}
+              </p>
+              <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-display text-sm font-bold px-4 py-2 rounded-lg mt-1">
+                {lang === 'en' ? 'Reference:' : 'குறிப்பு எண்:'} {success}
+              </div>
+            </div>
+            <button
+              onClick={() => setSuccess(null)}
+              className="rounded-lg bg-emerald-600 text-white font-semibold text-xs px-5 py-2 hover:bg-emerald-700 cursor-pointer"
+            >
+              {lang === 'en' ? 'Send Another Invitation' : 'மற்றொரு அழைப்பை அனுப்ப'}
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold leading-relaxed text-red-800">
+                {error}
+              </p>
+            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="space-y-1.5">
+                <label className={labelCls}>{lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *</label>
+                <input type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. S. Kumar" className={inputCls} />
+              </div>
+              <div className="space-y-1.5">
+                <label className={labelCls}>{lang === 'en' ? 'Phone / WhatsApp' : 'தொலைபேசி / வாட்ஸ்அப்'} *</label>
+                <input type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="10-digit mobile number" className={inputCls} />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className={labelCls}>{lang === 'en' ? 'Organisation / Function Name' : 'அமைப்பு / நிகழ்வின் பெயர்'} *</label>
+              <input type="text" required value={org} onChange={(e) => setOrg(e.target.value)} placeholder={lang === 'en' ? 'e.g. Tiruchengode Arts College' : 'எ.கா. திருச்செங்கோடு கலைக் கல்லூரி'} className={inputCls} />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="space-y-1.5">
+                <label className={labelCls}>
+                  <span className="inline-flex items-center gap-1.5"><FaCalendarDays className="h-3 w-3 text-emerald-600" />{lang === 'en' ? 'Event Date' : 'நிகழ்வுத் தேதி'} *</span>
+                </label>
+                <DatePicker
+                  value={eventDate}
+                  onChange={setEventDate}
+                  min={today}
+                  ariaLabel={lang === 'en' ? 'Event Date' : 'நிகழ்வுத் தேதி'}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className={labelCls}>
+                  <span className="inline-flex items-center gap-1.5"><FaLocationDot className="h-3 w-3 text-emerald-600" />{lang === 'en' ? 'Venue / Location' : 'இடம் / முகவரி'} *</span>
+                </label>
+                <input type="text" required value={venue} onChange={(e) => setVenue(e.target.value)} placeholder={lang === 'en' ? 'e.g. College Auditorium, Tiruchengode' : 'எ.கா. கல்லூரி அரங்கம், திருச்செங்கோடு'} className={inputCls} />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-lg bg-emerald-600 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition-all cursor-pointer disabled:bg-emerald-400"
+            >
+              {loading ? (lang === 'en' ? 'Preparing...' : 'தயாராகிறது...') : (lang === 'en' ? 'Send Invitation via WhatsApp' : 'வாட்ஸ்அப் மூலம் அழைப்பை அனுப்பவும்')}
+            </button>
+          </form>
+        )}
+          </div>
+
+          <figure className="overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 shadow-sm lg:sticky lg:top-28">
+            <img
+              src="/gallery/past-speech-podium-close.jpeg"
+              alt={lang === 'en' ? 'Adv. N. Kavinraj speaking at a public event' : 'பொது நிகழ்வில் உரையாற்றும் வழக்கறிஞர் நா. கவின்ராஜ்'}
+              className="aspect-[3/4] w-full object-cover object-top"
+              loading="lazy"
+            />
+          </figure>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+
+

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { OFFICIAL_CONTACT, buildMailtoUrl, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
-import { motion } from 'motion/react';
-import { FaShieldHalved, FaCalendarDays, FaPhoneFlip, FaTriangleExclamation, FaUserCheck, FaHeart } from 'react-icons/fa6';
+import { OFFICIAL_CONTACT, buildWhatsAppUrl, createReference, hasMeaningfulText, isValidIndianPhone, isValidPersonName, normalizeIndianPhone, sanitizeMultiLine, sanitizeSingleLine } from '../security';
+import { saveSubmission } from '../lib/submissions';
+import { motion, AnimatePresence } from 'motion/react';
+import { FaLocationDot, FaPhone, FaChevronDown, FaChevronRight, FaShieldHalved, FaUserCheck, FaClock, FaCircleInfo, FaHandsHoldingCircle, FaCheck, FaMap, FaArrowUpRightFromSquare } from 'react-icons/fa6';
+import { faqData } from '../data';
 import Monogram from './Monogram';
+import { CustomSelect } from './ui/FormControls';
 
 interface FormsViewProps {
   lang: 'en' | 'ta';
@@ -25,6 +28,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
   const [helpConsent, setHelpConsent] = useState(false);
   const [helpLoading, setHelpLoading] = useState(false);
   const [helpSuccess, setHelpSuccess] = useState<string | null>(null);
+  const [helpError, setHelpError] = useState('');
 
   // Volunteer Form State
   const [volName, setVolName] = useState('');
@@ -35,6 +39,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
   const [volSkills, setVolSkills] = useState('');
   const [volLoading, setVolLoading] = useState(false);
   const [volSuccess, setVolSuccess] = useState<string | null>(null);
+  const [volError, setVolError] = useState('');
 
   // Contact Form State
   const [contactName, setContactName] = useState('');
@@ -42,6 +47,70 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
   const [contactMsg, setContactMsg] = useState('');
   const [contactLoading, setContactLoading] = useState(false);
   const [contactSuccess, setContactSuccess] = useState(false);
+  const [contactError, setContactError] = useState('');
+
+  // Contact-page FAQ accordion
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const toggleFaq = (index: number) => setOpenFaqIndex(openFaqIndex === index ? null : index);
+
+  const helpCategoryInfo: Record<string, { title: { en: string; ta: string }; body: { en: string; ta: string } }> = {
+    Food: {
+      title: { en: 'Food assistance', ta: 'உணவு உதவி' },
+      body: { en: 'For families, roadside residents, or elders who need immediate meal support.', ta: 'உடனடி உணவு உதவி தேவைப்படும் குடும்பங்கள், சாலையோர மக்கள் அல்லது முதியோருக்காக.' },
+    },
+    Ambulance: {
+      title: { en: 'Ambulance eligibility', ta: 'ஆம்புலன்ஸ் தகுதி' },
+      body: { en: 'For eligible low-income families, subject to verification and vehicle availability. For emergencies, contact the trust directly.', ta: 'தகுதியுள்ள குறைந்த வருமான குடும்பங்களுக்கு மட்டும்; சரிபார்ப்பு மற்றும் வாகன கிடைப்புத் தன்மைக்கு உட்பட்டது. அவசரநிலைகளில் அறக்கட்டளையை நேரடியாகத் தொடர்பு கொள்ளவும்.' },
+    },
+    'Last Rites': {
+      title: { en: 'Last rites coordination', ta: 'இறுதி மரியாதை ஒருங்கிணைப்பு' },
+      body: { en: 'Support is coordinated with local authorities where required before any field action.', ta: 'தேவைப்படும் இடங்களில் உள்ளூர் அதிகாரிகளுடன் ஒருங்கிணைத்த பிறகே களப்பணி மேற்கொள்ளப்படும்.' },
+    },
+    'Elder Rescue': {
+      title: { en: 'Elder rescue', ta: 'முதியோர் மீட்பு' },
+      body: { en: 'For abandoned or vulnerable elders requiring field verification and safe placement support.', ta: 'கைவிடப்பட்ட அல்லது ஆதரவற்ற முதியோருக்கு களச் சரிபார்ப்பு மற்றும் பாதுகாப்பான தங்குமிடம் உதவி.' },
+    },
+    Education: {
+      title: { en: 'Education support', ta: 'கல்வி உதவி' },
+      body: { en: 'For tuition-related requests where documents and family situation can be verified.', ta: 'ஆவணங்கள் மற்றும் குடும்ப நிலை சரிபார்க்கக்கூடிய கல்விக் கட்டண கோரிக்கைகளுக்கு.' },
+    },
+    Medical: {
+      title: { en: 'Medical assistance', ta: 'மருத்துவ உதவி' },
+      body: { en: 'For urgent medical or surgery-related support, with documents reviewed before fundraising.', ta: 'அவசர மருத்துவ அல்லது அறுவைசிகிச்சை உதவிக்கு, ஆவணங்கள் சரிபார்த்த பிறகு.' },
+    },
+    Other: {
+      title: { en: 'Other humanitarian need', ta: 'இதர மனிதநேய உதவி' },
+      body: { en: 'Share clear details so volunteers can decide the next verification step.', ta: 'அடுத்த சரிபார்ப்பு நடவடிக்கையை தீர்மானிக்க தெளிவான விவரங்களைப் பகிரவும்.' },
+    },
+  };
+
+  const helpBeforeRows = [
+    { icon: <FaUserCheck className="h-4 w-4" />, en: 'Requests are physically verified by trust volunteers.', ta: 'கோரிக்கைகள் தன்னார்வலர்களால் நேரடியாகச் சரிபார்க்கப்படும்.' },
+    { icon: <FaShieldHalved className="h-4 w-4" />, en: 'Assistance depends on need and resource availability.', ta: 'உதவி தேவை மற்றும் வளங்களின் கிடைப்பைச் சார்ந்தது.' },
+    { icon: <FaPhone className="h-4 w-4" />, en: 'For life-threatening emergencies, contact the trust directly.', ta: 'உயிருக்கு ஆபத்தான அவசரநிலையில் அறக்கட்டளையை நேரடியாக அழைக்கவும்.' },
+  ];
+
+  const volunteerBeforeRows = [
+    { icon: <FaHandsHoldingCircle className="h-4 w-4" />, en: 'Volunteers may assist with field activities.', ta: 'தன்னார்வலர்கள் களப்பணிகளில் உதவலாம்.' },
+    { icon: <FaClock className="h-4 w-4" />, en: 'Assignments depend on current programmes and availability.', ta: 'பணிகள் நடப்பு திட்டங்கள் மற்றும் கிடைக்கும் நேரத்தைச் சார்ந்தவை.' },
+    { icon: <FaPhone className="h-4 w-4" />, en: 'The trust may contact applicants before assigning activities.', ta: 'பணி ஒதுக்குவதற்கு முன் அறக்கட்டளை விண்ணப்பதாரரைத் தொடர்பு கொள்ளலாம்.' },
+  ];
+
+  const helpTypeOptions = [
+    { value: 'Food', label: lang === 'en' ? 'Food Support (Annadhanam)' : 'உணவு உதவி (அன்னதானம்)' },
+    { value: 'Ambulance', label: lang === 'en' ? 'Free Ambulance Dispatch' : 'இலவச ஆம்புலன்ஸ் சேவை' },
+    { value: 'Last Rites', label: lang === 'en' ? 'Last Rites (Burial/Cremation)' : 'இறுதிச் சடங்கு' },
+    { value: 'Elder Rescue', label: lang === 'en' ? 'Elder Rescue and Placement' : 'முதியோர் மீட்பு & இல்ல சேர்க்கை' },
+    { value: 'Education', label: lang === 'en' ? 'Education Tuition Sponsorship' : 'கல்வி கட்டண உதவி' },
+    { value: 'Medical', label: lang === 'en' ? 'Hospital Surgery Crowdfund' : 'அவசர மருத்துவ உதவி' },
+    { value: 'Other', label: lang === 'en' ? 'Other Humanitarian Need' : 'இதர உதவிகள்' },
+  ];
+
+  const availabilityOptions = [
+    { value: 'Weekends', label: lang === 'en' ? 'Weekends (Saturday/Sunday)' : 'வார இறுதி நாட்கள் (சனி / ஞாயிறு)' },
+    { value: 'Weekdays', label: lang === 'en' ? 'Weekdays (Monday-Friday)' : 'வார நாட்கள் (திங்கள் - வெள்ளி)' },
+    { value: 'Flexible', label: lang === 'en' ? 'Flexible / Emergency call' : 'அவசர கால அழைப்பின் பேரில்' },
+  ];
 
   const handleInterestToggle = (interest: string) => {
     if (volInterests.includes(interest)) {
@@ -53,159 +122,284 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
   // Help requests are prepared for WhatsApp handoff so distress data is not
   // left behind in browser storage on a shared device.
-  const handleHelpSubmit = (e: React.FormEvent) => {
+  const handleHelpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalizedName = sanitizeSingleLine(helpName, 80);
     const normalizedPhone = normalizeIndianPhone(helpPhone);
     const normalizedAddress = sanitizeMultiLine(helpAddress, 220);
     const normalizedDesc = sanitizeMultiLine(helpDesc, 500);
 
-    if (!helpConsent || !isValidPersonName(normalizedName) || !isValidIndianPhone(normalizedPhone) || !hasMeaningfulText(normalizedAddress, 10, 220) || !hasMeaningfulText(normalizedDesc, 10, 500)) {
-      alert(lang === 'en' ? 'Enter a valid name, Indian phone number, address, case details, and consent before sending.' : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண், முகவரி, விவரம் மற்றும் ஒப்புதலை வழங்கவும்.');
+    if (!isValidPersonName(normalizedName)) {
+      setHelpError(lang === 'en' ? 'Beneficiary / Contact Name is invalid. Enter a real name using letters, spaces, dots, apostrophes, or hyphens only.' : 'உதவி பெறுபவர் / தொடர்பு பெயர் செல்லுபடியாகவில்லை. சரியான பெயரை மட்டும் உள்ளிடவும்.');
       return;
     }
 
+    if (!isValidIndianPhone(normalizedPhone)) {
+      setHelpError(lang === 'en' ? 'Contact Phone / WhatsApp is invalid. Enter a valid 10-digit Indian mobile number.' : 'தொடர்பு எண் / WhatsApp செல்லுபடியாகவில்லை. சரியான 10 இலக்க இந்திய மொபைல் எண்ணை உள்ளிடவும்.');
+      return;
+    }
+
+    if (!hasMeaningfulText(normalizedAddress, 10, 220)) {
+      setHelpError(lang === 'en' ? 'Address / Location Details is too short. Add the door number, street, area, town, or nearby landmark.' : 'முகவரி / இருப்பிட விவரம் போதுமானதாக இல்லை. தெரு, பகுதி, ஊர் அல்லது அருகிலுள்ள அடையாளத்தை சேர்க்கவும்.');
+      return;
+    }
+
+    if (!hasMeaningfulText(normalizedDesc, 10, 500)) {
+      setHelpError(lang === 'en' ? 'Assistance Details is too short. Describe what happened and what help is needed.' : 'உதவி விவரம் போதுமானதாக இல்லை. என்ன நடந்தது மற்றும் என்ன உதவி தேவை என்பதை எழுதவும்.');
+      return;
+    }
+
+    if (!helpConsent) {
+      setHelpError(lang === 'en' ? 'Consent checkbox is required. Please agree to physical verification before submitting.' : 'ஒப்புதல் பெட்டி தேவை. அனுப்புவதற்கு முன் நேரடி சரிபார்ப்புக்கு ஒப்புதல் அளிக்கவும்.');
+      return;
+    }
+
+    setHelpError('');
     setHelpLoading(true);
 
-    setTimeout(() => {
-      const trackingId = createReference('NN-REQ');
-      const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.whatsappPhone, [
-        `Help request reference: ${trackingId}`,
-        `Name: ${normalizedName}`,
-        `Phone: ${normalizedPhone}`,
-        `Address: ${normalizedAddress}`,
-        `Need: ${helpType}`,
-        `Urgency: ${helpUrgency}`,
-        `Situation: ${normalizedDesc}`,
-      ]);
+    const trackingId = createReference('NN-REQ');
+    const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+      `Form: Request Help`,
+      `Reference: ${trackingId}`,
+      `Name: ${normalizedName}`,
+      `Phone: ${normalizedPhone}`,
+      `Address: ${normalizedAddress}`,
+      `Need: ${helpType}`,
+      `Urgency: ${helpUrgency}`,
+      `Situation: ${normalizedDesc}`,
+    ]);
+
+    try {
+      await saveSubmission('assistanceRequests', {
+        reference: trackingId,
+        beneficiaryName: normalizedName,
+        phone: normalizedPhone,
+        assistanceCategory: helpType,
+        urgencyLevel: helpUrgency,
+        address: normalizedAddress,
+        situation: normalizedDesc,
+        consent: helpConsent,
+      });
 
       window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-      setHelpLoading(false);
       setHelpSuccess(trackingId);
       setHelpName('');
       setHelpPhone('');
       setHelpAddress('');
       setHelpDesc('');
       setHelpConsent(false);
-    }, 500);
+    } catch {
+      setHelpError(lang === 'en' ? 'Could not save your request. Please try again.' : 'உங்கள் கோரிக்கையை சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.');
+    } finally {
+      setHelpLoading(false);
+    }
   };
 
-  // Volunteer details are routed to a mail draft for staff follow-up.
-  const handleVolSubmit = (e: React.FormEvent) => {
+  // Volunteer details are routed to a WhatsApp message for staff follow-up.
+  const handleVolSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalizedName = sanitizeSingleLine(volName, 80);
     const normalizedPhone = normalizeIndianPhone(volPhone);
     const normalizedLocation = sanitizeSingleLine(volLocation, 120);
     const normalizedSkills = sanitizeMultiLine(volSkills, 300);
 
-    if (!isValidPersonName(normalizedName) || !isValidIndianPhone(normalizedPhone) || normalizedLocation.length < 3 || volInterests.length === 0 || volInterests.length > 6) {
-      alert(lang === 'en' ? 'Enter a valid name, Indian phone number, location, and at least one volunteer area.' : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண், இருப்பிடம் மற்றும் குறைந்தபட்சம் ஒரு தன்னார்வ பகுதியைத் தேர்ந்தெடுக்கவும்.');
+    if (!isValidPersonName(normalizedName)) {
+      setVolError(lang === 'en' ? 'Your Full Name is invalid. Enter a real name using letters, spaces, dots, apostrophes, or hyphens only.' : 'தன்னார்வலர் பெயர் செல்லுபடியாகவில்லை. சரியான பெயரை மட்டும் உள்ளிடவும்.');
       return;
     }
 
+    if (!isValidIndianPhone(normalizedPhone)) {
+      setVolError(lang === 'en' ? 'WhatsApp Phone Number is invalid. Enter a valid 10-digit Indian mobile number.' : 'WhatsApp எண் செல்லுபடியாகவில்லை. சரியான 10 இலக்க இந்திய மொபைல் எண்ணை உள்ளிடவும்.');
+      return;
+    }
+
+    if (normalizedLocation.length < 3) {
+      setVolError(lang === 'en' ? 'Your Location / Town is too short. Enter your area, town, or nearby landmark.' : 'வாழும் இடம் / இருப்பிடம் போதுமானதாக இல்லை. உங்கள் பகுதி அல்லது ஊரை உள்ளிடவும்.');
+      return;
+    }
+
+    if (volInterests.length === 0) {
+      setVolError(lang === 'en' ? 'Areas of Interest is required. Choose at least one volunteer area.' : 'பங்களிக்க விரும்பும் பகுதி தேவை. குறைந்தபட்சம் ஒன்றைத் தேர்வு செய்யவும்.');
+      return;
+    }
+
+    if (volInterests.length > 6) {
+      setVolError(lang === 'en' ? 'Areas of Interest has too many selections. Choose up to 6 volunteer areas.' : 'பங்களிக்க விரும்பும் பகுதிகள் அதிகமாக உள்ளன. அதிகபட்சம் 6 பகுதிகளைத் தேர்வு செய்யவும்.');
+      return;
+    }
+
+    setVolError('');
     setVolLoading(true);
 
-    setTimeout(() => {
-      const trackingId = createReference('NN-VOL');
-      const mailtoUrl = buildMailtoUrl(OFFICIAL_CONTACT.email, `Volunteer registration ${trackingId}`, [
-        `Reference: ${trackingId}`,
-        `Name: ${normalizedName}`,
-        `Phone: ${normalizedPhone}`,
-        `Location: ${normalizedLocation}`,
-        `Availability: ${volAvailability}`,
-        `Interests: ${volInterests.join(', ')}`,
-        `Skills: ${normalizedSkills || 'Not provided'}`,
-      ]);
+    const trackingId = createReference('NN-VOL');
+    const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+      `Form: Volunteer Registration`,
+      `Reference: ${trackingId}`,
+      `Name: ${normalizedName}`,
+      `Phone: ${normalizedPhone}`,
+      `Location: ${normalizedLocation}`,
+      `Availability: ${volAvailability}`,
+      `Interests: ${volInterests.join(', ')}`,
+      `Skills: ${normalizedSkills || 'Not provided'}`,
+    ]);
 
-      window.location.href = mailtoUrl;
-      setVolLoading(false);
+    try {
+      await saveSubmission('volunteerApplications', {
+        reference: trackingId,
+        name: normalizedName,
+        phone: normalizedPhone,
+        location: normalizedLocation,
+        availability: volAvailability,
+        interests: volInterests,
+        skillsMessage: normalizedSkills,
+      });
+
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
       setVolSuccess(trackingId);
       setVolName('');
       setVolPhone('');
       setVolLocation('');
       setVolInterests([]);
       setVolSkills('');
-    }, 500);
+    } catch {
+      setVolError(lang === 'en' ? 'Could not save your volunteer application. Please try again.' : 'தன்னார்வ விண்ணப்பத்தை சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.');
+    } finally {
+      setVolLoading(false);
+    }
   };
 
   // General enquiries follow the same pattern: validate first, then hand off
-  // to a mail draft rather than creating local-only pseudo-submissions.
-  const handleContactSubmit = (e: React.FormEvent) => {
+  // to a WhatsApp message rather than creating local-only pseudo-submissions.
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const normalizedName = sanitizeSingleLine(contactName, 80);
     const normalizedPhone = normalizeIndianPhone(contactPhone);
     const normalizedMessage = sanitizeMultiLine(contactMsg, 500);
 
-    if (!isValidPersonName(normalizedName) || !isValidIndianPhone(normalizedPhone) || !hasMeaningfulText(normalizedMessage, 10, 500)) {
-      alert(lang === 'en' ? 'Enter a valid name, Indian phone number, and message before sending.' : 'செல்லுபடியாகும் பெயர், இந்திய தொலைபேசி எண் மற்றும் செய்தியை வழங்கவும்.');
+    if (!isValidPersonName(normalizedName)) {
+      setContactError(lang === 'en' ? 'Your Name is invalid. Enter a real name using letters, spaces, dots, apostrophes, or hyphens only.' : 'உங்கள் பெயர் செல்லுபடியாகவில்லை. சரியான பெயரை மட்டும் உள்ளிடவும்.');
       return;
     }
 
+    if (!isValidIndianPhone(normalizedPhone)) {
+      setContactError(lang === 'en' ? 'Your Phone Number is invalid. Enter a valid 10-digit Indian mobile number.' : 'உங்கள் தொடர்பு எண் செல்லுபடியாகவில்லை. சரியான 10 இலக்க இந்திய மொபைல் எண்ணை உள்ளிடவும்.');
+      return;
+    }
+
+    if (!hasMeaningfulText(normalizedMessage, 10, 500)) {
+      setContactError(lang === 'en' ? 'Your Message or Enquiry is too short. Enter at least a short, clear message.' : 'உங்கள் செய்தி / கேள்வி போதுமானதாக இல்லை. தெளிவான செய்தியை உள்ளிடவும்.');
+      return;
+    }
+
+    setContactError('');
     setContactLoading(true);
 
-    setTimeout(() => {
-      const mailtoUrl = buildMailtoUrl(OFFICIAL_CONTACT.email, 'Website contact request', [
-        `Name: ${normalizedName}`,
-        `Phone: ${normalizedPhone}`,
-        `Message: ${normalizedMessage}`,
-      ]);
+    const whatsappUrl = buildWhatsAppUrl(OFFICIAL_CONTACT.formsPhone, [
+      `Form: Contact / Enquiry`,
+      `Name: ${normalizedName}`,
+      `Phone: ${normalizedPhone}`,
+      `Message: ${normalizedMessage}`,
+    ]);
 
-      window.location.href = mailtoUrl;
-      setContactLoading(false);
+    try {
+      await saveSubmission('contactMessages', {
+        name: normalizedName,
+        phone: normalizedPhone,
+        message: normalizedMessage,
+      });
+
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
       setContactSuccess(true);
       setContactName('');
       setContactPhone('');
       setContactMsg('');
-    }, 500);
+    } catch {
+      setContactError(lang === 'en' ? 'Could not save your message. Please try again.' : 'உங்கள் செய்தியை சேமிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.');
+    } finally {
+      setContactLoading(false);
+    }
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-12">
+    <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8 space-y-8">
       
       {/* RENDER REQUEST HELP FORM */}
       {formType === 'help' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
           
           {/* Left Side: Form Details & Disclaimer */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-                {lang === 'en' ? 'Urgent Assistance Hub' : 'உதவி மையப்பகுதி'}
+          <div className="lg:col-span-5 xl:col-span-4 space-y-5">
+            <div className="space-y-3">
+              <span className="section-eyebrow text-brand-orange-700">
+                {lang === 'en' ? 'Community & Support' : 'உதவி மையப்பகுதி'}
               </span>
-              <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
-                {lang === 'en' ? 'Request Immediate Help' : 'நேரடி உதவி கோருங்கள்'}
+              <h1 className="h1-page">
+                {lang === 'en' ? 'Request Help' : 'உதவி கோருங்கள்'}
               </h1>
-              <p className="text-gray-900 text-sm leading-relaxed text-justify">
-                {lang === 'en'
-                  ? 'If you or someone in your vicinity is in severe distress (homelessness, abandonment in old age, needing last rites, or urgent hospital fees), please fill out our dispatch request. Our local network conducts a physical review within 24–48 hours.'
-                  : 'உங்களுக்கோ அல்லது உங்கள் பகுதியில் வசிக்கும் யாராவது ஒருவருக்கு அவசரமாக உணவு, முதியோர் மீட்பு, மருத்துவ உதவி அல்லது கல்வி கட்டண உதவி தேவைப்பட்டால் கீழே உள்ள படிவத்தை நிரப்பவும். எங்களது தன்னார்வலர்கள் 24-48 மணி நேரத்திற்குள் நேரில் வந்து விசாரித்து உதவுவர்.'}
+              <p className="text-gray-900 form-copy">
+                {lang === 'en' ? (
+                  <>
+                    Please use this form if someone you know needs humanitarian assistance within the trust's scope, such as food support, ambulance services, elderly rescue, educational assistance, emergency medical fundraising, or other essential aid.
+                    <br />
+                    <br />
+                    Please provide the location, type of assistance required, urgency, and any relevant supporting documents, if available.
+                  </>
+                ) : (
+                  <>
+                    <strong>அறக்கட்டளையின் சேவை வரம்பிற்குள் வரும் மனிதநேய உதவிகள்</strong> (உணவு உதவி, ஆம்புலன்ஸ் சேவை, முதியோர் மீட்பு, கல்வி உதவி, அவசர மருத்துவ நிதி திரட்டல் அல்லது பிற அத்தியாவசிய உதவிகள்) தேவைப்படும் உங்களுக்குத் தெரிந்த ஒருவருக்காக இந்தப் படிவத்தைப் பயன்படுத்தவும்.
+                    <br />
+                    <br />
+                    தயவுசெய்து <strong>இடம், தேவையான உதவியின் வகை, அவசரத் தன்மை</strong> மற்றும் <strong>கிடைத்தால் தொடர்புடைய ஆதார ஆவணங்களை</strong> வழங்கவும்.
+                  </>
+                )}
               </p>
             </div>
 
-            {/* Disclaimer Checklist */}
-            <div className="rounded-xl bg-gray-50 p-5 border border-gray-200/60 space-y-3">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900">
-                <Monogram label="!" size="xs" tone="amber" className="mr-1 align-middle" />{lang === 'en' ? 'Requirements & Process' : 'அறிவிப்பும் செயல்முறையும்'}
-              </h3>
-              <ul className="text-base text-gray-900 space-y-2 list-disc pl-4 leading-relaxed">
-                <li>{lang === 'en' ? 'All requests undergo physical verification by our trustees/volunteers.' : 'அனைத்து கோரிக்கைகளும் எங்களது அறங்காவலர்கள் அல்லது தன்னார்வலர்களால் நேரடியாகச் சரிபார்க்கப்படும்.'}</li>
-                <li>{lang === 'en' ? 'Support is distributed based on the severity of distress and resource availability.' : 'வழங்கப்படும் உதவி நிலைமையின் தீவிரம் மற்றும் எங்களது நிதி ஆதாரத்தின் அடிப்படையிலேயே தீர்மானிக்கப்படும்.'}</li>
-                <li>{lang === 'en' ? 'Last rites support is coordinated strictly alongside the local Police Station.' : 'ஆதரவற்றோர் இறுதி மரியாதை உதவி முற்றிலும் காவல்துறையின் ஒப்புதல் மற்றும் ஆவணங்களின் அடிப்படையிலேயே நிகழும்.'}</li>
-                <li>{lang === 'en' ? 'Free ambulance dispatch is reserved strictly for families below the poverty line; eligibility is verified before dispatch.' : 'இலவச ஆம்புலன்ஸ் சேவை வறுமைக்கோட்டிற்குக் கீழே உள்ள குடும்பங்களுக்கு மட்டுமே; அனுப்பும் முன் தகுதி உறுதி செய்யப்படும்.'}</li>
-              </ul>
+            <div className="border-2 border-red-600 rounded-md bg-red-50 p-4">
+              <p className="text-lg font-semibold uppercase tracking-wider text-gray-900">
+                {lang === 'en' ? 'Life-threatening emergency?' : 'உயிருக்கு ஆபத்தான அவசரநிலையா?'}
+              </p>
+              <p className="mt-1 text-base font-medium text-gray-900">
+                {lang === 'en' ? 'Call us directly for immediate help.' : 'உடனடி உதவிக்கு எங்களை நேரடியாக அழைக்கவும்.'}
+              </p>
+              <div className="mt-2 flex flex-col gap-1">
+                <a href={`tel:${OFFICIAL_CONTACT.formsPhone}`} className="inline-flex items-center gap-2 text-base font-bold text-emerald-800 hover:text-emerald-900">
+                  <FaPhone className="h-4 w-4" />
+                  +91 75400 17625
+                </a>
+                <a href={`tel:${OFFICIAL_CONTACT.secondaryPhone}`} className="inline-flex items-center gap-2 text-base font-bold text-emerald-800 hover:text-emerald-900">
+                  <FaPhone className="h-4 w-4" />
+                  +91 93604 62890
+                </a>
+              </div>
             </div>
 
+            <div className="space-y-3">
+              <h3 className="font-display text-sm font-bold uppercase tracking-wider text-gray-900">
+                {lang === 'en' ? 'Before You Request' : 'கோருவதற்கு முன்'}
+              </h3>
+              <div className="divide-y divide-gray-100">
+                {helpBeforeRows.map((item, idx) => (
+                  <div key={idx} className="flex gap-3 py-2.5 first:pt-0 last:pb-0">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-orange-50 text-brand-orange-700">
+                      {item.icon}
+                    </span>
+                    <p className="pt-1 text-sm leading-relaxed text-gray-900">{item[lang]}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Right Side: Form */}
-          <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs">
+          <div className="lg:col-span-7 xl:col-span-8 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04]">
             {helpSuccess ? (
               <div className="text-center py-10 space-y-6">
                 <div className="h-16 w-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-3xl mx-auto">
-                  ✓
+                  <FaCheck className="h-7 w-7" />
                 </div>
                 <div className="space-y-2">
-                  <h3 className="font-display text-xl font-bold text-gray-900">
+                  <h3 className="font-display text-lg font-bold text-gray-900">
                     {lang === 'en' ? 'Secure Contact Draft Prepared' : 'பாதுகாப்பான தொடர்பு வரைவு தயாராகிவிட்டது'}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-900">
@@ -213,7 +407,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                       ? 'A WhatsApp handoff was prepared instead of storing this request in your browser.' 
                       : 'உங்கள் விண்ணப்பம் வெற்றிகரமாகப் பதிவேற்றப்பட்டு, ஆய்வில் உள்ளது.'}
                   </p>
-                  <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono text-sm font-bold px-4 py-2 rounded-lg mt-2">
+                  <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-display text-sm font-bold px-4 py-2 rounded-lg mt-2">
                     {lang === 'en' ? 'Reference:' : 'குறிப்பு எண்:'} {helpSuccess}
                   </div>
                 </div>
@@ -231,83 +425,99 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleHelpSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <form onSubmit={handleHelpSubmit} className="space-y-4">
+                {helpError && (
+                  <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold leading-relaxed text-red-800">
+                    {helpError}
+                  </p>
+                )}
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    {lang === 'en' ? '1. Assistance Category' : '1. தேவைப்படும் உதவி வகை'}
+                  </label>
+                  <CustomSelect
+                    value={helpType}
+                    onChange={setHelpType}
+                    options={helpTypeOptions}
+                    ariaLabel={lang === 'en' ? 'Assistance Category' : 'தேவைப்படும் உதவி வகை'}
+                  />
+                  <div className="min-h-[4.5rem] rounded-lg border border-emerald-100 bg-emerald-50/55 px-3 py-2">
+                    <div className="flex gap-2">
+                      <FaCircleInfo className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-700" />
+                      <div className="space-y-1">
+                        <p className="text-xs font-bold text-emerald-900">
+                          {helpCategoryInfo[helpType]?.title[lang]}
+                        </p>
+                        <p className="text-xs leading-relaxed text-gray-900">
+                          {helpCategoryInfo[helpType]?.body[lang]}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   
                   {/* Name */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                      {lang === 'en' ? 'Beneficiary or Contact Name' : 'உதவி பெறுபவர் / தகவல் அளிப்பவர் பெயர்'} *
+                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                      {lang === 'en' ? '2. Beneficiary / Contact Name' : '2. உதவி பெறுபவர் / தகவல் அளிப்பவர் பெயர்'} *
                     </label>
                     <input
                       type="text"
                       required
                       value={helpName}
                       onChange={(e) => setHelpName(e.target.value)}
-                      placeholder="e.g. N. Arumugam"
-                      className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                      placeholder="e.g. S. Kumar"
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
 
                   {/* Phone */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                      {lang === 'en' ? 'Contact Phone / WhatsApp' : 'தொடர்பு எண் / WhatsApp'} *
+                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                      {lang === 'en' ? '3. Contact Phone / WhatsApp' : '3. தொடர்பு எண் / WhatsApp'} *
                     </label>
                     <input
                       type="tel"
                       required
                       value={helpPhone}
                       onChange={(e) => setHelpPhone(e.target.value)}
-                      placeholder="e.g. 9876543210"
-                      className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                      placeholder="10-digit mobile number"
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
 
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  
-                  {/* Assistance Type */}
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                      {lang === 'en' ? 'Assistance Category' : 'தேவைப்படும் உதவி வகை'}
-                    </label>
-                    <select
-                      value={helpType}
-                      onChange={(e) => setHelpType(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                    >
-                      <option value="Food">{lang === 'en' ? 'Food Support (Annadhanam)' : 'உணவு உதவி (அன்னதானம்)'}</option>
-                      <option value="Ambulance">{lang === 'en' ? 'Free Ambulance Dispatch' : 'இலவச ஆம்புலன்ஸ் சேவை'}</option>
-                      <option value="Last Rites">{lang === 'en' ? 'Last Rites (Burial/Cremation)' : 'இறுதிச் சடங்கு'}</option>
-                      <option value="Elder Rescue">{lang === 'en' ? 'Elder Rescue and Placement' : 'முதியோர் மீட்பு & இல்ல சேர்க்கை'}</option>
-                      <option value="Education">{lang === 'en' ? 'Education Tuition Sponsorship' : 'கல்வி கட்டண உதவி'}</option>
-                      <option value="Medical">{lang === 'en' ? 'Hospital Surgery Crowdfund' : 'அவசர மருத்துவ உதவி'}</option>
-                      <option value="Other">{lang === 'en' ? 'Other Humanitarian Need' : 'இதர உதவிகள்'}</option>
-                    </select>
-                  </div>
-
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Urgency */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                      {lang === 'en' ? 'Urgency Level' : 'அவசர நிலை'}
+                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                      {lang === 'en' ? '4. Urgency Level' : '4. அவசர நிலை'}
                     </label>
-                    <div className="flex gap-4 pt-1.5">
+                    <div className="grid grid-cols-1 gap-2 pt-1 sm:grid-cols-3">
                       {['Immediate', 'Within a Week', 'Ongoing'].map((lvl) => (
-                        <label key={lvl} className="inline-flex items-center space-x-1.5 text-xs font-medium text-gray-900 cursor-pointer">
+                        <label
+                          key={lvl}
+                          className={`relative flex min-h-10 items-center justify-center rounded-lg border px-3 text-center text-xs font-semibold transition-colors cursor-pointer ${
+                            helpUrgency === lvl
+                              ? 'border-emerald-300 bg-emerald-50 text-emerald-900'
+                              : 'border-gray-200 bg-white text-gray-900 hover:border-emerald-200 hover:bg-emerald-50/40'
+                          }`}
+                        >
                           <input
                             type="radio"
                             name="urgency"
                             value={lvl}
                             checked={helpUrgency === lvl}
                             onChange={() => setHelpUrgency(lvl)}
-                            className="text-emerald-600 focus:ring-emerald-500 h-3.5 w-3.5"
+                            className="sr-only"
                           />
                           <span>
-                            {lvl === 'Immediate' ? (lang === 'en' ? 'Immediate' : 'அதி அவசரம்') :
-                             lvl === 'Within a Week' ? (lang === 'en' ? 'Within a week' : 'ஒரு வாரத்திற்குள்') :
-                             (lang === 'en' ? 'Ongoing' : 'பொதுவான தேவை')}
+                            {lvl === 'Immediate' ? (lang === 'en' ? 'Urgent today' : 'இன்று அவசரம்') :
+                             lvl === 'Within a Week' ? (lang === 'en' ? 'Within 7 days' : '7 நாட்களுக்குள்') :
+                             (lang === 'en' ? 'Ongoing support' : 'தொடர்ச்சியான உதவி')}
                           </span>
                         </label>
                       ))}
@@ -318,8 +528,8 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Address */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                    {lang === 'en' ? 'Address / Location Details' : 'முகவரி / இருப்பிட விவரங்கள்'} *
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    {lang === 'en' ? '5. Address / Location Details' : '5. முகவரி / இருப்பிட விவரங்கள்'} *
                   </label>
                   <input
                     type="text"
@@ -327,43 +537,47 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     value={helpAddress}
                     onChange={(e) => setHelpAddress(e.target.value)}
                     placeholder="e.g. Door No, Street Name, Tiruchengode Taluk"
-                    className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   />
                 </div>
 
                 {/* Situation Description */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                    {lang === 'en' ? 'Describe the distress or medical situation' : 'சூழ்நிலை அல்லது தேவையின் முழு விபரம்'} *
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    {lang === 'en' ? '6. Describe what happened / assistance needed' : '6. சூழ்நிலை அல்லது தேவையின் முழு விபரம்'} *
                   </label>
                   <textarea
                     required
-                    rows={4}
+                    rows={3}
                     value={helpDesc}
                     onChange={(e) => setHelpDesc(e.target.value)}
                     placeholder={lang === 'en' ? 'Describe why assistance is needed...' : 'உதவி தேவைப்படுவதற்கான காரணத்தை விரிவாக எழுதவும்...'}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   />
                 </div>
 
                 {/* Consent Checkbox */}
                 <div className="relative flex items-start py-2">
-                  <div className="flex h-5 items-center">
+                  <div className="relative flex h-5 w-5 shrink-0 items-center">
                     <input
                       id="consent-check"
                       type="checkbox"
                       required
                       checked={helpConsent}
                       onChange={(e) => setHelpConsent(e.target.checked)}
-                      className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                      className="peer absolute inset-0 z-10 h-5 w-5 cursor-pointer opacity-0"
+                      aria-label={lang === 'en' ? 'Consent to physical verification' : 'நேரடி சரிபார்ப்புக்கு ஒப்புதல்'}
                     />
+                    <span className="flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-white text-white transition-colors peer-checked:border-emerald-600 peer-checked:bg-emerald-600 peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-600/20">
+                      <FaCheck className="h-3 w-3" />
+                    </span>
                   </div>
                   <div className="ml-3 text-xs">
-                    <label htmlFor="consent-check" className="font-medium text-gray-900 cursor-pointer">
+                    <p className="font-medium text-gray-900">
                       {lang === 'en' 
                         ? 'I consent to the physical verification of these details by the trust volunteers.' 
                         : 'இந்த விவரங்கள் உண்மை என்றும், தன்னார்வலர்கள் நேரில் வந்து சரிபார்க்க முழு ஒப்புதல் அளிக்கிறேன்.'} *
-                    </label>
+                    </p>
                   </div>
                 </div>
 
@@ -374,7 +588,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   disabled={helpLoading}
                   className="w-full rounded-lg bg-emerald-600 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition-all cursor-pointer disabled:bg-emerald-400"
                 >
-                  {helpLoading ? (lang === 'en' ? 'Verifying details...' : 'சரிபார்க்கப்படுகிறது...') : (lang === 'en' ? 'Submit Dispatch Request' : 'உதவி கோர பதிவிடவும்')}
+                  {helpLoading ? (lang === 'en' ? 'Preparing request...' : 'கோரிக்கை தயாராகிறது...') : (lang === 'en' ? 'Submit Assistance Request' : 'உதவி கோரிக்கையை அனுப்பவும்')}
                 </button>
 
               </form>
@@ -386,70 +600,65 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
       {/* RENDER VOLUNTEER REGISTRATION FORM */}
       {formType === 'volunteer' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
           
           {/* Left Column: Vol details */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-                {lang === 'en' ? 'Join Our Team' : 'எங்களுடன் இணையுங்கள்'}
+          <div className="lg:col-span-5 xl:col-span-4 space-y-5">
+            <div className="space-y-3">
+              <span className="section-eyebrow text-brand-blue-700">
+                {lang === 'en' ? 'Community & Support' : 'எங்களுடன் தன்னார்வமாக இணைக'}
               </span>
-              <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
-                {lang === 'en' ? 'Become a Trust Volunteer' : 'தன்னார்வலராகச் சேவையற்றுக'}
+              <h1 className="h1-page">
+                {lang === 'en' ? 'Volunteer With Us' : 'உங்கள் நேரத்தை வழங்கி நேரடி தாக்கத்தை உருவாக்குங்கள்'}
               </h1>
-              <p className="text-gray-900 text-sm leading-relaxed text-justify">
+              <p className="text-gray-900 form-copy">
                 {lang === 'en'
-                  ? 'We have zero salaried administrative staffs. We rely on people who give a few hours a week—chopping vegetables for morning annadhanam, helping verify student profiles, driving ambulance transfers, or assisting in cemetery logistics. Join us to make a direct impact.'
+                  ? 'The trust’s work grows stronger when compassionate people contribute their time, energy, skills, and presence. Volunteers may help with food preparation and distribution, logistics and transport support, elderly support activities, documentation, social media support, campaign drives, and event or awareness coordination.'
                   : 'எங்கள் அறக்கட்டளையில் சம்பளம் பெறும் ஊழியர்கள் யாரும் இல்லை. வாரத்தில் ஒரு சில மணிநேரங்களை சமூகத்திற்காக வழங்கத் துடிக்கும் தன்னார்வலர்களை மட்டுமே நம்பியே எங்களது பணிகள் நடக்கின்றன. காலையில் உணவு பேக்கிங் செய்தல், முதியோர் மீட்பு, கள விசாரணை என ஏதேனும் ஒரு பணியில் உங்களை இணைத்துக் கொள்ளலாம்.'}
               </p>
             </div>
 
-            {/* Volunteer areas detail list */}
-            <div className="rounded-xl border border-gray-100 bg-white p-5 shadow-xs space-y-3">
-              <h3 className="font-display text-xs font-bold uppercase tracking-wider text-gray-900">
-                {lang === 'en' ? 'Volunteer Deployment Tracks' : 'உதவக்கூடிய பணிப் பிரிவுகள்'}
+            <div className="space-y-3">
+              <h3 className="font-display text-sm font-bold uppercase tracking-wider text-gray-900">
+                {lang === 'en' ? 'Before You Volunteer' : 'தன்னார்வத்திற்கு முன்'}
               </h3>
-              <ul className="text-xs text-gray-900 space-y-2 list-none">
-                <li className="flex items-center space-x-2">
-                  <Monogram label="F" size="xs" />
-                  <span><strong>{lang === 'en' ? 'Food Drive' : 'உணவு விநியோகம்'}:</strong> {lang === 'en' ? 'Meal packing & transport routes' : 'மதிய உணவு விநியோகம் மற்றும் பேக்கிங்'}</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Monogram label="A" size="xs" />
-                  <span><strong>{lang === 'en' ? 'Ambulance Support' : 'ஆம்புலன்ஸ் ஒருங்கிணைப்பு'}:</strong> {lang === 'en' ? 'Coordinating transfers & call log' : 'அவசர கால அழைப்புகளைப் பெறுதல்'}</span>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <Monogram label="V" size="xs" />
-                  <span><strong>{lang === 'en' ? 'Outreach & Verification' : 'களப்பணி / சரிபார்ப்பு'}:</strong> {lang === 'en' ? 'Home audits for students & elders' : 'மாணவர்கள் மற்றும் முதியோர்களின் வீட்டு வசதிகளை விசாரித்தல்'}</span>
-                </li>
-              </ul>
+              <div className="divide-y divide-gray-100">
+                {volunteerBeforeRows.map((item, idx) => (
+                  <div key={idx} className="flex gap-3 py-2.5 first:pt-0 last:pb-0">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-blue-50 text-brand-blue-700">
+                      {item.icon}
+                    </span>
+                    <p className="pt-1 text-sm leading-relaxed text-gray-900">{item[lang]}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
           </div>
 
           {/* Right Column: Volunteer Form */}
-          <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs">
+          <div className="lg:col-span-7 xl:col-span-8 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04]">
             {volSuccess ? (
               <div className="text-center py-10 space-y-6">
                 <div className="h-16 w-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-3xl mx-auto">
-                  ✓
+                  <FaCheck className="h-7 w-7" />
                 </div>
                 <div className="space-y-2">
-                  <h3 className="font-display text-xl font-bold text-gray-900">
-                    {lang === 'en' ? 'Volunteer Draft Prepared' : 'தன்னார்வ பதிவு வரைவு தயாரானது'}
+                  <h3 className="font-display text-lg font-bold text-gray-900">
+                    {lang === 'en' ? 'WhatsApp Message Prepared' : 'வாட்ஸ்அப் செய்தி தயாரானது'}
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-900">
                     {lang === 'en'
-                      ? 'Your email app should now contain a pre-filled volunteer registration draft.'
-                      : 'சமூக சேவையில் உங்களை ஈடுபடுத்திக் கொண்டமைக்கு மனமார்ந்த நன்றிகள்.'}
+                      ? 'WhatsApp should now open with your volunteer details pre-filled. Tap send to complete your registration.'
+                      : 'உங்கள் தன்னார்வ விவரங்களுடன் வாட்ஸ்அப் திறக்கும். பதிவை முடிக்க அனுப்பு பொத்தானை அழுத்தவும்.'}
                   </p>
-                  <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono text-sm font-bold px-4 py-2 rounded-lg mt-2">
+                  <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-display text-sm font-bold px-4 py-2 rounded-lg mt-2">
                     {lang === 'en' ? 'Reference:' : 'குறிப்பு எண்:'} {volSuccess}
                   </div>
                 </div>
-                <p className="text-base text-gray-900 max-w-sm mx-auto leading-relaxed">
+                <p className="form-copy text-gray-900 max-w-sm mx-auto">
                   {lang === 'en'
-                    ? 'This website no longer stores volunteer applications locally. Please send the prepared draft from your trusted device.'
+                    ? 'This website no longer stores volunteer applications locally. Please send the prepared WhatsApp message from your trusted device.'
                     : 'நமது ஒருங்கிணைப்பாளர் விரைவில் வாட்ஸ்அப் மூலம் தொடர்புகொண்டு அடுத்தகட்டப் பணிகள் குறித்து விவரிப்பார்.'}
                 </p>
                 <button
@@ -461,48 +670,53 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleVolSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <form onSubmit={handleVolSubmit} className="space-y-4">
+                {volError && (
+                  <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold leading-relaxed text-red-800">
+                    {volError}
+                  </p>
+                )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   
                   {/* Name */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                      {lang === 'en' ? 'Your Full Name' : 'தன்னார்வலர் பெயர்'} *
+                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                      {lang === 'en' ? '1. Your Full Name' : '1. தன்னார்வலர் பெயர்'} *
                     </label>
                     <input
                       type="text"
                       required
                       value={volName}
                       onChange={(e) => setVolName(e.target.value)}
-                      placeholder="e.g. S. Karthik"
-                      className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                      placeholder="e.g. S. Kumar"
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
 
                   {/* Phone */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                      {lang === 'en' ? 'WhatsApp Phone Number' : 'WhatsApp எண்'} *
+                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                      {lang === 'en' ? '2. WhatsApp Phone Number' : '2. WhatsApp எண்'} *
                     </label>
                     <input
                       type="tel"
                       required
                       value={volPhone}
                       onChange={(e) => setVolPhone(e.target.value)}
-                      placeholder="e.g. 9876543210"
-                      className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                      placeholder="10-digit mobile number"
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
 
                 </div>
 
                 {/* Location & Availability */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   
                   {/* Location */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                      {lang === 'en' ? 'Your Location / Town' : 'வாழும் இடம் / இருப்பிடம்'} *
+                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                      {lang === 'en' ? '3. Your Location / Town' : '3. வாழும் இடம் / இருப்பிடம்'} *
                     </label>
                     <input
                       type="text"
@@ -510,34 +724,31 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                       value={volLocation}
                       onChange={(e) => setVolLocation(e.target.value)}
                       placeholder="e.g. Rajeev Nagar, Tiruchengode"
-                      className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
 
                   {/* Availability */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                      {lang === 'en' ? 'Your Availability' : 'எப்போது வர இயலும்'}
+                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                      {lang === 'en' ? '4. Your Availability' : '4. எப்போது வர இயலும்'}
                     </label>
-                    <select
+                    <CustomSelect
                       value={volAvailability}
-                      onChange={(e) => setVolAvailability(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm bg-white focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-                    >
-                      <option value="Weekends">{lang === 'en' ? 'Weekends (Saturday/Sunday)' : 'வார இறுதி நாட்கள் (சனி / ஞாயிறு)'}</option>
-                      <option value="Weekdays">{lang === 'en' ? 'Weekdays (Monday-Friday)' : 'வார நாட்கள் (திங்கள் - வெள்ளி)'}</option>
-                      <option value="Flexible">{lang === 'en' ? 'Flexible / Emergency call' : 'அவசர கால அழைப்பின் பேரில்'}</option>
-                    </select>
+                      onChange={setVolAvailability}
+                      options={availabilityOptions}
+                      ariaLabel={lang === 'en' ? 'Your Availability' : 'எப்போது வர இயலும்'}
+                    />
                   </div>
 
                 </div>
 
                 {/* Interests checkboxes */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                    {lang === 'en' ? 'Areas of Interest' : 'பங்களிக்க விரும்பும் பகுதிகள்'} (choose at least one) *
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    {lang === 'en' ? '5. Areas of Interest' : '5. பங்களிக்க விரும்பும் பகுதிகள்'} ({lang === 'en' ? 'choose at least one' : 'குறைந்தபட்சம் ஒன்றைத் தேர்வு செய்யவும்'}) *
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                     {[
                       { id: 'Food packing', label: { en: 'Food cooking & meal packing', ta: 'காலை உணவு தயாரித்தல் & பேக்கிங்' } },
                       { id: 'Ambulance logs', label: { en: 'Ambulance operations logs', ta: 'ஆம்புலன்ஸ் அவசர அழைப்புகள் ஒருங்கிணைப்பு' } },
@@ -548,7 +759,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     ].map((item) => (
                       <label 
                         key={item.id} 
-                        className={`flex items-start p-3 border rounded-xl cursor-pointer transition-colors ${
+                        className={`flex items-start p-2.5 border rounded-lg cursor-pointer transition-colors ${
                           volInterests.includes(item.id) 
                             ? 'bg-emerald-50 border-emerald-300 text-emerald-900' 
                             : 'bg-white border-gray-100 hover:bg-gray-50'
@@ -558,8 +769,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                           type="checkbox"
                           checked={volInterests.includes(item.id)}
                           onChange={() => handleInterestToggle(item.id)}
-                          className="text-emerald-600 focus:ring-emerald-500 rounded border-gray-300 h-4 w-4 mt-0.5"
+                          className="peer sr-only"
                         />
+                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-white text-white transition-colors peer-checked:border-emerald-600 peer-checked:bg-emerald-600 peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-600/20">
+                          <FaCheck className="h-3 w-3" />
+                        </span>
                         <span className="text-xs font-semibold ml-2.5 leading-tight">{item.label[lang]}</span>
                       </label>
                     ))}
@@ -568,15 +782,15 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Relevant Skills */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
-                    {lang === 'en' ? 'Any specific skills / message' : 'திறமைகள் / இதர தகவல்கள்'}
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    {lang === 'en' ? '6. Any specific skills / message' : '6. திறமைகள் / இதர தகவல்கள்'}
                   </label>
                   <textarea
-                    rows={3}
+                    rows={2}
                     value={volSkills}
                     onChange={(e) => setVolSkills(e.target.value)}
                     placeholder={lang === 'en' ? 'Describe any skills like photography, heavy vehicle driving license, legal, audit, or first-aid training...' : 'வாகனம் ஓட்டுநர் உரிமம், முதலுதவிப் பயிற்சி, கம்ப்யூட்டர், சமையல் போன்ற உங்களுக்கு தெரிந்த கூடுதல் திறன்கள்...'}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   />
                 </div>
 
@@ -604,47 +818,48 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           {/* Left Column: Coordinates */}
           <div className="lg:col-span-5 space-y-6">
             <div className="space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+              <span className="section-eyebrow text-brand-violet-700 bg-brand-violet-50 px-2.5 py-1 rounded-full">
                 {lang === 'en' ? 'Direct Coordinates' : 'தொடர்பு விபரம்'}
               </span>
-              <h1 className="font-display text-3xl font-extrabold text-gray-900 leading-tight">
-                {lang === 'en' ? 'Contact our Registered Office' : 'நேரடியாகத் தொடர்பு கொள்ள'}
+              <h1 className="h1-page">
+                {lang === 'en' ? 'We Are Here to Listen and Respond' : 'நேரடியாகத் தொடர்பு கொள்ள'}
               </h1>
-              <p className="text-gray-900 text-sm leading-relaxed text-justify">
+              <p className="text-gray-900 form-copy">
                 {lang === 'en'
-                  ? 'Our registered administrative office is located on Rajeev Nagar crossroad, opp. SPM Hospital, Tiruchengode town. For emergency ambulance requirements or reporting abandoned elderly, call us immediately.'
-                  : 'எங்கள் பதிவு அலுவலகம் திருச்செங்கோடு ராஜிவ் நகர் குறுக்கு சாலை, SPM மருத்துவமனைக்கு எதிரில் அமைந்துள்ளது. அவசர ஆம்புலன்ஸ் தேவை அல்லது முதியவர்கள் மீட்புத் தகவல்களுக்கு உடனடியாக அழைக்கவும்.'}
+                  ? 'Whether you need support, want to volunteer, wish to donate, or would like to connect for community collaboration, we welcome your message. For emergency ambulance requirements or reporting abandoned elderly, call us immediately.'
+                  : 'உங்கள் ஒவ்வொரு தொடர்பும் எங்களுக்கு முக்கியம். உதவி கோர, நன்கொடை வழங்க, தன்னார்வலராக இணைய, அல்லது கூட்டாண்மை பற்றி பேச—எங்களை எப்போதும் அணுகலாம்.'}
               </p>
             </div>
 
             <div className="space-y-4 pt-2">
               <div className="flex items-start space-x-3.5">
-                <Monogram label="A" size="md" />
+                <div className="h-8 w-8 shrink-0 rounded-full bg-brand-violet-50 text-brand-violet-700 flex items-center justify-center">
+                  <FaLocationDot className="h-4 w-4" />
+                </div>
                 <div>
-                  <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Office address' : 'அலுவலக முகவரி'}</h4>
-                  <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
-                    Door No. 38/5, Rajeev Nagar Cross Road, Opp. SPM Hospital, Sanga Kiri Main Road, Tiruchengode – 637211
+                  <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">{lang === 'en' ? 'Office address' : 'அலுவலக முகவரி'}</h4>
+                  <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
+                    {lang === 'en'
+                      ? 'Door No. 38/5, Rajeev Nagar Cross Road, Opp. SPM Hospital, Sanga Kiri Main Road, Tiruchengode – 637211'
+                      : 'கதவு எண். 38/5, ராஜீவ் நகர் குறுக்கு சாலை, SPM மருத்துவமனை எதிரில், சங்ககிரி மெயின் ரோடு, திருச்செங்கோடு – 637211'}
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-3.5">
-                <Monogram label="E" size="md" />
-                <div>
-                  <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Email Address' : 'மின்னஞ்சல் முகவரி'}</h4>
-                  <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] mt-1">
-                    nallathanadakum@gmail.com
-                  </p>
+                <div className="h-8 w-8 shrink-0 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                  <FaPhone className="h-4 w-4" />
                 </div>
-              </div>
-
-              <div className="flex items-start space-x-3.5">
-                <Monogram label="P" size="md" />
                 <div>
-                  <h4 className="text-xs font-bold text-gray-800 uppercase tracking-wider">{lang === 'en' ? 'Emergency Phone & WhatsApp' : 'அவசரத் தொடர்பு எண்கள்'}</h4>
-                  <p className="text-base sm:text-lg text-gray-900 leading-relaxed sm:leading-[1.65] mt-1 font-semibold">
-                    +91 98765 43210 / +91 94435 67890
-                  </p>
+                  <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider">{lang === 'en' ? 'Emergency Phone & WhatsApp' : 'அவசரத் தொடர்பு எண்கள்'}</h4>
+                  <div className="mt-1 space-y-0.5">
+                    <a href={`tel:${OFFICIAL_CONTACT.formsPhone}`} className="block text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] font-semibold hover:text-emerald-800">
+                      +91 75400 17625
+                    </a>
+                    <a href={`tel:${OFFICIAL_CONTACT.secondaryPhone}`} className="block text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] font-semibold hover:text-emerald-800">
+                      +91 93604 62890
+                    </a>
+                  </div>
                   <p className="text-[10px] text-gray-900 mt-0.5">
                     {lang === 'en' ? 'Operated jointly by Chairman & Trustees' : 'தலைவர் மற்றும் அறங்காவலர்களால் இயக்கப்படும் எண்கள்'}
                   </p>
@@ -654,19 +869,19 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
           </div>
 
           {/* Right Column: Contact Message Form */}
-          <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-xs">
+          <div className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04]">
             {contactSuccess ? (
               <div className="text-center py-10 space-y-4">
                 <div className="h-14 w-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-2xl mx-auto">
-                  ✓
+                  <FaCheck className="h-6 w-6" />
                 </div>
                 <h3 className="font-display text-lg font-bold text-gray-900">
-                  {lang === 'en' ? 'Email Draft Prepared' : 'மின்னஞ்சல் வரைவு தயாராகிவிட்டது'}
+                  {lang === 'en' ? 'WhatsApp Message Prepared' : 'வாட்ஸ்அப் செய்தி தயாராகிவிட்டது'}
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-900 max-w-sm mx-auto">
                   {lang === 'en'
-                    ? 'Your email client should now open with a pre-filled message so your enquiry is not stored in this browser.'
-                    : 'உங்கள் செய்தி எங்களை வந்தடைந்தது. விரைவில் பதில் அனுப்புகிறோம். நன்றி!'}
+                    ? 'WhatsApp should now open with your message pre-filled so your enquiry is not stored in this browser. Tap send to reach us.'
+                    : 'உங்கள் செய்தியுடன் வாட்ஸ்அப் திறக்கும். எங்களைத் தொடர்பு கொள்ள அனுப்பு பொத்தானை அழுத்தவும்.'}
                 </p>
                 <button
                   id="reset-contact"
@@ -678,10 +893,15 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
               </div>
             ) : (
               <form onSubmit={handleContactSubmit} className="space-y-6">
+                {contactError && (
+                  <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold leading-relaxed text-red-800">
+                    {contactError}
+                  </p>
+                )}
                 
                 {/* Name */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
                     {lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *
                   </label>
                   <input
@@ -689,14 +909,14 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     required
                     value={contactName}
                     onChange={(e) => setContactName(e.target.value)}
-                    placeholder="e.g. Mohan"
-                    className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    placeholder="e.g. S. Kumar"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   />
                 </div>
 
                 {/* Phone */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
                     {lang === 'en' ? 'Your Phone Number' : 'உங்கள் தொடர்பு எண்'} *
                   </label>
                   <input
@@ -704,14 +924,14 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     required
                     value={contactPhone}
                     onChange={(e) => setContactPhone(e.target.value)}
-                    placeholder="e.g. 9876543210"
-                    className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    placeholder="10-digit mobile number"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   />
                 </div>
 
                 {/* Message */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 uppercase tracking-wider block">
+                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
                     {lang === 'en' ? 'Your Message or Enquiry' : 'உங்கள் செய்தி / கேள்வி'} *
                   </label>
                   <textarea
@@ -720,7 +940,7 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                     value={contactMsg}
                     onChange={(e) => setContactMsg(e.target.value)}
                     placeholder={lang === 'en' ? 'Write your message here...' : 'இங்கு எழுதவும்...'}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg form-field focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                   />
                 </div>
 
@@ -738,14 +958,132 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
             )}
           </div>
 
+          {/* Registered Office Location */}
+          <section className="lg:col-span-12 rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_10px_30px_-12px_rgba(16,24,40,0.15)] ring-1 ring-gray-900/[0.04] sm:p-8">
+            <div className="mb-6 space-y-2 border-b border-gray-100 pb-5">
+              <span className="section-eyebrow w-fit rounded-full bg-emerald-50 px-2.5 py-1 text-emerald-700">
+                {lang === 'en' ? 'Physical Presence' : 'நேரடி இருப்பிடம்'}
+              </span>
+              <h2 className="h2-section">
+                {lang === 'en' ? 'Official Registered Office & Location Pin' : 'அதிகாரப்பூர்வ பதிவு அலுவலகம் & வரைபடம்'}
+              </h2>
+              <p className="max-w-2xl text-sm leading-relaxed text-gray-900 sm:text-base sm:leading-[1.65]">
+                {lang === 'en'
+                  ? 'We operate in full transparency with a physical office in Tiruchengode. Click below to open GPS coordinates in Google Maps.'
+                  : 'நாங்கள் திருச்செங்கோட்டில் முறையான அலுவலகத்துடன் செயல்படுகிறோம். எங்களது இருப்பிடத்தை வரைபடம் மூலம் துல்லியமாக அறிந்து கொள்ள கீழே உள்ள இணைப்பை அழுத்தவும்.'}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 items-center gap-8">
+              <div className="space-y-5">
+                <div className="space-y-4 rounded-xl border border-gray-100 bg-gray-50 p-5">
+                  <div className="space-y-1">
+                    <span className="block text-[9px] font-bold uppercase tracking-widest text-gray-900">
+                      {lang === 'en' ? 'Registered Office Address' : 'அலுவலக முகவரி'}
+                    </span>
+                    <p className="font-display text-sm font-bold leading-snug text-gray-900">
+                      {lang === 'en' ? 'Nallathae Nadakkum Trust' : 'நல்லதே நடக்கும் அறக்கட்டளை'}
+                    </p>
+                    <p className="text-sm font-medium leading-relaxed text-gray-900 sm:text-base sm:leading-[1.65]">
+                      {lang === 'en' ? (
+                        <>
+                          38/5, Rajeev Nagar Cross Road,<br />
+                          Opp. SPM Hospital,<br />
+                          Tiruchengode - 637211,<br />
+                          Namakkal District, Tamil Nadu.
+                        </>
+                      ) : (
+                        <>
+                          38/5, ராஜீவ் நகர் குறுக்கு சாலை,<br />
+                          SPM மருத்துவமனை எதிரில்,<br />
+                          திருச்செங்கோடு - 637211,<br />
+                          நாமக்கல் மாவட்டம், தமிழ்நாடு.
+                        </>
+                      )}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5 border-t border-gray-200/60 pt-2 text-xs text-gray-900">
+                    <div className="flex items-center space-x-2">
+                      <FaLocationDot className="h-4 w-4 shrink-0 text-emerald-600" />
+                      <span><strong>{lang === 'en' ? 'Landmark:' : 'அடையாளம்:'}</strong> {lang === 'en' ? 'Opp. SPM Hospital' : 'SPM மருத்துவமனை எதிரில்'}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <FaMap className="h-4 w-4 shrink-0 text-emerald-600" />
+                      <span><strong>{lang === 'en' ? 'Locality:' : 'பகுதி:'}</strong> {lang === 'en' ? 'Tiruchengode Town & Taluk' : 'திருச்செங்கோடு நகரம் & வட்டம்'}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=11.388999%2C77.894306"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center space-x-2 rounded-xl bg-emerald-600 px-5 py-3 text-xs font-bold text-white shadow-sm transition-all hover:scale-[1.01] hover:bg-emerald-700 active:scale-[0.99] sm:text-sm"
+                  >
+                    <FaArrowUpRightFromSquare className="h-4 w-4" />
+                    <span>{lang === 'en' ? 'Open in Google Maps App' : 'கூகுள் மேப்ஸில் திறக்கவும்'}</span>
+                  </a>
+                  <p className="text-center text-[11px] text-gray-900">
+                    {lang === 'en' ? 'Live Navigation Coordinates for Visitors & Donors' : 'வருகையாளர்கள் மற்றும் நன்கொடையாளர்களுக்கான நேரடி வழிகாட்டி'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Frequently Asked Questions */}
+          <div className="lg:col-span-12 space-y-6 pt-6">
+            <div className="text-center space-y-1">
+              <h2 className="h2-section">
+                {lang === 'en' ? 'Frequently Asked Questions' : 'அடிக்கடி கேட்கப்படும் கேள்விகள்'}
+              </h2>
+              <p className="text-xs text-gray-900">
+                {lang === 'en' ? 'Have questions regarding our operations or financial management? Click on an item below.' : 'எங்கள் செயல்பாடுகள் அல்லது நிதி மேலாண்மை குறித்து ஏதேனும் கேள்விகள் இருந்தால் கீழே தேர்வு செய்து விபரம் அறியலாம்.'}
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto divide-y divide-gray-100 border-t border-b border-gray-100">
+              {faqData.map((faq, idx) => {
+                const isOpen = openFaqIndex === idx;
+                return (
+                  <div key={idx} className="py-4">
+                    <button
+                      id={`faq-btn-${idx}`}
+                      onClick={() => toggleFaq(idx)}
+                      className="w-full flex justify-between items-center text-left font-sans text-sm font-semibold text-gray-900 hover:text-emerald-700 transition-colors py-2.5 min-h-[2.75rem] cursor-pointer"
+                    >
+                      <span className="pr-4 leading-snug">{faq.question[lang]}</span>
+                      {isOpen ? <FaChevronDown className="h-4 w-4 text-emerald-600 flex-shrink-0" /> : <FaChevronRight className="h-4 w-4 text-gray-900 flex-shrink-0" />}
+                    </button>
+
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <p className="text-sm sm:text-base text-gray-900 leading-relaxed sm:leading-[1.65] pt-3 pr-6">
+                            {faq.answer[lang]}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
         </div>
       )}
 
     </div>
   );
 }
-
-
-
 
 

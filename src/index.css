@@ -1,92 +1,314 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Tamil:wght@300;400;500;600;700;800&display=swap');
+/* ─── FONT STACK ──────────────────────────────────────────────────────────
+   To swap any typeface: change the @import URL and the matching CSS variable
+   below. Three tokens drive the entire site:
+     --font-display  → headings, section titles, big stats, CTAs
+     --font-sans     → body copy, navbar, forms, footer, all UI text
+     --font-serif    → founder quotes, emotional statements, taglines
+   ──────────────────────────────────────────────────────────────────────── */
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,600,700,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Tamil:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", "Noto Sans Tamil", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Noto Sans Tamil", sans-serif;
+  --font-display: "Cabinet Grotesk", "Noto Sans Tamil", sans-serif;   /* headings · stats · CTAs */
+  --font-sans:    "Manrope", "Noto Sans Tamil", ui-sans-serif, system-ui, sans-serif; /* body · UI · forms · footer */
+  --font-serif:   "Source Serif 4", "Noto Sans Tamil", Georgia, serif;               /* quotes · taglines · editorial */
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  --color-primary-50: #f0fdf4;
-  --color-primary-100: #dcfce7;
-  --color-primary-600: #16a34a;
-  --color-primary-700: #15803d;
-  --color-primary-800: #166534;
+  /*
+    Brand green ramp — derived from the official logo greens so the site's
+    dominant `emerald-*` utilities render the trust's real palette:
+      600 = Primary Deep Green  #1F734A
+      500 = Leaf Green          #4D8F52
+      400 = Light Green         #7CAF50
+      300 = Yellow Green        #9BBE69
+  */
+  --color-emerald-50:  #eaf4ee;
+  --color-emerald-100: #cfe6d7;
+  --color-emerald-200: #a9d3b6;
+  --color-emerald-300: #9bbe69;
+  --color-emerald-400: #7caf50;
+  --color-emerald-500: #4d8f52;
+  --color-emerald-600: #1f734a;
+  --color-emerald-700: #1a6340;
+  --color-emerald-800: #165433;
+  --color-emerald-900: #0f3d26;
+  --color-emerald-950: #082416;
+
+  /* Keep the `primary-*` alias in sync with the brand green. */
+  --color-primary-50:  #eaf4ee;
+  --color-primary-100: #cfe6d7;
+  --color-primary-600: #1f734a;
+  --color-primary-700: #1a6340;
+  --color-primary-800: #165433;
+
+  /* Secondary logo accents — used in targeted, meaningful places. */
+  --color-brand-blue:      #207092; /* Primary Blue — medical / ambulance / info */
+  --color-brand-blue-50:   #e8f1f5;
+  --color-brand-blue-100:  #c9e0e9;
+  --color-brand-blue-700:  #185873;
+
+  --color-brand-orange:    #ee9432; /* Warm service orange — food / help */
+  --color-brand-orange-50: #fdf3e6;
+  --color-brand-orange-100:#fbe4c8;
+  --color-brand-orange-700:#b96d1c;
+
+  --color-brand-gold:      #efc981; /* Golden Yellow — education / highlights */
+  --color-brand-gold-50:   #fdf8ee;
+  --color-brand-gold-100:  #faeed2;
+  --color-brand-gold-700:  #a9812f;
+
+  --color-brand-violet:    #7c4db8; /* Violet (client request) — last rites / dignity */
+  --color-brand-violet-50: #f1ebf9;
+  --color-brand-violet-100:#e0d1f2;
+  --color-brand-violet-700:#5f3a8f;
+
+  --color-brand-leaf:      #4d8f52; /* Leaf Green — secondary green surfaces */
+  --color-brand-lime:      #9bbe69; /* Yellow/Lime Green — fresh highlight */
 }
 
+/*
+  Professional brand background: a clean near-white base with soft, wide
+  brand-green glows anchored to the corners. Calm and airy — no busy patterns.
+*/
 html {
   background:
-    radial-gradient(circle at 12% 8%, rgba(245, 210, 184, 0.16), transparent 20%),
-    radial-gradient(circle at 86% 78%, rgba(196, 214, 191, 0.14), transparent 18%),
-    radial-gradient(circle at 72% 22%, rgba(220, 217, 210, 0.12), transparent 14%),
-    #ffffff;
+    radial-gradient(60% 55% at 0% 0%, rgba(31, 115, 74, 0.06), transparent 70%),
+    radial-gradient(55% 55% at 100% 0%, rgba(32, 112, 146, 0.05), transparent 70%),
+    radial-gradient(70% 60% at 100% 100%, rgba(77, 143, 82, 0.06), transparent 70%),
+    #fbfdfb;
+  background-attachment: fixed;
 }
 
 body {
   background: transparent;
 }
 
+/* Tamil glyphs read visually larger in this font stack, so Tamil mode uses a
+   slightly smaller scale while keeping English unchanged. */
+.tamil-type {
+  font-size: 0.97rem;
+}
+
+.tamil-type :where(.text-xs) { font-size: 0.7275rem; }
+.tamil-type :where(.text-sm) { font-size: 0.84875rem; }
+.tamil-type :where(.text-base) { font-size: 0.97rem; }
+.tamil-type :where(.text-lg) { font-size: 1.09125rem; }
+.tamil-type :where(.text-xl) { font-size: 1.2125rem; }
+.tamil-type :where(.text-2xl) { font-size: 1.455rem; }
+.tamil-type :where(.text-3xl) { font-size: 1.81875rem; }
+.tamil-type :where(.text-4xl) { font-size: 2.1825rem; }
+.tamil-type :where(.text-5xl) { font-size: 2.91rem; }
+.tamil-type :where(.text-6xl) { font-size: 3.6375rem; }
+.tamil-type .tamil-match-english:is(.text-3xl) { font-size: 1.875rem; }
+.tamil-type .tamil-match-english:is(.text-4xl) { font-size: 2.25rem; }
+.tamil-type .tamil-match-english:is(.text-5xl) { font-size: 3rem; }
+.tamil-type .tamil-match-english:is(.text-6xl) { font-size: 3.75rem; }
+
+.site-shell :where(input, textarea)::placeholder {
+  color: #9ca3af;
+  font-weight: 500;
+  opacity: 1;
+}
+
+.site-shell :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-emerald-600);
+  outline-offset: 3px;
+}
+
+/* Buttons and major CTAs use the display font. Nav link buttons keep body/UI font (overridden below). */
+button, [role="button"], input[type="submit"], input[type="button"] {
+  font-family: var(--font-display);
+}
+nav button, nav [role="button"], header button:not(.cta-btn) {
+  font-family: var(--font-sans);
+}
+
+.section-eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 640px) {
+  .section-eyebrow {
+    font-size: 0.9375rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   CENTRALIZED DESIGN TOKENS
+   One place for elevation, radius, buttons, and the type scale so every
+   surface stays consistent. Prefer these classes over ad-hoc utilities.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Elevation — exactly two levels. */
+.shadow-card   { box-shadow: 0 10px 30px -12px rgba(16,24,40,0.15); }
+.shadow-raised { box-shadow: 0 22px 50px -20px rgba(16,24,40,0.28); }
+
+/* Radius scale (documented): 0.5rem controls · 1rem cards · 9999px pills.
+   Use Tailwind rounded-lg / rounded-2xl / rounded-full accordingly. */
+
+/* Surface (card/panel) — resting card look in one class. */
+.surface-card {
+  background: #fff;
+  border: 1px solid var(--color-emerald-50, #eaf4ee);
+  border-color: rgba(17,24,39,0.06);
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px -12px rgba(16,24,40,0.15);
+}
+
+/* Buttons — three tiers. All get a visible focus ring via the global rule. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0.5rem; font-family: var(--font-display); font-weight: 600;
+  min-height: 2.75rem; padding: 0.625rem 1.25rem; border-radius: 0.5rem;
+  cursor: pointer; transition: all .2s ease; line-height: 1;
+}
+.btn-pill { border-radius: 9999px; }
+.btn-primary   { background: var(--color-emerald-600); color: #fff; }
+.btn-primary:hover   { background: var(--color-emerald-700); }
+.btn-secondary { background: #fff; color: #111827; border: 1px solid #e5e7eb; }
+.btn-secondary:hover { border-color: var(--color-emerald-300); color: var(--color-emerald-700); }
+.btn-tertiary  { background: transparent; color: var(--color-emerald-700); min-height: auto; padding: 0.25rem 0; }
+.btn-tertiary:hover  { text-decoration: underline; }
+
+/* Type scale — locked heading sizes. Reserve `.display-hero` for ONE
+   major conversion block only. */
+.h1-page {
+  font-family: var(--font-display); font-weight: 800; line-height: 1.1;
+  font-size: 1.875rem; color: #111827;
+}
+.h2-section {
+  font-family: var(--font-display); font-weight: 700; line-height: 1.2;
+  font-size: 1.5rem; color: #111827;
+}
+.display-hero {
+  font-family: var(--font-display); font-weight: 800; line-height: 1.05;
+  font-size: 2.25rem; color: #fff;
+}
+@media (min-width: 640px) {
+  .h1-page    { font-size: 2.25rem; }
+  .h2-section { font-size: 1.875rem; }
+  .display-hero { font-size: 3rem; }
+}
+
+.form-copy {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.info-list {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.form-field {
+  font-size: 0.9375rem;
+}
+
+.tamil-type .h1-page { font-size: 1.8375rem; }
+.tamil-type .h2-section { font-size: 1.47rem; }
+.tamil-type .display-hero { font-size: 2.205rem; }
+.tamil-type .section-eyebrow { font-size: 0.84875rem; }
+.tamil-type .form-copy,
+.tamil-type .info-list,
+.tamil-type .form-field,
+.tamil-type .form-control,
+.tamil-type :where(input:not([type="checkbox"]):not([type="radio"]), textarea) {
+  font-size: 0.909375rem;
+}
+.tamil-type .form-label {
+  font-size: 0.7275rem;
+}
+
+@media (min-width: 640px) {
+  .tamil-type .h1-page { font-size: 2.205rem; }
+  .tamil-type .h2-section { font-size: 1.8375rem; }
+  .tamil-type .display-hero { font-size: 2.94rem; }
+  .tamil-type .section-eyebrow { font-size: 0.909375rem; }
+}
+
+.form-label {
+  display: block;
+  color: #111827;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+}
+
+.form-control,
+.site-shell :where(input:not([type="checkbox"]):not([type="radio"]), textarea) {
+  min-height: 2.875rem;
+  width: 100%;
+  border: 1px solid #dfe4ea;
+  border-radius: 0.625rem;
+  background: #fff;
+  color: #111827;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  padding: 0.625rem 0.875rem;
+  transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+
+.site-shell textarea {
+  min-height: auto;
+  resize: vertical;
+}
+
+.form-control:hover,
+.site-shell :where(input:not([type="checkbox"]):not([type="radio"]), textarea):hover {
+  border-color: #b7c3cd;
+}
+
+.form-control:focus,
+.form-control:focus-visible,
+.site-shell :where(input:not([type="checkbox"]):not([type="radio"]), textarea):focus {
+  border-color: var(--color-emerald-600);
+  box-shadow: 0 0 0 3px rgba(31, 115, 74, 0.11);
+  outline: none;
+}
+
+.site-shell :where(input[type="checkbox"], input[type="radio"]) {
+  accent-color: var(--color-emerald-600);
+}
+
+/* Minimum comfortable tap target for small icon controls. */
+.tap-target { min-height: 2.5rem; min-width: 2.5rem; }
+
 .site-shell {
   position: relative;
   isolation: isolate;
-}
-
-.site-shell::before,
-.site-shell::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.site-shell::before {
-  background:
-    radial-gradient(circle at 9% 20%, rgba(245, 210, 184, 0.18) 0, rgba(245, 210, 184, 0.18) 10%, transparent 11%),
-    radial-gradient(circle at 84% 18%, rgba(197, 214, 193, 0.14) 0, rgba(197, 214, 193, 0.14) 8%, transparent 9%),
-    radial-gradient(circle at 78% 70%, rgba(217, 214, 207, 0.12) 0, rgba(217, 214, 207, 0.12) 7%, transparent 8%),
-    radial-gradient(circle at 18% 82%, rgba(244, 201, 175, 0.12) 0, rgba(244, 201, 175, 0.12) 8%, transparent 9%),
-    radial-gradient(circle at 56% 40%, rgba(204, 215, 198, 0.08) 0, rgba(204, 215, 198, 0.08) 6%, transparent 7%),
-    linear-gradient(140deg, transparent 0 23%, rgba(184, 170, 156, 0.12) 23.2%, transparent 23.5%),
-    linear-gradient(165deg, transparent 0 74%, rgba(184, 170, 156, 0.1) 74.2%, transparent 74.5%);
-  opacity: 0.95;
-}
-
-.site-shell::after {
-  background:
-    radial-gradient(rgba(173, 159, 146, 0.24) 1px, transparent 1px),
-    radial-gradient(rgba(173, 159, 146, 0.14) 1px, transparent 1px),
-    repeating-linear-gradient(90deg, transparent 0 22px, rgba(186, 171, 156, 0.12) 22px 23px, transparent 23px 46px),
-    repeating-linear-gradient(0deg, transparent 0 26px, rgba(186, 171, 156, 0.08) 26px 27px, transparent 27px 54px);
-  background-size: 10px 10px, 10px 10px, 220px 76px, 86px 210px;
-  background-position: 88% 120px, 14% calc(100% - 180px), 100% 160px, 70px calc(100% - 220px);
-  background-repeat: no-repeat;
-  opacity: 0.5;
+  /* Safety net against accidental horizontal scroll on small screens.
+     `clip` (not `hidden`) does NOT create a scroll container, so the
+     pinned horizontal Journey timeline's position:sticky still works. */
+  overflow-x: clip;
 }
 
 /*
-  Tamil mode: reduce ONLY text sizes by 2px (0.125rem).
-  Overrides Tailwind's --text-* CSS variables which control all text-{size}
-  utilities. Spacing variables (--spacing-*) are intentionally untouched so
-  padding, margin, gap, and layout remain pixel-identical to English mode.
+  Tamil is the site's PRIMARY language. It renders at the SAME font-size as
+  English (no shrinking) — only the line-height is relaxed, because Tamil vowel
+  marks stack above/below the baseline and need more vertical breathing room.
+  Font-size variables are intentionally left at their defaults so both
+  languages share one type scale.
 */
-html[lang="ta"] {
-  --text-xs:   0.625rem;   /* 10px  (was 12px) */
-  --text-sm:   0.75rem;    /* 12px  (was 14px) */
-  --text-base: 0.875rem;   /* 14px  (was 16px) */
-  --text-lg:   1rem;       /* 16px  (was 18px) */
-  --text-xl:   1.125rem;   /* 18px  (was 20px) */
-  --text-2xl:  1.375rem;   /* 22px  (was 24px) */
-  --text-3xl:  1.75rem;    /* 28px  (was 30px) */
-  --text-4xl:  2.125rem;   /* 34px  (was 36px) */
-  --text-5xl:  2.875rem;   /* 46px  (was 48px) */
-  --text-6xl:  3.625rem;   /* 58px  (was 60px) */
+
+/* Body / reading text: more generous leading in Tamil. */
+html[lang="ta"] p,
+html[lang="ta"] li,
+html[lang="ta"] blockquote {
+  line-height: 1.85;
 }
 
-/* Tamil vowel marks stack above/below glyphs — headings need extra leading */
+/* Headings: enough leading for stacked marks without looking loose. */
 html[lang="ta"] h1,
 html[lang="ta"] h2,
-html[lang="ta"] h3 {
-  line-height: 1.55;
+html[lang="ta"] h3,
+html[lang="ta"] h4 {
+  line-height: 1.5;
   letter-spacing: 0;
 }
 
@@ -94,4 +316,246 @@ html[lang="ta"] h3 {
 html[lang="ta"] * {
   word-break: break-word;
   overflow-wrap: break-word;
+}
+
+.offbit-credit {
+  font-family: "OffBit", "Space Grotesk", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Imported legal/policy documents: preserve source structure, apply site theme. */
+.policy-document {
+  --policy-ink: #111827;
+  --policy-muted: #4b5563;
+  --policy-line: #e5e7eb;
+  --policy-accent: var(--color-emerald-700);
+  --policy-accent-soft: #ecfdf5;
+  --policy-warn-soft: #fffbeb;
+  --policy-warn-line: #d8a45a;
+  --policy-alert-soft: #fef2f2;
+  --policy-alert-line: #c0483c;
+  min-height: 100vh;
+}
+
+.policy-document :where(.p-hero, .t-hero, .r-hero, .pp-hero, .tc-hero, .rp-hero, .cp-hero) {
+  border-bottom: 1px solid var(--policy-line);
+  background: var(--policy-accent-soft);
+  padding: 3rem 1.5rem 2.25rem;
+  text-align: center;
+}
+
+.policy-document :where(.p-hero, .t-hero, .r-hero, .pp-hero, .tc-hero, .rp-hero, .cp-hero) h1 {
+  margin: 0 0 0.5rem;
+  color: var(--policy-ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 3vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+.policy-document :where(.p-hero, .t-hero, .r-hero, .pp-hero, .tc-hero, .rp-hero, .cp-hero) p {
+  margin: 0;
+  color: var(--policy-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.policy-document :where(.p-wrap, .t-wrap, .r-wrap, .pp-wrap, .tc-wrap, .rp-wrap, .cp-wrap) {
+  margin: 0 auto;
+  max-width: 52rem;
+  padding: 3rem 1.5rem 4.5rem;
+}
+
+.policy-document :where(h2, h3) {
+  color: var(--policy-ink);
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+
+.policy-document h2 {
+  margin: 2.5rem 0 0.75rem;
+  border-top: 1px solid var(--policy-line);
+  padding-top: 1.5rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.policy-document h2:first-of-type {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+.policy-document h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.policy-document :where(p, li, td, th) {
+  color: #334155;
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.policy-document :where(ul, ol) {
+  margin: 0.75rem 0;
+  padding-left: 1.25rem;
+}
+
+.policy-document li {
+  margin-bottom: 0.5rem;
+}
+
+.policy-document a {
+  color: var(--policy-accent);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(21, 128, 61, 0.28);
+}
+
+.policy-document a:hover {
+  border-bottom-color: var(--policy-accent);
+}
+
+.policy-document :where(.p-lead, .t-lead, .r-lead) {
+  margin-bottom: 1.75rem;
+  color: #1f2937;
+  font-size: 1.05rem;
+}
+
+.policy-document :where(.pp-toc, .tc-toc, .rp-toc, .cp-toc, .p-contact, .t-contact, .r-contact, .pp-contact, .tc-contact, .rp-contact, .cp-contact, .p-full, .t-full, .r-full) {
+  border: 1px solid var(--policy-line);
+  border-radius: 0.625rem;
+  background: #fff;
+  padding: 1.25rem 1.5rem;
+}
+
+.policy-document :where(.pp-toc, .tc-toc, .rp-toc, .cp-toc) {
+  margin-bottom: 2.5rem;
+  background: #f8fafc;
+}
+
+.policy-document :where(.pp-toc, .tc-toc, .rp-toc, .cp-toc) strong {
+  display: block;
+  margin-bottom: 0.625rem;
+  color: var(--policy-muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.policy-document :where(.pp-toc, .tc-toc, .rp-toc, .cp-toc) ol {
+  columns: 2;
+  column-gap: 2rem;
+  margin: 0;
+}
+
+.policy-document :where(.p-warn, .t-warn, .r-warn, .tc-warn, .rp-warn, .cp-warn) {
+  margin: 1.25rem 0;
+  border-left: 3px solid var(--policy-warn-line);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: var(--policy-warn-soft);
+  padding: 1rem 1.25rem;
+}
+
+.policy-document :where(.t-alert, .tc-alert, .cp-alert) {
+  margin: 1.25rem 0;
+  border-left: 3px solid var(--policy-alert-line);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: var(--policy-alert-soft);
+  padding: 1rem 1.25rem;
+}
+
+.policy-document :where(.r-callout, .pp-callout, .tc-callout, .rp-callout, .cp-callout) {
+  margin: 1.25rem 0;
+  border-left: 3px solid var(--policy-accent);
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: var(--policy-accent-soft);
+  padding: 1rem 1.25rem;
+}
+
+.policy-document :where(.p-foot, .t-foot, .r-foot, .pp-foot, .tc-foot, .rp-foot, .cp-foot) {
+  margin-top: 3rem;
+  border-top: 1px solid var(--policy-line);
+  padding-top: 1.25rem;
+  color: var(--policy-muted);
+  font-size: 0.86rem;
+}
+
+.policy-document :where(.rp-table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.policy-document :where(.rp-table th, .rp-table td) {
+  border: 1px solid var(--policy-line);
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.policy-document :where(.rp-table th) {
+  background: #f8fafc;
+  color: var(--policy-ink);
+  font-weight: 800;
+}
+
+.policy-document .cp-help {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.policy-document .cp-help div {
+  border: 1px solid var(--policy-line);
+  border-radius: 0.5rem;
+  background: #fff;
+  padding: 0.875rem 1rem;
+}
+
+.policy-document .cp-help span {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--policy-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.policy-document .cp-help strong {
+  color: var(--policy-accent);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+
+.policy-document .cp-help em {
+  display: block;
+  color: var(--policy-muted);
+  font-size: 0.84rem;
+  font-style: normal;
+}
+
+@media (max-width: 640px) {
+  .policy-document :where(.p-hero, .t-hero, .r-hero, .pp-hero, .tc-hero, .rp-hero, .cp-hero) {
+    padding: 2.25rem 1.25rem 1.75rem;
+  }
+
+  .policy-document :where(.p-wrap, .t-wrap, .r-wrap, .pp-wrap, .tc-wrap, .rp-wrap, .cp-wrap) {
+    padding: 2.25rem 1.25rem 3.5rem;
+  }
+
+  .policy-document :where(.pp-toc, .tc-toc, .rp-toc, .cp-toc) ol {
+    columns: 1;
+  }
+
+  .policy-document :where(.rp-table) {
+    display: block;
+    overflow-x: auto;
+    white-space: normal;
+  }
 }

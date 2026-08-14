@@ -21,7 +21,7 @@ const programImages: Record<string, string[]> = {
     '/gallery/activity-mortuary-respects.jpg'
   ],
   elderly: [
-    '/gallery/activity-elder-rescue.jpeg',
+    '/gallery/activity-elder-rescue1.jpeg',
     '/gallery/activity-tricycle-wheelchair.jpg',
     '/gallery/activity-fan-donation.jpg'
   ],

@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "REPLACE_WITH_ADMIN_EMAIL";
+    }
+
+    function isFormCollection(collectionName) {
+      return collectionName in [
+        "assistanceRequests",
+        "volunteerApplications",
+        "speakerInvitations",
+        "contactMessages",
+        "donationPledges"
+      ];
+    }
+
+    match /{collectionName}/{documentId} {
+      allow create: if isFormCollection(collectionName);
+      allow read: if isFormCollection(collectionName) && isAdmin();
+      allow update, delete: if false;
+    }
+  }
+}
