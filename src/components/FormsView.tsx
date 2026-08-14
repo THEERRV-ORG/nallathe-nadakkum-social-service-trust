@@ -460,10 +460,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   
                   {/* Name */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    <label htmlFor="help-name" className="text-xs font-bold text-gray-900 tracking-wide block">
                       {lang === 'en' ? '2. Beneficiary / Contact Name' : '2. உதவி பெறுபவர் / தகவல் அளிப்பவர் பெயர்'} *
                     </label>
                     <input
+                      id="help-name"
                       type="text"
                       required
                       value={helpName}
@@ -475,10 +476,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                   {/* Phone */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    <label htmlFor="help-phone" className="text-xs font-bold text-gray-900 tracking-wide block">
                       {lang === 'en' ? '3. Contact Phone / WhatsApp' : '3. தொடர்பு எண் / WhatsApp'} *
                     </label>
                     <input
+                      id="help-phone"
                       type="tel"
                       required
                       value={helpPhone}
@@ -528,10 +530,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Address */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                  <label htmlFor="help-address" className="text-xs font-bold text-gray-900 tracking-wide block">
                     {lang === 'en' ? '5. Address / Location Details' : '5. முகவரி / இருப்பிட விவரங்கள்'} *
                   </label>
                   <input
+                    id="help-address"
                     type="text"
                     required
                     value={helpAddress}
@@ -543,10 +546,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Situation Description */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                  <label htmlFor="help-situation" className="text-xs font-bold text-gray-900 tracking-wide block">
                     {lang === 'en' ? '6. Describe what happened / assistance needed' : '6. சூழ்நிலை அல்லது தேவையின் முழு விபரம்'} *
                   </label>
                   <textarea
+                    id="help-situation"
                     required
                     rows={3}
                     value={helpDesc}
@@ -566,19 +570,18 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                       checked={helpConsent}
                       onChange={(e) => setHelpConsent(e.target.checked)}
                       className="peer absolute inset-0 z-10 h-5 w-5 cursor-pointer opacity-0"
-                      aria-label={lang === 'en' ? 'Consent to physical verification' : 'நேரடி சரிபார்ப்புக்கு ஒப்புதல்'}
                     />
                     <span className="flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-white text-white transition-colors peer-checked:border-emerald-600 peer-checked:bg-emerald-600 peer-focus-visible:ring-2 peer-focus-visible:ring-emerald-600/20">
                       <FaCheck className="h-3 w-3" />
                     </span>
                   </div>
-                  <div className="ml-3 text-xs">
+                  <label htmlFor="consent-check" className="ml-3 text-xs cursor-pointer">
                     <p className="font-medium text-gray-900">
-                      {lang === 'en' 
-                        ? 'I consent to the physical verification of these details by the trust volunteers.' 
+                      {lang === 'en'
+                        ? 'I consent to the physical verification of these details by the trust volunteers.'
                         : 'இந்த விவரங்கள் உண்மை என்றும், தன்னார்வலர்கள் நேரில் வந்து சரிபார்க்க முழு ஒப்புதல் அளிக்கிறேன்.'} *
                     </p>
-                  </div>
+                  </label>
                 </div>
 
                 {/* Submit button */}
@@ -680,10 +683,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                   
                   {/* Name */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    <label htmlFor="vol-name" className="text-xs font-bold text-gray-900 tracking-wide block">
                       {lang === 'en' ? '1. Your Full Name' : '1. தன்னார்வலர் பெயர்'} *
                     </label>
                     <input
+                      id="vol-name"
                       type="text"
                       required
                       value={volName}
@@ -695,10 +699,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                   {/* Phone */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    <label htmlFor="vol-phone" className="text-xs font-bold text-gray-900 tracking-wide block">
                       {lang === 'en' ? '2. WhatsApp Phone Number' : '2. WhatsApp எண்'} *
                     </label>
                     <input
+                      id="vol-phone"
                       type="tel"
                       required
                       value={volPhone}
@@ -712,13 +717,14 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Location & Availability */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  
+
                   {/* Location */}
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                    <label htmlFor="vol-location" className="text-xs font-bold text-gray-900 tracking-wide block">
                       {lang === 'en' ? '3. Your Location / Town' : '3. வாழும் இடம் / இருப்பிடம்'} *
                     </label>
                     <input
+                      id="vol-location"
                       type="text"
                       required
                       value={volLocation}
@@ -782,10 +788,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Relevant Skills */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                  <label htmlFor="vol-skills" className="text-xs font-bold text-gray-900 tracking-wide block">
                     {lang === 'en' ? '6. Any specific skills / message' : '6. திறமைகள் / இதர தகவல்கள்'}
                   </label>
                   <textarea
+                    id="vol-skills"
                     rows={2}
                     value={volSkills}
                     onChange={(e) => setVolSkills(e.target.value)}
@@ -901,10 +908,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
                 
                 {/* Name */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                  <label htmlFor="contact-name" className="text-xs font-bold text-gray-900 tracking-wide block">
                     {lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *
                   </label>
                   <input
+                    id="contact-name"
                     type="text"
                     required
                     value={contactName}
@@ -916,10 +924,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Phone */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                  <label htmlFor="contact-phone" className="text-xs font-bold text-gray-900 tracking-wide block">
                     {lang === 'en' ? 'Your Phone Number' : 'உங்கள் தொடர்பு எண்'} *
                   </label>
                   <input
+                    id="contact-phone"
                     type="tel"
                     required
                     value={contactPhone}
@@ -931,10 +940,11 @@ export default function FormsView({ lang, formType }: FormsViewProps) {
 
                 {/* Message */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-900 tracking-wide block">
+                  <label htmlFor="contact-message" className="text-xs font-bold text-gray-900 tracking-wide block">
                     {lang === 'en' ? 'Your Message or Enquiry' : 'உங்கள் செய்தி / கேள்வி'} *
                   </label>
                   <textarea
+                    id="contact-message"
                     required
                     rows={4}
                     value={contactMsg}

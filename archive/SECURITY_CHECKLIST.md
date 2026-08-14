@@ -1,3 +1,5 @@
+> **STALE — SUPERSEDED.** This document (21 July 2026) audited the pre-Firebase version of this site, which stored form submissions in browser localStorage with no backend. That architecture no longer exists. See `Production_Readiness_Audit.docx` (9 August 2026) for the current, accurate audit of the Firebase-backed app.
+
 # Security Checklist
 
 Use this checklist before any production deployment of this site or its future backend.

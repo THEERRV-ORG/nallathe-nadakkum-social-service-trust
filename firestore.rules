@@ -4,7 +4,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email == "REPLACE_WITH_ADMIN_EMAIL";
+        && request.auth.token.email == "theerrv@gmail.com";
     }
 
     function isFormCollection(collectionName) {
@@ -17,8 +17,114 @@ service cloud.firestore {
       ];
     }
 
+    // Common envelope every submission must carry, stamped by saveSubmission().
+    function hasValidEnvelope() {
+      return request.resource.data.source == "website"
+        && request.resource.data.createdAt == request.time;
+    }
+
+    function isShortString(field, maxLen) {
+      return field is string && field.size() > 0 && field.size() <= maxLen;
+    }
+
+    function isOptionalShortString(data, field, maxLen) {
+      return !(field in data) || (data[field] is string && data[field].size() <= maxLen);
+    }
+
+    // Matches the 10-digit Indian mobile format saveSubmission() always writes
+    // (client normalizes to this via normalizeIndianPhone()/isValidIndianPhone()).
+    function isIndianPhone(field) {
+      return field is string && field.matches('^[6-9][0-9]{9}$');
+    }
+
+    // Firestore rules can't loop per-element, so this only bounds list length —
+    // element shape is still capped indirectly by the 1 MiB document limit.
+    function isShortList(field, maxItems) {
+      return field is list && field.size() <= maxItems;
+    }
+
+    function validAssistanceRequest() {
+      let data = request.resource.data;
+      return data.keys().hasOnly([
+          "reference", "beneficiaryName", "phone", "assistanceCategory",
+          "urgencyLevel", "address", "situation", "consent", "source", "createdAt"
+        ])
+        && data.keys().hasAll(["beneficiaryName", "phone", "assistanceCategory", "urgencyLevel", "address", "situation", "consent"])
+        && isShortString(data.beneficiaryName, 100)
+        && isIndianPhone(data.phone)
+        && isShortString(data.assistanceCategory, 100)
+        && isShortString(data.urgencyLevel, 50)
+        && isShortString(data.address, 500)
+        && isShortString(data.situation, 2000)
+        && data.consent is bool
+        && isOptionalShortString(data, "reference", 50);
+    }
+
+    function validVolunteerApplication() {
+      let data = request.resource.data;
+      return data.keys().hasOnly([
+          "reference", "name", "phone", "location", "availability", "interests", "skillsMessage", "source", "createdAt"
+        ])
+        && data.keys().hasAll(["name", "phone", "location", "availability", "interests"])
+        && isShortString(data.name, 100)
+        && isIndianPhone(data.phone)
+        && isShortString(data.location, 200)
+        && isShortString(data.availability, 100)
+        && isShortList(data.interests, 20)
+        && isOptionalShortString(data, "skillsMessage", 1000)
+        && isOptionalShortString(data, "reference", 50);
+    }
+
+    function validSpeakerInvitation() {
+      let data = request.resource.data;
+      return data.keys().hasOnly([
+          "reference", "name", "phone", "organisation", "eventDate", "venue", "source", "createdAt"
+        ])
+        && data.keys().hasAll(["name", "phone", "organisation", "eventDate", "venue"])
+        && isShortString(data.name, 100)
+        && isIndianPhone(data.phone)
+        && isShortString(data.organisation, 200)
+        && isShortString(data.eventDate, 50)
+        && isShortString(data.venue, 300)
+        && isOptionalShortString(data, "reference", 50);
+    }
+
+    function validContactMessage() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(["name", "phone", "message", "source", "createdAt"])
+        && data.keys().hasAll(["name", "phone", "message"])
+        && isShortString(data.name, 100)
+        && isIndianPhone(data.phone)
+        && isShortString(data.message, 2000);
+    }
+
+    function validDonationPledge() {
+      let data = request.resource.data;
+      return data.keys().hasOnly([
+          "donorName", "phone", "supportType", "programme", "supportDetail", "message", "source", "createdAt"
+        ])
+        && data.keys().hasAll(["donorName", "phone", "supportType"])
+        && isShortString(data.donorName, 100)
+        && isIndianPhone(data.phone)
+        && isShortString(data.supportType, 100)
+        && isOptionalShortString(data, "programme", 200)
+        && isOptionalShortString(data, "supportDetail", 500)
+        && isOptionalShortString(data, "message", 1000);
+    }
+
+    function validSubmission(collectionName) {
+      return hasValidEnvelope()
+        && (
+          (collectionName == "assistanceRequests" && validAssistanceRequest())
+          || (collectionName == "volunteerApplications" && validVolunteerApplication())
+          || (collectionName == "speakerInvitations" && validSpeakerInvitation())
+          || (collectionName == "contactMessages" && validContactMessage())
+          || (collectionName == "donationPledges" && validDonationPledge())
+        );
+    }
+
     match /{collectionName}/{documentId} {
-      allow create: if isFormCollection(collectionName);
+      allow create: if isFormCollection(collectionName) && validSubmission(collectionName);
       allow read: if isFormCollection(collectionName) && isAdmin();
       allow update, delete: if false;
     }
