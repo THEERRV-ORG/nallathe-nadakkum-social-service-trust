@@ -584,8 +584,9 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *</label>
+                <label htmlFor="donor-name" className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Your Name' : 'உங்கள் பெயர்'} *</label>
                 <input
+                  id="donor-name"
                   type="text"
                   required
                   value={donorName}
@@ -596,8 +597,9 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Contact Phone' : 'தொடர்பு எண்'} *</label>
+                <label htmlFor="donor-phone" className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Contact Phone' : 'தொடர்பு எண்'} *</label>
                 <input
+                  id="donor-phone"
                   type="tel"
                   required
                   value={donorPhone}
@@ -745,8 +747,9 @@ export default function DonateView({ lang, preset, onPresetConsumed }: DonateVie
             )}
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Blessing / Message for the board' : 'வாழ்த்துச் செய்தி / குறிப்பு'}</label>
+              <label htmlFor="donor-message" className="text-xs font-bold text-gray-900 tracking-wide block">{lang === 'en' ? 'Blessing / Message for the board' : 'வாழ்த்துச் செய்தி / குறிப்பு'}</label>
               <input
+                id="donor-message"
                 type="text"
                 value={donorMsg}
                 onChange={(e) => setDonorMsg(e.target.value)}
