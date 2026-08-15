@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+
+Sitemap: https://Nallathae-nadakkum-social-service-tr.vercel.app/sitemap.xml
